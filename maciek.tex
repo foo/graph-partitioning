@@ -16,7 +16,7 @@ We say that nodes that belong to the same cluster in the initial configuration \
 Consider clusters $A$ and $B$ that contain nodes $a_1, a_2, a_3$ and $b_1, b_2, b_3$, respectively.
 The adversary begins with issuing three requests: $(a_1, a_2)$, $(b_1, b_2)$, and $(a_3, b_3)$.
 Note that these require moving one of these pairs to a third cluster.
-Our idea is that the OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to some cluster $C$), and all other requests are free for the OPT.
+Our idea is that the OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to a cluster $D$), and for OPT all other requests are free. 
 
 The algorithm must place these three components in different clusters. Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A$ contains $a_1, a_2,x$, $B$ contains $b_1, b_2,y$ and $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of choice of the algorithm).
 For this, ALG pays at least $2$.
