@@ -21,8 +21,9 @@ Our idea is that the OPT pays for the request $(a_3, b_3)$ only (i.e., it moves 
 The algorithm must place these three components in different clusters. Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A$ contains $a_1, a_2,x$, $B$ contains $b_1, b_2,y$ and $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of choice of the algorithm).
 For this, ALG pays at least $2$.
 
-The OPT places these three components in clusters $A, B and D$, paying $2$ for migrating $a_3$ and $b_3$. The OPT has the freedom of choice of the cluster $D$ depending on the choices of the algorithm. We choose $D$ in such way that it does not contain neither $x$ nor $y$, and furthermore that the algorithm places any of nodes from $D$ at $x$ or $y$'s place as the last possible move.
+The OPT places these three components in clusters $A, B$ and $D$, paying $2$ for migrating $a_3$ and $b_3$. The OPT has the freedom of choice of the cluster $D$ depending on the choices of the algorithm. We choose $D$ in such way that it does not contain neither $x$ nor $y$, and furthermore that the algorithm places any of nodes from $D$ at $x$ or $y$'s place as the last possible move.
 The configuration of OPT's clusters is then: $A$ contains $a_1, a_2,d_1$, $B$ contains $b_1, b_2,d_2$ and $D$ contains $a_3, b_3, d_3$.
+Note that the requests between nodes of the same color are free for OPT, with the exception of nodes from $A$, $B$, and most notably $D$.
 
 From this point, OPT does not change its configuration, and the adversary continues to issue a request between $x$ and any other node with the same color as $x$.
 Upon receiving this request, ALG pays for it the cost $1$ and it increases its number of clusters that contain non-singleton components.
