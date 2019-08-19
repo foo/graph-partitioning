@@ -1,2 +1,37 @@
-\section{Maciek}
+\section{Lower bound $\Omega(\ell)$}
 
+Model assumes the existence of a perfect partition of the input graph.
+We present a lower-bound for the competitive ratio of $\Omega(\ell)$ for any deterministic algorithm.
+To this end, we use $k = 3$, i.e., the capacity of each server is $3$.
+
+\section{An $O(\ell)$-competitive algorithm for $k=3$}
+
+\begin{theorem}
+  The cost of rebalancing cost for algorithm is $O(k)$.
+  \label{rebalancing-cost}
+\end{theorem}
+
+\begin{proof}
+  \maciek{Note: we consider a cost of cheapest feasible rebalancing after insertion of one edge. This in contrast to bounding the distance between any two reconfigurations (we do not do that).}
+  
+  We distinguish among three configuration types of algorithm's clusters: $C_1, C_2, C_3$. In $C_1$ we have $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ we have one component of size $2$ and one component of size $1$. Finally, in $C_3$ we have one component of size $3$.
+
+  Consider a request $(u, v)$ and let $U, V$ be their clusters.
+  If $U=V$, then the request does not require a reconfiguration.
+  Now, we consider cases upon the type of clusters $U$ and $V$.
+  Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise the resulting component would have the size $4$, and this contradicts the existence of the perfect partition.
+  If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
+
+  Now, we focus on the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as the merged component would have size $4$.
+  If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
+  Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+  Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of rebalancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
+\end{proof}
+
+\begin{theorem}
+  There exists a $O(\ell)$-competitive algorithm for $k=3$.
+\end{theorem}
+
+\begin{proof}
+  The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one rebalancing, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
+\end{proof}
