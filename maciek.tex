@@ -4,6 +4,32 @@ Model assumes the existence of a perfect partition of the input graph.
 We present a lower-bound for the competitive ratio of $\Omega(\ell)$ for any deterministic algorithm.
 To this end, we use $k = 3$, i.e., the capacity of each server is $3$.
 
+
+\begin{theorem}
+  The competitive ratio of any deterministic algorithm for Online Balanced Partition (with existance of a perfect partition of the input graph) is $\Omega(\ell)$.
+\end{theorem}
+%Note that in the scenario with a perfect partition, both OPT and ALG always pays at most $O(\ell)$.
+
+\begin{proof}
+We say that nodes that belong to the same cluster in the initial configuration \emph{have the same color}.
+
+Consider clusters $A$ and $B$ that contain nodes $a_1, a_2, a_3$ and $b_1, b_2, b_3$, respectively.
+The adversary begins with issuing three requests: $(a_1, a_2)$, $(b_1, b_2)$, and $(a_3, b_3)$.
+Note that these require moving one of these pairs to a third cluster.
+Our idea is that the OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to some cluster $C$), and all other requests are free for the OPT.
+
+The algorithm must place these three components in different clusters. Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A$ contains $a_1, a_2,x$, $B$ contains $b_1, b_2,y$ and $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of choice of the algorithm).
+For this, ALG pays at least $2$.
+
+The OPT places these three components in clusters $A, B and D$, paying $2$ for migrating $a_3$ and $b_3$. The OPT chooses the cluster $D$ so that it does not contain neither $x$, $y$ nor $z$. The configuration of OPT's clusters is then: $A$ contains $a_1, a_2,d_1$, $B$ contains $b_1, b_2,d_2$ and $D$ contains $a_3, b_3, d_3$.
+
+The next action of the adversary depends on the choice of $x, y, z$.
+If $x$ and $y$ have different color (i.e., initially they belong to different clusters), then we issue a request between $x$ and any other node with the same color as $x$. As $x$ do not intersect with $D$, the OPT has them co-located in one server, and it pays no cost for such requests. We issue such requests until $x$ and $y$ have the same color.
+
+Then, we issue a request $(x, y)$.
+
+\end{proof}
+
 \section{An $O(\ell)$-competitive algorithm for $k=3$}
 
 \begin{theorem}
