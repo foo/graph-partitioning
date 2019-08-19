@@ -1,7 +1,7 @@
 \section{Lower bound $\Omega(\ell)$}
 
 Model assumes the existence of a perfect partition of the input graph.
-We present a lower-bound for the competitive ratio of $\Omega(\ell)$ for any deterministic algorithm.
+We present a lower bound for the competitive ratio of $\Omega(\ell)$ for any deterministic algorithm.
 To this end, we use $k = 3$, i.e., the capacity of each server is $3$.
 
 
@@ -26,7 +26,10 @@ The OPT places these three components in clusters $A, B and D$, paying $2$ for m
 The next action of the adversary depends on the choice of $x, y, z$.
 If $x$ and $y$ have different color (i.e., initially they belong to different clusters), then we issue a request between $x$ and any other node with the same color as $x$. As $x$ do not intersect with $D$, the OPT has them co-located in one server, and it pays no cost for such requests. We issue such requests until $x$ and $y$ have the same color.
 
-Then, we issue a request $(x, y)$.
+Note that the adversary can foresee the actions of the algorithm, and may choose $D$ in such way, that $x$ cycles through all other clusters before reaching $D$, paying the cost of $\Omega(k)$, which would already suffice to show the lower bound.
+
+Then, $x$ and $y$ have the same color, and we issue a request $(x, y)$. As these have the same color (and there are different than $d_1, d_2$ and $d_3$), OPT pays no cost for this request, and ALG pays $2$ for migrating $x$ and $y$ to other cluster.
+We repeat the entire process, i.e., we force ALG to choose $x$ and $y$ of the same color, and issue such request that is free for OPT. This process can continue until ALG has no more clusters with singleton components, or it pays the cost $\Omega(k)$ already.
 
 \end{proof}
 
