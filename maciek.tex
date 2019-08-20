@@ -1,5 +1,7 @@
 \section{Lower bound $\Omega(\ell)$}
 
+\maciek{I assume $\alpha = 1$ to simplify calculations, but everything should hold for general $\alpha$}
+
 Model assumes the existence of a perfect partition of the input graph.
 We present a lower bound for the competitive ratio of $\Omega(\ell)$ for any deterministic algorithm.
 To this end, we use $k = 3$, i.e., the capacity of each server is $3$.
@@ -21,13 +23,22 @@ in general, if the algorithm does not keep each component within one cluster, th
 
 
 
-The algorithm places these three components in different clusters. Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A_{ALG}$ contains $a_1, a_2,x$, the cluster $B_{ALG}$ contains $b_1, b_2,y$ and the cluster $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of the algorithm's choice).
-For this, ALG pays at least $2$.
+The algorithm places these three components in different clusters, and for this it pays at least $2$.
+By $x$ (resp. $y$) we denote the third node from the cluster containing the component $(a_1, a_2)$ (resp. $(b_1, b_2)$).
+%These nodes $x$ and $y$ are of the algorithm's choice, but.
+During the execution of the algorithm, these nodes change, and by $x$ and $y$ we always denote the current nodes of the algorithm colocated with components $(a_1, a_2)$ and $(b_1, b_2)$.
 
-Our idea is that the OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to a carefuly chosen cluster, that we denote by $D$), and for OPT all other requests are free. 
-The OPT places these three components in clusters $A, B$ and $D$, paying $2$ for migrating $a_3$ and $b_3$. The OPT has the freedom of choice of the cluster $D$ depending on the choices of the algorithm. We choose $D$ in such way that it does not contain neither $x$ nor $y$, and furthermore that the algorithm places any of nodes from $D$ at $x$'s or $y$'s place as the last possible move \maciek{elaborate}.
+%Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A_{ALG}$ contains $a_1, a_2,x$, the cluster $B_{ALG}$ contains $b_1, b_2,y$ and the cluster $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of the algorithm's choice).
+
+Our idea is that OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to a carefuly chosen cluster that we denote by $D$), and for OPT all other requests are free. 
+OPT places these three components in clusters $A, B$ and $D$, paying $2$ for migrating $a_3$ and $b_3$.
 The configuration of OPT's clusters is then: $A$ contains $a_1, a_2,d_1$, $B$ contains $b_1, b_2,d_2$ and $D$ contains $a_3, b_3, d_3$.
 Note that the requests between nodes of the same color are free for OPT, with the exception of nodes from $A$, $B$, and most notably $D$.
+
+OPT has the freedom of choice of the cluster $D$ depending on the choices of the algorithm.
+We choose $D$ in such way that initially it does not contain neither $x$ nor $y$, and furthermore that the algorithm places any of nodes from $D$ at $x$'s or $y$'s place as the last possible move.
+In other words, we inspect the sequence of $x$ and $y$ of the algorithm, and we choose $D$ to be the last cluster whose initial contents appears as the $x$ and $y$.
+As there are $\ell$ clusters to choose from, ALG has to serve at least $\Omega(\ell)$ requests before any of $D$'s contents appear as $x$ or $y$.
 
 From this point, OPT does not change its configuration, and the adversary continues to issue a request between a node colocated with the pair $(a_1, a_2)$, which we call $x$ (we update $x$ in every iteration, as it gets moved from this place) and any other node with the same color as $x$.
 Upon receiving this request, ALG pays for it the cost at least $1$ and it increases its number of clusters that contain non-singleton components by $1$.
@@ -35,7 +46,7 @@ This procedure ends when ALG has no more clusters with singleton-only components
 
 At the begining, ALG has $\ell$ singleton-only components and each request increases their number by $1$.
 Furthermore, before reaching either $d_1, d_2$ or $d_3$ in place of either $x$ or $y$, the algorithm must cycle through $\Omega(\ell)$ nodes from other clusters. This can be guaranteed as the choice of $D$ can depend on the actions of the deterministic algorithm.
-In total, OPT pays $2$, and ALG pays $\Omega(\ell)$ (for each request besides the first two).
+In total, OPT pays $2$, and moreover ALG pays $\Omega(\ell)$, as it peforms a migration of two nodes for each request besides the first two.
 
 
 %The next action of the adversary depends on the choice of $x, y, z$.
