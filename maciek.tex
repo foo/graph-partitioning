@@ -40,7 +40,8 @@ We choose $D$ in such way that initially it does not contain neither $x$ nor $y$
 In other words, we inspect the sequence of $x$ and $y$ of the algorithm, and we choose $D$ to be the last cluster whose initial contents appears as the $x$ and $y$.
 As there are $\ell$ clusters to choose from, ALG has to serve at least $\Omega(\ell)$ requests before any of $D$'s contents appear as $x$ or $y$.
 
-From this point, OPT does not change its configuration, and the adversary continues to issue a request between a node colocated with the pair $(a_1, a_2)$, which we call $x$ (we update $x$ in every iteration, as it gets moved from this place) and any other node with the same color as $x$.
+From this point, OPT does not change its configuration, and the adversary continues to issue a request between $x$ and any other node with the same color as $x$
+(note that by $x$ we might denote different node in every iteration, as $x$ is defined as a node colocated with a component $(a_1, a_2)$).
 Upon receiving this request, ALG pays for it the cost at least $1$ and it increases its number of clusters that contain non-singleton components by $1$.
 This procedure ends when ALG has no more clusters with singleton-only components left or ALG manages to put $d_1, d_2$ or $d_3$ in place of either $x$ or $y$.
 
