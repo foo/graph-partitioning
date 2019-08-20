@@ -6,21 +6,25 @@ To this end, we use $k = 3$, i.e., the capacity of each server is $3$.
 
 
 \begin{theorem}
-  The competitive ratio of any deterministic algorithm for Online Balanced Partition (with existance of a perfect partition of the input graph) is $\Omega(\ell)$.
+  The competitive ratio of any deterministic algorithm for Online Balanced Partition (assuming the existence of a perfect partition of the input graph) is $\Omega(\ell)$.
+  \label{th:lb_omega_l}
 \end{theorem}
 %Note that in the scenario with a perfect partition, both OPT and ALG always pays at most $O(\ell)$.
 
 \begin{proof}
 We say that nodes that belong to the same cluster in the initial configuration \emph{have the same color}.
 
-Consider clusters $A$ and $B$ that contain nodes $a_1, a_2, a_3$ and $b_1, b_2, b_3$, respectively.
+Consider clusters $A$ and $B$ containing nodes $a_1, a_2, a_3$ and $b_1, b_2, b_3$, respectively.
 The adversary begins with issuing three requests: $(a_1, a_2)$, $(b_1, b_2)$, and $(a_3, b_3)$.
-Note that these require moving one of these pairs to a third cluster.
-Our idea is that the OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to a carefuly chosen cluster, that we denote by $D$), and for OPT all other requests are free. 
+Note that the algorithm is forced to move at least one of these components to a third cluster:
+in general, if the algorithm does not keep each component within one cluster, the adversary might continue issuing requests among nodes of this component.
 
-The algorithm must place these three components in different clusters. Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A_{ALG}$ contains $a_1, a_2,x$, the cluster $B_{ALG}$ contains $b_1, b_2,y$ and the cluster $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of the algorithm's choice).
+
+
+The algorithm places these three components in different clusters. Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A_{ALG}$ contains $a_1, a_2,x$, the cluster $B_{ALG}$ contains $b_1, b_2,y$ and the cluster $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of the algorithm's choice).
 For this, ALG pays at least $2$.
 
+Our idea is that the OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to a carefuly chosen cluster, that we denote by $D$), and for OPT all other requests are free. 
 The OPT places these three components in clusters $A, B$ and $D$, paying $2$ for migrating $a_3$ and $b_3$. The OPT has the freedom of choice of the cluster $D$ depending on the choices of the algorithm. We choose $D$ in such way that it does not contain neither $x$ nor $y$, and furthermore that the algorithm places any of nodes from $D$ at $x$'s or $y$'s place as the last possible move \maciek{elaborate}.
 The configuration of OPT's clusters is then: $A$ contains $a_1, a_2,d_1$, $B$ contains $b_1, b_2,d_2$ and $D$ contains $a_3, b_3, d_3$.
 Note that the requests between nodes of the same color are free for OPT, with the exception of nodes from $A$, $B$, and most notably $D$.
@@ -43,6 +47,21 @@ In total, OPT pays $2$, and ALG pays $\Omega(\ell)$ (for each request besides th
 %We repeat the entire process, i.e., we force ALG to choose $x$ and $y$ of the same color, and issue such request that is free for OPT. This process can continue until ALG has no more clusters with singleton components, or it pays the cost $\Omega(k)$ already.
 
 \end{proof}
+
+\begin{observation}
+  The lower bound of $\Omega(\ell)$ can be generalized for arbitrary $k = c\cdot 3$.
+  The adversary starts with a serie of ``glueing requests'', so that each cluster contains 3 components of size $k/3$.
+  We repeat the argument of Theorem~\ref{th:lb_omega_l} using these glued components instead of singletons.
+  OPT pays $O(k)$ for migration of one such component, and ALG pays $\Omega(k \cdot \ell)$.
+  \label{obs:lb_general_k}
+\end{observation}
+
+\begin{observation}
+  The lower bound of $\Omega(\ell)$ holds even with $1/3-1/k$-augmentation, i.e., in scenarios where the capacity of each cluster of the algorithm is $(1+1/3)\cdot k - 1$, while the capacity of OPT's clusters is $k$.
+  To this end we use the construction from Observation~\ref{obs:lb_general_k}.
+  We observe that each cluster of the algorithm can fit exactly $3$ components of size $k/3$.
+  \maciek{Note that this does not contradict the existence of $O((1+1/\epsilon)\cdot k \cdot \log(k))$ algorithm of Avin, Bienkowski et al, as it requires $2+\epsilon$-augmentation.}
+\end{observation}
 
 \section{An $O(\ell)$-competitive algorithm for $k=3$}
 
