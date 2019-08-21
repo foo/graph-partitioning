@@ -89,14 +89,34 @@ In this section we assume the Online Balanced Partition problem with the existen
 \begin{proof}
 
   \begin{enumerate}
-    \item Clusters A and B with components of size k-1. Define x and y.
+    \item Cluster A component of size k-1. Define x.
     \item The input sequence (after these glueing) is to keep asking for x and someone of x's color
-    \item Define a sequence of xs and ys for any deterministic algorithm.
-    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs (and ys?)
-    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2
+    \item Define a sequence of xs for any deterministic algorithm.
+    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs?)
+    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2; also not defined for a1,ak-1, b1,bk-1 and ak, bk
     \item Argue that OPT does not pay for input sequence (after glueing)
-    \item lower-bound the number of times we can issue (x, c(x)) request
+    \item lower-bound the number of times we can issue (x, c(x)) request; until it encounters either d1 or d2 in place of x; this is lower-bounded by the total number of nodes-2 (d1 and d2 are last? they cannot be, though, but the furthest away should be at min distance k*l/2)
+    \item also, this k*l/2 sequence is feasible, as the perfect partition exists: we can always issue this request (unless d1d2)
+    \item the total cost of ALG, comp ratio
   \end{enumerate}
+
+
+  Fix a deterministic algorithm DET.
+  Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b$.
+  The adversary begins with issuing $k-2$ internal requests $(a_i, a_{i+1})$, so that nodes $a_1, \ldots a_{k-1}$ form a single component.
+  The internal requests are free for OPT, and it doesn't perform additional actions at this point.
+
+  \maciek{Possibly we need a better name than $x$. Something that indicates that this changes over time, possibly tied to the name DET.}
+  We define $x$ to be the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
+  Initially, $x = a_k$.
+  
+  Then, the adversary issues an external request $(x, b)$, which at this point is the request $(a_k, b)$.
+  Note that DET must relocate the component $\{a_k, b\}$ to some other cluster.
+  OPT also relocates the component $\{a_k, b\}$ to some carefuly chosen cluster $D$ (to be fixed later), and it migrates nodes $d_1$ and $d_2$ to the previous locations $a_k$ and $b$ (i.e., to the clusters $A$ and $B$).
+
+  Now, for a node $p$ we define $c(p)$ in the following way: for each node outside of $a_i$ and $b$, we define $c(p)$ to be any node that in the initial configuration was placed at the same cluster as $p$, and if $p$ belonged to $D$, then $c(p)$ is any such node that is different from $d_1$ and $d_2$.
+  \maciek{we have a cyclic reference at this point. D is not yet defined (depends on c), and c depends on d1, d2...}
+  Then, the adversary continues to issue requests $(x, c(x))$.
 \end{proof}
 
 \section{An $O(\ell)$-competitive algorithm for $k=3$}
