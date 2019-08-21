@@ -87,7 +87,16 @@ In this section we assume the Online Clustering problem with the existence of a 
 \end{theorem}
 
 \begin{proof}
-  
+
+  \begin{enumerate}
+    \item Clusters A and B with components of size k-1. Define x and y.
+    \item The input sequence (after these glueing) is to keep asking for x and someone of x's color
+    \item Define a sequence of xs and ys for any deterministic algorithm.
+    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs (and ys?)
+    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2
+    \item Argue that OPT does not pay for input sequence (after glueing)
+    \item bound the number of times we can issue (x, c(x)) request
+  \end{enumerate}
 \end{proof}
 
 \section{An $O(\ell)$-competitive algorithm for $k=3$}
