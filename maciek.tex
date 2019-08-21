@@ -80,10 +80,10 @@ In total, OPT pays $2$, and moreover ALG pays $\Omega(\ell)$, as it peforms a mi
 
 \maciek{Warning: sketch only, I did not finish writing it yet!}
 
-In this section we assume the Online Clustering problem with the existence of a perfect partition of the input graph.
+In this section we assume the Online Balanced Partition problem with the existence of a perfect partition of the input graph.
 
 \begin{theorem}
-  The competitive ratio of any deterministic algorithm for Online Clustering (with perfect partition) is $\Omega(k\cdot \ell)$.
+  The competitive ratio of any deterministic algorithm for Online Balanced Partition (with perfect partition) is $\Omega(k\cdot \ell)$.
 \end{theorem}
 
 \begin{proof}
@@ -95,7 +95,7 @@ In this section we assume the Online Clustering problem with the existence of a 
     \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs (and ys?)
     \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2
     \item Argue that OPT does not pay for input sequence (after glueing)
-    \item bound the number of times we can issue (x, c(x)) request
+    \item lower-bound the number of times we can issue (x, c(x)) request
   \end{enumerate}
 \end{proof}
 
@@ -103,7 +103,7 @@ In this section we assume the Online Clustering problem with the existence of a 
 
 \begin{theorem}
   The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
-  \maciek{Greedy = find the cheapest feasible partition}
+  \maciek{Greedy = find the cheapest (closest to the current) feasible partition}
   \label{rebalancing-cost}
 \end{theorem}
 
