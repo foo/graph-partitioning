@@ -15,9 +15,11 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
 \begin{proof}
 
-  \maciek{cluster B is special?}
-  \maciek{If DET splits a component, we issue intra-component requests until DET joins it}
 
+ We say that an online algorithm DET is component-respecting if it never reaches a configuration with a component split between clusters.
+  %Recall that if DET resides in a configuration with a component split between clusters, we issue intra-component requests until
+   \maciek{If DET splits a component, we issue intra-component requests until DET joins it}
+  
   Fix a deterministic algorithm DET.
   Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b_1$.
   The adversary begins with issuing $k-2$ internal requests $(a_i, a_{i+1})$, so that nodes $a_1, \ldots a_{k-1}$ form a single component.
@@ -39,6 +41,7 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   After a request $(x^{(i)}, c(x^{(i)}))$, the node $x^{(i)}$ is a part of a non-singleton component and must be relocated to some other cluster (as its current cluster hosts a component $a_1, \ldots, a_{k-1}$).
   Then, DET places the node $x^{(i+1)}$ in place of $x^{(i)}$, and the next request concerns that node.
   % Initially, $x^{(1)} = a_k$, and the next node $x^{(2)}$ is the that DET locates in place of the
+  The sequence continues as long as after serving the request, a perfect partition of the input graph exists.
 
   For each $x^{(i)}$, we set $c(x^{(i)})$ to some node that in the initial configuration was co-located with $x^{(i)}$.
   While producing an input sequence, we would like to additionally order the initial nodes $V^C$ of each cluster (i.e., order the nodes that were present in each cluster in its initial configuration).
@@ -47,15 +50,30 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   %Note that in the initial configuration, nodes of one cluster are indistinguishible for DET \maciek{and hence we can order them on-the-fly}.
   
   Now, we formally define $c(x^{(i)})$, and the ordering of nodes in the initial configuration.
-  Consider a set of nodes from an initial configuration of a cluster $C$ (where $C \neq A, C \neq B$).
+  Consider a set of nodes from an initial configuration of a cluster $C$ (where $C \neq A$).
   By $v^C_1$ we label the first node of a cluster $C$ that appears in the sequence $\{x^{(i)}\}$.
   At this point, we fix an arbitrary other node of $C$ and we label it $v^C_0$, and we set $c(v^C_i) = v^C_0$ for all $i$.
   For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence $\{x^{(i)}\}$.
   %For a node $v^C_p = x^{(j)}$, we set $y^{(j)} = v^C_0$.
-  Some nodes of $C$ might never appear in the sequence $\{x^{(i)}\}$, and we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not.
+  Some nodes of $C$ might never appear in the sequence $\{x^{(i)}\}$ (e.g. DET might terminate prematurely or might reside in a configuration with components split), and we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not.
   
+  Now, we claim that given the input $I_1I_2$, every component-respecting DET 
+  % (that does not terminate prematurely and never resides in a configuration with components split)
+  must produce a sequence $\{x^{(i)}\}$ of length $L = k\cdot \ell - (k-1) - 2 - (\ell-1) - 1$.
+  Consider a request $(x^{(i)}, c(x^{(i)})$.
+  If in this configuration at least one singleton component is present (other than the components of $(x^{(i)}, c(x^{(i)})$), then serving this request is possible (i.e., the perfect partition exists), and a singleton node appears as $x^{(i+1)}$, and the sequence continues.
+  Otherwise, as we have a component $a_1, \ldots, a_{k-1}$, no perfect partition exists.
 
+  Hence, the length of a sequence $\{x^{(i)}\}$ depends on the number of singleton components.
+  Before the arrival of the first request from $I_2$, the number of singleton components is $L + (\ell-1) + 1$, and after serving the last request, the number of singleton components is $1$.
+  %Every node $x^{(i)}$ must be a singleton component, otherwise DET resides in a configuration with components split (and such DETs either leave such configuration eventually or issue an infinite cost).
+  After each request, we join this singleton component with another component.
+  This join decreases the number of singleton components by one or by two: if this is the join of two singletons $v^C_0, v^C_1$ (there are $\ell-1$ such joins: for all clusters but $A$), then the number of singletons decrease by $2$, and it decreases by $1$ otherwise.
+  We conclude that the number of requests $\{x^{(i)}\}$ to decrease the number of singletons to $1$ is $L$.
 
+  \medskip
+
+  Now, we define the input $I_2'$.
   
  % During the runtime of DET, by $x(A)$ we denote the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
 
