@@ -19,22 +19,23 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
  We say that an online algorithm DET is component-respecting if it never reaches a configuration with a component split between clusters.
   %Recall that if DET resides in a configuration with a component split between clusters, we issue intra-component requests until
-   \maciek{If DET splits a component, we issue intra-component requests until DET joins it}
+ If DET splits a component, we issue intra-component requests until DET joins it.
+ If it never joins a component, it is not competitive.
   
-  Fix a deterministic algorithm DET.
+  Fix a component-respecting deterministic algorithm DET.
   Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b_1$.
   The adversary begins with issuing $k-2$ internal requests $(a_i, a_{i+1})$, so that nodes $a_1, \ldots a_{k-1}$ form a single component.
-  The internal requests are free for OPT, and it does not perform additional actions at this point.
-  The next request issued by the adversary is an external request $(a_k, b_1)$.%, which at this point is the request $(a_k, b)$.
-  Note that DET must relocate the component $\langle a_k, b_1\rangle$ to some other cluster.
-  OPT also relocates the component $\langle a_k, b_1\rangle$ to some carefuly chosen cluster $D$, and it evicts nodes $d^{(1)}$ and $d^{(2)}$ (to be fixed later) from $D$ to the previous locations of $a_k$ and $b_1$ (i.e., to the clusters $A$ and $B$).
+  These internal requests are free for OPT, and it does not perform additional actions at this point.
+  The next request issued by the adversary is an external request $(a_k, b_1)$. %, which at this point is the request $(a_k, b)$.
+  Note that DET must relocate the component $\langle a_k, b_1\rangle$ to some other cluster, as otherwise it is not component-respecting.
+  OPT also relocates the component $\{ a_k, b_1\}$ to some carefuly chosen cluster $D$, and it evicts nodes $d^{(1)}$ and $d^{(2)}$ (to be fixed later) from $D$ to the previous locations of $a_k$ and $b_1$ (i.e., to the clusters $A$ and $B$).
   For these actions, OPT pays $2$, and DET pays at least $2$.
-  We name the requests issued so far as $I_1$.
+  We call the requests issued so far the requests $I_1$.
 
 
   Now, we construct a sequence of requests $I_2$, but we do not feed them to DET yet.
-  Instead, we simulate DET's actions on $I_1I_2$ to terminate the input sequence earlier, i.e., we choose a prefix $I_2'$ of $I_2$ and we feed DET the input $I_1I_2'$.
-  \maciek{We can produce $I_2'$ on-the-fly, but this was convinient to write it down this way}
+  Instead, we simulate DET's actions on $I_1I_2$ to decide at which point to terminate the input sequence earlier, i.e., we choose a prefix $I_2'$ of $I_2$ and we feed DET the input $I_1I_2'$.
+  %\maciek{We can produce $I_2'$ on-the-fly, but this was convinient to write it down this way}
 
 
   The input $I_2$ consists of requests $(x^{(1)}, c(x^{(1)})), (x^{(2)}, c(x^{(2)})),\ldots$.
@@ -44,7 +45,7 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   % Initially, $x^{(1)} = a_k$, and the next node $x^{(2)}$ is the that DET locates in place of the
   The sequence continues as long as after serving the request, a perfect partition of the input graph exists.
 
-  For each $x^{(i)}$, we set $c(x^{(i)})$ to some node that in the initial configuration was co-located with $x^{(i)}$.
+  For each $x^{(i)}$, we set $c(x^{(i)})$ to some (to-be-determined) node that in the initial configuration was co-located with $x^{(i)}$.
   While producing an input sequence, we would like to additionally order the initial nodes $V^C$ of each cluster (i.e., order the nodes that were present in each cluster in its initial configuration).
   The ordering needs to be produced on-the-fly, as this ordering is used to produce subsequent requests.
   
@@ -56,7 +57,8 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   At this point, we fix an arbitrary other node of $C$ and we label it $v^C_0$, and we set $c(v^C_i) = v^C_0$ for all $i$.
   For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence $\langle x^{(i)}\rangle$.
   %For a node $v^C_p = x^{(j)}$, we set $y^{(j)} = v^C_0$.
-  Some nodes of $C$ might never appear in the sequence $\langle x^{(i)}\rangle$ (e.g. DET might terminate prematurely or might reside in a configuration with components split), and we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not.
+  If some nodes of $C$ might never appear in the sequence $\langle x^{(i)}\rangle$ %(e.g. DET might terminate prematurely or might reside in a configuration with components split)
+  , we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not \maciek{This should not happen at all for component-respecting DET, though}
   
   Now, we claim that given the input $I_1I_2$, every component-respecting DET 
   % (that does not terminate prematurely and never resides in a configuration with components split)
