@@ -57,21 +57,21 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   At this point, we fix an arbitrary other node of $C$ and we label it $v^C_0$, and we set $c(v^C_i) = v^C_0$ for all $i$.
   For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence $\langle x^{(i)}\rangle$.
   %For a node $v^C_p = x^{(j)}$, we set $y^{(j)} = v^C_0$.
-  If some nodes of $C$ might never appear in the sequence $\langle x^{(i)}\rangle$ %(e.g. DET might terminate prematurely or might reside in a configuration with components split)
+  If some nodes of $C$ never appear in the sequence $\langle x^{(i)}\rangle$ %(e.g. DET might terminate prematurely or might reside in a configuration with components split)
   , we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not \maciek{This should not happen at all for component-respecting DET, though}
   
   Now, we claim that given the input $I_1I_2$, every component-respecting DET 
   % (that does not terminate prematurely and never resides in a configuration with components split)
   must produce a sequence $\langle x^{(i)}\rangle$ of length $L = k\cdot \ell - (k-1) - 2 - (\ell-1) - 1$.
   Consider a request $(x^{(i)}, c(x^{(i)}))$.
-  If in this configuration at least one singleton component is present (other than the components of $(x^{(i)}, c(x^{(i)}))$), then serving this request is possible (i.e., the perfect partition exists), and a singleton node appears as $x^{(i+1)}$, and the sequence continues.
-  Otherwise, as we have a component $a_1, \ldots, a_{k-1}$, no perfect partition exists.
+  If in this configuration at least one singleton component is present (other than the components of $(x^{(i)}, c(x^{(i)}))$), then serving this request is possible (i.e., the perfect partition exists), and hence a singleton node appears as $x^{(i+1)}$ and the sequence continues.
+  Otherwise, no perfect partition exists, as we have a component $\{a_1, \ldots, a_{k-1}\}$ of size $k-1$.
 
-  Hence, the length of a sequence $\langle x^{(i)}\rangle$ depends on the number of singleton components.
+  Hence, the length of a sequence $\langle x^{(i)}\rangle$ is closely related to the number of singleton components.
   Before the arrival of the first request from $I_2$, the number of singleton components is $L + (\ell-1) + 1$, and after serving the last request, the number of singleton components is $1$.
   %Every node $x^{(i)}$ must be a singleton component, otherwise DET resides in a configuration with components split (and such DETs either leave such configuration eventually or issue an infinite cost).
   After each request, we join this singleton component with another component.
-  This join decreases the number of singleton components by one or by two: if this is the join of two singletons $v^C_0, v^C_1$ (there are $\ell-1$ such joins: for all clusters but $A$), then the number of singletons decrease by $2$, and it decreases by $1$ otherwise.
+  This join decreases the number of singleton components by either $1$ or $2$: if we join two singletons $\{v^C_0\}, \{v^C_1\}$ (there are $\ell-1$ such joins: for all clusters but $A$), then the number of singletons decrease by $2$, and it decreases by $1$ otherwise.
   We conclude that the number of requests $\langle x^{(i)}\rangle$ to decrease the number of singletons to $1$ is $L$.
 
   \medskip
@@ -88,13 +88,16 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   and to guarantee that $d^{(1)}$, $d^{(2)}$ does not appear in the sequence $\langle x^{(i)}\rangle$, i.e., to finish the input sequence before that.
   Furthermore, we would like to guarantee the length of $\langle x^{(i)}\rangle$ to remain $\Omega(k\cdot \ell)$.
   
-  To this end, we inspect the sequences $v^{C}_i$ for each cluster, and select the cluster $C'$ whose node $v^{C'}_{k-2}$, i.e., the penultimate node appear last in the sequence $\langle x^{(i)}\rangle$, and end the sequence $I_2'$ just before its appearance.
+  To this end, we inspect the sequences $v^{C}_i$ for each cluster, and select the cluster $C'$ whose node $v^{C'}_{k-2}$, i.e., the penultimate node appears last in the sequence $\langle x^{(i)}\rangle$, and we end the sequence $I_2'$ just before its appearance.
   Then, we set $d^{(1)} = v^{C'}_{k-2}$, $d^{(2)} = v^{C'}_{k-1}$.
   Such choice guarantees that requests from $I_2'$ are free for OPT.
   Furthermore, the number of requests of $I_2'$ is at least $|I_2| - \ell - 1$: as $D$ is the last cluster to remain with two singleton clusters, all other $\ell-1$ clusters have at most $1$ singleton cluster.
 
   Finally, OPT pays $2$, and DET pays $L - \ell - 1 = \Omega(\ell \cdot k)$.
-  
+
+
+  \maciek{ToDo: check all off-by-one errors}
+  \maciek{ToDo: check if the existence of $b_1$ was considered in all calculations}
   
  % During the runtime of DET, by $x(A)$ we denote the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
 
