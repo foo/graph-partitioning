@@ -15,6 +15,8 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
 \begin{proof}
 
+  \maciek{Sequence $\lbrace \rbrace$ not the set notation}
+
 
  We say that an online algorithm DET is component-respecting if it never reaches a configuration with a component split between clusters.
   %Recall that if DET resides in a configuration with a component split between clusters, we issue intra-component requests until
@@ -73,7 +75,25 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
   \medskip
 
-  Now, we define the input $I_2'$.
+  Now, we define the input $I_2'$ as a prefix of $I_2$.
+  Recall that OPT serves the first external request $(a_k, b_1)$ by placing the component $\{a_k, b_1\}$ in some cluster $D$, and it evicts some nodes $d^{(1)}$ and $d^{(2)}$ from $D$ to the previous locations of $a_k$ and $b_1$.
+  It remains to determine the cluster $D$ and nodes $d^{(1)}$ and $d^{(2)}$,
+  and our aim is that OPT would not pay any cost for $I_2'$.
+  As nodes $d^{(1)}$ and $d^{(2)}$ are not in their initial cluster, a request between a node from (intitial configuration of) $D$ and either $d^{(1)}$ or $d^{(2)}$ would not be free for OPT.
+  
+  
+  At this point we already know the sequence $\{x^{(i)}\}$ of DET.
+  For the requests of $I_2'$ to be free for OPT, it suffices to choose $v^D_0$ that is neither $d^{(1)}$ nor $d^{(2)}$,
+  and to guarantee that $d^{(1)}$, $d^{(2)}$ does not appear in the sequence $\{x^{(i)}\}$, i.e., to finish the input sequence before that.
+  Furthermore, we would like to guarantee the length of $\{x^{(i)}\}$ to remain $\Omega(k\cdot \ell)$.
+  
+  To this end, we inspect the sequences $v^{C}_i$ for each cluster, and select the cluster $C'$ whose node $v^{C'}_{k-2}$, i.e., the penultimate node appear last in the sequence $\{x^{(i)}\}$, and end the sequence $I_2'$ just before its appearance.
+  Then, we set $d^{(1)} = v^{C'}_{k-2}$, $d^{(2)} = v^{C'}_{k-1}$.
+  Such choice guarantees that requests from $I_2'$ are free for OPT.
+  Furthermore, the number of requests of $I_2'$ is at least $|I_2| - \ell - 1$: as $D$ is the last cluster to remain with two singleton clusters, all other $\ell-1$ clusters have at most $1$ singleton cluster.
+
+  Finally, OPT pays $2$, and DET pays $L - \ell - 1 = \Omega(\ell \cdot k)$.
+  
   
  % During the runtime of DET, by $x(A)$ we denote the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
 
@@ -86,7 +106,8 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
  % We consider a sequence of requests between a node $x(A)$ and some other nodes, i.e., each request concerns the node that is currently co-located with the component $a_1,\ldots,a_{k-1}$.
  % As a result
   
-  Fix a node $m^C$ for each cluster $C$.
+
+  % Fix a node $m^C$ for each cluster $C$.
   
   % Note that nodes of one cluster are indistinguishible for DET.
   
