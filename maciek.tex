@@ -93,7 +93,7 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   Such choice guarantees that requests from $I_2'$ are free for OPT.
   Furthermore, the number of requests of $I_2'$ is at least $|I_2| - \ell - 1$: as $D$ is the last cluster to remain with two singleton clusters, all other $\ell-1$ clusters have at most $1$ singleton cluster.
 
-  We conclude that for the input $I_1I_2'$ OPT pays $2$, and DET pays $L - \ell - 1 = \Omega(\ell \cdot k)$.
+  We conclude that for the input $I_1I_2'$ OPT pays $2$, and DET pays at least $2$ for each of $L - \ell - 1 = \Omega(\ell \cdot k)$ requests of $I_2'$.
 
 
   \maciek{ToDo: check all off-by-one errors}
