@@ -2,6 +2,8 @@
 
 \maciek{Warning: sketch only, I did not finish writing it yet!}
 
+\maciek{I assume $\alpha = 1$ to simplify calculations, but everything should hold for general $\alpha$}
+
 In this section we consider the Online Balanced Partition problem.
 We show a lower bound of $\Omega(k \cdot \ell)$ that uses an input that has a perfect partition.
 Therefore, this result is a lower bound for the general Online Balanced Partition problem, as well as a lower bound for Online Balanced Partition with perfect partition.
@@ -13,35 +15,71 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
 \begin{proof}
 
-  \begin{enumerate}
-    \item Cluster A component of size k-1. Define x.
-    \item The input sequence (after these glueing) is to keep asking for x and someone of x's color
-    \item Define a sequence of xs for any deterministic algorithm.
-    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs?)
-    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2; also not defined for a1,ak-1, b1,bk-1 and ak, bk
-    \item Argue that OPT does not pay for input sequence (after glueing)
-    \item lower-bound the number of times we can issue (x, c(x)) request; until it encounters either d1 or d2 in place of x; this is lower-bounded by the total number of nodes-2 (d1 and d2 are last? they cannot be, though, but the furthest away should be at min distance k*l/2)
-    \item also, this k*l/2 sequence is feasible, as the perfect partition exists: we can always issue this request (unless d1d2)
-    \item the total cost of ALG, comp ratio
-  \end{enumerate}
-
+  \maciek{cluster B is special?}
+  \maciek{If DET splits a component, we issue intra-component requests until DET joins it}
 
   Fix a deterministic algorithm DET.
-  Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b$.
+  Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b_1$.
   The adversary begins with issuing $k-2$ internal requests $(a_i, a_{i+1})$, so that nodes $a_1, \ldots a_{k-1}$ form a single component.
   The internal requests are free for OPT, and it doesn't perform additional actions at this point.
+  The next request issued by the adversary is an external request $(a_k, b_1)$.%, which at this point is the request $(a_k, b)$.
+  Note that DET must relocate the component $\{a_k, b_1\}$ to some other cluster.
+  OPT also relocates the component $\{a_k, b_1\}$ to some carefuly chosen cluster $D$, and it evicts nodes $d^{(1)}$ and $d^{(2)}$ (to be fixed later) from $D$ to the previous locations of $a_k$ and $b_1$ (i.e., to the clusters $A$ and $B$).
+  For these actions, OPT pays $2$, and DET pays at least $2$.
+  We name the requests issued so far as $I_1$.
 
-  \maciek{Possibly we need a better name than $x$. Something that indicates that this changes over time, possibly tied to the name DET.}
-  We define $x$ to be the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
-  Initially, $x = a_k$.
+
+  Now, we construct a sequence of requests $I_2$, but we do not feed them to DET yet.
+  Instead, we simulate DET's actions on $I_1I_2$ to terminate the input sequence earlier, i.e., we choose a prefix $I_2'$ of $I_2$ and we feed DET the input $I_1I_2'$.
+  \maciek{We can produce $I_2'$ on-the-fly, but this was convinient to write it down this way}
+
+
+  The input $I_2$ consists of requests $(x^{(1)}, y^{(1)}), (x^{(2)},y^{(2)}),\ldots$.
+  The node $x^{(i)}$ is a node in the current configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
+  After a request $(x^{(i)}, y^{(i)})$, the node $x^{(i)}$ is a part of a non-singleton component and must be relocated to some other cluster (as its current cluster hosts a component $a_1, \ldots, a_{k-1}$).
+  Then, DET places the node $x^{(i+1)}$ in place of $x^{(i)}$, and the next request concerns that node.
+  % Initially, $x^{(1)} = a_k$, and the next node $x^{(2)}$ is the that DET locates in place of the
+
+  For each $x^{(i)}$, we set $y^{(i)}$ to some node that in the intial configuration was co-located with $x^{(i)}$.
   
-  Then, the adversary issues an external request $(x, b)$, which at this point is the request $(a_k, b)$.
-  Note that DET must relocate the component $\{a_k, b\}$ to some other cluster.
-  OPT also relocates the component $\{a_k, b\}$ to some carefuly chosen cluster $D$ (to be fixed later), and it migrates nodes $d_1$ and $d_2$ to the previous locations $a_k$ and $b$ (i.e., to the clusters $A$ and $B$).
+  Note that in the initial configuration, nodes of one cluster are indistinguishible for DET \maciek{and hence we can order them on-the-fly}.
+  
+  Now, we formally fix nodes $y^{(i)}$.
+  Consider a set of nodes from an initial configuration of a cluster $C$ (where $C \neq A, C \neq B$).
+  Formally, by $v^C_1$ we label the first node of a cluster $C$ that appears in the sequence of $x$'es at the position $i$.
+  At this point, we choose an arbitrary other node of $C$ and we label it $v^C_0$.
+  We set $y^{(i)} = v^C_0$.
+  For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence of $x$'es.
+  For a node $v^C_j = x^{(i)}$, we set $y^{(i)} = v^C_0$.
+  Some nodes of $C$ might never appear in the sequence of $x$'es, and we number them arbitrarily (with the restriction that the nodes that appear in the sequence of $x$'es have smaller number than the ones that did not).
+  
 
-  Now, for a node $p$ we define $c(p)$ in the following way: for each node outside of $a_i$ and $b$, we define $c(p)$ to be any node that in the initial configuration was placed at the same cluster as $p$, and if $p$ belonged to $D$, then $c(p)$ is any such node that is different from $d_1$ and $d_2$.
-  \maciek{we have a cyclic reference at this point. D is not yet defined (depends on c), and c depends on d1, d2...}
-  Then, the adversary continues to issue requests $(x, c(x))$.
+
+  
+ % During the runtime of DET, by $x(A)$ we denote the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
+
+  
+
+ % \maciek{Possibly we need a better name than $x(A)$. This should be tied to (1) DET, and (2) the component $a_1, \ldots, a_{k-1}$ (not the server A, from which it might be relocated by DET). Maybe we should number them, i.e., $x_1, x_2,\ldots$}
+ % During the runtime of DET, by $x(A)$ we denote the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
+ % Initially, $x(A) = a_k$.
+ 
+ % We consider a sequence of requests between a node $x(A)$ and some other nodes, i.e., each request concerns the node that is currently co-located with the component $a_1,\ldots,a_{k-1}$.
+ % As a result
+  
+  Fix a node $m^C$ for each cluster $C$.
+  
+  % Note that nodes of one cluster are indistinguishible for DET.
+  
+  
+ % For the purpose of constructing $I_2$, we order nodes of any cluster $C$: $v^C_1, \ldots, v^C_k$.
+ % For any node $v^C_i\neq v^C_1$ we define $c(v^C_i) = v^C_1$, and $c(v^C_1) = v^C_2$.
+
+  
+  
+  %Now, for a node $p$ we define $c(p)$ in the following way: for each node outside of $a_i$ and $b$, we define $c(p)$ to be any node that in the initial configuration was placed at the same cluster as $p$, and if $p$ belonged to $D$, then $c(p)$ is any such node that is different from $d_1$ and $d_2$.
+  %\maciek{we have a cyclic reference at this point. D is not yet defined (depends on c), and c depends on d1, d2...}
+  %Then, the adversary continues to issue requests $(x, c(x))$.
 \end{proof}
 
 \section{An $O(\ell)$-competitive algorithm for $k=3$}
@@ -83,9 +121,22 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
 \section{Trash: old versions etc.}
 
+
 \subsection{Lower bound $\Omega(\ell)$}
 
 \maciek{The most recent version of the lower bound is in $\Omega(l\cdot k)$ section. This is an early version!}
+  \begin{enumerate}
+    \item Cluster A component of size k-1. Define x.
+    \item The input sequence (after these glueing) is to keep asking for x and someone of x's color
+    \item Define a sequence of xs for any deterministic algorithm.
+    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs?)
+    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2; also not defined for a1,ak-1, b1,bk-1 and ak, bk
+    \item Argue that OPT does not pay for input sequence (after glueing)
+    \item lower-bound the number of times we can issue (x, c(x)) request; until it encounters either d1 or d2 in place of x; this is lower-bounded by the total number of nodes-2 (d1 and d2 are last? they cannot be, though, but the furthest away should be at min distance k*l/2)
+    \item also, this k*l/2 sequence is feasible, as the perfect partition exists: we can always issue this request (unless d1d2)
+    \item the total cost of ALG, comp ratio
+  \end{enumerate}
+
 
 \maciek{I assume $\alpha = 1$ to simplify calculations, but everything should hold for general $\alpha$}
 
