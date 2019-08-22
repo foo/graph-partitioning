@@ -9,12 +9,12 @@ $P_F = F_1, \dots, F_{\ell}$ the final partition.
 \end{definition}
 
 In other words,
-at least $dist(P, P_I)/2$ node swaps are required in order to reach the a partition $P$ from $P_I$.
+at least $dist(P, P_I)/2$ node swaps are required in order to reach the partition $P$ from $P_I$.
 Therefore,
 $OPT \geq \Delta:= dist(P_F, P_I) $.
 We devise an online algorithm that mimics OPT by minimizing the distance to the initial partition $P_I$ with each re-partitioning.
 As a result,
-ON never ends up in a partition that is father away from $P_I$ than $\Delta$.
+ON never ends up in a partition that is further away from $P_I$ than $\Delta$.
 This invariant ensures that ON does not pay too much while reaching $P_F$.
 
 \begin{algorithm}
