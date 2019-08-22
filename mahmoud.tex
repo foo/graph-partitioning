@@ -76,6 +76,6 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 	The algorithm eventually reaches the final partition since it
 	 evaluates all possible $\ell$-way partitioning of components on each external request,
 	including the request that completes revealing of all ground truth components.
-	There are at most $(k-1).\ell $ calls to re-partition() and by Lemma \ref{lemma:rebalancecost} each costs at most $2.OPT$.
+	There are at most $(k-1).\ell < k.\ell $ calls to \emph{re-partition()} and by Lemma \ref{lemma:rebalancecost} each costs at most $2.OPT$.
 	The total cost is therefore at most $2.OPT.k.\ell$ which implies the competitive ratio.
 \end{IEEEproof}
