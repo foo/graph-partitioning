@@ -1,0 +1,82 @@
+
+\section{Trash: old versions etc.}
+
+\begin{comment}
+
+
+\subsection{Lower bound $\Omega(\ell)$}
+
+\maciek{The most recent version of the lower bound is in $\Omega(l\cdot k)$ section. This is an early version!}
+  \begin{enumerate}
+    \item Cluster A component of size k-1. Define x.
+    \item The input sequence (after these glueing) is to keep asking for x and someone of x's color
+    \item Define a sequence of xs for any deterministic algorithm.
+    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs?)
+    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2; also not defined for a1,ak-1, b1,bk-1 and ak, bk
+    \item Argue that OPT does not pay for input sequence (after glueing)
+    \item lower-bound the number of times we can issue (x, c(x)) request; until it encounters either d1 or d2 in place of x; this is lower-bounded by the total number of nodes-2 (d1 and d2 are last? they cannot be, though, but the furthest away should be at min distance k*l/2)
+    \item also, this k*l/2 sequence is feasible, as the perfect partition exists: we can always issue this request (unless d1d2)
+    \item the total cost of ALG, comp ratio
+  \end{enumerate}
+
+
+\maciek{I assume $\alpha = 1$ to simplify calculations, but everything should hold for general $\alpha$}
+
+Model assumes the existence of a perfect partition of the input graph.
+We present a lower bound for the competitive ratio of $\Omega(\ell)$ for any deterministic algorithm.
+To this end, we use $k = 3$, i.e., the capacity of each server is $3$.
+
+
+\begin{theorem}
+  The competitive ratio of any deterministic algorithm for Online Balanced Partition (assuming the existence of a perfect partition of the input graph) is $\Omega(\ell)$.
+  \label{th:lb_omega_l}
+\end{theorem}
+%Note that in the scenario with a perfect partition, both OPT and ALG always pays at most $O(\ell)$.
+
+\begin{proof}
+We say that nodes that belong to the same cluster in the initial configuration \emph{have the same color}.
+
+Consider clusters $A$ and $B$ containing nodes $a_1, a_2, a_3$ and $b_1, b_2, b_3$, respectively.
+The adversary begins with issuing three requests: $(a_1, a_2)$, $(b_1, b_2)$, and $(a_3, b_3)$.
+Note that the algorithm is forced to move at least one of these components to a third cluster:
+in general, if the algorithm does not keep each component within one cluster, the adversary might continue issuing requests among nodes of this component.
+
+
+
+The algorithm places these three components in different clusters, and for this it pays at least $2$.
+By $x$ (resp. $y$) we denote the third node from the cluster containing the component $(a_1, a_2)$ (resp. $(b_1, b_2)$).
+%These nodes $x$ and $y$ are of the algorithm's choice, but.
+During the execution of the algorithm, these nodes change, and by $x$ and $y$ we always denote the current nodes of the algorithm colocated with components $(a_1, a_2)$ and $(b_1, b_2)$.
+
+%Let's call the cluster of $(a_1, a_2)$ the cluster $A_{ALG}$, the cluster of $(b_1, b_2)$ the cluster $B_{ALG}$ and the cluster of $(a_3, b_3)$ the cluster $C$. The configuration of ALG's clusters is then: $A_{ALG}$ contains $a_1, a_2,x$, the cluster $B_{ALG}$ contains $b_1, b_2,y$ and the cluster $C$ contains $a_3, b_3, z$, for some $x, y, z$ (of the algorithm's choice).
+
+Our idea is that OPT pays for the request $(a_3, b_3)$ only (i.e., it moves this pair to a carefuly chosen cluster that we denote by $D$), and for OPT all other requests are free. 
+OPT places these three components in clusters $A, B$ and $D$, paying $2$ for migrating $a_3$ and $b_3$.
+The configuration of OPT's clusters is then: $A$ contains $a_1, a_2,d_1$, $B$ contains $b_1, b_2,d_2$ and $D$ contains $a_3, b_3, d_3$.
+Note that the requests between nodes of the same color are free for OPT, with the exception of nodes from $A$, $B$, and most notably $D$.
+
+OPT has the freedom of choice of the cluster $D$ depending on the choices of the algorithm.
+We choose $D$ in such way that initially it does not contain neither $x$ nor $y$, and furthermore that the algorithm places any of nodes from $D$ at $x$'s or $y$'s place as the last possible move.
+In other words, we inspect the sequence of $x$ and $y$ of the algorithm, and we choose $D$ to be the last cluster whose initial contents appears as the $x$ and $y$.
+As there are $\ell$ clusters to choose from, ALG has to serve at least $\Omega(\ell)$ requests before any of $D$'s contents appear as $x$ or $y$.
+
+From this point, OPT does not change its configuration, and the adversary continues to issue a request between $x$ and any other node with the same color as $x$
+(note that by $x$ we might denote different node in every iteration, as $x$ is defined as a node colocated with a component $(a_1, a_2)$).
+Upon receiving this request, ALG pays for it the cost at least $1$ and it increases its number of clusters that contain non-singleton components by $1$.
+This procedure ends when ALG has no more clusters with singleton-only components left or ALG manages to put $d_1, d_2$ or $d_3$ in place of either $x$ or $y$.
+
+At the begining, ALG has $\ell$ singleton-only components and each request increases their number by $1$.
+Furthermore, before reaching either $d_1, d_2$ or $d_3$ in place of either $x$ or $y$, the algorithm must cycle through $\Omega(\ell)$ nodes from other clusters. This can be guaranteed as the choice of $D$ can depend on the actions of the deterministic algorithm.
+In total, OPT pays $2$, and moreover ALG pays $\Omega(\ell)$, as it peforms a migration of two nodes for each request besides the first two.
+
+
+%The next action of the adversary depends on the choice of $x, y, z$.
+%If $x$ and $y$ have different color (i.e., initially they belong to different clusters), then we issue a request between $x$ and any other node with the same color as $x$. As $x$ do not intersect with $D$, the OPT has them co-located in one server, and it pays no cost for such requests. We issue such requests until $x$ and $y$ have the same color.
+
+%Note that the adversary can foresee the actions of the algorithm, and may choose $D$ in such way, that $x$ cycles through all other clusters before reaching $D$, paying the cost of $\Omega(k)$, which would already suffice to show the lower bound.
+
+%Then, $x$ and $y$ have the same color, and we issue a request $(x, y)$. As these have the same color (and there are different than $d_1, d_2$ and $d_3$), OPT pays no cost for this request, and ALG pays $2$ for migrating $x$ and $y$ to other cluster.
+%We repeat the entire process, i.e., we force ALG to choose $x$ and $y$ of the same color, and issue such request that is free for OPT. This process can continue until ALG has no more clusters with singleton components, or it pays the cost $\Omega(k)$ already.
+
+\end{proof}
+\end{comment}
