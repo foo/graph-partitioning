@@ -88,12 +88,12 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   and to guarantee that $d^{(1)}$, $d^{(2)}$ does not appear in the sequence $\langle x^{(i)}\rangle$, i.e., to finish the input sequence before that.
   Furthermore, we would like to guarantee the length of $\langle x^{(i)}\rangle$ to remain $\Omega(k\cdot \ell)$.
   
-  To this end, we inspect the sequences $v^{C}_i$ for each cluster, and select the cluster $C'$ whose node $v^{C'}_{k-2}$, i.e., the penultimate node appears last in the sequence $\langle x^{(i)}\rangle$, and we end the sequence $I_2'$ just before its appearance.
-  Then, we set $d^{(1)} = v^{C'}_{k-2}$, $d^{(2)} = v^{C'}_{k-1}$.
+  To this end, we inspect the sequences $v^{C}_i$ for each cluster, and select such the cluster $D$ whose node $v^{D}_{k-2}$, i.e., the penultimate node appears last in the sequence $\langle x^{(i)}\rangle$, and we end the sequence $I_2'$ just before its appearance.
+  Then, we set $d^{(1)} = v^{D}_{k-2}$ and $d^{(2)} = v^{D}_{k-1}$.
   Such choice guarantees that requests from $I_2'$ are free for OPT.
   Furthermore, the number of requests of $I_2'$ is at least $|I_2| - \ell - 1$: as $D$ is the last cluster to remain with two singleton clusters, all other $\ell-1$ clusters have at most $1$ singleton cluster.
 
-  Finally, OPT pays $2$, and DET pays $L - \ell - 1 = \Omega(\ell \cdot k)$.
+  We conclude that for the input $I_1I_2'$ OPT pays $2$, and DET pays $L - \ell - 1 = \Omega(\ell \cdot k)$.
 
 
   \maciek{ToDo: check all off-by-one errors}
