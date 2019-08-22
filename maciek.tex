@@ -1,4 +1,91 @@
-\section{Lower bound $\Omega(\ell)$}
+\section{Lower bound $\Omega(k\cdot \ell)$}
+
+\maciek{Warning: sketch only, I did not finish writing it yet!}
+
+In this section we consider the Online Balanced Partition problem.
+We show a lower bound of $\Omega(k \cdot \ell)$ that uses an input that has a perfect partition.
+Therefore, this result is a lower bound for the general Online Balanced Partition problem, as well as a lower bound for Online Balanced Partition with perfect partition.
+The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Partition with perfect partition that we present in Section TODO.
+
+\begin{theorem}
+  The competitive ratio of any deterministic algorithm for Online Balanced Partition is $\Omega(k\cdot \ell)$.
+\end{theorem}
+
+\begin{proof}
+
+  \begin{enumerate}
+    \item Cluster A component of size k-1. Define x.
+    \item The input sequence (after these glueing) is to keep asking for x and someone of x's color
+    \item Define a sequence of xs for any deterministic algorithm.
+    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs?)
+    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2; also not defined for a1,ak-1, b1,bk-1 and ak, bk
+    \item Argue that OPT does not pay for input sequence (after glueing)
+    \item lower-bound the number of times we can issue (x, c(x)) request; until it encounters either d1 or d2 in place of x; this is lower-bounded by the total number of nodes-2 (d1 and d2 are last? they cannot be, though, but the furthest away should be at min distance k*l/2)
+    \item also, this k*l/2 sequence is feasible, as the perfect partition exists: we can always issue this request (unless d1d2)
+    \item the total cost of ALG, comp ratio
+  \end{enumerate}
+
+
+  Fix a deterministic algorithm DET.
+  Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b$.
+  The adversary begins with issuing $k-2$ internal requests $(a_i, a_{i+1})$, so that nodes $a_1, \ldots a_{k-1}$ form a single component.
+  The internal requests are free for OPT, and it doesn't perform additional actions at this point.
+
+  \maciek{Possibly we need a better name than $x$. Something that indicates that this changes over time, possibly tied to the name DET.}
+  We define $x$ to be the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
+  Initially, $x = a_k$.
+  
+  Then, the adversary issues an external request $(x, b)$, which at this point is the request $(a_k, b)$.
+  Note that DET must relocate the component $\{a_k, b\}$ to some other cluster.
+  OPT also relocates the component $\{a_k, b\}$ to some carefuly chosen cluster $D$ (to be fixed later), and it migrates nodes $d_1$ and $d_2$ to the previous locations $a_k$ and $b$ (i.e., to the clusters $A$ and $B$).
+
+  Now, for a node $p$ we define $c(p)$ in the following way: for each node outside of $a_i$ and $b$, we define $c(p)$ to be any node that in the initial configuration was placed at the same cluster as $p$, and if $p$ belonged to $D$, then $c(p)$ is any such node that is different from $d_1$ and $d_2$.
+  \maciek{we have a cyclic reference at this point. D is not yet defined (depends on c), and c depends on d1, d2...}
+  Then, the adversary continues to issue requests $(x, c(x))$.
+\end{proof}
+
+\section{An $O(\ell)$-competitive algorithm for $k=3$}
+
+\begin{theorem}
+  The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
+  \maciek{Greedy = find the cheapest (closest to the current) feasible partition}
+  \label{rebalancing-cost}
+\end{theorem}
+
+\begin{proof} 
+ \maciek{Note: we consider a cost of cheapest feasible rebalancing after insertion of one edge. This in contrast to bounding the distance between any two reconfigurations (this theorem does not bound the latter).}
+  
+  We distinguish among three configuration types of algorithm's clusters: $C_1, C_2, C_3$. In $C_1$ we have $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ we have one component of size $2$ and one component of size $1$. Finally, in $C_3$ we have one component of size $3$.
+
+  Consider a request $(u, v)$ and let $U, V$ be their clusters.
+  If $U=V$, then the request does not require a reconfiguration.
+  Now, we consider cases upon the type of clusters $U$ and $V$.
+  Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise the resulting component would have the size $4$, and this contradicts the existence of the perfect partition.
+  If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
+
+  Now, we focus on the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as the merged component would have size $4$.
+  If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
+  Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+  Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of rebalancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
+\end{proof}
+
+\begin{theorem}
+  There exists a $O(\ell)$-competitive algorithm for $k=3$.
+\end{theorem}
+
+\begin{proof}
+  The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one rebalancingfor the greedy algorithm, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
+\end{proof}
+
+\section{Costly rebalance example $\Omega(k^2)$}
+
+\maciek{ToDo}
+
+\section{Trash: old versions etc.}
+
+\subsection{Lower bound $\Omega(\ell)$}
+
+\maciek{The most recent version of the lower bound is in $\Omega(l\cdot k)$ section. This is an early version!}
 
 \maciek{I assume $\alpha = 1$ to simplify calculations, but everything should hold for general $\alpha$}
 
@@ -76,80 +163,3 @@ In total, OPT pays $2$, and moreover ALG pays $\Omega(\ell)$, as it peforms a mi
 \end{observation}
 
 
-\section{Lower bound $\Omega(k\cdot \ell)$}
-
-\maciek{Warning: sketch only, I did not finish writing it yet!}
-
-In this section we assume the Online Balanced Partition problem with the existence of a perfect partition of the input graph.
-
-\begin{theorem}
-  The competitive ratio of any deterministic algorithm for Online Balanced Partition (with perfect partition) is $\Omega(k\cdot \ell)$.
-\end{theorem}
-
-\begin{proof}
-
-  \begin{enumerate}
-    \item Cluster A component of size k-1. Define x.
-    \item The input sequence (after these glueing) is to keep asking for x and someone of x's color
-    \item Define a sequence of xs for any deterministic algorithm.
-    \item Define what OPT should do: the cluster D and nodes d1 d2 that should be hidden from the sequence of xs?)
-    \item (somewhere) define c(x): it is easy when x is not from D: then any would do; if x is from D, then issue request between non-d1/d2; also not defined for a1,ak-1, b1,bk-1 and ak, bk
-    \item Argue that OPT does not pay for input sequence (after glueing)
-    \item lower-bound the number of times we can issue (x, c(x)) request; until it encounters either d1 or d2 in place of x; this is lower-bounded by the total number of nodes-2 (d1 and d2 are last? they cannot be, though, but the furthest away should be at min distance k*l/2)
-    \item also, this k*l/2 sequence is feasible, as the perfect partition exists: we can always issue this request (unless d1d2)
-    \item the total cost of ALG, comp ratio
-  \end{enumerate}
-
-
-  Fix a deterministic algorithm DET.
-  Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b$.
-  The adversary begins with issuing $k-2$ internal requests $(a_i, a_{i+1})$, so that nodes $a_1, \ldots a_{k-1}$ form a single component.
-  The internal requests are free for OPT, and it doesn't perform additional actions at this point.
-
-  \maciek{Possibly we need a better name than $x$. Something that indicates that this changes over time, possibly tied to the name DET.}
-  We define $x$ to be the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
-  Initially, $x = a_k$.
-  
-  Then, the adversary issues an external request $(x, b)$, which at this point is the request $(a_k, b)$.
-  Note that DET must relocate the component $\{a_k, b\}$ to some other cluster.
-  OPT also relocates the component $\{a_k, b\}$ to some carefuly chosen cluster $D$ (to be fixed later), and it migrates nodes $d_1$ and $d_2$ to the previous locations $a_k$ and $b$ (i.e., to the clusters $A$ and $B$).
-
-  Now, for a node $p$ we define $c(p)$ in the following way: for each node outside of $a_i$ and $b$, we define $c(p)$ to be any node that in the initial configuration was placed at the same cluster as $p$, and if $p$ belonged to $D$, then $c(p)$ is any such node that is different from $d_1$ and $d_2$.
-  \maciek{we have a cyclic reference at this point. D is not yet defined (depends on c), and c depends on d1, d2...}
-  Then, the adversary continues to issue requests $(x, c(x))$.
-\end{proof}
-
-\section{An $O(\ell)$-competitive algorithm for $k=3$}
-
-\begin{theorem}
-  The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
-  \maciek{Greedy = find the cheapest (closest to the current) feasible partition}
-  \label{rebalancing-cost}
-\end{theorem}
-
-\begin{proof} 
- \maciek{Note: we consider a cost of cheapest feasible rebalancing after insertion of one edge. This in contrast to bounding the distance between any two reconfigurations (this theorem does not bound the latter).}
-  
-  We distinguish among three configuration types of algorithm's clusters: $C_1, C_2, C_3$. In $C_1$ we have $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ we have one component of size $2$ and one component of size $1$. Finally, in $C_3$ we have one component of size $3$.
-
-  Consider a request $(u, v)$ and let $U, V$ be their clusters.
-  If $U=V$, then the request does not require a reconfiguration.
-  Now, we consider cases upon the type of clusters $U$ and $V$.
-  Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise the resulting component would have the size $4$, and this contradicts the existence of the perfect partition.
-  If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
-
-  Now, we focus on the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as the merged component would have size $4$.
-  If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
-  Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-  Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of rebalancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
-\end{proof}
-
-\begin{theorem}
-  There exists a $O(\ell)$-competitive algorithm for $k=3$.
-\end{theorem}
-
-\begin{proof}
-  The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one rebalancingfor the greedy algorithm, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
-\end{proof}
-
-\section{Costly rebalance example $\Omega(k^2)$}
