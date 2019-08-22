@@ -15,7 +15,6 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
 \begin{proof}
 
-  \maciek{Sequence $\lbrace \rbrace$ not the set notation}
 
 
  We say that an online algorithm DET is component-respecting if it never reaches a configuration with a component split between clusters.
@@ -25,10 +24,10 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   Fix a deterministic algorithm DET.
   Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b_1$.
   The adversary begins with issuing $k-2$ internal requests $(a_i, a_{i+1})$, so that nodes $a_1, \ldots a_{k-1}$ form a single component.
-  The internal requests are free for OPT, and it doesn't perform additional actions at this point.
+  The internal requests are free for OPT, and it does not perform additional actions at this point.
   The next request issued by the adversary is an external request $(a_k, b_1)$.%, which at this point is the request $(a_k, b)$.
-  Note that DET must relocate the component $\{a_k, b_1\}$ to some other cluster.
-  OPT also relocates the component $\{a_k, b_1\}$ to some carefuly chosen cluster $D$, and it evicts nodes $d^{(1)}$ and $d^{(2)}$ (to be fixed later) from $D$ to the previous locations of $a_k$ and $b_1$ (i.e., to the clusters $A$ and $B$).
+  Note that DET must relocate the component $\langle a_k, b_1\rangle$ to some other cluster.
+  OPT also relocates the component $\langle a_k, b_1\rangle$ to some carefuly chosen cluster $D$, and it evicts nodes $d^{(1)}$ and $d^{(2)}$ (to be fixed later) from $D$ to the previous locations of $a_k$ and $b_1$ (i.e., to the clusters $A$ and $B$).
   For these actions, OPT pays $2$, and DET pays at least $2$.
   We name the requests issued so far as $I_1$.
 
@@ -53,41 +52,41 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   
   Now, we formally define $c(x^{(i)})$, and the ordering of nodes in the initial configuration.
   Consider a set of nodes from an initial configuration of a cluster $C$ (where $C \neq A$).
-  By $v^C_1$ we label the first node of a cluster $C$ that appears in the sequence $\{x^{(i)}\}$.
+  By $v^C_1$ we label the first node of a cluster $C$ that appears in the sequence $\langle x^{(i)}\rangle$.
   At this point, we fix an arbitrary other node of $C$ and we label it $v^C_0$, and we set $c(v^C_i) = v^C_0$ for all $i$.
-  For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence $\{x^{(i)}\}$.
+  For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence $\langle x^{(i)}\rangle$.
   %For a node $v^C_p = x^{(j)}$, we set $y^{(j)} = v^C_0$.
-  Some nodes of $C$ might never appear in the sequence $\{x^{(i)}\}$ (e.g. DET might terminate prematurely or might reside in a configuration with components split), and we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not.
+  Some nodes of $C$ might never appear in the sequence $\langle x^{(i)}\rangle$ (e.g. DET might terminate prematurely or might reside in a configuration with components split), and we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not.
   
   Now, we claim that given the input $I_1I_2$, every component-respecting DET 
   % (that does not terminate prematurely and never resides in a configuration with components split)
-  must produce a sequence $\{x^{(i)}\}$ of length $L = k\cdot \ell - (k-1) - 2 - (\ell-1) - 1$.
-  Consider a request $(x^{(i)}, c(x^{(i)})$.
-  If in this configuration at least one singleton component is present (other than the components of $(x^{(i)}, c(x^{(i)})$), then serving this request is possible (i.e., the perfect partition exists), and a singleton node appears as $x^{(i+1)}$, and the sequence continues.
+  must produce a sequence $\langle x^{(i)}\rangle$ of length $L = k\cdot \ell - (k-1) - 2 - (\ell-1) - 1$.
+  Consider a request $(x^{(i)}, c(x^{(i)}))$.
+  If in this configuration at least one singleton component is present (other than the components of $(x^{(i)}, c(x^{(i)}))$), then serving this request is possible (i.e., the perfect partition exists), and a singleton node appears as $x^{(i+1)}$, and the sequence continues.
   Otherwise, as we have a component $a_1, \ldots, a_{k-1}$, no perfect partition exists.
 
-  Hence, the length of a sequence $\{x^{(i)}\}$ depends on the number of singleton components.
+  Hence, the length of a sequence $\langle x^{(i)}\rangle$ depends on the number of singleton components.
   Before the arrival of the first request from $I_2$, the number of singleton components is $L + (\ell-1) + 1$, and after serving the last request, the number of singleton components is $1$.
   %Every node $x^{(i)}$ must be a singleton component, otherwise DET resides in a configuration with components split (and such DETs either leave such configuration eventually or issue an infinite cost).
   After each request, we join this singleton component with another component.
   This join decreases the number of singleton components by one or by two: if this is the join of two singletons $v^C_0, v^C_1$ (there are $\ell-1$ such joins: for all clusters but $A$), then the number of singletons decrease by $2$, and it decreases by $1$ otherwise.
-  We conclude that the number of requests $\{x^{(i)}\}$ to decrease the number of singletons to $1$ is $L$.
+  We conclude that the number of requests $\langle x^{(i)}\rangle$ to decrease the number of singletons to $1$ is $L$.
 
   \medskip
 
   Now, we define the input $I_2'$ as a prefix of $I_2$.
-  Recall that OPT serves the first external request $(a_k, b_1)$ by placing the component $\{a_k, b_1\}$ in some cluster $D$, and it evicts some nodes $d^{(1)}$ and $d^{(2)}$ from $D$ to the previous locations of $a_k$ and $b_1$.
+  Recall that OPT serves the first external request $(a_k, b_1)$ by placing the component $\langle a_k, b_1\rangle$ in some cluster $D$, and it evicts some nodes $d^{(1)}$ and $d^{(2)}$ from $D$ to the previous locations of $a_k$ and $b_1$.
   It remains to determine the cluster $D$ and nodes $d^{(1)}$ and $d^{(2)}$,
   and our aim is that OPT would not pay any cost for $I_2'$.
   As nodes $d^{(1)}$ and $d^{(2)}$ are not in their initial cluster, a request between a node from (intitial configuration of) $D$ and either $d^{(1)}$ or $d^{(2)}$ would not be free for OPT.
   
   
-  At this point we already know the sequence $\{x^{(i)}\}$ of DET.
+  At this point we already know the sequence $\langle x^{(i)}\rangle$ of DET.
   For the requests of $I_2'$ to be free for OPT, it suffices to choose $v^D_0$ that is neither $d^{(1)}$ nor $d^{(2)}$,
-  and to guarantee that $d^{(1)}$, $d^{(2)}$ does not appear in the sequence $\{x^{(i)}\}$, i.e., to finish the input sequence before that.
-  Furthermore, we would like to guarantee the length of $\{x^{(i)}\}$ to remain $\Omega(k\cdot \ell)$.
+  and to guarantee that $d^{(1)}$, $d^{(2)}$ does not appear in the sequence $\langle x^{(i)}\rangle$, i.e., to finish the input sequence before that.
+  Furthermore, we would like to guarantee the length of $\langle x^{(i)}\rangle$ to remain $\Omega(k\cdot \ell)$.
   
-  To this end, we inspect the sequences $v^{C}_i$ for each cluster, and select the cluster $C'$ whose node $v^{C'}_{k-2}$, i.e., the penultimate node appear last in the sequence $\{x^{(i)}\}$, and end the sequence $I_2'$ just before its appearance.
+  To this end, we inspect the sequences $v^{C}_i$ for each cluster, and select the cluster $C'$ whose node $v^{C'}_{k-2}$, i.e., the penultimate node appear last in the sequence $\langle x^{(i)}\rangle$, and end the sequence $I_2'$ just before its appearance.
   Then, we set $d^{(1)} = v^{C'}_{k-2}$, $d^{(2)} = v^{C'}_{k-1}$.
   Such choice guarantees that requests from $I_2'$ are free for OPT.
   Furthermore, the number of requests of $I_2'$ is at least $|I_2| - \ell - 1$: as $D$ is the last cluster to remain with two singleton clusters, all other $\ell-1$ clusters have at most $1$ singleton cluster.
