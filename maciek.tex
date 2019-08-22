@@ -34,24 +34,25 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   \maciek{We can produce $I_2'$ on-the-fly, but this was convinient to write it down this way}
 
 
-  The input $I_2$ consists of requests $(x^{(1)}, y^{(1)}), (x^{(2)},y^{(2)}),\ldots$.
+  The input $I_2$ consists of requests $(x^{(1)}, c(x^{(1)})), (x^{(2)}, c(x^{(2)})),\ldots$.
   The node $x^{(i)}$ is a node in the current configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
-  After a request $(x^{(i)}, y^{(i)})$, the node $x^{(i)}$ is a part of a non-singleton component and must be relocated to some other cluster (as its current cluster hosts a component $a_1, \ldots, a_{k-1}$).
+  After a request $(x^{(i)}, c(x^{(i)}))$, the node $x^{(i)}$ is a part of a non-singleton component and must be relocated to some other cluster (as its current cluster hosts a component $a_1, \ldots, a_{k-1}$).
   Then, DET places the node $x^{(i+1)}$ in place of $x^{(i)}$, and the next request concerns that node.
   % Initially, $x^{(1)} = a_k$, and the next node $x^{(2)}$ is the that DET locates in place of the
 
-  For each $x^{(i)}$, we set $y^{(i)}$ to some node that in the intial configuration was co-located with $x^{(i)}$.
+  For each $x^{(i)}$, we set $c(x^{(i)})$ to some node that in the initial configuration was co-located with $x^{(i)}$.
+  While producing an input sequence, we would like to additionally order the initial nodes $V^C$ of each cluster (i.e., order the nodes that were present in each cluster in its initial configuration).
+  The ordering needs to be produced on-the-fly, as this ordering is used to produce subsequent requests.
   
-  Note that in the initial configuration, nodes of one cluster are indistinguishible for DET \maciek{and hence we can order them on-the-fly}.
+  %Note that in the initial configuration, nodes of one cluster are indistinguishible for DET \maciek{and hence we can order them on-the-fly}.
   
-  Now, we formally fix nodes $y^{(i)}$.
+  Now, we formally define $c(x^{(i)})$, and the ordering of nodes in the initial configuration.
   Consider a set of nodes from an initial configuration of a cluster $C$ (where $C \neq A, C \neq B$).
-  Formally, by $v^C_1$ we label the first node of a cluster $C$ that appears in the sequence of $x$'es at the position $i$.
-  At this point, we choose an arbitrary other node of $C$ and we label it $v^C_0$.
-  We set $y^{(i)} = v^C_0$.
-  For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence of $x$'es.
-  For a node $v^C_j = x^{(i)}$, we set $y^{(i)} = v^C_0$.
-  Some nodes of $C$ might never appear in the sequence of $x$'es, and we number them arbitrarily (with the restriction that the nodes that appear in the sequence of $x$'es have smaller number than the ones that did not).
+  By $v^C_1$ we label the first node of a cluster $C$ that appears in the sequence $\{x^{(i)}\}$.
+  At this point, we fix an arbitrary other node of $C$ and we label it $v^C_0$, and we set $c(v^C_i) = v^C_0$ for all $i$.
+  For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence $\{x^{(i)}\}$.
+  %For a node $v^C_p = x^{(j)}$, we set $y^{(j)} = v^C_0$.
+  Some nodes of $C$ might never appear in the sequence $\{x^{(i)}\}$, and we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not.
   
 
 
