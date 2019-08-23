@@ -58,11 +58,11 @@ Let $x_0$  be the only single nodes left on $S_1$ and  $y_0 \in S_2$ be any sing
 Next,
 we issue the request between $x_0$ and $y_0$.
 Since this is an external request,
-ALG joins the into one component and collocates them in some cluster other than $S_1$ and $S_2$.
+ALG joins them into one component and collocates them in some cluster other than $S_1$.
 For this,
 ALG moves to a new configuration that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
 Next,
-we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(v)$.
+we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
 ALG must collocate $x_1$ and $C$ on some cluster other than $S_1$ and
 consequently replaces $x_1$.
 We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
