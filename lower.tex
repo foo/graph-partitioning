@@ -37,11 +37,50 @@
 In this section we consider the Online Balanced Partition problem.
 We show a lower bound of $\Omega(k \cdot \ell)$ that uses an input that has a perfect partition.
 Therefore, this result is a lower bound for the general Online Balanced Partition problem, as well as a lower bound for Online Balanced Partition with perfect partition.
-The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Partition with perfect partition that we present in Section TODO.
+The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Partition with perfect partition that we present in Section \ref{sec:upperbound}.
 
 \begin{theorem}
   The competitive ratio of any deterministic algorithm for Online Balanced Partition is $\Omega(k\cdot \ell)$.
 \end{theorem}
+
+\begin{proof}
+A simpler proof: \\
+We construct an instance of the problem with $\ell$ clusters 
+$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
+Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
+Consider any online algorithm ALG.
+We construct the input sequence of requests for ALG as follows.
+First,
+we issue $k-2$ (internal) requests so that ALG form a component of $k-1$
+nodes on clusters $S_1$.
+Note that this does not cost ALG.
+Let $x_0$  be the only single nodes left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
+Next,
+we issue the request between $x_0$ and $y_0$.
+Since this is an external request,
+ALG joins the into one component and collocates them in some cluster other than $S_1$ and $S_2$.
+For this,
+ALG moves to a new configuration that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
+Next,
+we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(v)$.
+ALG must collocate $x_1$ and $C$ on some cluster other than $S_1$ and
+consequently replaces $x_1$.
+We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
+ until there are only two single nodes left that  originate from the same cluster.
+I.e.,
+two single nodes $x^*, y^*,I(x^*) = I(y^*)$
+that constitute the last pair of such nodes.
+At this point there are at most $\ell+1$ single nodes left
+since there must be at least two nodes with the same initial cluster in any subset of $\ell+1$
+nodes.
+Given this sequence of requests,
+the optimal strategy is to swap $x_0$ and $y_0$ with $x^*$ and $y^*$ respectively.
+Hence,
+OPT pays for $4$ migrations and
+ALG pays at least one for each node in the sequence $X := x_0, x_1,\dots$.
+We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k.\ell$ nodes,
+therefore $|X| \geq k.\ell - k - \ell \in \Omega(k.\ell)$.
+\end{proof}
 
 \begin{proof}
 

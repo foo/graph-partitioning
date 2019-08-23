@@ -1,3 +1,4 @@
+
 \section{An $O(kl)$-competitive Algorithm For the Scenario With the Perfect Partition}
 
 \subsection{On a Cost of a Single Repartition}
@@ -80,7 +81,7 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 		\Require 
 		$k, \ell$,
 		initial partition $P_I$,
-		sequence of  edges $\sigma_1, \dots, \sigma_N$ covering all ground truth components
+		sequence of  edges $\sigma_1, \dots, \sigma_N$ 
 		\Ensure Final partition $P_F$ 
 		\State for each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$ \label{line:initcomponents}
 		\State on communication request $\sigma_t=\{u,v\}$:
@@ -98,6 +99,8 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
       \end{algorithm}
 
       \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial configuration}
+
+\mahmoud{address the \textit{re-partition()}}
 
 \begin{property} \label{prop:dist<OPT}
 	Let $P$ be any partition chosen by Algorithm \ref{alg:ppl} at Line $\ref{line:rebalance}$.
@@ -132,7 +135,7 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 \end{theorem}
 \begin{IEEEproof}
 	The algorithm eventually reaches the final partition since it
-	 evaluates all possible $\ell$-way partitioning of components on each external request,
+	 evaluates all possible $\ell$-way partitions of components on each external request,
 	including the request that completes revealing of all ground truth components.
 	There are at most $(k-1).\ell < k.\ell $ calls to \emph{re-partition()} and by Lemma \ref{lemma:rebalancecost} each costs at most $2.OPT$.
 	The total cost is therefore at most $2.OPT.k.\ell$ which implies the competitive ratio.
