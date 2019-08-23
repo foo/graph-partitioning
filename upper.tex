@@ -14,7 +14,8 @@ This justifies taking a different approach to repartitioning (see Section PPLA).
 
 \subsubsection{For Constant k, Repartition Cost is Constant?}
 
-\maciek{Interesting research problem: is a single repartition cost bounded by $O(poly(k))$? We have such examples for $k=3,4,5$. It gives us an $O(\ell)$-competitive algorithm for $k=3$}
+\maciek{Interesting research problem: is a single repartition cost bounded by $O(poly(k))$? This would improve currently best-known $O(k^2\ell^2)$ to $O(k\cdot poly(k) \cdot \ell)$, i.e., would tighten the lower bound in terms of $\ell$.}
+  \maciek{We have such examples for $k=3,4,5$. It gives us an $O(\ell)$-competitive algorithm for $k=3$}
 
 \begin{theorem}
   The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
