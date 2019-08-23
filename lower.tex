@@ -74,9 +74,10 @@ At this point there are at most $\ell+1$ single nodes left
 since there must be at least two nodes with the same initial cluster in any subset of $\ell+1$
 nodes.
 Given this sequence of requests,
-the optimal strategy is to swap $x_0$ and $y_0$ with $x^*$ and $y^*$ respectively.
+the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
+ swapping $x_0$ and $y_0$ with $x^*$ and $y^*$ respectively.
 Hence,
-OPT pays for $4$ migrations and
+OPT pays $4$ for node migrations and
 ALG pays at least one for each node in the sequence $X := x_0, x_1,\dots$.
 We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k.\ell$ nodes,
 therefore $|X| \geq k.\ell - k - \ell \in \Omega(k.\ell)$.
