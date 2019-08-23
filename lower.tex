@@ -45,7 +45,13 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
 \begin{proof}
 
+  \maciek{Warning! This proof requires still major rewrite before submission!}
+  \maciek{The argument of connecting the length of sequence and the number of merged singletons should be stated as an auxiliary lemma.}
+  \maciek{Maybe we do not need to construct $I_2$ and then $I_2'$: we can construct $I_2'$ on-the-fly and bound its length. However, the subtracting argument (as it is written now) is quite simple.}
+  \maciek{ToDo: (one) figure containing: input $I_1$, cluster $D$, growing components $v^C_i$, and the ``searched area (by ALG)'' (in searching for $d_1, d_2$)}
 
+  \maciek{ToDo: check all off-by-one errors, especially this one: check if the existence of $b_1$ in one of the clusters was considered in all calculations}
+ 
  
   Fix a component-respecting deterministic algorithm DET.
   Fix a cluster $A$ containing nodes $a_1, \ldots, a_k$ and a cluster $B$ containing (among others) a node $b_1$.
@@ -120,10 +126,7 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
 
   We conclude that for the input $I_1I_2'$ OPT pays $2$, and DET pays at least $2$ for each of $L - \ell - 1 = \Omega(\ell \cdot k)$ requests of $I_2'$.
 
-
-  \maciek{ToDo: check all off-by-one errors}
-  \maciek{ToDo: check if the existence of $b_1$ was considered in all calculations}
-  
+ 
  % During the runtime of DET, by $x(A)$ we denote the node in the configuration of DET that is co-located in one cluster with the component $a_1, \ldots, a_{k-1}$.
 
   
