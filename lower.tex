@@ -97,7 +97,7 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   must produce a sequence $\langle x^{(i)}\rangle$ of length $L = k\cdot \ell - (k-1) - 2 - (\ell-1) - 1$.
   Consider a request $(x^{(i)}, c(x^{(i)}))$.
   If in this configuration at least one singleton component is present (other than the components of $(x^{(i)}, c(x^{(i)}))$), then serving this request is possible (i.e., the perfect partition exists), and hence a singleton node appears as $x^{(i+1)}$ and the sequence continues.
-  Otherwise, no perfect partition exists, as we have a component $\{a_1, \ldots, a_{k-1}\}$ of size $k-1$.
+  Otherwise, no perfect partition exists, as we have a component $\{a_1, \ldots, a_{k-1}\}$ of size $k-1$ and it can only be complemented by a singleton component.
 
   Hence, the length of a sequence $\langle x^{(i)}\rangle$ is closely related to the number of singleton components.
   Before the arrival of the first request from $I_2$, the number of singleton components is $L + (\ell-1) + 1$, and after serving the last request, the number of singleton components is $1$.
