@@ -87,9 +87,10 @@ The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Part
   By $v^C_1$ we label the first node of a cluster $C$ that appears in the sequence $\langle x^{(i)}\rangle$.
   At this point, we fix an arbitrary other node of $C$ and we label it $v^C_0$, and we set $c(v^C_i) = v^C_0$ for all $i$.
   For the following $k-2$ nodes of the cluster $C$, we label them $v^C_2, v^C_3, \ldots$ in the order of appearance in the sequence $\langle x^{(i)}\rangle$.
-  %For a node $v^C_p = x^{(j)}$, we set $y^{(j)} = v^C_0$.
-  If some nodes of $C$ never appear in the sequence $\langle x^{(i)}\rangle$ %(e.g. DET might terminate prematurely or might reside in a configuration with components split)
-  , we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not \maciek{This should not happen at all for component-respecting DET, though}
+  % For a node $v^C_p = x^{(j)}$, we set $y^{(j)} = v^C_0$.
+  
+  If some nodes of $C$ never appear in the sequence $\langle x^{(i)}\rangle$ (e.g. DET might terminate prematurely or might reside in a configuration with components split)
+  , we number them arbitrarily, with the restriction that the nodes that do appear in the sequence have smaller number than the ones that do not \maciek{This should not happen at all for component-respecting DET, though. Would be better to provide an additional lemma that shows that every node of each cluster appears in the sequence (outside of $v_0$'s, $a_1,\ldots,a_{k-1}, a_k, b_1$)}
   
   Now, we claim that given the input $I_1I_2$, every component-respecting DET 
   % (that does not terminate prematurely and never resides in a configuration with components split)
