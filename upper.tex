@@ -9,7 +9,8 @@
 A repartition cost is bounded by $O(kl)$ (cite marcin-chen).
 Now we show that the rebalance may be expensive (cubic) in terms of $k$, even for $l$ linear in $k$.
 
-This justifies taking a different approach to repartitioning (see Section PPLA).
+This justifies taking a different approach to repartitioning then bounding the repartition cost in $O(k^2\cdot \ell^2)$ algorithm (described in Section ``A simple upper bound'' in the DISC paper).
+As the cost of a specific repartition is $\Omega(k^2)$, then the cost of DET during a single phase is: for each of $O(k \cdot l)$ edges revealed, we already have the cost $O(k^2)$ (precisely, $O(min\{k^2, k\ell\})$, and the competitive ratio would be $O(k^3\cdot \ell)$. \maciek{This would be an improvement in terms of $\ell$ still, but no hopes for $O(k\ell)$ algorithm just by improving the rebalancing analysis}
 
 \maciek{Possibly simplify $\Omega(k^3)$? Or just present $\Omega(k^2)$?}
 
