@@ -51,10 +51,12 @@ As the cost of a specific repartition is $\Omega(k^2)$, then the cost of DET dur
   The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one re-balancing for the greedy algorithm, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
 \end{proof}
 
-We leverage the simple algorithm $ON_{k=3}$ that seeks a perfect partition for $k=3$ towards an algorithm for the general online problem.
-Note that in the general model, an optimal partition is not a necessarily a perfect partition.
+We leverage the simple algorithm $ON_{k=3}$ that seeks a perfect partition for $k=3$,
+towards an algorithm for the general online problem.
+Note that in the general model,
+an optimal partition is not a necessarily a perfect partition.
 We divide the sequence of requests into phases.
-A phase terminates when there is no perfect partition of components after arrival of some request $r$.
+A phase terminates when there is no perfect partition of components.
 We apply requests to $ON_{k=3}$ as before. 
 Once the current phase terminates,
 we reset all components by removing (forgetting) all revealed edges,
