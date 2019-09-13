@@ -19,11 +19,11 @@ As the cost of a specific repartition is $\Omega(k^2)$, then the cost of DET dur
 \maciek{Interesting research problem: is a single repartition cost bounded by $O(poly(k))$? This would improve currently best-known $O(k^2\ell^2)$ to $O(k\cdot poly(k) \cdot \ell)$, i.e., would tighten the lower bound in terms of $\ell$.}
   \maciek{We have such examples for $k=3,4,5$. It gives us an $O(\ell)$-competitive algorithm for $k=3$}
 
-\begin{theorem}
+\begin{lemma} \label{lemma:k=3}
   The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
   \maciek{Greedy = find the cheapest (closest to the current) feasible partition}
   \label{rebalancing-cost}
-\end{theorem}
+\end{lemma}
 
 \begin{proof} 
 % \maciek{Note: we consider a cost of cheapest feasible rebalancing after insertion of one edge. This in contrast to bounding the distance between any two reconfigurations (this theorem does not bound the latter).}
@@ -44,14 +44,38 @@ As the cost of a specific repartition is $\Omega(k^2)$, then the cost of DET dur
 
 \begin{theorem}
   There exists a $O(\ell)$-competitive algorithm for $k=3$.
+\mahmoud{is this needed anymore?}
 \end{theorem}
 
 \begin{proof}
-  The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one rebalancingfor the greedy algorithm, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
+  The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one re-balancing for the greedy algorithm, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
 \end{proof}
 
+We leverage the simple algorithm $ON_{k=3}$ that seeks a perfect partition for $k=3$ towards an algorithm for the general online problem.
+Note that in the general model, an optimal partition is not a necessarily a perfect partition.
+We divide the sequence of requests into phases.
+A phase terminates when there is no perfect partition of components after arrival of some request $r$.
+We apply requests to $ON_{k=3}$ as before. 
+Once the current phase terminates,
+we reset all components by removing (forgetting) all revealed edges,
+ and then we proceed to the next phase.
 
-
+\begin{corollary} \label{cor:k=3}
+	There exists $O(\ell)$-competitive  algorithm for the general online problem when $k=3$. 
+\end{corollary}
+\begin{proof}
+	Consider any phase and assume it terminates upon arrival of some request $r$.
+	 By Lemma  \ref{lemma:k=3},
+	ON pays $O(\ell)$ during the phase.
+	Regardless of the of OPT's partition at the beginning of the phase,
+	as long as OPT stays in the same configuration,
+	 it incurs remote communication cost for at least one request $r'$ (possibly $r'=r$) by the end of the phase.
+	 Else,
+	 OPT incurs the cost of moving to new partitions.
+	 In any case,
+	 OPT must pay at least one during the phase.
+\end{proof}
+	
 \subsection{Perfect Partition Learner Algorithm}
 
 
