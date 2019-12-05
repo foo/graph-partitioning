@@ -166,4 +166,11 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 	including the request that completes revealing of all ground truth components.
 	There are at most $(k-1).\ell < k.\ell $ calls to \emph{re-partition()} and by Lemma \ref{lemma:rebalancecost} each costs at most $2.OPT$.
 	The total cost is therefore at most $2.OPT.k.\ell$ which implies the competitive ratio.
-\end{IEEEproof}
+      \end{IEEEproof}
+
+      \section{$O(k)$-competitive algorithm for the ring}
+
+      \maciek{todo}
+
+      We know that the lower bound is $k$ for the ring communication pattern (cite Marcin-Chen).
+      The simple matching (assymptotically \maciek{maybe it is easy to have $k$ exactly?}) upper bound is to fix the reconfiguration to be the cyclic shift. We reconfigure upon encountering inter-cluster request. We use phases: upon discovering the edge on each cut we charge OPT 1 and reset counters.
