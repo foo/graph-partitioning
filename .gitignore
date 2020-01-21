@@ -2,3 +2,6 @@
 *.aux
 *.pdf
 *.log
+paper.fdb_latexmk
+paper.fls
+paper.synctex.gz
