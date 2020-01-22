@@ -9,7 +9,6 @@
 \usepackage{algorithm}
 
 
-\begin{document}
 
 \title{Brief Announcement: An Improved Lower Bound for Dynamic Graph Partitioning}
 
@@ -41,7 +40,7 @@
 \setcopyright{acmlicensed}
 \acmConference{PODC '20}{July 29-August 2, 2020}{Toronto, Canada}
 
-
+\keywords{online algorithms, competitive analysis, etc}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
@@ -73,6 +72,9 @@
 \newcommand{\todo}[1]{\noindent\color{brown}{todo: #1}\color{black}}
 
 
+\begin{document}
+
+
 \begin{abstract}
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 \end{abstract}
@@ -80,6 +82,15 @@
 \maketitle
     
 \renewcommand{\shortauthors}{M.~Pacut, M.~Parham, S.~Schmid}
+
+\section{Introduction}
+
+Main technical contribution of this paper is $\Omega(k\ell)$ lower bound for any deterministic algorithm for Online Balanced Partition problem.
+Previously the best known lower bound was $\Omega(k)$ \cite{repartition-disc}.
+The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\ell^2)$.
+
+We contribute to the search for the optimal algorithm by presenting $O(k\ell)$-competitive algorithm for the special case where the perfect partition of the input graph is assumed and every algorithm must colocate every communicating pair.
+Note that our $\Omega(k\ell)$ lower bound uses a perfect partition input graph and colocates communicating pairs, and hence we provide a tight result for such scenario.
 
 \section{Related Work}
 
@@ -180,15 +191,6 @@ this case, the~algorithm needs to decide which nodes to ``evict'' (migrate to
 other machines), to free up space.
 
 \end{itemize}
-
-\section{Introduction}
-
-Main technical contribution of this paper is $\Omega(k\ell)$ lower bound for any deterministic algorithm for Online Balanced Partition problem.
-Previously the best known lower bound was $\Omega(k)$ \cite{repartition-disc}.
-The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\ell^2)$.
-
-We contribute to the search for the optimal algorithm by presenting $O(k\ell)$-competitive algorithm for the special case where the perfect partition of the input graph is assumed and every algorithm must colocate every communicating pair.
-Note that our $\Omega(k\ell)$ lower bound uses a perfect partition input graph and colocates communicating pairs, and hence we provide a tight result for such scenario.
 
 
 \section{Problem Definition}
@@ -456,6 +458,8 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 \section{Todos}
 
 \todo{Make ORCID visible in ACM style}
+
+\todo{Include e-mails}
 
 \todo{Check ACM package whitelist (especially these algorithm environments)}
 
