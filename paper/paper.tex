@@ -85,16 +85,17 @@
 
 \section{Introduction}
 
-Main technical contribution of this paper is $\Omega(k\ell)$ lower bound for any deterministic algorithm for Online Balanced Partition problem.
-Previously the best known lower bound was $\Omega(k)$ \cite{repartition-disc}.
-The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\ell^2)$.
+Main technical contribution of this paper is $\Omega(k\ell)$ lower bound for the competitive ratio of any deterministic algorithm for Online Balanced Partition problem.
+The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}.
 
-We contribute to the search for the optimal algorithm by presenting $O(k\ell)$-competitive algorithm for the special case where the perfect partition of the input graph is assumed and every algorithm must colocate every communicating pair.
-Note that our $\Omega(k\ell)$ lower bound uses a perfect partition input graph and colocates communicating pairs, and hence we provide a tight result for such scenario.
+
+Additionally, we contribute to search for the optimal algorithm by presenting $O(k\ell)$-competitive algorithm for the special case, where the perfect partition of the input graph is assumed, and every algorithm must colocate every communicating pair.
+Note that our $\Omega(k\ell)$ lower bound uses a perfect partition input graph and colocates communicating pairs, and hence for this scenario, our results are tight.
+\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes}
 
 \section{Related Work}
 
-In this paper we study an online balanced partitioning problem.
+In this paper we study the Online Balanced Partitioning problem (formally presented in Section~\ref{sec:problem-definition}).
 The static offline version of~the~problem, i.e., a problem variant where
 migration is not allowed, where all requests are known in advance, and where
 the goal is to find an assignment of $n$ nodes to $\ell$~physical machines, each of~capacity $n/\ell$, is known as the
@@ -180,7 +181,7 @@ The possibility to perform a migration uncovers algorithmic challenges:
 pattern, it may not be worthwhile to collocate the nodes: the migration cost might
 be too large in comparison to~communication costs.
 
-h\item \emph{Where to migrate, and what?}
+\item \emph{Where to migrate, and what?}
 If an algorithm decides to collocate nodes $x$ and~$y$, the~question becomes
 how. Should $x$ be migrated to the physical machine holding $y$, $y$ to the one holding
 $x$, or should both nodes be migrated to a new machine?
@@ -194,7 +195,7 @@ other machines), to free up space.
 
 
 \section{Problem Definition}
-
+\label{sec:problem-definition}
 
 Formally, the online \emph{Balanced RePartitioning} problem (BRP) is defined as
 follows. There is a set of $n$ nodes, initially distributed arbitrarily
@@ -212,8 +213,7 @@ is~$\alpha \geq 1$, where $\alpha$ is a parameter (an~integer). For any
 algorithm $ALG$, we denote its total cost (consisting of communication plus
 migration costs) on sequence $\sigma$ by $ALG(\sigma)$.
 
-\section{Core results}
-\subsection{Lower bound $\Omega(k\cdot \ell)$}
+\section{Lower bound $\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
 
 In this section we consider the Online Balanced Partition problem.
@@ -265,7 +265,7 @@ We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k.\ell$ nodes,
 therefore $|X| \geq k.\ell - k - \ell \in \Omega(k.\ell)$.
 \end{proof}
 
-\subsection{Perfect Partition Learner Algorithm}
+\section{Perfect Partition Learner Algorithm}
     
     
 \maciek{$. \rightarrow \cdot$}
@@ -355,7 +355,34 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
     The total cost is therefore at most $2.OPT.k.\ell$ which implies the competitive ratio.
       \end{proof}
 
+\section{Corollary and Future Directions}
 
+The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\ell^2)$.
+
+
+\section{Todos}
+
+\todo{Make ORCID visible in ACM style}
+
+\todo{Include e-mails}
+
+\todo{Check ACM package whitelist}
+
+\todo{Replace package algorithmpseudocode, it is not whitelisted https://www.acm.org/publications/taps/whitelist-of-latex-packages}
+
+\todo{Make an ACM account for the submission}
+
+\todo{Sum up all the steps needed for the submission}
+
+\todo{ACM keywords are mandatory}
+
+\todo{CCS concepts are mandatory}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}  
+
+\begin{appendix}
+    
 \section{Additional results (most likely should be deleted)}
 
 \begin{observation}
@@ -455,27 +482,6 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
           We know that the lower bound is $k$ for the ring communication pattern (cite Marcin-Chen).
           The simple matching (assymptotically \maciek{maybe it is easy to have $k$ exactly?}) upper bound is to fix the reconfiguration to be the cyclic shift. We reconfigure upon encountering inter-cluster request. We use phases: upon discovering the edge on each cut we charge OPT 1 and reset counters.
 
-\section{Todos}
-
-\todo{Make ORCID visible in ACM style}
-
-\todo{Include e-mails}
-
-\todo{Check ACM package whitelist}
-
-\todo{Replace package algorithmpseudocode, it is not whitelisted https://www.acm.org/publications/taps/whitelist-of-latex-packages}
-
-\todo{Make an ACM account for the submission}
-
-\todo{Sum up all the steps needed for the submission}
-
-\todo{ACM keywords are mandatory}
-
-\todo{CCS concepts are mandatory}
-
-\bibliographystyle{ACM-Reference-Format}
-\bibliography{references}  
-
-    
+\end{appendix}
 
 \end{document}
