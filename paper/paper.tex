@@ -157,7 +157,7 @@ We assume that the communication patterns are not known in advance to our algori
 We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
 In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
 
-In the dynamic scenario, we assume that the physical substrate network is a~tree of height one.
+We assume that the physical substrate network is a~tree of height one.
 That is, every physical machine (leaf) is connected directly to the root (that has no hosting capabilities).
 A single physical machine hosts a fixed number of virtual machines.
 The model restricted to such networks becomes a variant of online graph clustering.
@@ -180,7 +180,7 @@ The possibility to perform a migration uncovers algorithmic challenges:
 pattern, it may not be worthwhile to collocate the nodes: the migration cost might
 be too large in comparison to~communication costs.
 
-\item \emph{Where to migrate, and what?}
+h\item \emph{Where to migrate, and what?}
 If an algorithm decides to collocate nodes $x$ and~$y$, the~question becomes
 how. Should $x$ be migrated to the physical machine holding $y$, $y$ to the one holding
 $x$, or should both nodes be migrated to a new machine?
@@ -461,7 +461,9 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 
 \todo{Include e-mails}
 
-\todo{Check ACM package whitelist (especially these algorithm environments)}
+\todo{Check ACM package whitelist}
+
+\todo{Replace package algorithmpseudocode, it is not whitelisted https://www.acm.org/publications/taps/whitelist-of-latex-packages}
 
 \todo{Make an ACM account for the submission}
 
