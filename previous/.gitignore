@@ -1,6 +1,5 @@
 .DS_Store
 *.aux
-*.pdf
 *.log
 paper.fdb_latexmk
 paper.fls
