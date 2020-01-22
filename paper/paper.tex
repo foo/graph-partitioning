@@ -210,9 +210,9 @@ is~$\alpha \geq 1$, where $\alpha$ is a parameter (an~integer). For any
 algorithm $ALG$, we denote its total cost (consisting of communication plus
 migration costs) on sequence $\sigma$ by $ALG(\sigma)$.
 
-\section{Lower bound $\Omega(k\cdot \ell)$}
+\section{Core results}
+\subsection{Lower bound $\Omega(k\cdot \ell)$}
 
-\maciek{I assume $\alpha = 1$ to simplify calculations, but everything should hold for general $\alpha$}
 
 In this section we consider the Online Balanced Partition problem.
 We show a lower bound of $\Omega(k \cdot \ell)$ that uses an input that has a perfect partition.
@@ -263,6 +263,99 @@ We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k.\ell$ nodes,
 therefore $|X| \geq k.\ell - k - \ell \in \Omega(k.\ell)$.
 \end{proof}
 
+\subsection{Perfect Partition Learner Algorithm}
+    
+    
+\maciek{$. \rightarrow \cdot$}
+\maciek{Font for OPT, ALG, DET, dist etc}
+
+Let $P_I = I_1, \dots, I_{\ell}$ denote the initial partition with which both ON and OPT begin and
+$P_F = F_1, \dots, F_{\ell}$ the final partition.
+\begin{definition}	\label{def:dist}
+    The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ is the number of nodes in $P$ that do not reside in their initial cluster.
+    That is,
+    $dist(P, P_I) = \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
+\end{definition}
+
+In other words,
+at least $dist(P, P_I)/2$ node swaps are required in order to reach the partition $P$ from $P_I$.
+Therefore,
+$OPT \geq \Delta:= dist(P_F, P_I) $.
+We devise an online algorithm that mimics OPT by minimizing the distance to the initial partition $P_I$ with each re-partitioning.
+As a result,
+ON never ends up in a partition that is further away from $P_I$ than $\Delta$.
+This invariant ensures that ON does not pay too much while reaching $P_F$.
+
+\begin{algorithm}
+    \renewcommand{\algorithmicrequire}{\textbf{Input:}}
+    \renewcommand{\algorithmicensure}{\textbf{Output:}}
+    \begin{algorithmic}[1]
+        \Require 
+        $k, \ell$,
+        initial partition $P_I$,
+        sequence of  edges $\sigma_1, \dots, \sigma_N$ 
+        \Ensure Final partition $P_F$ 
+        \State for each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$ \label{line:initcomponents}
+        \State on communication request $\sigma_t=\{u,v\}$:
+        \State Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
+        \If{$C_1 \neq C_2$}
+        \State unite the two components into a single component $C'$ and
+        $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$ \label{line:mergecomponents}
+        \If{cluster$(C_1) \neq$ cluster$(C_2)$}		
+        \State \textit{re-partition($k, \ell, P_I, \mathcal{C}$)} \label{line:rebalance} 
+        \EndIf
+        \EndIf
+    \end{algorithmic}
+    \caption{Perfect Partition Learner}
+    \label{alg:ppl}
+      \end{algorithm}
+
+      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial configuration}
+
+\mahmoud{address the \textit{re-partition()}}
+
+\begin{property} \label{prop:dist<OPT}
+    Let $P$ be any partition chosen by Algorithm \ref{alg:ppl} at Line $\ref{line:rebalance}$.
+    Then, $dist(P,P_I) \leq \Delta$.
+\end{property}
+
+\begin{lemma}	\label{lemma:rebalancecost}
+    The cost of re-partitioning at Line \ref{line:rebalance} is at most $2.OPT$.
+\end{lemma}
+\begin{proof}
+    Consider the re-partitioning that transforms $P_{t-1}$ to $P_t$ upon the request $\sigma_t$.
+    Let $M \subset V$ denote the set of nodes that are migrated during this process.
+    We have $M = M^+ \cup M^- \cup M^\circ$,
+    where $M^-$ ($M^+$) denotes the subset of nodes that
+    enter (leave) their original cluster during the re-partitioning,
+    and $M^\circ$ denotes the set of remaining nodes in $M$.
+    Since $|M^- \cup M^\circ|$ nodes are not in their original cluster before the re-partitioning,
+    by Definition \ref{def:dist},
+    the distance before the re-partitioning is $dist(P_{t-1}) \geq | M^- \cup M^\circ |$.
+    Analogously,
+     the distance afterwards is $dist(P_{t}) \geq | M^+ \cup M^\circ |$.
+    Thus,
+    $|M| \leq dist(P_{t-1}) + dist(P_{t})$.
+    By Property \ref{prop:dist<OPT},
+    $dist(P_{t-1}) , dist(P_{t}) \leq \Delta \leq OPT$
+    and thereby we have	
+    $|M| \leq 2.OPT$.
+\end{proof}
+
+\begin{theorem}	\label{thm:upperbound}
+    Algorithm \ref{alg:ppl} reaches the final partition while being $(2.k.\ell)$-competitive.
+\end{theorem}
+\begin{proof}
+    The algorithm eventually reaches the final partition since it
+     evaluates all possible $\ell$-way partitions of components on each external request,
+    including the request that completes revealing of all ground truth components.
+    There are at most $(k-1).\ell < k.\ell $ calls to \emph{re-partition()} and by Lemma \ref{lemma:rebalancecost} each costs at most $2.OPT$.
+    The total cost is therefore at most $2.OPT.k.\ell$ which implies the competitive ratio.
+      \end{proof}
+
+
+\section{Additional results (most likely should be deleted)}
+
 \begin{observation}
     The lower bound of $\Omega(\ell)$ holds even with $1/3-1/k$-augmentation, i.e., in scenarios where the capacity of each cluster of the algorithm is $(1+1/3)\cdot k - 1$, while the capacity of OPT's clusters is $k$.
     To this end we use the construction from Observation~\ref{obs:lb_general_k}.
@@ -275,7 +368,6 @@ therefore $|X| \geq k.\ell - k - \ell \in \Omega(k.\ell)$.
     \maciek{Note that this does not contradict the existence of $O((1+1/\epsilon)\cdot k \cdot \log(k))$ algorithm of Avin, Bienkowski et al, as the algorithm requires $2+\epsilon$-augmentation.}
 
 
-    \section{An $O(kl)$-competitive Algorithm For the Scenario With the Perfect Partition}
 
     \subsection{On a Cost of a Single Repartition}
     
@@ -354,97 +446,7 @@ therefore $|X| \geq k.\ell - k - \ell \in \Omega(k.\ell)$.
          OPT must pay at least one during the phase.
     \end{proof}
         
-    \subsection{Perfect Partition Learner Algorithm}
-    
-    
-    \maciek{$. \rightarrow \cdot$}
-    \maciek{Font for OPT, ALG, DET, dist etc}
-    
-    Let $P_I = I_1, \dots, I_{\ell}$ denote the initial partition with which both ON and OPT begin and
-    $P_F = F_1, \dots, F_{\ell}$ the final partition.
-    \begin{definition}	\label{def:dist}
-        The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ is the number of nodes in $P$ that do not reside in their initial cluster.
-        That is,
-        $dist(P, P_I) = \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
-    \end{definition}
-    
-    In other words,
-    at least $dist(P, P_I)/2$ node swaps are required in order to reach the partition $P$ from $P_I$.
-    Therefore,
-    $OPT \geq \Delta:= dist(P_F, P_I) $.
-    We devise an online algorithm that mimics OPT by minimizing the distance to the initial partition $P_I$ with each re-partitioning.
-    As a result,
-    ON never ends up in a partition that is further away from $P_I$ than $\Delta$.
-    This invariant ensures that ON does not pay too much while reaching $P_F$.
-    
-    \begin{algorithm}
-        \renewcommand{\algorithmicrequire}{\textbf{Input:}}
-        \renewcommand{\algorithmicensure}{\textbf{Output:}}
-        \begin{algorithmic}[1]
-            \Require 
-            $k, \ell$,
-            initial partition $P_I$,
-            sequence of  edges $\sigma_1, \dots, \sigma_N$ 
-            \Ensure Final partition $P_F$ 
-            \State for each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$ \label{line:initcomponents}
-            \State on communication request $\sigma_t=\{u,v\}$:
-            \State Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
-            \If{$C_1 \neq C_2$}
-            \State unite the two components into a single component $C'$ and
-            $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$ \label{line:mergecomponents}
-            \If{cluster$(C_1) \neq$ cluster$(C_2)$}		
-            \State \textit{re-partition($k, \ell, P_I, \mathcal{C}$)} \label{line:rebalance} 
-            \EndIf
-            \EndIf
-        \end{algorithmic}
-        \caption{Perfect Partition Learner}
-        \label{alg:ppl}
-          \end{algorithm}
-    
-          \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial configuration}
-    
-    \mahmoud{address the \textit{re-partition()}}
-    
-    \begin{property} \label{prop:dist<OPT}
-        Let $P$ be any partition chosen by Algorithm \ref{alg:ppl} at Line $\ref{line:rebalance}$.
-        Then, $dist(P,P_I) \leq \Delta$.
-    \end{property}
-    
-    \begin{lemma}	\label{lemma:rebalancecost}
-        The cost of re-partitioning at Line \ref{line:rebalance} is at most $2.OPT$.
-    \end{lemma}
-    \begin{proof}
-        Consider the re-partitioning that transforms $P_{t-1}$ to $P_t$ upon the request $\sigma_t$.
-        Let $M \subset V$ denote the set of nodes that are migrated during this process.
-        We have $M = M^+ \cup M^- \cup M^\circ$,
-        where $M^-$ ($M^+$) denotes the subset of nodes that
-        enter (leave) their original cluster during the re-partitioning,
-        and $M^\circ$ denotes the set of remaining nodes in $M$.
-        Since $|M^- \cup M^\circ|$ nodes are not in their original cluster before the re-partitioning,
-        by Definition \ref{def:dist},
-        the distance before the re-partitioning is $dist(P_{t-1}) \geq | M^- \cup M^\circ |$.
-        Analogously,
-         the distance afterwards is $dist(P_{t}) \geq | M^+ \cup M^\circ |$.
-        Thus,
-        $|M| \leq dist(P_{t-1}) + dist(P_{t})$.
-        By Property \ref{prop:dist<OPT},
-        $dist(P_{t-1}) , dist(P_{t}) \leq \Delta \leq OPT$
-        and thereby we have	
-        $|M| \leq 2.OPT$.
-    \end{proof}
-    
-    \begin{theorem}	\label{thm:upperbound}
-        Algorithm \ref{alg:ppl} reaches the final partition while being $(2.k.\ell)$-competitive.
-    \end{theorem}
-    \begin{proof}
-        The algorithm eventually reaches the final partition since it
-         evaluates all possible $\ell$-way partitions of components on each external request,
-        including the request that completes revealing of all ground truth components.
-        There are at most $(k-1).\ell < k.\ell $ calls to \emph{re-partition()} and by Lemma \ref{lemma:rebalancecost} each costs at most $2.OPT$.
-        The total cost is therefore at most $2.OPT.k.\ell$ which implies the competitive ratio.
-          \end{proof}
-    
-          \section{$O(k)$-competitive algorithm for the ring}
+          \subsection{$O(k)$-competitive algorithm for the ring}
     
           \maciek{todo}
     
