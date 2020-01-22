@@ -43,7 +43,7 @@
 
 
 \begin{abstract}
-    Lorem
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 \end{abstract}
     
 \maketitle
@@ -70,7 +70,7 @@ solution where all components are of a~size at most $n/k$. The variant where
 $n \geq 2 \cdot k \cdot \ell$ was considered in
 \cite{LeMaTr90,SimTen97,EvNaRS00,EvNaRS99,KrNaSc09}. So far, the~best result~is~an~$O(\!\sqrt{\log n \cdot \log \ell})$-approximation algorithm~\cite{KrNaSc09}.
 
-Our dynamic model is related to online
+Our model is related to online
 caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}, sometimes also referred to
 as online caching, where requests for data items (nodes) arrive over time and
 need to be served from a cache of finite capacity, and where the number of
@@ -83,6 +83,92 @@ bypassing}~\cite{EpImLN11,EpImLN15,Irani02}. As a~side result, we show that our 
 capable of emulating online caching.
 A major difference between  these problems is that in the caching problems, each request involves a~single element of the universe, while in our model \emph{both} endpoints of a communication request are subject to~optimization.
 
+\section{Practical Motivation}
+
+
+Distributed cloud applications, including batch processing
+applications such as MapReduce, streaming applications such as Apache Flink or
+Apache Spark, and scale-out databases and key-value stores such as Cassandra,
+generate a~significant amount of network traffic and a~considerable fraction
+of their runtime is due to network activity~\cite{MogPop12}. For example,
+traces of jobs from a Facebook data center reveal that network transfers on
+average account for 33\% of the execution time~\cite{orchestra}. In such
+applications, it is desirable that frequently communicating virtual machines
+are \emph{collocated}, i.e., mapped to the same physical server: 
+communication across the network (i.e., inter-server communication) induces
+network load and latency. However, migrating virtual machines between servers
+also comes at a price: the state transfer is bandwidth intensive, and may even
+lead to short service interruptions. Therefore the goal is to design online
+algorithms that find a good trade-off between the inter-server communication
+cost and the migration cost.
+
+
+\vspace{1cm}
+
+We study virtual network embeddings in the scenario where virtual machines can be migrated during runtime to another physical machine.
+The possibility of migration allows reacting to unpredictable communication patterns.
+For example, if some distant nodes communicate often, it is vital to reduce their distance to save network bandwidth.
+The objective is to~minimize the total network bandwidth used for communication and for migration.
+
+
+We assume that the communication patterns are not known in advance to our algorithm.
+We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
+In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
+
+In the dynamic scenario, we assume that the physical substrate network is a~tree of height one.
+That is, every physical machine (leaf) is connected directly to the root (that has no hosting capabilities).
+A single physical machine hosts a fixed number of virtual machines.
+The model restricted to such networks becomes a variant of online graph clustering.
+That is, we are given a~set of~$n$ nodes (virtual machines) with time-varying pairwise
+communication patterns, which have to be partitioned into~$\ell$~physical machines, each of
+capacity $k=n/\ell$.
+
+Intuitively, we would like to minimize inter-machine
+interactions by mapping frequently communicating nodes to the same physical machine
+Since communication patterns change over time, the~nodes should be \emph{repartitioned}, in
+an online manner, by \emph{migrating} them between physical machines.
+The~objective is to minimize the weighted sum of inter-machine communication and repartitioning costs.
+The former is defined as the number of communication requests between nodes placed at distinct physical machines, and the latter as the number of migrations.
+
+
+The possibility to perform a migration uncovers algorithmic challenges:
+\begin{itemize}
+
+\item \emph{Serve remotely or migrate?} For a brief communication
+pattern, it may not be worthwhile to collocate the nodes: the migration cost might
+be too large in comparison to~communication costs.
+
+\item \emph{Where to migrate, and what?}
+If an algorithm decides to collocate nodes $x$ and~$y$, the~question becomes
+how. Should $x$ be migrated to the physical machine holding $y$, $y$ to the one holding
+$x$, or should both nodes be migrated to a new machine?
+
+\item \emph{Which nodes to evict?}
+The space of the desired destination physical machine may not be sufficient. In
+this case, the~algorithm needs to decide which nodes to ``evict'' (migrate to
+other machines), to free up space.
+
+\end{itemize}
+
+
+\section{Problem Definition}
+
+
+Formally, the online \emph{Balanced RePartitioning} problem (BRP) is defined as
+follows. There is a set of $n$ nodes, initially distributed arbitrarily
+across $\ell$~clusters, each of size~$k$. We call two nodes~$u,v\in V$
+\emph{collocated} if they are in the same cluster.
+
+An input to the problem is a sequence of communication requests $\sigma =
+(u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$, where pair $(u_t,v_t)$ means that
+the nodes $u_t,v_t$ exchange a fixed amount of data.  At any time~$t$, an online algorithm needs to serve the~communication
+request~$(u_t,v_t)$. Right before serving the request, the online algorithm
+can repartition the nodes into new clusters. We assume that
+a~communication request between two collocated nodes costs 0. The cost of a~communication request between two nodes located in different clusters is
+normalized to~1, and the cost of migrating a node from one cluster to another
+is~$\alpha \geq 1$, where $\alpha$ is a parameter (an~integer). For any
+algorithm $ALG$, we denote its total cost (consisting of communication plus
+migration costs) on sequence $\sigma$ by $ALG(\sigma)$.
 
 \section{Todos}
 
