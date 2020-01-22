@@ -353,6 +353,67 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
     The total cost is therefore at most $2.OPT.k.\ell$ which implies the competitive ratio.
       \end{proof}
 
+\section{$O(\ell)$-competitive algorithm for $k=3$}
+
+
+\begin{lemma} \label{lemma:k=3}
+  The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
+  \maciek{Greedy = find the cheapest (closest to the current) feasible partition}
+  \label{rebalancing-cost}
+\end{lemma}
+
+\begin{proof} 
+% \maciek{Note: we consider a cost of cheapest feasible rebalancing after insertion of one edge. This in contrast to bounding the distance between any two reconfigurations (this theorem does not bound the latter).}
+  
+  We distinguish among three configuration types of algorithm's clusters: $C_1, C_2, C_3$. In $C_1$ we have $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ we have one component of size $2$ and one component of size $1$. Finally, in $C_3$ we have one component of size $3$.
+
+  Consider a request $(u, v)$ and let $U, V$ be their clusters.
+  If $U=V$, then the request does not require a reconfiguration.
+  Now, we consider cases upon the type of clusters $U$ and $V$.
+  Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise the resulting component would have the size $4$, and this contradicts the existence of the perfect partition.
+  If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
+
+  Now, we focus on the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as the merged component would have size $4$.
+  If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
+  Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+  Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of rebalancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
+\end{proof}
+
+\begin{theorem}
+  There exists a $O(\ell)$-competitive algorithm for $k=3$.
+\end{theorem}
+
+\begin{proof}
+  The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one re-balancing for the greedy algorithm, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
+\end{proof}
+
+We leverage the simple algorithm $ON_{k=3}$ that seeks a perfect partition for $k=3$,
+towards an algorithm for the general online problem.
+Note that in the general model,
+an optimal partition is not a necessarily a perfect partition.
+We divide the sequence of requests into phases.
+A phase terminates when there is no perfect partition of components.
+We apply requests to $ON_{k=3}$ as before. 
+Once the current phase terminates,
+we reset all components by removing (forgetting) all revealed edges,
+ and then we proceed to the next phase.
+
+\begin{corollary} \label{cor:k=3}
+    There exists $O(\ell)$-competitive  algorithm for the general online problem when $k=3$. 
+\end{corollary}
+\begin{proof}
+    Consider any phase and assume it terminates upon arrival of some request $r$.
+     By Lemma  \ref{lemma:k=3},
+    ON pays $O(\ell)$ during the phase.
+    Regardless of the of OPT's partition at the beginning of the phase,
+    as long as OPT stays in the same configuration,
+     it incurs remote communication cost for at least one request $r'$ (possibly $r'=r$) by the end of the phase.
+     Else,
+     OPT incurs the cost of moving to new partitions.
+     In any case,
+     OPT must pay at least one during the phase.
+\end{proof}
+
 \section{Corollary and Future Directions}
 
 The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\ell^2)$.
@@ -384,106 +445,6 @@ The gap between upper and lower bound is still substantial, as the best known al
 \bibliography{references}  
 
 \begin{appendix}
-    
-\section{Additional results (most likely should be deleted)}
-
-\begin{observation}
-    The lower bound of $\Omega(\ell)$ holds even with $1/3-1/k$-augmentation, i.e., in scenarios where the capacity of each cluster of the algorithm is $(1+1/3)\cdot k - 1$, while the capacity of OPT's clusters is $k$.
-    To this end we use the construction from Observation~\ref{obs:lb_general_k}.
-    We observe that each cluster of the algorithm can fit exactly $3$ components of size $k/3$.
-
-    \maciek{This refers to simpler proof with $k=3$}
-  \end{observation}
-  
-  
-    \maciek{Note that this does not contradict the existence of $O((1+1/\epsilon)\cdot k \cdot \log(k))$ algorithm of Avin, Bienkowski et al, as the algorithm requires $2+\epsilon$-augmentation.}
-
-
-
-    \subsection{On a Cost of a Single Repartition}
-    
-    
-    \subsubsection{A Costly Repartition Example}
-    
-    A repartition cost is bounded by $O(kl)$ (cite marcin-chen).
-    Now we show that the rebalance may be expensive (cubic) in terms of $k$, even for $l$ linear in $k$.
-    
-    This justifies taking a different approach to repartitioning then bounding the repartition cost in $O(k^2\cdot \ell^2)$ algorithm (described in Section ``A simple upper bound'' in the DISC paper).
-    As the cost of a specific repartition is $\Omega(k^2)$, then the cost of DET during a single phase is: for each of $O(k \cdot l)$ edges revealed, we already have the cost $O(k^2)$ (precisely, $O(min\{k^2, k\ell\})$, and the competitive ratio would be $O(k^3\cdot \ell)$. \maciek{This would be an improvement in terms of $\ell$ still, but no hopes for $O(k\ell)$ algorithm just by improving the rebalancing analysis}
-    
-    \maciek{Possibly simplify $\Omega(k^3)$? Or just present $\Omega(k^2)$?}
-    
-    \subsubsection{For Constant k, Repartition Cost is Constant?}
-    
-    \maciek{Interesting research problem: is a single repartition cost bounded by $O(poly(k))$? This would improve currently best-known $O(k^2\ell^2)$ to $O(k\cdot poly(k) \cdot \ell)$, i.e., would tighten the lower bound in terms of $\ell$.}
-      \maciek{We have such examples for $k=3,4,5$. It gives us an $O(\ell)$-competitive algorithm for $k=3$}
-    
-    \begin{lemma} \label{lemma:k=3}
-      The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
-      \maciek{Greedy = find the cheapest (closest to the current) feasible partition}
-      \label{rebalancing-cost}
-    \end{lemma}
-    
-    \begin{proof} 
-    % \maciek{Note: we consider a cost of cheapest feasible rebalancing after insertion of one edge. This in contrast to bounding the distance between any two reconfigurations (this theorem does not bound the latter).}
-      
-      We distinguish among three configuration types of algorithm's clusters: $C_1, C_2, C_3$. In $C_1$ we have $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ we have one component of size $2$ and one component of size $1$. Finally, in $C_3$ we have one component of size $3$.
-    
-      Consider a request $(u, v)$ and let $U, V$ be their clusters.
-      If $U=V$, then the request does not require a reconfiguration.
-      Now, we consider cases upon the type of clusters $U$ and $V$.
-      Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise the resulting component would have the size $4$, and this contradicts the existence of the perfect partition.
-      If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
-    
-      Now, we focus on the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as the merged component would have size $4$.
-      If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
-      Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-      Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of rebalancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
-    \end{proof}
-    
-    \begin{theorem}
-      There exists a $O(\ell)$-competitive algorithm for $k=3$.
-    \mahmoud{is this needed anymore?}
-    \maciek{It does not overlap with any other result from this paper.}
-    \end{theorem}
-    
-    \begin{proof}
-      The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist. Each request issues at most one re-balancing for the greedy algorithm, and by Theorem~\ref{rebalancing-cost}, the total cost of any algorithm is $O(k\cdot \ell)$.
-    \end{proof}
-    
-    We leverage the simple algorithm $ON_{k=3}$ that seeks a perfect partition for $k=3$,
-    towards an algorithm for the general online problem.
-    Note that in the general model,
-    an optimal partition is not a necessarily a perfect partition.
-    We divide the sequence of requests into phases.
-    A phase terminates when there is no perfect partition of components.
-    We apply requests to $ON_{k=3}$ as before. 
-    Once the current phase terminates,
-    we reset all components by removing (forgetting) all revealed edges,
-     and then we proceed to the next phase.
-    
-    \begin{corollary} \label{cor:k=3}
-        There exists $O(\ell)$-competitive  algorithm for the general online problem when $k=3$. 
-    \end{corollary}
-    \begin{proof}
-        Consider any phase and assume it terminates upon arrival of some request $r$.
-         By Lemma  \ref{lemma:k=3},
-        ON pays $O(\ell)$ during the phase.
-        Regardless of the of OPT's partition at the beginning of the phase,
-        as long as OPT stays in the same configuration,
-         it incurs remote communication cost for at least one request $r'$ (possibly $r'=r$) by the end of the phase.
-         Else,
-         OPT incurs the cost of moving to new partitions.
-         In any case,
-         OPT must pay at least one during the phase.
-    \end{proof}
-        
-          \subsection{$O(k)$-competitive algorithm for the ring}
-    
-          \maciek{todo}
-    
-          We know that the lower bound is $k$ for the ring communication pattern (cite Marcin-Chen).
-          The simple matching (assymptotically \maciek{maybe it is easy to have $k$ exactly?}) upper bound is to fix the reconfiguration to be the cyclic shift. We reconfigure upon encountering inter-cluster request. We use phases: upon discovering the edge on each cut we charge OPT 1 and reset counters.
 
 \end{appendix}
 
