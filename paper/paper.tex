@@ -371,14 +371,16 @@ Hence it never moves to a partition beyond distance $\Delta$.
 
 \section{$O(\ell)$-competitive algorithm for $k=3$}
 
-Let \emph{Arb-partition} be the algorithm that moves to an arbitrary perfect partition
-on each inter-cluster request.
+Let \emph{Greedy} be the algorithm that on each inter-cluster request
+ moves to a perfect partition closest to the current one.
+ That is,
+ a partition reachable with the least number of node swaps.
 
 \maciek{The definition of the algorithm should be: it moves to an arbitrary perfect partition that is the closest from the current partition.}
 \maciek{Therefore, I would name it differently. The easiest would be to call it "greedy" with an explaination what we mean. Alternatives: CPP (closest perfect partition)}
 
 \begin{lemma} \label{lemma:k=3}
-  The rebalancing cost for the Arb-partition algorithm for $k=3$ is $O(1)$.
+  The re-balancing cost for  Greedy algorithm for $k=3$ is $O(1)$.
   %\maciek{Greedy = find the cheapest (closest to the current) feasible partition}
   \label{rebalancing-cost}
 \end{lemma}
@@ -397,30 +399,30 @@ on each inter-cluster request.
   Now, we focus on the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as the merged component would have size $4$.
   If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
   Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-  Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of rebalancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
+  Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of re-balancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
 \end{proof}
 
   
 \begin{theorem}
-	Algorithm \emph{Arb-partition} is $O(\ell)$-competitive when $k=3$.
+	Algorithm \emph{Greedy} is $O(\ell)$-competitive when $k=3$.
 \end{theorem}
 
 \begin{proof}
 	The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist.
-	Each request triggers at most one re-balancing in \emph{Arb-partition}
+	Each request triggers at most one re-balancing in \emph{Greedy}
 	which costs $O(1)$ by Theorem~\ref{rebalancing-cost}.
 	Then,
 	the total cost of any algorithm is $O(\ell)$.
 \end{proof}
 
-We leverage the simple algorithm \emph{Arb-partition} for $k=3$
+We leverage the simple algorithm \emph{Greedy} for $k=3$
 towards an algorithm for the general problem
 where the communication graph is not restricted.
 Note that in the general model,
 an optimal partition is not a necessarily a perfect partition.
 We divide the sequence of requests into phases.
 A phase terminates when there is no perfect partition of components.
-We apply requests to \emph{Arb-partition} as before. 
+We apply requests to \emph{Greedy} as before. 
 Once the current phase terminates,
 we reset all components by removing (forgetting) all revealed edges,
 and then we proceed to the next phase.
@@ -431,7 +433,7 @@ and then we proceed to the next phase.
 \begin{proof}
 	Consider any phase and assume it terminates upon arrival of some request $r$.
 	By Lemma  \ref{lemma:k=3},
-	\emph{Arb-partition} pays $O(\ell)$ during the phase.
+	\emph{Greedy} pays $O(\ell)$ during the phase.
 	If OPT stays in the same configuration throughout the phase,
 	regardless of its partition at the beginning of the phase,        
 	it incurs remote communication cost for at least one request $r'$ (possibly $r'=r$) by the end of the phase.
