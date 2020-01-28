@@ -354,10 +354,15 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 
 \section{$O(\ell)$-competitive algorithm for $k=3$}
 
+Let \emph{Arb-partition} be the algorithm that moves to an arbitrary perfect partition
+on each inter-cluster request.
+
+\maciek{The definition of the algorithm should be: it moves to an arbitrary perfect partition that is the closest from the current partition.}
+\maciek{Therefore, I would name it differently. The easiest would be to call it "greedy" with an explaination what we mean. Alternatives: CPP (closest perfect partition)}
 
 \begin{lemma} \label{lemma:k=3}
-  The rebalancing cost for the greedy algorithm for $k=3$ is $O(1)$.
-  \maciek{Greedy = find the cheapest (closest to the current) feasible partition}
+  The rebalancing cost for the Arb-partition algorithm for $k=3$ is $O(1)$.
+  %\maciek{Greedy = find the cheapest (closest to the current) feasible partition}
   \label{rebalancing-cost}
 \end{lemma}
 
@@ -378,8 +383,7 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
   Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of rebalancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
 \end{proof}
 
-   Let \emph{Arb-partition} be the algorithm that moves to an arbitrary perfect partition
-on each inter-cluster request.
+  
 \begin{theorem}
 	Algorithm \emph{Arb-partition} is $O(\ell)$-competitive when $k=3$.
 \end{theorem}
