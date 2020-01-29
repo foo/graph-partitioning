@@ -10,6 +10,9 @@
 
 \mathchardef\mhyphen="2D
 \newcommand{\OPT}{\mathit{OPT}}
+\newcommand{\ALG}{ALG}
+\newcommand{\OBRP}{OBRP}
+\newcommand{\PPOBRP}{PPOBRP}
 
 \title{Brief Announcement: An Improved Lower Bound for Dynamic Graph Partitioning}
 
@@ -97,9 +100,9 @@ i.e., a (multi-way) cut of cost zero that is also an optimal partition for the o
 %and every algorithm must colocate every communicating pair.
 Note that our $\Omega(k\ell)$ lower bound generates the input sequence
 so that the optimal offline choice is a perfect partition.
-\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes
+\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes}
 \mahmoud{this is already the case in the lower bound proof. Do we still need the last sentence here?}
-}
+\maciek{In general it is OK to emphasize some parts of the paper in the intro. Not sure if this sentence in particular is that important, though.}
 
 \section{Related Work}
 
@@ -205,17 +208,19 @@ other machines), to free up space.
 \section{Problem Definition}
 \label{sec:problem-definition}
 
-Formally, the online \emph{Balanced Re-Partitioning} problem (OBRP) is defined as
-follows. There is a set of $n$ nodes,
+\maciek{I suggest to rename the problem to either: (1) Dynamic Balanced Graph Partition or (2) Online Balanced Graph Partition, as in the SIDMA paper}
+
+Formally, the online \emph{Balanced Re-Partitioning} problem (\OBRP) is defined as
+follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
-Nodes in~$C \subset V$ are \emph{collocated} by the partition $P$
+We say that a set of nodes $C \subset V$ is \emph{collocated} in a partition $P$
 if $P$ assigns them to the same cluster.
-I.e.,
-$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.
-The input to the problem is a sequence of communication requests
+\maciek{We can ommit the formal definition: "I.e.,
+$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". However, if we use the notion of cluster later, then TODO: define cluster}
+The input consists of a sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
-where a pair $(u_t,v_t)$ indicates that nodes $u_t,v_t$ exchange a fixed amount of data.
+where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a fixed amount of data.
 An online algorithm needs to serve the communication request~$(u_t,v_t)$
 as soon as it arrives.
 Before serving the request,
@@ -232,35 +237,38 @@ For any algorithm $ALG$,
 its cost,
 denoted by $ALG(\sigma)$,
 is the total cost of communications and
-the cost of migrations on the sequence $\sigma$.
+the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
+\maciek{Not an expert on commas in english, but here it feels like we have too much. Use some tool to determine (Grammarly?)}
+
+\maciek{Here introduce a restricted model of \PPOBRP, the restricted variant where the input sequence can be perfectly partitioned}
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-In this section we show a lower bound of $\Omega(k \cdot \ell)$
-using an input sequence that allows OPT to move to a perfect partition.
-Therefore,
-it is a lower bound for OBRP with perfect partition,
-which directly implies a lower bound for the (general) OBRP.
-The former complements an upper bound in $O(k \cdot \ell)$
-for the OBRP with perfect partition which we present in Section \ref{sec:upperbound}.
+In this section we show a lower bound of $\Omega(k \cdot \ell)$.
+The constructed input sequence allows OPT to move to a perfect partition, and hence
+the construction also constitues a lower bound for \PPOBRP.
+This complements an upper bound of $O(k \cdot \ell)$
+for \PPOBRP that we present in Section \ref{sec:upperbound}.
 
 \begin{theorem}
-  The competitive ratio of any deterministic algorithm for OBRP is in $\Omega(k\cdot \ell)$.
+  The competitive ratio of any deterministic algorithm for \OBRP is in $\Omega(k\cdot \ell)$.
 \end{theorem}
 
 \begin{proof}
 We construct an instance of the problem with $\ell$ clusters 
 $\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
 Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
-Let ALG be any online algorithm for OBRP.
-We construct the input sequence of requests for ALG as follows.
+\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}
+Fix any online algorithm \ALG.
+We construct the input sequence of requests for \ALG as follows.
 First,
-we issue $k-2$ (internal) requests so that ALG can form a component of $k-1$
+we issue $k-2$ (internal) requests so that \ALG can form a component of $k-1$
 nodes on the cluster $S_1$.
-Recall that internal requests does not incur ALG any cost.
-If ALG at any point splits a component then
-we issue  requests between the parts as many as it is necessary for ALG to collocate the parts,
-as otherwise ALG is not competitive.
+Recall that internal requests does not incur any cost for \ALG.
+If \ALG at any point splits a component\maciek{define splitting}, then
+we continue to issue requests between non-collocated nodes of the component until \ALG collocates the nodes of the component.
+If \ALG never collocates them then it is not competitive.
+
 Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
 Next,
 we issue the request between $x_0$ and $y_0$.
@@ -269,6 +277,7 @@ ALG joins them into one component and collocates them in some cluster other than
 For this,
 ALG moves to a new configuration (i.e., partition)
 that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
+
 Next,
 we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
 ALG must collocate $x_1$ and $C$ on some cluster other than $S_1$ and
@@ -281,6 +290,7 @@ $x'$ and $y'$,
 we have $I(x') \neq I(y')$.
 At this point there are at most $\ell+1$ single nodes left,
 otherwise there would be more pairs of single nodes that were initially in the same cluster.
+
 Given this sequence of requests,
 the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
  swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
@@ -296,8 +306,7 @@ therefore $|X| \geq k.\ell - k - \ell \in \Omega(k\cdot\ell)$.
 We assume OPT begins with the initial partition
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
 $P_F = F_1, \dots, F_{\ell}$.
- The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ from the initial partition
- is the number of nodes in $P$ that do not reside in their initial cluster.
+ The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ from the initial partition is the number of nodes in $P$ that do not reside in their initial cluster.
     That is,
     $\mathit{dist}(P, P_I) = \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
 In other words,
@@ -383,7 +392,7 @@ Hence it never moves to a partition beyond distance $\Delta$.
      That is, 
      once it reaches $\Delta = \mathit{dist} (P_{t}, P_I)$,
      it does not move to a partition
-     $P_{t'}, t'>t,\mathit{dist} (P_{t'}, P_I) > \Delta$
+     $P_{t'}$, for any $t'>t,\mathit{dist} (P_{t'}, P_I) > \Delta$,
      before it enumerates all partitions at distance $\Delta$.
      Therefore,
      PPL eventually reaches $\Delta=\OPT$ and the partition $P_F$.
@@ -391,7 +400,7 @@ Hence it never moves to a partition beyond distance $\Delta$.
     There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{re\mhyphen partition}$
      (i.e., the number of internal edges in $P_F$).
     By Lemma \ref{lemma:rebalancecost},
-    each costs at most $2\cdot\OPT$.
+    each re-partition costs at most $2\cdot\OPT$.
     The total cost is therefore at most $2\cdot\OPT\cdot k\cdot\ell$ which implies the competitive ratio.
     \mahmoud{This is the cost of moving and the cost of remote comm. is not counted.
     	So it is 4-competitive (?)}
@@ -400,39 +409,39 @@ Hence it never moves to a partition beyond distance $\Delta$.
 \section{$O(\ell)$-competitive algorithm for $k=3$}
 
 Let \emph{GREEDY} be the algorithm that on each inter-cluster request
- moves to a perfect partition closest to the current one.
- That is,
- a partition reachable with the least number of node swaps from the current partition.
+ moves to arbitrary perfect partition \maciek{of input} closest (i.e. reachable in minimum number of node swaps) to the current one.
 
-\maciek{The definition of the algorithm should be: it moves to an arbitrary perfect partition that is the closest from the current partition.}
-\maciek{Therefore, I would name it differently. The easiest would be to call it "greedy" with an explaination what we mean. Alternatives: CPP (closest perfect partition)}
 
 \begin{lemma} \label{lemma:k=3}
-  The re-balancing cost of GREEDY for $k=3$ is $O(1)$.
+  Every re-balancing cost of GREEDY for $k=3$ is $O(1)$.
   %\maciek{GREEDY = find the cheapest (closest to the current) feasible partition}
+  \maciek{We need to add to the assumption that the input has a perfect partition}
   \label{rebalancing-cost}
 \end{lemma}
 
 \begin{proof} 
 % \maciek{Note: we consider a cost of cheapest feasible rebalancing after insertion of one edge. This in contrast to bounding the distance between any two reconfigurations (this theorem does not bound the latter).}
-  
-  We distinguish among three configuration types of algorithm's clusters: $C_1, C_2, C_3$. In $C_1$ we have $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ we have one component of size $2$ and one component of size $1$. Finally, in $C_3$ we have one component of size $3$.
 
-  Consider a request $(u, v)$ and let $U, V$ be their clusters.
-  If $U=V$, then the request does not require a reconfiguration.
-  Now, we consider cases upon the type of clusters $U$ and $V$.
-  Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise the resulting component would have the size $4$, and this contradicts the existence of the perfect partition.
+  \maciek{We probably should start with something along: Note that the assumption of perfect partition means that there is no component of size 4. Then refer to it (twice) by some short ref.}
+  
+  We distinguish among three configuration types of any algorithm's cluster: $C_1, C_2, C_3$, which we define as follows. In $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ it contains one component of size $2$ and one component of size $1$. Finally, in $C_3$ it contains one component of size $3$.
+
+  Consider a request $(u, v)$ and let $U, V$ be clusters of these nodes.
+  If $U=V$, then the request does not require a reconfiguration and GREEDY incurs no cost.
+  Otherwise, we consider cases upon the type of clusters $U$ and $V$.
+  Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise we encounter a component of size $4$ and this would contradict the existence of the perfect partition of the input.
   If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
 
-  Now, we focus on the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as the merged component would have size $4$.
+  Finally, we consider the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that an input sequence includes the component of size $4$, a contradiction. 
   If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
   Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-  Note that in such case, a $C_1$-type cluster exists, as otherwise the input graph would not have a perfect partition. The cost of re-balancing is then at most $12$ \maciek{can show smaller constant than 12, but it does not matter that much}.
+  Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise the input graph would not have a perfect partition. In this case GREEDY exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
 \end{proof}
 
   
 \begin{theorem}
-	Algorithm \emph{GREEDY} is $O(\ell)$-competitive when $k=3$.
+  Algorithm \emph{GREEDY} is $O(\ell)$-competitive when $k=3$.
+  \maciek{Assumming the perfect partition of input sequence}
 \end{theorem}
 
 \begin{proof}
@@ -459,6 +468,7 @@ and then we proceed to the next phase.
 	There exists $O(\ell)$-competitive algorithm for the general online problem when $k=3$. 
 \end{theorem}
 \begin{proof}
+  \maciek{TODO: this proof is incomplete!}
 	Consider any phase and assume it terminates upon arrival of some request $r$.
 	By Lemma  \ref{lemma:k=3},
 	\emph{GREEDY} pays $O(\ell)$ during the phase.
