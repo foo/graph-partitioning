@@ -86,13 +86,20 @@
 
 \section{Introduction}
 
-Main technical contribution of this paper is $\Omega(k\ell)$ lower bound for the competitive ratio of any deterministic algorithm for Online Balanced Partition problem.
-The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}.
+Main technical contribution of this paper is the lower bound $\Omega(k\ell)$ for the competitive ratio of any deterministic algorithm for Online Balanced Partition problem.
+The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}
+which involves only two cluster.
 
 
-Additionally, we contribute to search for the optimal algorithm by presenting $O(k\ell)$-competitive algorithm for the special case, where the perfect partition of the input graph is assumed, and every algorithm must colocate every communicating pair.
-Note that our $\Omega(k\ell)$ lower bound uses a perfect partition input graph and colocates communicating pairs, and hence for this scenario, our results are tight.
-\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes}
+Additionally, we contribute to the research on the optimal online algorithm by presenting a $O(k\ell)$-competitive algorithm for the special case
+where the communication graph (i.e., request sequence) admits a \emph{perfect partition},
+i.e., a (multi-way) cut of cost zero that is also an optimal partition for the offline problem.
+%and every algorithm must colocate every communicating pair.
+Note that our $\Omega(k\ell)$ lower bound generates the input sequence
+so that the optimal offline choice is a perfect partition.
+\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes
+\mahmoud{this is already the case in the lower bound proof. Do we still need the last sentence here?}
+}
 
 \section{Related Work}
 
