@@ -198,65 +198,85 @@ other machines), to free up space.
 \section{Problem Definition}
 \label{sec:problem-definition}
 
-Formally, the online \emph{Balanced Re-Partitioning} problem (BRP) is defined as
-follows. There is a set of $n$ nodes, initially distributed arbitrarily
-across $\ell$~clusters, each of size~$k$. We call two nodes~$u,v\in V$
-\emph{collocated} if they are in the same cluster.
+Formally, the online \emph{Balanced Re-Partitioning} problem (OBRP) is defined as
+follows. There is a set of $n$ nodes,
+initially arbitrarily partitioned into $\ell$~clusters,
+each of size~$k$.
+Nodes in~$C \subset V$ are \emph{collocated} by the partition $P$
+if $P$ assigns them to the same cluster.
+I.e.,
+$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.
+The input to the problem is a sequence of communication requests
+$\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
+where a pair $(u_t,v_t)$ indicates that nodes $u_t,v_t$ exchange a fixed amount of data.
+An online algorithm needs to serve the communication request~$(u_t,v_t)$
+as soon as it arrives.
+Before serving the request,
+the online algorithm
+can re-partition,
+i.e.,
+it may move some of the nodes into clusters different than their current assigned clusters.
+We assume that
+a~communication request between two collocated nodes costs 0,
+the cost of a~communication request between two nodes located in different clusters is~1,
+and the cost of migrating a node from one cluster to another
+is~$\alpha \in \mathbb{Z}^+$.
+For any algorithm $ALG$,
+its cost,
+denoted by $ALG(\sigma)$,
+is the total cost of communications and
+the cost of migrations on the sequence $\sigma$.
 
-An input to the problem is a sequence of communication requests $\sigma =
-(u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$, where pair $(u_t,v_t)$ means that
-the nodes $u_t,v_t$ exchange a fixed amount of data.  At any time~$t$, an online algorithm needs to serve the~communication
-request~$(u_t,v_t)$. Right before serving the request, the online algorithm
-can repartition the nodes into new clusters. We assume that
-a~communication request between two collocated nodes costs 0. The cost of a~communication request between two nodes located in different clusters is
-normalized to~1, and the cost of migrating a node from one cluster to another
-is~$\alpha \geq 1$, where $\alpha$ is a parameter (an~integer). For any
-algorithm $ALG$, we denote its total cost (consisting of communication plus
-migration costs) on sequence $\sigma$ by $ALG(\sigma)$.
+\section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-\section{Lower bound $\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
-
-In this section we consider the Online Balanced Partition problem.
-We show a lower bound of $\Omega(k \cdot \ell)$ that uses an input that has a perfect partition.
-Therefore, this result is a lower bound for the general Online Balanced Partition problem, as well as a lower bound for Online Balanced Partition with perfect partition.
-The latter complements an upper bound $O(k \cdot \ell)$ for Online Balanced Partition with perfect partition that we present in Section \ref{sec:upperbound}.
+In this section we show a lower bound of $\Omega(k \cdot \ell)$
+using an input sequence that allows OPT to move to a perfect partition.
+Therefore,
+it is a lower bound for OBRP with perfect partition,
+which directly implies a lower bound for the (general) OBRP.
+The former complements an upper bound in $O(k \cdot \ell)$
+for the OBRP with perfect partition which we present in Section \ref{sec:upperbound}.
 
 \begin{theorem}
-  The competitive ratio of any deterministic algorithm for Online Balanced Partition is $\Omega(k\cdot \ell)$.
+  The competitive ratio of any deterministic algorithm for OBRP is in $\Omega(k\cdot \ell)$.
 \end{theorem}
 
 \begin{proof}
 We construct an instance of the problem with $\ell$ clusters 
 $\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
 Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
-Consider any online algorithm ALG.
+Let ALG be any online algorithm for OBRP.
 We construct the input sequence of requests for ALG as follows.
 First,
-we issue $k-2$ (internal) requests so that ALG form a component of $k-1$
-nodes on clusters $S_1$.
-Note that this does not cost ALG.
-Let $x_0$  be the only single nodes left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
+we issue $k-2$ (internal) requests so that ALG can form a component of $k-1$
+nodes on the cluster $S_1$.
+Recall that internal requests does not incur ALG any cost.
+If ALG at any point splits a component then
+we issue  requests between the parts as many as it is necessary for ALG to collocate the parts,
+as otherwise ALG is not competitive.
+Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
 Next,
 we issue the request between $x_0$ and $y_0$.
 Since this is an external request,
 ALG joins them into one component and collocates them in some cluster other than $S_1$.
 For this,
-ALG moves to a new configuration that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
+ALG moves to a new configuration (i.e., partition)
+that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
 Next,
 we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
 ALG must collocate $x_1$ and $C$ on some cluster other than $S_1$ and
-consequently replaces $x_1$.
+consequently replaces $x_1$ with some other (single) node $x_2$.
 We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
  until there are only two single nodes left that  originate from the same cluster.
 I.e.,
-two single nodes $x^*, y^*,I(x^*) = I(y^*)$
-that constitute the last pair of such nodes.
-At this point there are at most $\ell+1$ single nodes left
-since there must be at least two nodes with the same initial cluster in any subset of $\ell+1$
-nodes.
+two single nodes $x^*, y^*,I(x^*) = I(y^*)$ s.t.~for any other pair of single nodes
+$x'$ and $y'$,
+we have $I(x') \neq I(y')$.
+At this point there are at most $\ell+1$ single nodes left,
+otherwise there would be more pairs of single nodes that were initially in the same cluster.
 Given this sequence of requests,
 the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
- swapping $x_0$ and $y_0$ with $x^*$ and $y^*$ respectively.
+ swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
 Hence,
 OPT pays $4$ for node migrations and
 ALG pays at least one for each node in the sequence $X := x_0, x_1,\dots$.
@@ -264,7 +284,7 @@ We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k.\ell$ nodes,
 therefore $|X| \geq k.\ell - k - \ell \in \Omega(k\cdot\ell)$.
 \end{proof}
 
-\section{Perfect Partition Learner Algorithm}
+\section{Perfect Partition Learner Algorithm}	\label{sec:upperbound}
      
 We assume OPT begins with the initial partition
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
@@ -302,7 +322,8 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
         \State Unite the two components into a single component $C'$ and
         $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$ \label{line:mergecomponents}
 %        \If{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$}
-        \If{$C_1$ and $C_2$ are not in the same cluster w.r.t.~$P_{t-1}$}
+        \If{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$}
+        \Comment{if not in the same cluster}
         \State $P_{t} = \mathit{re\mhyphen partition}(P_{t-1}, P_I, \mathcal{C}$) \label{line:rebalance} 
         \Comment{move to $P$ closest to $P_I$}
         \EndIf
@@ -371,7 +392,7 @@ Hence it never moves to a partition beyond distance $\Delta$.
 
 \section{$O(\ell)$-competitive algorithm for $k=3$}
 
-Let \emph{Greedy} be the algorithm that on each inter-cluster request
+Let \emph{GREEDY} be the algorithm that on each inter-cluster request
  moves to a perfect partition closest to the current one.
  That is,
  a partition reachable with the least number of node swaps from the current partition.
@@ -380,8 +401,8 @@ Let \emph{Greedy} be the algorithm that on each inter-cluster request
 \maciek{Therefore, I would name it differently. The easiest would be to call it "greedy" with an explaination what we mean. Alternatives: CPP (closest perfect partition)}
 
 \begin{lemma} \label{lemma:k=3}
-  The re-balancing cost of Greedy for $k=3$ is $O(1)$.
-  %\maciek{Greedy = find the cheapest (closest to the current) feasible partition}
+  The re-balancing cost of GREEDY for $k=3$ is $O(1)$.
+  %\maciek{GREEDY = find the cheapest (closest to the current) feasible partition}
   \label{rebalancing-cost}
 \end{lemma}
 
@@ -404,25 +425,25 @@ Let \emph{Greedy} be the algorithm that on each inter-cluster request
 
   
 \begin{theorem}
-	Algorithm \emph{Greedy} is $O(\ell)$-competitive when $k=3$.
+	Algorithm \emph{GREEDY} is $O(\ell)$-competitive when $k=3$.
 \end{theorem}
 
 \begin{proof}
 	The adversary issues at most $3\ell$ requests, as otherwise the perfect partition would not exist.
-	Each request triggers at most one re-balancing in \emph{Greedy}
+	Each request triggers at most one re-balancing in \emph{GREEDY}
 	which costs $O(1)$ by Theorem~\ref{rebalancing-cost}.
 	Then,
 	the total cost of any algorithm is $O(\ell)$.
 \end{proof}
 
-We leverage the simple algorithm \emph{Greedy} for $k=3$
+We leverage the simple algorithm \emph{GREEDY} for $k=3$
 towards an algorithm for the general problem
 where the communication graph is not restricted.
 Note that in the general model,
 an optimal partition is not a necessarily a perfect partition.
 We divide the sequence of requests into phases.
 A phase terminates when there is no perfect partition of components.
-We apply requests to \emph{Greedy} as before. 
+We apply requests to \emph{GREEDY} as before. 
 Once the current phase terminates,
 we reset all components by removing (forgetting) all revealed edges,
 and then we proceed to the next phase.
@@ -433,7 +454,7 @@ and then we proceed to the next phase.
 \begin{proof}
 	Consider any phase and assume it terminates upon arrival of some request $r$.
 	By Lemma  \ref{lemma:k=3},
-	\emph{Greedy} pays $O(\ell)$ during the phase.
+	\emph{GREEDY} pays $O(\ell)$ during the phase.
 	If OPT stays in the same configuration throughout the phase,
 	regardless of its partition at the beginning of the phase,        
 	it incurs remote communication cost for at least one request $r'$ (possibly $r'=r$) by the end of the phase.
