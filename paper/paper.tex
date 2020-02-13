@@ -85,6 +85,9 @@
   The partitioning can be updated dynamically by migrating nodes between clusters.
   The goal is to devise online algorithms which jointly minimize the amount of inter-cluster communication and migration cost.
 
+  So far, for this natural problem, the best known deterministic algorithm was $O(k^2\cdot \ell^2)$-competitive, and the best known lower bound was $\Omega(k)$ for the competitive ratio of any deterministic algorithm that used the reduction from the caching problem.
+  In this paper, we significantly improve this lower bound to $\Omega(k\cdot \ell)$.
+  Furthermore, we provide a $O(k\cdot \ell)$-competitive algorithm for the scenario, where the perfect partition of input exists.
 \end{abstract}
     
 \maketitle
