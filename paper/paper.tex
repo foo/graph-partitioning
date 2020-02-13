@@ -217,28 +217,27 @@ other machines), to free up space.
 
 \maciek{I suggest to rename the problem to either: (1) Dynamic Balanced Graph Partition or (2) Online Balanced Graph Partition, as in the SIDMA paper}
 
-Formally, the online \emph{Balanced Re-Partitioning} problem (\OBRP) is defined as
+Formally, the online \emph{Balanced Re-Partitioning} problem (\OBRP{}) is defined as
 follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
-We say that a set of nodes $C \subset V$ is \emph{collocated} in a partition $P$
+We say that nodes in $C \subset V$ are \emph{collocated} in a partition $P$
 if $P$ assigns them to the same cluster.
 \maciek{We can ommit the formal definition: "I.e.,
 $\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". However, if we use the notion of cluster later, then TODO: define cluster}
 The input consists of a sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
 where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a fixed amount of data.
-An online algorithm needs to serve the communication request~$(u_t,v_t)$
-as soon as it arrives.
 Before serving the request,
 the online algorithm
 can re-partition,
 i.e.,
-it may move some of the nodes into clusters different than their current assigned clusters.
-We assume that
-a~communication request between two collocated nodes costs 0,
-the cost of a~communication request between two nodes located in different clusters is~1,
-and the cost of migrating a node from one cluster to another
+it may (optionally) move some of the nodes into clusters different than their current assigned clusters.
+Once the re-partition is executed,
+we serve
+a~communication request between two  nodes at cost~0 if they are collocated,
+or at cost~1 if they are located in different clusters.
+The cost of migrating a node from one cluster to another
 is~$\alpha \in \mathbb{Z}^+$.
 For any algorithm $ALG$,
 its cost,
@@ -247,34 +246,34 @@ is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 \maciek{Not an expert on commas in english, but here it feels like we have too much. Use some tool to determine (Grammarly?)}
 
-\maciek{Here introduce a restricted model of \PPOBRP, the restricted variant where the input sequence can be perfectly partitioned}
+\maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
 In this section we show a lower bound of $\Omega(k \cdot \ell)$.
 The constructed input sequence allows OPT to move to a perfect partition, and hence
-the construction also constitues a lower bound for \PPOBRP.
+the construction also constitutes a lower bound for \PPOBRP{}.
 This complements an upper bound of $O(k \cdot \ell)$
-for \PPOBRP that we present in Section \ref{sec:upperbound}.
+for \PPOBRP{} that we present in Section \ref{sec:upperbound}.
 
 \begin{theorem}
-  The competitive ratio of any deterministic algorithm for \OBRP is in $\Omega(k\cdot \ell)$.
+  The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$.
 \end{theorem}
 
 \begin{proof}
 We construct an instance of the problem with $\ell$ clusters 
 $\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
 Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
-\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}
+\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
 Fix any online algorithm \ALG.
-We construct the input sequence of requests for \ALG as follows.
+We construct the input sequence of requests for \ALG{} as follows.
 First,
-we issue $k-2$ (internal) requests so that \ALG can form a component of $k-1$
+we issue $k-2$ (internal) requests so that \ALG{} can form a component of $k-1$
 nodes on the cluster $S_1$.
 Recall that internal requests does not incur any cost for \ALG.
-If \ALG at any point splits a component\maciek{define splitting}, then
-we continue to issue requests between non-collocated nodes of the component until \ALG collocates the nodes of the component.
-If \ALG never collocates them then it is not competitive.
+If \ALG{}at any point splits a component\maciek{define splitting}, then
+we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
+If \ALG{} never collocates them then it is not competitive.
 
 Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
 Next,
