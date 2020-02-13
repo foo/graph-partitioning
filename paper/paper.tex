@@ -11,8 +11,8 @@
 \mathchardef\mhyphen="2D
 \newcommand{\OPT}{\mathit{OPT}}
 \newcommand{\ALG}{ALG}
-\newcommand{\OBRP}{OBRP}
-\newcommand{\PPOBRP}{PPOBRP}
+\newcommand{\OBRP}{BRP}
+\newcommand{\PPOBRP}{PP-BRP}
 
 \title{Brief Announcement: An Improved Lower Bound for Dynamic Balanced Graph Partitioning}
 
@@ -98,15 +98,15 @@ The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}
 which involves only two cluster.
 
 
-Additionally, we contribute to the research on the optimal online algorithm by presenting a $O(k\ell)$-competitive algorithm for the special case
+Additionally, we contribute to the research on the optimal online algorithm by presenting a $O(k\cdot \ell)$-competitive algorithm for the special case
 where the communication graph (i.e., request sequence) admits a \emph{perfect partition},
 i.e., a (multi-way) cut of cost zero that is also an optimal partition for the offline problem.
 %and every algorithm must colocate every communicating pair.
-Note that our $\Omega(k\ell)$ lower bound generates the input sequence
+Note that our $\Omega(k\cdot \ell)$ lower bound generates the input sequence
 so that the optimal offline choice is a perfect partition.
-\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes}
-\mahmoud{this is already the case in the lower bound proof. Do we still need the last sentence here?}
-\maciek{In general it is OK to emphasize some parts of the paper in the intro. Not sure if this sentence in particular is that important, though.}
+%\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes}
+%\mahmoud{this is already the case in the lower bound proof. Do we still need the last sentence here?}
+%\maciek{In general it is OK to emphasize some parts of the paper in the intro. %Not sure if this sentence in particular is that important, though.}
 
 \section{Related Work}
 
@@ -172,7 +172,7 @@ The objective is to~minimize the total network bandwidth used for communication 
 We assume that the communication patterns are not known in advance to our algorithm.
 We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
 In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
-
+t
 We assume that the physical substrate network is a~tree of height one.
 That is, every physical machine (leaf) is connected directly to the root (that has no hosting capabilities).
 A single physical machine hosts a fixed number of virtual machines.
@@ -212,9 +212,7 @@ other machines), to free up space.
 \section{Problem Definition}
 \label{sec:problem-definition}
 
-\maciek{I suggest to rename the problem to either: (1) Dynamic Balanced Graph Partition or (2) Online Balanced Graph Partition, as in the SIDMA paper}
-
-Formally, the online \emph{Balanced Re-Partitioning} problem (\OBRP{}) is defined as
+Formally, the online \emph{Balanced Graph RePartitioning} problem (\OBRP{}) is defined as
 follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
@@ -300,9 +298,10 @@ the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
 Hence,
 OPT pays $4$ for node migrations and
 ALG pays at least one for each node in the sequence $X := x_0, x_1,\dots$.
-We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k.\ell$ nodes,
-therefore $|X| \geq k.\ell - k - \ell \in \Omega(k\cdot\ell)$.
+We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
+therefore $|X| \geq k \cdot \ell - k - \ell \in \Omega(k\cdot\ell)$.
 \end{proof}
+
 
 \section{Perfect Partition Learner Algorithm}	\label{sec:upperbound}
      
@@ -488,7 +487,7 @@ and then we proceed to the next phase.
 
 \section{Corollary and Future Directions}
 
-The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\ell^2)$.
+The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\cdot\ell^2)$.
 
 
 \section{Todos}
