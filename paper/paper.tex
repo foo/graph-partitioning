@@ -238,19 +238,42 @@ Intially, each node is in its own singleton component.
 Upon receiving a request $(u,v)$, \TAlg merges the components of $u$ and $v$, and moves to the closest partition, where it each component has all of its nodes in one server.
 If no such partition exists, \TAlg resets all its components and finishes the phase.
 
+\maciek{Define "component-respecting" algorithm}
+
 \begin{lemma}
-  Every repartition of \TAlg has the cost $O(1)$.
+  \label{lem:1req}
+  Serving each request incurs the cost at most $3\cdot\alpha$ for \TAlg.
 \end{lemma}
 
-\begin{theorem}
-  In a single phase, \TAlg pays $O(\ell)$.
-\end{theorem}
+\begin{proof}
+  If no partition of \TAlg's components exist, then it performs no repartition, and it pays nothing.
+  Hence, in the following we bound the cost of moving to component-respecting partition.
+
+  We distinguish among three configuration types of any algorithm's cluster: $C_1, C_2, C_3$, which we define as follows. In $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ it contains one component of size $2$ and one component of size $1$. Finally, in $C_3$ it contains one component of size $3$.
+  
+    Consider a request $(u, v)$ and let $U, V$ be clusters of these nodes.
+    If $U=V$, then the request does not require a reconfiguration and GREEDY incurs no cost.
+    Otherwise, we consider cases upon the type of clusters $U$ and $V$.
+    Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
+    If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
+  
+    Finally, we consider the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
+    If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
+    Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise the input graph would not have a perfect partition. In this case GREEDY exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
+\end{proof}
+
 
 \begin{theorem}
   \TAlg is $O(\ell)$-competitive.
 \end{theorem}
 \begin{proof}
-  OPT pays at least $1$ in a single phase.
+  Consider a request $(u,v)$.
+  If $u$ and $v$ are collocated in the same server, then \TAlg pays nothing.
+
+  \TAlg collocates nodes belonging to one component, hence during a single phase, we have at most $2\cdot \ell$ requests to non-collocated nodes.
+  We use Lemma~\ref{lem:1req} to bound the cost of each such request, and therefore \TAlg pays $6\cdot\alpha\cdot \ell$ in a single phase.
+  On the other hand, during each phase, OPT pays at least $1$.
 \end{proof}
 
 \section{Recovering a Perfect Partition}
