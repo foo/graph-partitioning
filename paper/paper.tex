@@ -329,16 +329,25 @@ Hence it never moves to a partition beyond distance $\Delta$.
 %    	So it is 4-competitive (?)}
  \end{proof}
 
-\subsection{$O(\ell)$-competitive algorithm for $k=3$}
+%\subsection{$O(\ell)$-competitive algorithm for $k=3$}
+\subsection{A Simpler Algorithm for $k=3$}
+In this section,
+we give an alternative algorithm for the special case of $k=3$.
+The algorithm does not  improve upon PPL (asymptotically),
+but we will use it in Section \ref{sec:generalModel} for the same special case in the general model.
 
 Let \emph{GREEDY} be the algorithm that on each inter-cluster request
- moves to arbitrary perfect partition \maciek{of input} closest (i.e. reachable in minimum number of node swaps) to the current one.
-
+ moves to a perfect partition
+% \maciek{of input}
+closest to the current partition,
+i.e.,
+reachable in minimum number of node swaps (ties broken arbitrarily).
 
 \begin{lemma} \label{lemma:k=3}
   Every re-balancing cost of GREEDY for $k=3$ is $O(1)$.
   %\maciek{GREEDY = find the cheapest (closest to the current) feasible partition}
-  \maciek{We need to add to the assumption that the input has a perfect partition}
+  \maciek{We need to add to the assumption that the input has a perfect partition
+  \mahmoud{the section now is only about PP model}}
   \label{rebalancing-cost}
 \end{lemma}
 
@@ -364,7 +373,8 @@ Let \emph{GREEDY} be the algorithm that on each inter-cluster request
   
 \begin{theorem}
   Algorithm \emph{GREEDY} is $O(\ell)$-competitive when $k=3$.
-  \maciek{Assumming the perfect partition of input sequence}
+  \maciek{Assumming the perfect partition of input sequence
+  \mahmoud{the section now is only about PP model}}
 \end{theorem}
 
 \begin{proof}
