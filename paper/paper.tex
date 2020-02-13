@@ -140,9 +140,9 @@ follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
 We say that nodes in $C \subset V$ are \emph{collocated} in a partition $P$
-if $P$ assigns them to the same cluster.
-\maciek{We can ommit the formal definition: "I.e.,
-$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". However, if we use the notion of cluster later, then TODO: define cluster}
+if they are assigned to the same cluster.
+%\maciek{We can ommit the formal definition: "I.e.,
+%$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". %However, if we use the notion of cluster later, then TODO: define cluster}
 The input consists of a sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
 where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a fixed amount of data.
@@ -162,7 +162,6 @@ its cost,
 denoted by $ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
-\maciek{Not an expert on commas in english, but here it feels like we have too much. Use some tool to determine (Grammarly?)}
 
 \maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
 
@@ -433,7 +432,7 @@ The gap between upper and lower bound is still substantial, as the best known al
 
 \todo{CCS concepts are mandatory}
 
-\todo{$. \rightarrow \cdot$}
+\todo{Check grammar}
 
 \todo{Font for OPT, ALG, DET, dist etc}
 
