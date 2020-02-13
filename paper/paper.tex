@@ -77,50 +77,43 @@
 
 
 \begin{abstract}
-  In the Dynamic Graph Partitioning problem, we are given a sequence of pairwise communication requests between n nodes, with patterns that may change over time.
+  In the online Graph RePartitioning problem, we are given a sequence of pairwise communication requests between n nodes, revealed online.
   The objective is to service these requests by partitioning the nodes into $\ell$ clusters, each of size $k$, such that frequently communicating nodes are located in the same cluster.
-  The partitioning can be updated dynamically by migrating nodes between clusters.
-  The goal is to devise online algorithms which jointly minimize the amount of inter-cluster communication and migration cost.
+  The partitioning can be updated by migrating nodes between clusters for a fixed cost.
+  The goal is to jointly minimize the amount of inter-cluster communication and migration cost.
 
   So far, for this natural problem, the best known deterministic algorithm was $O(k^2\cdot \ell^2)$-competitive, and the best known lower bound was $\Omega(k)$ for the competitive ratio of any deterministic algorithm that used the reduction from the caching problem.
-  In this paper, we significantly improve this lower bound to $\Omega(k\cdot \ell)$.
-  Furthermore, we provide a $O(k\cdot \ell)$-competitive algorithm for the scenario, where the perfect partition of input exists.
+  In this paper, we provide the lower bound of $\Omega(k\cdot \ell)$.
+  %Furthermore, we provide a $O(k\cdot \ell)$-competitive algorithm for the scenario, where the perfect partition of input exists.
 \end{abstract}
     
 \maketitle
     
 \renewcommand{\shortauthors}{M.~Pacut, M.~Parham, S.~Schmid}
 
-\section{Introduction}
+\section{Introduction and Related Work}
 
-We study (...) in the scenario where virtual machines can be migrated during runtime to another physical machine.
-The possibility of migration allows reacting to unpredictable communication patterns.
-If some distant nodes communicate often, it is vital to reduce their distance to save network bandwidth.
-The objective is to~minimize the total network bandwidth used for communication and for migration.
+%We study (...) in the scenario where virtual machines can be migrated during runtime to another physical machine.
+%The possibility of migration allows reacting to unpredictable communication patterns.
+%If some distant nodes communicate often, it is vital to reduce their distance to save network bandwidth.
+%The objective is to~minimize the total network bandwidth used for communication and for migration.
 
 Main technical contribution of this paper is the lower bound $\Omega(k\cdot\ell)$ for the competitive ratio of any deterministic algorithm for Online Balanced Partition problem.
 The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}
 which involves only two cluster.
 
 
-Additionally, we contribute to the research on the optimal online algorithm by presenting a $O(k\cdot \ell)$-competitive algorithm for the special case
-where the communication graph (i.e., request sequence) admits a \emph{perfect partition},
-i.e., a (multi-way) cut of cost zero that is also an optimal partition for the offline problem.
-%and every algorithm must colocate every communicating pair.
-Note that our $\Omega(k\cdot \ell)$ lower bound generates the input sequence
-so that the optimal offline choice is a perfect partition.
-%\maciek{Also, it is easy to construct the adversary that forces collocation of requested nodes}
-%\mahmoud{this is already the case in the lower bound proof. Do we still need the last sentence here?}
-%\maciek{In general it is OK to emphasize some parts of the paper in the intro. %Not sure if this sentence in particular is that important, though.}
+So far, the competitive ratio of the best known algorithm was $O(k^2\cdot \ell^2)$ \cite{repartition-disc}.
+We present a $O(k\cdot \ell)$-competitive algorithm for the restricted scenario
+where the communication graph (i.e., request sequence) admits a \emph{perfect partition} (i.e., a multi-way cut of cost zero) that is also an optimal partition for the offline problem.
+For this setting, the algorithm is optimal, as the lower bound utilized an input sequence that has a perfect partition.
 
-\section{Related Work}
+The problem was studied under resource augmentation \cite{repartition-disc}, and under stochastic assumptions of input\maciek{cite}.\maciek{cite other papers that cite DISC?}
 
-In this paper we study the online Balanced RePartitioning problem (formally presented in Section~\ref{sec:problem-definition}).
-The static offline version of~the~problem, i.e., a problem variant where
-migration is not allowed, and all requests are known in advance is known as the
-\emph{$\ell$-balanced graph partitioning problem}. The problem is 
+The static offline version of~the~problem, called the
+\emph{$\ell$-balanced graph partitioning problem} is 
 NP-complete, and cannot even be approximated within any finite factor unless P
-= NP~\cite{AndRae06}.  The static
+= NP~\cite{AndRae06}. The static
 variant where $\ell = 2$ corresponds to the minimum bisection problem, which
 is already NP-hard~\cite{GaJoSt76}, and 
 the currently best approximation ratio is $O(\log n)$~\cite{SarVaz95,ArKaKa99,FeKrNi00,FeiKra02,KraFei06,Raec08}.
@@ -164,6 +157,7 @@ is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
 \maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
+\maciek{ every algorithm must colocate every communicating pair.}
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
@@ -242,7 +236,6 @@ As a result,
 ON never ends up with a partition that is more than $\Delta$ away from $P_I$.
 This invariant ensures that ON does not pay too much while reaching $P_F$.
 
-\maciek{We should figure out a better name than "distance". We usually apply two arguments to distance. Examples of names that can be applied to only one configuration as a parameter: radius, span, stretch, spread, width. Also: difference, disparity, distinction, alternation}
 
 \begin{algorithm}
     \renewcommand{\algorithmicrequire}{\textbf{Input:}}
