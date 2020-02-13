@@ -136,6 +136,8 @@ We say that nodes in $C \subset V$ are \emph{collocated} in a partition $P$
 if they are assigned to the same cluster.
 %\maciek{We can ommit the formal definition: "I.e.,
 %$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". %However, if we use the notion of cluster later, then TODO: define cluster}
+%\maciek{We can ommit the formal definition: "I.e.,
+%$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". However, if we use the notion of cluster later, then TODO: define cluster}
 The input consists of a sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
 where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a fixed amount of data.
@@ -156,8 +158,15 @@ denoted by $ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
+\subsection{Perfect Partition Model}\label{sec:perfectPartition}
 \maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
 \maciek{ every algorithm must colocate every communicating pair.}
+
+In this paper we mostly focus on a restricted variant of   \PPOBRP{}
+where the communication graph can be partitioned into $\ell$ clusters without any inter-cluster edges.
+Moreover, we assume an optimal offline algorithm (OPT) moves to this \emph{perfect partition}
+at the beginning and stays there permanently.
+Then the task of an online algorithm is to "recover" (or learn) the perfect partition while not paying too much more than OPT.
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
@@ -218,8 +227,7 @@ We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
 therefore $|X| \geq k \cdot \ell - k - \ell \in \Omega(k\cdot\ell)$.
 \end{proof}
 
-
-\section{Perfect Partition Learner Algorithm}	\label{sec:upperbound}
+\section{Recovering a Perfect Partition}	\label{sec:upperbound}
      
 We assume OPT begins with the initial partition
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
@@ -267,9 +275,7 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
     \label{alg:ppl}
       \end{algorithm}
   
-      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial configuration}
-
-
+%      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial configuration}
       We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current partition $P$ with a (perfect) partition closest to $P_I$.
 Hence it never moves to a partition beyond distance $\Delta$.      
 \begin{property} \label{prop:dist<OPT}
@@ -319,11 +325,11 @@ Hence it never moves to a partition beyond distance $\Delta$.
     By Lemma \ref{lemma:rebalancecost},
     each re-partition costs at most $2\cdot\OPT$.
     The total cost is therefore at most $2\cdot\OPT\cdot k\cdot\ell$ which implies the competitive ratio.
-    \mahmoud{This is the cost of moving and the cost of remote comm. is not counted.
-    	So it is 4-competitive (?)}
+%    \mahmoud{This is the cost of moving and the cost of remote comm. is not counted.
+%    	So it is 4-competitive (?)}
  \end{proof}
 
-\section{$O(\ell)$-competitive algorithm for $k=3$}
+\subsection{$O(\ell)$-competitive algorithm for $k=3$}
 
 Let \emph{GREEDY} be the algorithm that on each inter-cluster request
  moves to arbitrary perfect partition \maciek{of input} closest (i.e. reachable in minimum number of node swaps) to the current one.
@@ -368,6 +374,8 @@ Let \emph{GREEDY} be the algorithm that on each inter-cluster request
 	Then,
 	the total cost of any algorithm is $O(\ell)$.
 \end{proof}
+
+\section{Arbitrary Communication Graph} \label{sec:generalModel}
 
 We leverage the simple algorithm \emph{GREEDY} for $k=3$
 towards an algorithm for the general problem
