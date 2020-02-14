@@ -181,8 +181,12 @@ Then the task of an online algorithm is to "recover" (or learn) the perfect part
 This implies that on a request between any two non-collocated nodes,
 any online algorithm must eventually collocate them,
 as otherwise it not competitive under a sequence that repeats the same request arbitrarily many times.
-
-\maciek{Note that the algorithm from Section~\ref{sec:k3} is $O(\ell)$-competitive for the Perfect Partition Model, as during the first phase, a perfect partition of input exists.}
+Hence,
+any competitive algorithm,
+must at some point collocate all nodes of a  connected sub-graph of the communication graph.
+We refer to this connected sub-graph as a \emph{component}.
+An algorithm that always keeps a component collocated is \emph{component-respecting}.
+%\maciek{Note that the algorithm from Section~\ref{sec:k3} is $O(\ell)$-competitive for the Perfect Partition Model, as during the first phase, a perfect partition of input exists.}
 
 \subsection{An $O(k\cdot \ell)$-competitive Algorithm for Perfect Partition}
      
