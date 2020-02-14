@@ -173,11 +173,12 @@ the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 \maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
 \maciek{ every algorithm must colocate every communicating pair.
 	\mahmoud{updated!}}
-We  focus on a restricted variant of   \PPOBRP{}
+We  focus on a restricted variant of  \OBRP{},
 where the communication graph can be partitioned into $\ell$ clusters without any inter-cluster edges.
 Moreover, we assume an optimal offline algorithm (OPT) moves to this \emph{perfect partition}
 at the beginning and stays there permanently.
-Then the task of an online algorithm is to "recover" (or learn) the perfect partition while not paying too much more than OPT.
+We refer this variant as \PPOBRP{}.
+The task of an online algorithm for \PPOBRP{} is to "recover" (or learn) the perfect partition while not paying too much more than OPT.
 This implies that on a request between any two non-collocated nodes,
 any online algorithm must eventually collocate them,
 as otherwise it not competitive under a sequence that repeats the same request arbitrarily many times.
@@ -295,7 +296,7 @@ Hence it never moves to a partition beyond distance $\Delta$.
 
 In this section we show a lower bound of $\Omega(k \cdot \ell)$.
 The constructed input sequence allows OPT to move to a perfect partition, and hence
-the construction also constitutes a lower bound for \PPOBRP{}.
+the construction also constitutes a lower bound for \OBRP{}.
 This complements an upper bound of $O(k \cdot \ell)$
 for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 
