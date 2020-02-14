@@ -5,7 +5,7 @@
 %\usepackage{xspace}
 \usepackage{balance}
 \usepackage{amsmath,amsfonts,mathtools,amsthm}
-\usepackage[noend]{algpseudocode}
+\usepackage{algorithmic}
 \usepackage{algorithm}
 
 \mathchardef\mhyphen="2D
@@ -84,16 +84,28 @@
 
 
 \begin{abstract}
-  In the online Graph RePartitioning problem, we are given a sequence of pairwise communication requests between n nodes, revealed online.
-  The objective is to service these requests by partitioning the nodes into $\ell$ clusters, each of size $k$, such that frequently communicating nodes are located in the same cluster.
-  The partitioning can be updated by migrating nodes between clusters for a fixed cost.
-  The goal is to jointly minimize the amount of inter-cluster communication and migration cost.
+  In the online Graph RePartitioning problem,
+  a sequence of communication requests arrives online,
+  between pairs of $n$ nodes that are partitioned into $\ell$ clusters
+  each of size $k$ (i.e., $n = \ell \cdot k$).
+  The objective is to serve these requests while paying a cost that is reasonably close to the optimal cost of serving them given  the whole sequence in advance. 
+  This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
+  such that frequently communicating nodes (from different clusters)
+  are relocated to the same cluster before they inflict too much communication cost.
+  A \emph{reconfiguration} (i.e., re-partitioning) is performed by
+  moving (i.e., migrating) nodes between clusters at a cost.
+  The goal is to jointly minimize communication and migration costs while serving the sequence.
 
-  So far, for this natural problem, the best known deterministic algorithm was $O(k^2\cdot \ell^2)$-competitive, and the best known lower bound was $\Omega(k)$ for the competitive ratio of any deterministic algorithm that used the reduction from the caching problem.
-  In this paper, we provide the lower bound of $\Omega(k\cdot \ell)$.
-  
-  We also present the optimal algorithm for $k=3$.
-  Finally, we provide a $O(k\cdot \ell)$-competitive algorithm for the scenario, where the perfect partition of input exists.
+	The best known deterministic algorithm is $O(k^2\cdot \ell^2)$-competitive \cite{?????},
+	and the best known lower bound for the competitive ratio of
+	deterministic algorithms is $\Omega(k)$,
+	which uses a reduction from the online paging problem.
+	  In this paper, we provide the lower bound of $\Omega(k\cdot \ell)$.
+    We also present an optimal algorithm for the case of $k=3$.
+  Finally,
+  we provide a $O(k\cdot \ell)$-competitive algorithm for the variant
+  where the optimal configuration is always a fixed partition
+  that incurs zero communication cost through the whole request sequence.
 \end{abstract}
     
 \maketitle
@@ -117,11 +129,14 @@ For this setting, the algorithm is optimal, as the lower bound utilized an input
 
 The problem was studied under resource augmentation \cite{repartition-disc}, and under stochastic assumptions of input\maciek{cite}.\maciek{cite other papers that cite DISC?}
 
-The model is related to online
-caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}. In our
-setting, requests can be served remotely, which is
-reminiscent of caching models \emph{with
-bypassing}~\cite{EpImLN11,EpImLN15,Irani02}.
+%The model is related to online
+%paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}.
+In our
+setting,
+each  requests between two nodes  not in the same cluster
+(i.e., inter-cluster requests) inflicts a cost until the nodes are placed in the same cluster.
+This is a reminiscent of caching models \emph{with
+rejection} penalty~\cite{EpImLN11,EpImLN15,Irani02}.
 
 The static offline version of~the~problem, called the
 \emph{$\ell$-balanced graph partitioning problem} is 
@@ -141,7 +156,8 @@ Formally, the online \emph{Balanced RePartitioning} problem (\OBRP{}) is defined
 follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
-We say that nodes in $C \subset V$ are \emph{collocated}% in a partition $P$
+We say that nodes in $C \subset V$ are \emph{collocated}
+% in a partition $P$
 if they are assigned to the same cluster.
 %\maciek{We can ommit the formal definition: "I.e.,
 %$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". %However, if we use the notion of cluster later, then TODO: define cluster}
@@ -181,8 +197,68 @@ Hence,
 any competitive algorithm,
 must at some point collocate all nodes of a  connected sub-graph of the communication graph.
 We refer to this connected sub-graph as a \emph{component}.
-An algorithm that always keeps a component collocated is \emph{component-respecting}.
+An algorithm that  keeps all components collocated is \emph{component-respecting}.
 
+\section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
+\label{sec:lowerbound}
+
+In this section we show a lower bound of $\Omega(k \cdot \ell)$ for \OBRP{}.
+The constructed input sequence allows OPT to move to a perfect partition, and hence
+the construction also constitutes a lower bound for \PPOBRP{}.
+This complements an upper bound of $O(k \cdot \ell)$
+for \PPOBRP{} that we present in Section \ref{sec:ppl}.
+
+\begin{theorem}
+	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$.
+\end{theorem}
+
+\begin{proof}
+	We construct an instance of the problem with $\ell$ clusters 
+	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
+	Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
+	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
+	Fix any online algorithm \ALG{}.
+	We construct the input sequence of requests for \ALG{} as follows.
+	First,
+	we issue $k-2$ (internal) requests so that \ALG{} can form a component of $k-1$
+	nodes on the cluster $S_1$.
+	Recall that internal requests does not incur any cost for \ALG{}.
+	If \ALG{} at any point splits a component
+	(i.e., spreads its nodes over two or more clusters),
+	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
+	If \ALG{} never collocates them then it is not competitive.
+	
+	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
+	Next,
+	we issue the request between $x_0$ and $y_0$.
+	Since this is an external request,
+	\ALG{} joins them into one component and collocates them in some cluster other than $S_1$.
+	For this,
+	\ALG{} moves to a new configuration
+	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
+	
+	Next,
+	we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
+	\ALG{} must collocate $x_1$ and $C$ on some cluster other than $S_1$ and
+	consequently replaces $x_1$ with some other (single) node $x_2$.
+	We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
+	until there are only two single nodes left that  originate from the same cluster.
+	I.e.,
+	two single nodes $x^*, y^*,I(x^*) = I(y^*)$ s.t.~for any other pair of single nodes
+	$x'$ and $y'$,
+	we have $I(x') \neq I(y')$.
+	At this point there are at most $\ell+1$ single nodes left,
+	otherwise there would be more pairs of single nodes that were initially in the same cluster.
+	
+	Given this sequence of requests,
+	the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
+	swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
+	Hence,
+	OPT pays for $4$ node migrations and
+	\ALG{} incurs at least one migration for each node in the sequence $X := x_0, x_1,\dots$.
+	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
+	therefore $|X| \geq k \cdot \ell - k - \ell \in \Omega(k\cdot\ell)$.
+\end{proof}
 
 \section{Recovering a Perfect Partition}	\label{sec:ppl}
 %\subsection{Perfect Partition Model}\label{sec:perfectPartition}
@@ -213,28 +289,29 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 \begin{algorithm}
     \renewcommand{\algorithmicrequire}{\textbf{Input:}}
     \renewcommand{\algorithmicensure}{\textbf{Output:}}
-    \begin{algorithmic}[1]
-        \Require 
-        $k, \ell$,
-        initial configuration $P_I$,
-        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
-        \Ensure A final configuration $P_F$ 
-        \State For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$
-        \State{$P_0 := P_I$}
+    \begin{algorithmic}
+%        \Require 
+%        $k, \ell$,
+%        initial configuration $P_I$,
+%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
+%        \Ensure A final configuration $P_F$ 
+        \STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$}
+        \STATE{$P_0 := P_I$}
          \label{line:initcomponents}
-        \For {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
-        \State Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
-        \If{$C_1 \neq C_2$}
-        \State Unite the two components into a single component $C'$ and
-        $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$ \label{line:mergecomponents}
-%        \If{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$}
-        \If{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$}
-        \Comment{if not in the same cluster}
-        \State $P_{t} = \mathit{re\mhyphen partition}(P_{t-1}, P_I, \mathcal{C}$) \label{line:rebalance} 
-        \Comment{move to $P$ closest to $P_I$}
-        \EndIf
-        \EndIf
-        \EndFor
+        \FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
+        \STATE Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
+        \IF{$C_1 \neq C_2$}
+        \STATE {Unite the two components into a single component $C'$ and
+        $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$} \label{line:mergecomponents}
+        \IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
+	     \COMMENT{i.e.~if not in the same cluster}    
+    	}       
+        \STATE {$P_{t} = \mathit{re\mhyphen partition}(P_{t-1}, P_I, \mathcal{C})$} 
+         \COMMENT{move to $P$ closest to $P_I$}
+        \label{line:rebalance} 
+        \ENDIF
+        \ENDIF
+        \ENDFOR
     \end{algorithmic}
     \caption{Perfect Partition Learner (PPL)}
     \label{alg:ppl}
@@ -294,70 +371,10 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 %    	So it is 4-competitive (?)}
  \end{proof}
 
-\section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
-\label{sec:lowerbound}
-
-In this section we show a lower bound of $\Omega(k \cdot \ell)$ for \OBRP{}.
-The constructed input sequence allows OPT to move to a perfect partition, and hence
-the construction also constitutes a lower bound for \PPOBRP{}.
-This complements an upper bound of $O(k \cdot \ell)$
-for \PPOBRP{} that we present in Section \ref{sec:ppl}.
-
-\begin{theorem}
-	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$.
-\end{theorem}
-
-\begin{proof}
-	We construct an instance of the problem with $\ell$ clusters 
-	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
-	Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
-%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
-	Fix any online algorithm \ALG{}.
-	We construct the input sequence of requests for \ALG{} as follows.
-	First,
-	we issue $k-2$ (internal) requests so that \ALG{} can form a component of $k-1$
-	nodes on the cluster $S_1$.
-	Recall that internal requests does not incur any cost for \ALG{}.
-	If \ALG{} at any point splits a component
-	(i.e., spreads its nodes over two or more clusters),
-	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
-	If \ALG{} never collocates them then it is not competitive.
-	
-	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
-	Next,
-	we issue the request between $x_0$ and $y_0$.
-	Since this is an external request,
-	\ALG{} joins them into one component and collocates them in some cluster other than $S_1$.
-	For this,
-	\ALG{} moves to a new configuration
-	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
-	
-	Next,
-	we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
-	\ALG{} must collocate $x_1$ and $C$ on some cluster other than $S_1$ and
-	consequently replaces $x_1$ with some other (single) node $x_2$.
-	We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
-	until there are only two single nodes left that  originate from the same cluster.
-	I.e.,
-	two single nodes $x^*, y^*,I(x^*) = I(y^*)$ s.t.~for any other pair of single nodes
-	$x'$ and $y'$,
-	we have $I(x') \neq I(y')$.
-	At this point there are at most $\ell+1$ single nodes left,
-	otherwise there would be more pairs of single nodes that were initially in the same cluster.
-	
-	Given this sequence of requests,
-	the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
-	swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
-	Hence,
-	OPT pays for $4$ node migrations and
-	\ALG{} incurs at least one migration for each node in the sequence $X := x_0, x_1,\dots$.
-	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
-	therefore $|X| \geq k \cdot \ell - k - \ell \in \Omega(k\cdot\ell)$.
-\end{proof}
 
 \section{Corollary and Future Directions}
 
-The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\cdot\ell^2)$.
+The gap between upper and lower bound is still substantial, as the best known algorithm is the component-respecting algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\cdot\ell^2)$.
 
 
 \bibliographystyle{ACM-Reference-Format}
