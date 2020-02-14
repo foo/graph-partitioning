@@ -129,11 +129,14 @@ For this setting, the algorithm is optimal, as the lower bound utilized an input
 
 The problem was studied under resource augmentation \cite{repartition-disc}, and under stochastic assumptions of input\maciek{cite}.\maciek{cite other papers that cite DISC?}
 
-The model is related to online
-caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}. In our
-setting, requests can be served remotely, which is
-reminiscent of caching models \emph{with
-bypassing}~\cite{EpImLN11,EpImLN15,Irani02}.
+%The model is related to online
+%paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}.
+In our
+setting,
+each  requests between two nodes  not in the same cluster
+(i.e., inter-cluster requests) inflicts a cost until the nodes are placed in the same cluster.
+This is a reminiscent of caching models \emph{with
+rejection} penalty~\cite{EpImLN11,EpImLN15,Irani02}.
 
 The static offline version of~the~problem, called the
 \emph{$\ell$-balanced graph partitioning problem} is 
@@ -194,7 +197,7 @@ Hence,
 any competitive algorithm,
 must at some point collocate all nodes of a  connected sub-graph of the communication graph.
 We refer to this connected sub-graph as a \emph{component}.
-An algorithm that always keeps a component collocated is \emph{component-respecting}.
+An algorithm that  keeps all components collocated is \emph{component-respecting}.
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
@@ -370,7 +373,7 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 
 \section{Corollary and Future Directions}
 
-The gap between upper and lower bound is still substantial, as the best known algorithm is the component-based algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\cdot\ell^2)$.
+The gap between upper and lower bound is still substantial, as the best known algorithm is the component-respecting algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\cdot\ell^2)$.
 
 
 \bibliographystyle{ACM-Reference-Format}
