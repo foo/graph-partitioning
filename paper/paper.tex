@@ -5,7 +5,7 @@
 %\usepackage{xspace}
 \usepackage{balance}
 \usepackage{amsmath,amsfonts,mathtools,amsthm}
-\usepackage[noend]{algpseudocode}
+\usepackage{algorithmic}
 \usepackage{algorithm}
 
 \mathchardef\mhyphen="2D
@@ -289,28 +289,29 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
 \begin{algorithm}
     \renewcommand{\algorithmicrequire}{\textbf{Input:}}
     \renewcommand{\algorithmicensure}{\textbf{Output:}}
-    \begin{algorithmic}[1]
-        \Require 
-        $k, \ell$,
-        initial configuration $P_I$,
-        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
-        \Ensure A final configuration $P_F$ 
-        \State For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$
-        \State{$P_0 := P_I$}
+    \begin{algorithmic}
+%        \Require 
+%        $k, \ell$,
+%        initial configuration $P_I$,
+%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
+%        \Ensure A final configuration $P_F$ 
+        \STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$}
+        \STATE{$P_0 := P_I$}
          \label{line:initcomponents}
-        \For {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
-        \State Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
-        \If{$C_1 \neq C_2$}
-        \State Unite the two components into a single component $C'$ and
-        $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$ \label{line:mergecomponents}
-%        \If{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$}
-        \If{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$}
-        \Comment{if not in the same cluster}
-        \State $P_{t} = \mathit{re\mhyphen partition}(P_{t-1}, P_I, \mathcal{C}$) \label{line:rebalance} 
-        \Comment{move to $P$ closest to $P_I$}
-        \EndIf
-        \EndIf
-        \EndFor
+        \FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
+        \STATE Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
+        \IF{$C_1 \neq C_2$}
+        \STATE {Unite the two components into a single component $C'$ and
+        $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$} \label{line:mergecomponents}
+        \IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
+	     \COMMENT{i.e.~if not in the same cluster}    
+    	}       
+        \STATE {$P_{t} = \mathit{re\mhyphen partition}(P_{t-1}, P_I, \mathcal{C})$} 
+         \COMMENT{move to $P$ closest to $P_I$}
+        \label{line:rebalance} 
+        \ENDIF
+        \ENDIF
+        \ENDFOR
     \end{algorithmic}
     \caption{Perfect Partition Learner (PPL)}
     \label{alg:ppl}
