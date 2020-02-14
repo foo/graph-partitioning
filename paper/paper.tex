@@ -399,7 +399,7 @@ The gap between upper and lower bound is still substantial, as the best known al
   
 
 
-  \section{An Optimal Algorithm for $k=3$ (most likely wrong)}
+  \section{An Optimal Algorithm for $k=3$}
 
   In this section we provide an optimal algorithm for the case $k=3$.
   
@@ -447,28 +447,55 @@ The gap between upper and lower bound is still substantial, as the best known al
     \TAlg{} is $O(\ell)$-competitive.
   \end{theorem}
   \begin{proof}
-    Fix a phase of \TAlg, and consider the state of its counters at the end of it.
-
-    Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
-    Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components throughout this phase.
-    Let $A^M$ be the cost of migrations performed by \TAlg in this phase.
-
+    Fix a completed phase of \TAlg, and consider the state of its counters at the end of it.
     We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
+
+    We partition the input sequence $\sigma$ that arrived during the phase into subsequences $\sigma_I$ (called \emph{internal}) and $\sigma_E$ (called \emph{external}), defined as follows.
+    Requests $\sigma_E$ concern pairs of nodes that belong to the same component of \TAlg at the end of the phase, and $\sigma_E$ denotes all other requests issued during this phase.
+
+    %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
+    %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
+    Let $ALG(M)$ be the cost of migrations performed by \TAlg in this phase.
+
     
 
     During a single phase, at most $2\cdot \ell$ component merge operations are performed.
     Exceeding this number would mean that a component of size $4$ would emerge, a contradiction.
-    Together with Lemma~\ref{lem:1req}, this gives us $A^M \leq 6\cdot\alpha\cdot\ell$.
+    Together with Lemma~\ref{lem:1req}, this gives us $ALG(M) \leq 6\cdot\alpha\cdot\ell$.
     
-    Now we bound $A^I$.
+    Now we bound $ALG(\sigma_I)$.
     Each component of size $3$ contributes at most $(3\cdot \alpha - 1)$ to $A^I$, as at most $2$ of its pairs are saturated and contribute $\alpha$ each, and the unsaturated pair contributes at most $\alpha-1$.
-    Each of $\ell$ clusters of \TAlg contain at most one component of size $3$ (other cluster configurations contribute less: $3$ singletons contribute $0$ and a component of size $2$ contributes at most $\alpha$ to $A^I$), and in total, $A^I \leq \ell \cdot (3\cdot \alpha-1)$.
+    Each of $\ell$ clusters of \TAlg contain at most one component of size $3$ (other cluster configurations contribute less: $3$ singletons contribute $0$ and a component of size $2$ contributes at most $\alpha$ to $A^I$), and in total, $ALG(\sigma_I) \leq \ell \cdot (3\cdot \alpha-1)$.
 
-    We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
+    %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
+    %\maciek{not needed most likely}
 
-    In total, the cost of \TAlg is at most $A^I + A^E + A^M$ during the phase.
+    In total, the cost of \TAlg is at most $ALG(\sigma_I) + ALG(\sigma_E) + ALG(M) \leq 9\alpha\cdot \ell + ALG(\sigma_E)$ during this phase.
 
-    Now we lower bound the cost of $\OPT$.
+    \medskip
+
+    Now we lower bound the cost of $\OPT$ by $\OPT(\sigma_I) +\OPT(\sigma_E)+\OPT(M)$, defined with respect to components of \TAlg.
+    We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
+    While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts.
+
+    %Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
+    %Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
+    %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
+
+    We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg could not be partitioned without splitting them, and there exist a pair of nodes with at least $\alpha$ requests between them.
+    $\OPT$ either served them remotely or performed a migration.
+
+    Now we bound $\OPT(M) + \OPT(\sigma_E))$.
+
+    \medskip
+
+    Now we consider the last, unfinished phase.
+    If the unfinished phase is also the first one, then we use the fact that we started with the same initial configuration.
+    Then, we charge $\OPT$ $\alpha$ for first $\alpha$ requests or a migration,
+    and we follow the analysis regarding the unsaturated requests.
+    \maciek{todo}
+
+    If we have at least two phases, then we assume that OPT did not pay during that, and the cost of ALG increases at most twofold.
   \end{proof}
   
 
