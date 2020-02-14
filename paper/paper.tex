@@ -408,15 +408,15 @@ The gap between upper and lower bound is still substantial, as the best known al
   %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
 
   We say that \TAlg is \emph{component respecting}, i.e., it maintaints the invariant that nodes of each component are located at the same server.
-
+  Observe that this implies that \TAlg never increases any counter above $\alpha$.
   
   \begin{lemma}
     \label{lem:1req}
-    Serving each request incurs the cost at most $3\cdot\alpha$ for \TAlg.
+    A single repartition incurs the cost at most $3\cdot\alpha$ for \TAlg.
   \end{lemma}
   
   \begin{proof}
-    If no partition of \TAlg's components exist, then it performs no repartition, and it pays nothing.
+    If no partition of \TAlg's components exist, then it performs no repartition, and serves the request remotely, incurring the cost $1$.
     Hence, in the following we bound the cost of moving to component-respecting partition.
   
     We distinguish among three configuration types of any algorithm's cluster: $C_1, C_2, C_3$, which we define as follows. In $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ it contains one component of size $2$ and one component of size $1$. Finally, in $C_3$ it contains one component of size $3$.
@@ -438,12 +438,28 @@ The gap between upper and lower bound is still substantial, as the best known al
     \TAlg is $O(\ell)$-competitive.
   \end{theorem}
   \begin{proof}
-    Consider a request $(u,v)$.
-    If $u$ and $v$ are collocated in the same server, then \TAlg pays nothing.
-  
-    \TAlg collocates nodes belonging to one component, hence during a single phase, we have at most $2\cdot \ell$ requests to non-collocated nodes.
-    We use Lemma~\ref{lem:1req} to bound the cost of each such request, and therefore \TAlg pays $6\cdot\alpha\cdot \ell$ in a single phase.
-    On the other hand, during each phase, OPT pays at least $1$.
+    Fix a phase of \TAlg, and consider the state of its counters at the end of it.
+
+    Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
+    Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components throughout this phase.
+    Let $A^M$ be the cost of migrations performed by \TAlg in this phase.
+
+    We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
+    
+
+    During a single phase, at most $2\cdot \ell$ component merge operations are performed.
+    Exceeding this number would mean that a component of size $4$ would emerge, a contradiction.
+    Together with Lemma~\ref{lem:1req}, this gives us $A^M \leq 6\cdot\alpha\cdot\ell$.
+    
+    Now we bound $A^I$.
+    Each component of size $3$ contributes at most $(3\cdot \alpha - 1)$ to $A^I$, as at most $2$ of its pairs are saturated and contribute $\alpha$ each, and the unsaturated pair contributes at most $\alpha-1$.
+    Each of $\ell$ clusters of \TAlg contain at most one component of size $3$ (other cluster configurations contribute less: $3$ singletons contribute $0$ and a component of size $2$ contributes at most $\alpha$ to $A^I$), and in total, $A^I \leq \ell \cdot (3\cdot \alpha-1)$.
+
+    We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
+
+    In total, the cost of \TAlg is at most $A^I + A^E + A^M$ during the phase.
+
+    Now we lower bound the cost of $\OPT$.
   \end{proof}
   
 
