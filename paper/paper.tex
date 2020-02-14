@@ -192,8 +192,9 @@ First,
 we issue $k-2$ (internal) requests so that \ALG{} can form a component of $k-1$
 nodes on the cluster $S_1$.
 Recall that internal requests does not incur any cost for \ALG.
-If \ALG{}at any point splits a component\maciek{define splitting}, then
-we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
+If \ALG{} at any point splits a component
+(i.e., spreads its nodes over two or more clusters),
+then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
 If \ALG{} never collocates them then it is not competitive.
 
 Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
@@ -252,7 +253,7 @@ $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
 $P_F = F_1, \dots, F_{\ell}$.
  The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ from the initial partition is the number of nodes in $P$ that do not reside in their initial cluster.
     That is,
-    $\mathit{dist}(P, P_I) = \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
+    $\mathit{dist}(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
 In other words,
 at least $\mathit{dist}(P, P_I)/2$ node swaps are required in order to reach the partition $P$ from $P_I$.
 Therefore,
