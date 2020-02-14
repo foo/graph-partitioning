@@ -398,14 +398,14 @@ The gap between upper and lower bound is still substantial, as the best known al
   We define the algorithm \TAlg in the following way.
   \TAlg maintains components for each node.
   Intially, each node is in its own singleton component.
-  Upon receiving a request $(u,v)$, \TAlg merges the components of $u$ and $v$, and moves to the closest partition, where it each component has all of its nodes in one server.
+  For each pair of nodes \TAlg maintains a counter, initiated $0$, and upon receiving a request to this pair while its nodes are located on different servers, it increases the counter by $1$.
+  If a counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest partition, where it each component has all of its nodes in one server.
+  If no such partition exists, \TAlg resets all components to singletons and all counters to $0$.
 
-  \maciek{Component reseting magic}
-  Now we define what \TAlg does when no such partition exists.
-  If the resulting component (of $u$ and $v$) has size $4$, then \TAlg resets all internal requests that concern this component.
-  Otherwise, \TAlg resets all its components and ends the phase.
-  
-  \maciek{Define "component-respecting" algorithm}
+  %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
+
+  We say that \TAlg is \emph{component respecting}, i.e., it maintaints the invariant that nodes of each component are located at the same server.
+
   
   \begin{lemma}
     \label{lem:1req}
