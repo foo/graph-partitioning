@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 %\usepackage{xspace}
 \usepackage{balance}
-\usepackage{amsmath,amssymb,amsfonts,mathtools,amsthm}
+\usepackage{amsmath,amsfonts,mathtools,amsthm}
 \usepackage[noend]{algpseudocode}
 \usepackage{algorithm}
 
@@ -110,7 +110,7 @@ which involves only two cluster.
 So far, the competitive ratio of the best known algorithm was the component-based algorithm with the ratio $O(k^2\cdot \ell^2)$ \cite{repartition-disc}.
 We present an optimal algorithm for $k=3$ in Section~\ref{sec:k3}.
 In Section~\ref{sec:ppl}, we present a $O(k\cdot \ell)$-competitive algorithm for the restricted scenario
-where the communication graph (i.e., request sequence) admits a \emph{perfect partition} (i.e., a multi-way cut of cost zero) that is also an optimal partition for the offline problem.
+where the communication graph (i.e., request sequence) admits a \emph{perfect partition} (i.e., a multi-way cut of cost zero) that is also an optimal configuration for the offline problem.
 For this setting, the algorithm is optimal, as the lower bound utilized an input sequence that has a perfect partition.
 
 \section{Related Work}
@@ -141,7 +141,7 @@ Formally, the online \emph{Balanced RePartitioning} problem (\OBRP{}) is defined
 follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
-We say that nodes in $C \subset V$ are \emph{collocated} in a partition $P$
+We say that nodes in $C \subset V$ are \emph{collocated}% in a partition $P$
 if they are assigned to the same cluster.
 %\maciek{We can ommit the formal definition: "I.e.,
 %$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". %However, if we use the notion of cluster later, then TODO: define cluster}
@@ -151,8 +151,7 @@ The input consists of a sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
 where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a fixed amount of data.
 Before serving the request,
-the online algorithm
-can re-partition,
+the online algorithm can re-partition,
 i.e.,
 it may (optionally) move some of the nodes into clusters different than their current assigned clusters.
 Once the re-partition is executed,
@@ -191,19 +190,20 @@ An algorithm that always keeps a component collocated is \emph{component-respect
 
 \subsection{An $O(k\cdot \ell)$-competitive Algorithm for Perfect Partition}
      
-We assume OPT begins with the initial partition
+We assume OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
 $P_F = F_1, \dots, F_{\ell}$.
- The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ from the initial partition is the number of nodes in $P$ that do not reside in their initial cluster.
+ The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration is the number of nodes in $P$ that do not reside in their initial cluster.
     That is,
     $\mathit{dist}(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
 In other words,
-at least $\mathit{dist}(P, P_I)/2$ node swaps are required in order to reach the partition $P$ from $P_I$.
+at least $\mathit{dist}(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$.
 Therefore,
 $\OPT \geq \Delta:= dist(P_F, P_I) $.
-The online algorithm PPL mimics OPT by minimizing the distance to the initial partition $P_I$ with each re-partitioning.
+ With each re-partitioning,
+  PPL moves to a configuration that minimizes distance to the initial configuration $P_I$.
 As a result,
-ON never ends up with a partition that is more than $\Delta$ away from $P_I$.
+ON never ends up in a configuration that is more than $\Delta$ away from $P_I$.
 This invariant ensures that ON does not pay too much while reaching $P_F$.
 
 
@@ -213,9 +213,9 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
     \begin{algorithmic}[1]
         \Require 
         $k, \ell$,
-        initial partition $P_I$,
+        initial configuration $P_I$,
         sequence of  requests $\sigma_1, \dots, \sigma_N$ 
-        \Ensure A final partition $P_F$ 
+        \Ensure A final configuration $P_F$ 
         \State For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$
         \State{$P_0 := P_I$}
          \label{line:initcomponents}
@@ -237,11 +237,11 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
     \label{alg:ppl}
       \end{algorithm}
   
-%      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial configuration}
-      We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current partition $P$ with a (perfect) partition closest to $P_I$.
-Hence it never moves to a partition beyond distance $\Delta$.      
+%      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
+      We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a (perfect) partition closest to $P_I$.
+Hence it never moves to a configuration beyond distance $\Delta$.      
 \begin{property} \label{prop:dist<OPT}
-    Let $P$ be any partition chosen by Algorithm \ref{alg:ppl} at Line $\ref{line:rebalance}$.
+    Let $P$ be any configuration chosen by Algorithm \ref{alg:ppl} at Line $\ref{line:rebalance}$.
     Then, $\mathit{dist}(P,P_I) \leq \Delta$.
 \end{property}
 
@@ -268,19 +268,19 @@ Hence it never moves to a partition beyond distance $\Delta$.
 \end{proof}
 
 \begin{theorem}	\label{thm:upperbound}
-    PPL reaches the final partition $P_F$ and it is $(2\cdot k\cdot\ell)$-competitive.
+    PPL reaches the final configuration $P_F$ and it is $(2\cdot k\cdot\ell)$-competitive.
 \end{theorem}
 \begin{proof}
       On each inter-cluster request,
      the algorithm enumerates all $\ell$-way partitions of components
      that are in the same (closest) distance of $P_I$.
      That is, 
-     once it reaches $\Delta = \mathit{dist} (P_{t}, P_I)$,
+     once it reaches a configuration $P$ at distance $\Delta = \mathit{dist} (P, P_I)$,
      it does not move to a partition
-     $P_{t'}$, for any $t'>t,\mathit{dist} (P_{t'}, P_I) > \Delta$,
+     $P', \mathit{dist} (P', P_I) > \Delta$,
      before it enumerates all partitions at distance $\Delta$.
      Therefore,
-     PPL eventually reaches $\Delta=\OPT$ and the partition $P_F$.
+     PPL eventually reaches $\Delta=\OPT$ and the configuration $P_F$.
 %    including the request that completes revealing of all components that are collocated in $P_F$.
     There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{re\mhyphen partition}$
      (i.e., the number of internal edges in $P_F$).
@@ -305,6 +305,7 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 \end{theorem}
 
 \begin{proof}
+	\mahmoud{mention $\alpha=1$}
 	We construct an instance of the problem with $\ell$ clusters 
 	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
 	Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
@@ -326,7 +327,7 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 	Since this is an external request,
 	\ALG{} joins them into one component and collocates them in some cluster other than $S_1$.
 	For this,
-	\ALG{} moves to a new configuration (i.e., partition)
+	\ALG{} moves to a new configuration
 	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
 	
 	Next,
@@ -421,7 +422,11 @@ The gap between upper and lower bound is still substantial, as the best known al
     If no partition of \TAlg's components exist, then it performs no repartition, and serves the request remotely, incurring the cost $1$.
     Hence, in the following we bound the cost of moving to component-respecting partition.
   
-    We distinguish among three configuration types of any algorithm's cluster: $C_1, C_2, C_3$, which we define as follows. In $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster). In $C_2$ it contains one component of size $2$ and one component of size $1$. Finally, in $C_3$ it contains one component of size $3$.
+    We distinguish between three types of clusters: $C_1, C_2, C_3$,
+    which we define as follows.
+    A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
+    A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
+    Finally, a cluster of type $C_3$  contains one component of size $3$.
     
       Consider a request $(u, v)$ and let $U, V$ be clusters of these nodes.
       If $U=V$, then the request does not require a reconfiguration and GREEDY incurs no cost.
