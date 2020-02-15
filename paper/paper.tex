@@ -275,7 +275,7 @@ We define the algorithm \TAlg{} in the following way.
 Intially, each node is in its own singleton component.
 For each pair of nodes \TAlg{} maintains a counter, initiated $0$, and upon receiving a request to this pair while its nodes are located on different servers, it increases the counter by $1$.
 If a counter for a pair $(u,v)$ reaches $\alpha$, \TAlg{} merges the components of $u$ and $v$, and moves to the closest partition, where it each component has all of its nodes in one server.
-If no such partition exists, \TAlg{} resets all components to singletons and all counters to $0$.
+If no such partition exists, \TAlg{} resets all components to singletons and all counters to $0$ and ends the phase.
 
 %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
 
@@ -284,29 +284,30 @@ Observe that this implies that \TAlg never increases any counter above $\alpha$.
 
 \begin{lemma}
   \label{lem:1req}
-  A single repartition incurs the cost at most $3\cdot\alpha$ for \TAlg.
+  A single repartition performed by \TAlg{} incurs the cost at most $3\cdot\alpha$.
 \end{lemma}
 
 \begin{proof}
-  If no partition of \TAlg's components exist, then it performs no repartition, and serves the request remotely, incurring the cost $1$.
+  If no partition of \TAlg's components exist, then it performs no repartition and the cost is $0$.
   Hence, in the following we bound the cost of moving to component-respecting partition.
+  We define three types of clusters, $C_1, C_2, C_3$; in cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 
-  We distinguish between three types of clusters: $C_1, C_2, C_3$,
-  which we define as follows.
-  A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
-  A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
-  Finally, a cluster of type $C_3$  contains one component of size $3$.
+  %We distinguish between three types of clusters: $C_1, C_2, C_3$,
+  %which we define as follows.
+  %A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
+  %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
+  %Finally, a cluster of type $C_3$  contains one component of size $3$.
   
     Consider a request $(u, v)$ and let $U, V$ be clusters of these nodes.
-    If $U=V$, then the request does not require a reconfiguration and GREEDY incurs no cost.
+    If $U=V$, then the request does not require a reconfiguration and \TAlg{} incurs no cost.
     Otherwise, we consider cases upon the type of clusters $U$ and $V$.
     Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
-    If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
+    If either $U$ or $V$ is $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
   
     Finally, we consider the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg{} has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
-    If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
+    If either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
     Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise the input graph would not have a perfect partition. In this case GREEDY exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component-respecting partition exists. In this case \TAlg{} exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
 \end{proof}
 
 
