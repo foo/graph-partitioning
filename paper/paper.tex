@@ -279,9 +279,9 @@ Now we describe the algorithm \TAlg.
 \TAlg partition nodes into components, and
 intially each node belongs to its own singleton component.
 For each pair of nodes \TAlg maintains a counter, initiated to $0$. 
-Upon receiving a request to a pair that is not collocated at one server, it increases the counter by $1$.
-If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest partition, in which each component has all of its nodes collocated in one server.
-If no such partition exists, \TAlg resets all components to singletons and all counters to $0$ and ends the phase.
+Upon receiving a request to a pair that is not collocated at one server, it increases their counter by $1$.
+If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest partition where each component has all of its nodes collocated in one server.
+If no such partition exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 
 %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
 
