@@ -312,7 +312,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
   
     Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
-    If either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
+    Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
     Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
     Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component-respecting partition exists. In this case \TAlg exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
 \end{proof}
