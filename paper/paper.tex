@@ -329,7 +329,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   \maciek{Rewrite the paragraph to emphasize in the definition that requests that did not increase the counter are not included}
   We distinguish two disjoint subsequences of input $\sigma$ that arrived during the phase: $\sigma_I$ and $\sigma_E$, called \emph{internal} and \emph{external}, respectively.
   We only account for the requests to nodes that were not collocated by \TAlg at the moment of their arrival, i.e., the requests that increased a counter.
-  The subsequence $\sigma_E$ contains requests to pairs that belong to the same component of \TAlg{} at the end of the phase, and $\sigma_E$ denotes the requests to pairs that did not belong to the same component of \TAlg.
+  The subsequence $\sigma_E$ contains requests to pairs that belong to the same component of \TAlg{} at the end of the phase, and $\sigma_I$ denotes the requests to pairs that did not belong to the same component of \TAlg.
 
   %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
   %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
