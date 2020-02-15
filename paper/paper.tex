@@ -282,6 +282,8 @@ If no such partition exists, \TAlg{} resets all components to singletons and all
 We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located at the same server.
 Observe that this implies that \TAlg never increases any counter above $\alpha$.
 
+In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. In cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
+
 \begin{lemma}
   \label{lem:1req}
   A single repartition performed by \TAlg{} incurs the cost at most $3\cdot\alpha$.
@@ -290,7 +292,6 @@ Observe that this implies that \TAlg never increases any counter above $\alpha$.
 \begin{proof}
   If no partition of \TAlg's components exist, then it performs no repartition and the cost is $0$.
   Hence, in the following we bound the cost of moving to component-respecting partition.
-  We define three types of clusters, $C_1, C_2, C_3$; in cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 
   %We distinguish between three types of clusters: $C_1, C_2, C_3$,
   %which we define as follows.
@@ -311,46 +312,46 @@ Observe that this implies that \TAlg never increases any counter above $\alpha$.
 \end{proof}
 
 
+
 \begin{theorem}
   \TAlg{} is $O(\ell)$-competitive.
 \end{theorem}
 \begin{proof}
   Fix a completed phase of \TAlg, and consider the state of its counters at the end of it.
+  We consider the incomplete phase later in this proof.
   We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
 
-  We partition the input sequence $\sigma$ that arrived during the phase into subsequences $\sigma_I$ (called \emph{internal}) and $\sigma_E$ (called \emph{external}), defined as follows.
-  Requests $\sigma_E$ concern pairs of nodes that belong to the same component of \TAlg at the end of the phase, and $\sigma_E$ denotes all other requests issued during this phase.
+  We partition the input sequence $\sigma$ that arrived during the phase into subsequences $\sigma_I$ and $\sigma_E$, called \emph{internal} and \emph{external}, respectively.
+  The subsequence $\sigma_E$ contains requests to pairs that belong to the same component of \TAlg{} at the end of the phase, and $\sigma_E$ denotes the remaining requests issued during this phase.
 
   %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
   %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
-  Let $ALG(M)$ be the cost of migrations performed by \TAlg in this phase.
-
-  
-
+  Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
   During a single phase, at most $2\cdot \ell$ component merge operations are performed.
   Exceeding this number would mean that a component of size $4$ would emerge, a contradiction.
-  Together with Lemma~\ref{lem:1req}, this gives us $ALG(M) \leq 6\cdot\alpha\cdot\ell$.
+  Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
   
-  Now we bound $ALG(\sigma_I)$.
-  Each component of size $3$ contributes at most $(3\cdot \alpha - 1)$ to $A^I$, as at most $2$ of its pairs are saturated and contribute $\alpha$ each, and the unsaturated pair contributes at most $\alpha-1$.
-  Each of $\ell$ clusters of \TAlg contain at most one component of size $3$ (other cluster configurations contribute less: $3$ singletons contribute $0$ and a component of size $2$ contributes at most $\alpha$ to $A^I$), and in total, $ALG(\sigma_I) \leq \ell \cdot (3\cdot \alpha-1)$.
+  Now we bound $\TAlg(\sigma_I)$.
+  Cluster of type $C_3$ contributes at most $(3\cdot \alpha - 1)$ to $\TAlg(\sigma_I)$, as at most $2$ of pairs of the component are saturated and contribute $\alpha$ each, and the remaining unsaturated pair contributes at most $\alpha-1$.
+  Other cluster configurations contribute less: $C_1$ contributes $0$ and $C_2$ contributes $\alpha$ to $\TAlg(\sigma_I)$.
+  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq \ell \cdot (3\cdot \alpha-1)$.
 
   %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
   %\maciek{not needed most likely}
 
-  In total, the cost of \TAlg is at most $ALG(\sigma_I) + ALG(\sigma_E) + ALG(M) \leq 9\alpha\cdot \ell + ALG(\sigma_E)$ during this phase.
+  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 9\alpha\cdot \ell + \TAlg(\sigma_E)$ during this phase.
 
   \medskip
 
-  Now we lower bound the cost of $\OPT$ by $\OPT(\sigma_I) +\OPT(\sigma_E)+\OPT(M)$, defined with respect to components of \TAlg.
-  We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
+  Now we lower bound the cost of $\OPT$ by $\OPT(\sigma_I) +\OPT(\sigma_E)+\OPT(M)$, with $\sigma_I$ and $\sigma_E$ defined with respect to components of \TAlg, and $\OPT(M)$ denoting the cost of migrations performed by $\OPT$.
+  %We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
   While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts.
 
   %Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
   %Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
   %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
 
-  We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg could not be partitioned without splitting them, and there exist a pair of nodes with at least $\alpha$ requests between them.
+  We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg{} could not be partitioned without splitting them, and there exist a pair of nodes with at least $\alpha$ requests between them.
   $\OPT$ either served them remotely or performed a migration.
 
   Now we bound $\OPT(M) + \OPT(\sigma_E))$.
