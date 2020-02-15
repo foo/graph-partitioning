@@ -303,7 +303,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   
     Consider a request $(u, v)$ that triggered the repartitiong and let $U, V$ be clusters of these nodes.
     Note that $U\neq V$, as such a request cannot trigger a reconfiguration.
-    We consider cases upon the type of clusters $U$ and $V$.
+    We consider cases upon types of clusters $U$ and $V$.
     Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
   
