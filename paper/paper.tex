@@ -203,7 +203,8 @@ An algorithm that  keeps all components collocated is \emph{component-respecting
 \label{sec:lowerbound}
 
 
-\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed, such as the concepts of components (that we force alg to keep on the same server).}
+\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
+\maciek{We should describe what we mean by  components (that we force alg to keep on the same server). We use components differently in $k=3$, but we denote them by components, too. This is understandable, but must be emphasized.}
 
 \maciek{This paragraph should be included in the corollary from PPL, right after its competitive proof.}
 In this section we show a lower bound of $\Omega(k \cdot \ell)$ for \OBRP{}.
@@ -267,7 +268,7 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 
 \section{An Optimal Algorithm for $k=3$}
 
-In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book} allows to obtain an optimal algorithm for $k=3$.
+In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book}\maciek{any better source? ski rental?} allows to obtain an optimal algorithm for $k=3$.
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one server until the end of an epoch (that we define precisely later).
 To this end, we maintain \emph{components of nodes}, in similar fashion to previous approaches\cite{repartition-disc}.
 
