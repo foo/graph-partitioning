@@ -296,7 +296,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \end{lemma}
 
 \begin{proof}
-  If no partition of \TAlg's components exist, then it performs no repartition and the cost is $0$.
+  If no partition of \TAlg's components exists, then it simply ends the phase and performs no repartition, thus the cost is $0$.
   Hence, in the following we bound the cost of moving to a component-respecting partition.
 
   %We distinguish between three types of clusters: $C_1, C_2, C_3$,
@@ -306,7 +306,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %Finally, a cluster of type $C_3$  contains one component of size $3$.
   
     Consider a request $(u, v)$ that triggered the repartitiong and let $U, V$ be clusters of these nodes.
-    Note that $U\neq V$, as such a request cannot trigger a reconfiguration.
+    Note that $U\neq V$, as otherwise such a request would not trigger a reconfiguration.
     We consider cases upon types of clusters $U$ and $V$.
     Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
