@@ -293,7 +293,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
 \begin{proof}
   If no partition of \TAlg's components exist, then it performs no repartition and the cost is $0$.
-  Hence, in the following we bound the cost of moving to component-respecting partition.
+  Hence, in the following we bound the cost of moving to a component-respecting partition.
 
   %We distinguish between three types of clusters: $C_1, C_2, C_3$,
   %which we define as follows.
@@ -301,16 +301,16 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
   %Finally, a cluster of type $C_3$  contains one component of size $3$.
   
-    Consider a request $(u, v)$ and let $U, V$ be clusters of these nodes.
-    If $U=V$, then the request does not require a reconfiguration and \TAlg{} incurs no cost.
-    Otherwise, we consider cases upon the type of clusters $U$ and $V$.
-    Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
-    If either $U$ or $V$ is $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
+    Consider a request $(u, v)$ that triggered the repartitiong and let $U, V$ be clusters of these nodes.
+    Note that $U\neq V$, as such a request cannot trigger a reconfiguration.
+    We consider cases upon the type of clusters $U$ and $V$.
+    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
+    If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
   
-    Finally, we consider the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg{} has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
+    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
     If either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
     Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component-respecting partition exists. In this case \TAlg{} exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component-respecting partition exists. In this case \TAlg exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
 \end{proof}
 
 
