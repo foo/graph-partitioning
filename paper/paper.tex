@@ -395,7 +395,8 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
   and we follow the analysis regarding the unsaturated requests.
   If the input finished before first $\alpha$ external requests, then \TAlg is optimal.
 
-  If we have at least two phases, then we assume that OPT did not pay during that, and the cost of ALG increases at most twofold.
+  If we have at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests
+  This way, the competitive ratio increases at most twofold.
 \end{proof}
 
 
