@@ -284,11 +284,11 @@ If no such partition exists, \TAlg resets all components to singletons and all c
 We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located at the same server.
 Observe that this implies that \TAlg never increases any counter above $\alpha$.
 
-In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. In cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
+In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 
 \begin{lemma}
   \label{lem:1req}
-  A single repartition performed by \TAlg{} incurs the cost at most $3\cdot\alpha$.
+  The cost of migrations during a single repartition of \TAlg is at most $3\cdot\alpha$.
 \end{lemma}
 
 \begin{proof}
@@ -362,7 +362,6 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
   $\OPT$ either served them remotely or performed a migration.
 
   \medskip
-
   Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to $\sigma_E$.
   We begin by lower-bounding the number of requests from $\sigma_E$ that $\OPT$ must account (by either serving remotely or migrating), and we denote their number by $x$.
   It holds that $x \geq \TAlg(\sigma_E) - 3\cdot\ell\cdot(\alpha - 1)$, as it received all the requests that \TAlg did, but it could ignore the cost of serving at most $3\cdot\ell$ pairs of nodes, as it might have them collocated in its clusters.
@@ -548,6 +547,7 @@ The gap between upper and lower bound is still substantial, as the best known al
 
 \todo{Font for OPT, ALG, DET, dist etc}
 
+\todo{Line endings (add tildes where necessary)}
 \end{appendix}
 
 \end{document}
