@@ -424,10 +424,9 @@ $P_F = F_1, \dots, F_{\ell}$.
     That is,
     $\mathit{dist}(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
 In other words,
-at least $\mathit{dist}(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$.
-Therefore,
+at least $\mathit{dist}(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
 $\OPT \geq \Delta:= dist(P_F, P_I) $.
- With each re-partitioning,
+ With each re-partitioning\maciek{Use consistently: repartition or re-partition. IDK which one is better.},
   PPL moves to a configuration that minimizes distance to the initial configuration $P_I$.
 As a result,
 ON never ends up in a configuration that is more than $\Delta$ away from $P_I$.
@@ -514,21 +513,23 @@ Hence it never moves to a configuration beyond distance $\Delta$.
      (i.e., the number of internal edges in $P_F$).
     By Lemma \ref{lemma:rebalancecost},
     each re-partition costs at most $2\cdot\OPT$.
-    The total cost is therefore at most $2\cdot\OPT\cdot k\cdot\ell$ which implies the competitive ratio.
+    The total cost is therefore at most $2\cdot\OPT\cdot k\cdot\ell$, which implies the competitive ratio.
 %    \mahmoud{This is the cost of moving and the cost of remote comm. is not counted.
 %    	So it is 4-competitive (?)}
  \end{proof}
 
 
-\section{Corollary and Future Directions}
+% \section{Corollary and Future Directions}
 
-The gap between upper and lower bound is still substantial, as the best known algorithm is the component-respecting algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\cdot\ell^2)$.
+% The gap between upper and lower bound is still substantial, as the best known algorithm is the component-respecting algorithm of   \cite{repartition-disc} with competitive ratio $O(k^2\cdot\ell^2)$.
 
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
 
 \begin{appendix}
+
+\section{Ommited proofs}
 
 \section{Todos}
 
@@ -548,7 +549,7 @@ The gap between upper and lower bound is still substantial, as the best known al
 
 \todo{CCS concepts are mandatory}
 
-\todo{Check grammar}
+\todo{Spellcheck, grammar (grammarly?)}
 
 \todo{Make sure our manuscript is autor anonymous}
 
