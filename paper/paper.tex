@@ -96,7 +96,7 @@
   moving (i.e., migrating) nodes between clusters at a cost.
   The goal is to jointly minimize communication and migration costs while serving the sequence.
 
-	The best known deterministic algorithm is $O(k^2\cdot \ell^2)$-competitive \cite{?????},
+	The best known deterministic algorithm is $O(k^2\cdot \ell^2)$-competitive \cite{?????} \maciek{We should cite \cite{repartition-disc} here.},
 	and the best known lower bound for the competitive ratio of
 	deterministic algorithms is $\Omega(k)$,
 	which uses a reduction from the online paging problem.
@@ -201,6 +201,8 @@ An algorithm that  keeps all components collocated is \emph{component-respecting
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
+
+\maciek{emphasize that lower bound works for $k=3$ already. Also in the proof?}
 
 In this section we show a lower bound of $\Omega(k \cdot \ell)$ for \OBRP{}.
 The constructed input sequence allows OPT to move to a perfect partition, and hence
@@ -404,6 +406,8 @@ The gap between upper and lower bound is still substantial, as the best known al
 
 \todo{Check grammar}
 
+\todo{Make sure our manuscript is autor anonymous}
+
 \todo{Font for OPT, ALG, DET, dist etc}
 
 	\section{Ommited results}
@@ -419,6 +423,9 @@ The gap between upper and lower bound is still substantial, as the best known al
   \section{An Optimal Algorithm for $k=3$}
 
   In this section we show that the classic \emph{rent-or-buy} approach yields an optimal algorithm for $k=3$.
+  Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one server until the end of an epoch (that we define precisely later).
+  To this end, we maintain \emph{components of nodes}, in similar way to \cite{repartition-disc}.
+
   
   We define the algorithm \TAlg{} in the following way.
   \TAlg{} maintains components for each node.
