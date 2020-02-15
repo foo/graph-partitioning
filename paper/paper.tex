@@ -349,7 +349,7 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
   
   We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
   While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts.
-  We have $\OPT \geq (\OPT(\sigma_I) + \OPT(M)) + (\OPT(\sigma_E) + \OPT(M))$.
+  Combining those bounds gives us $\OPT \geq \max\{\OPT(\sigma_I) + \OPT(M), \OPT(\sigma_E) + \OPT(M)\} \geq (\OPT(\sigma_I) + \OPT(M) + \OPT(\sigma_E) + \OPT(M)) / 2$.
 
   %Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
   %Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
@@ -382,16 +382,18 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
   Now we are ready to bound the competitive ratio.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Then, using above bounds,
   \begin{equation*}
-    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{9\alpha \cdot \ell + \TAlg(\sigma_E)}{\alpha + \OPT(\sigma_E) + \OPT(M)} \leq \frac{25\alpha\cdot\ell + 4\cdot E}{\alpha + E} \leq 25 \ell = O(\ell).
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{9\alpha \cdot \ell + \TAlg(\sigma_E)}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{50\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 50 \ell = O(\ell).
   \end{equation*}
 
   \medskip
 
   Now we consider the last, unfinished phase.
-  If the unfinished phase is also the first one, then we use the fact that we started with the same initial configuration.
-  Then, we charge $\OPT$ $\alpha$ for first $\alpha$ requests or a migration,
+  Consider the case, where the unfinished phase is also the first one.
+  Then, we cannot charge $\OPT$ due to unability to partiton the components.
+  Instead, we use the fact that \TAlg and $\OPT$ started with the same initial configuration.
+  We charge $\OPT$ $\alpha$ for the first external $\alpha$ requests or a migration,
   and we follow the analysis regarding the unsaturated requests.
-  \maciek{todo}
+  If the input finished before first $\alpha$ external requests, then \TAlg is optimal.
 
   If we have at least two phases, then we assume that OPT did not pay during that, and the cost of ALG increases at most twofold.
 \end{proof}
