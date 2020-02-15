@@ -343,18 +343,34 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
 
   \medskip
 
-  Now we lower bound the cost of $\OPT$ by $\OPT(\sigma_I) +\OPT(\sigma_E)+\OPT(M)$, with $\sigma_I$ and $\sigma_E$ defined with respect to components of \TAlg, and $\OPT(M)$ denoting the cost of migrations performed by $\OPT$.
-  %We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
+  Now we lower bound the cost of $\OPT$ in this phase.
+  We define $\OPT(\sigma_I)$ and $\OPT(\sigma_E)$, with $\sigma_I$ and $\sigma_E$ defined with respect to components of \TAlg.
+  By $\OPT(M)$ we denote the cost of migrations performed by $\OPT$.
+  
+  We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
   While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts.
+  We have $\OPT \geq (\OPT(\sigma_I) + \OPT(M)) + (\OPT(\sigma_E) + \OPT(M))$.
 
   %Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
   %Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
   %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
 
+  %First, we estimate the cost related to $\sigma_I$.
   We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg{} could not be partitioned without splitting them, and there exist a pair of nodes with at least $\alpha$ requests between them.
   $\OPT$ either served them remotely or performed a migration.
+  We obtain $\OPT \geq \max\{\alpha, \OPT(\sigma_E) + \OPT(M)}$.
 
-  Now we bound $\OPT(M) + \OPT(\sigma_E))$.
+  \medskip
+
+  Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ related to $\sigma_E$.
+
+  Second, we estimate the cost related to $\sigma_E$.
+  Now we bound the cost that $\OPT$ incurred while serving requests $\sigma_E$.
+  If $\OPT$ would 
+  
+  \medskip
+
+  Now we bound the competitive ratio.
 
   \medskip
 
