@@ -202,8 +202,10 @@ An algorithm that  keeps all components collocated is \emph{component-respecting
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
 
-\maciek{emphasize that lower bound works for $k=3$ already. Also in the proof?}
 
+\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed, such as the concepts of components (that we force alg to keep on the same server).}
+
+\maciek{This paragraph should be included in the corollary from PPL, right after its competitive proof.}
 In this section we show a lower bound of $\Omega(k \cdot \ell)$ for \OBRP{}.
 The constructed input sequence allows OPT to move to a perfect partition, and hence
 the construction also constitutes a lower bound for \PPOBRP{}.
@@ -211,7 +213,7 @@ This complements an upper bound of $O(k \cdot \ell)$
 for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 
 \begin{theorem}
-	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$.
+	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
 \end{theorem}
 
 \begin{proof}
@@ -220,7 +222,7 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 	Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
 	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
 	Fix any online algorithm \ALG{}.
-	We construct the input sequence of requests for \ALG{} as follows.
+	We construct the input sequence for \ALG{} as follows.
 	First,
 	we issue $k-2$ (internal) requests so that \ALG{} can form a component of $k-1$
 	nodes on the cluster $S_1$.
@@ -228,12 +230,13 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 	If \ALG{} at any point splits a component
 	(i.e., spreads its nodes over two or more clusters),
 	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
-	If \ALG{} never collocates them then it is not competitive.
-	
+	Hence, if \ALG{} never collocates them then it is not competitive.
+  
+  \maciek{Components are not introduced. Thus, the reader does not know what a single node means.}
 	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
 	Next,
-	we issue the request between $x_0$ and $y_0$.
-	Since this is an external request,
+	we issue a request between $x_0$ and $y_0$.
+	Since this is an external \maciek{external request is not defined at this point} request,
 	\ALG{} joins them into one component and collocates them in some cluster other than $S_1$.
 	For this,
 	\ALG{} moves to a new configuration
@@ -244,9 +247,8 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 	\ALG{} must collocate $x_1$ and $C$ on some cluster other than $S_1$ and
 	consequently replaces $x_1$ with some other (single) node $x_2$.
 	We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
-	until there are only two single nodes left that  originate from the same cluster.
-	I.e.,
-	two single nodes $x^*, y^*,I(x^*) = I(y^*)$ s.t.~for any other pair of single nodes
+  until there are only two single nodes left that  originate from the same cluster.
+	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
 	$x'$ and $y'$,
 	we have $I(x') \neq I(y')$.
 	At this point there are at most $\ell+1$ single nodes left,
@@ -400,7 +402,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   We charge $\OPT$ $\alpha$ for the first external $\alpha$ requests or a migration,
   and we follow the analysis regarding the unsaturated requests.
   If the input finished before first $\alpha$ external requests, then \TAlg is optimal.
-  Now, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests
+  Now, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
   This way, the competitive ratio increases at most twofold.
 \end{proof}
 
