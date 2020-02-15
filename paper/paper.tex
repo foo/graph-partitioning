@@ -262,6 +262,110 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 	therefore $|X| \geq k \cdot \ell - k - \ell \in \Omega(k\cdot\ell)$.
 \end{proof}
 
+
+\section{An Optimal Algorithm for $k=3$}
+
+In this section we show that the classic \emph{rent-or-buy} approach yields an optimal algorithm for $k=3$.
+Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one server until the end of an epoch (that we define precisely later).
+To this end, we maintain \emph{components of nodes}, in similar way to \cite{repartition-disc}.
+
+
+We define the algorithm \TAlg{} in the following way.
+\TAlg{} maintains components for each node.
+Intially, each node is in its own singleton component.
+For each pair of nodes \TAlg{} maintains a counter, initiated $0$, and upon receiving a request to this pair while its nodes are located on different servers, it increases the counter by $1$.
+If a counter for a pair $(u,v)$ reaches $\alpha$, \TAlg{} merges the components of $u$ and $v$, and moves to the closest partition, where it each component has all of its nodes in one server.
+If no such partition exists, \TAlg{} resets all components to singletons and all counters to $0$.
+
+%\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
+
+We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located at the same server.
+Observe that this implies that \TAlg never increases any counter above $\alpha$.
+
+\begin{lemma}
+  \label{lem:1req}
+  A single repartition incurs the cost at most $3\cdot\alpha$ for \TAlg.
+\end{lemma}
+
+\begin{proof}
+  If no partition of \TAlg's components exist, then it performs no repartition, and serves the request remotely, incurring the cost $1$.
+  Hence, in the following we bound the cost of moving to component-respecting partition.
+
+  We distinguish between three types of clusters: $C_1, C_2, C_3$,
+  which we define as follows.
+  A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
+  A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
+  Finally, a cluster of type $C_3$  contains one component of size $3$.
+  
+    Consider a request $(u, v)$ and let $U, V$ be clusters of these nodes.
+    If $U=V$, then the request does not require a reconfiguration and GREEDY incurs no cost.
+    Otherwise, we consider cases upon the type of clusters $U$ and $V$.
+    Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
+    If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
+  
+    Finally, we consider the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg{} has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
+    If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
+    Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise the input graph would not have a perfect partition. In this case GREEDY exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
+\end{proof}
+
+
+\begin{theorem}
+  \TAlg{} is $O(\ell)$-competitive.
+\end{theorem}
+\begin{proof}
+  Fix a completed phase of \TAlg, and consider the state of its counters at the end of it.
+  We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
+
+  We partition the input sequence $\sigma$ that arrived during the phase into subsequences $\sigma_I$ (called \emph{internal}) and $\sigma_E$ (called \emph{external}), defined as follows.
+  Requests $\sigma_E$ concern pairs of nodes that belong to the same component of \TAlg at the end of the phase, and $\sigma_E$ denotes all other requests issued during this phase.
+
+  %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
+  %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
+  Let $ALG(M)$ be the cost of migrations performed by \TAlg in this phase.
+
+  
+
+  During a single phase, at most $2\cdot \ell$ component merge operations are performed.
+  Exceeding this number would mean that a component of size $4$ would emerge, a contradiction.
+  Together with Lemma~\ref{lem:1req}, this gives us $ALG(M) \leq 6\cdot\alpha\cdot\ell$.
+  
+  Now we bound $ALG(\sigma_I)$.
+  Each component of size $3$ contributes at most $(3\cdot \alpha - 1)$ to $A^I$, as at most $2$ of its pairs are saturated and contribute $\alpha$ each, and the unsaturated pair contributes at most $\alpha-1$.
+  Each of $\ell$ clusters of \TAlg contain at most one component of size $3$ (other cluster configurations contribute less: $3$ singletons contribute $0$ and a component of size $2$ contributes at most $\alpha$ to $A^I$), and in total, $ALG(\sigma_I) \leq \ell \cdot (3\cdot \alpha-1)$.
+
+  %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
+  %\maciek{not needed most likely}
+
+  In total, the cost of \TAlg is at most $ALG(\sigma_I) + ALG(\sigma_E) + ALG(M) \leq 9\alpha\cdot \ell + ALG(\sigma_E)$ during this phase.
+
+  \medskip
+
+  Now we lower bound the cost of $\OPT$ by $\OPT(\sigma_I) +\OPT(\sigma_E)+\OPT(M)$, defined with respect to components of \TAlg.
+  We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
+  While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts.
+
+  %Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
+  %Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
+  %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
+
+  We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg could not be partitioned without splitting them, and there exist a pair of nodes with at least $\alpha$ requests between them.
+  $\OPT$ either served them remotely or performed a migration.
+
+  Now we bound $\OPT(M) + \OPT(\sigma_E))$.
+
+  \medskip
+
+  Now we consider the last, unfinished phase.
+  If the unfinished phase is also the first one, then we use the fact that we started with the same initial configuration.
+  Then, we charge $\OPT$ $\alpha$ for first $\alpha$ requests or a migration,
+  and we follow the analysis regarding the unsaturated requests.
+  \maciek{todo}
+
+  If we have at least two phases, then we assume that OPT did not pay during that, and the cost of ALG increases at most twofold.
+\end{proof}
+
+
 \section{Recovering a Perfect Partition}	\label{sec:ppl}
 %\subsection{Perfect Partition Model}\label{sec:perfectPartition}
 %\maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
@@ -408,108 +512,6 @@ The gap between upper and lower bound is still substantial, as the best known al
 
 
 
-  \section{An Optimal Algorithm for $k=3$}
-
-  In this section we show that the classic \emph{rent-or-buy} approach yields an optimal algorithm for $k=3$.
-  Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one server until the end of an epoch (that we define precisely later).
-  To this end, we maintain \emph{components of nodes}, in similar way to \cite{repartition-disc}.
-
-  
-  We define the algorithm \TAlg{} in the following way.
-  \TAlg{} maintains components for each node.
-  Intially, each node is in its own singleton component.
-  For each pair of nodes \TAlg{} maintains a counter, initiated $0$, and upon receiving a request to this pair while its nodes are located on different servers, it increases the counter by $1$.
-  If a counter for a pair $(u,v)$ reaches $\alpha$, \TAlg{} merges the components of $u$ and $v$, and moves to the closest partition, where it each component has all of its nodes in one server.
-  If no such partition exists, \TAlg{} resets all components to singletons and all counters to $0$.
-
-  %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
-
-  We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located at the same server.
-  Observe that this implies that \TAlg never increases any counter above $\alpha$.
-  
-  \begin{lemma}
-    \label{lem:1req}
-    A single repartition incurs the cost at most $3\cdot\alpha$ for \TAlg.
-  \end{lemma}
-  
-  \begin{proof}
-    If no partition of \TAlg's components exist, then it performs no repartition, and serves the request remotely, incurring the cost $1$.
-    Hence, in the following we bound the cost of moving to component-respecting partition.
-  
-    We distinguish between three types of clusters: $C_1, C_2, C_3$,
-    which we define as follows.
-    A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
-    A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
-    Finally, a cluster of type $C_3$  contains one component of size $3$.
-    
-      Consider a request $(u, v)$ and let $U, V$ be clusters of these nodes.
-      If $U=V$, then the request does not require a reconfiguration and GREEDY incurs no cost.
-      Otherwise, we consider cases upon the type of clusters $U$ and $V$.
-      Note that this is impossible that either $U$ or $V$ is $C_3$ as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
-      If either $U$ or $V$ is $C_1$, then either cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
-    
-      Finally, we consider the case where both $U$ and $V$ are $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg{} has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
-      If either $u$ or $v$ belongs to a component of size $2$ then it suffices to exchange components of size $1$ between $U$ and $V$.
-      Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-      Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise the input graph would not have a perfect partition. In this case GREEDY exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost of $2\cdot \alpha$.
-  \end{proof}
-  
-  
-  \begin{theorem}
-    \TAlg{} is $O(\ell)$-competitive.
-  \end{theorem}
-  \begin{proof}
-    Fix a completed phase of \TAlg, and consider the state of its counters at the end of it.
-    We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
-
-    We partition the input sequence $\sigma$ that arrived during the phase into subsequences $\sigma_I$ (called \emph{internal}) and $\sigma_E$ (called \emph{external}), defined as follows.
-    Requests $\sigma_E$ concern pairs of nodes that belong to the same component of \TAlg at the end of the phase, and $\sigma_E$ denotes all other requests issued during this phase.
-
-    %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
-    %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
-    Let $ALG(M)$ be the cost of migrations performed by \TAlg in this phase.
-
-    
-
-    During a single phase, at most $2\cdot \ell$ component merge operations are performed.
-    Exceeding this number would mean that a component of size $4$ would emerge, a contradiction.
-    Together with Lemma~\ref{lem:1req}, this gives us $ALG(M) \leq 6\cdot\alpha\cdot\ell$.
-    
-    Now we bound $ALG(\sigma_I)$.
-    Each component of size $3$ contributes at most $(3\cdot \alpha - 1)$ to $A^I$, as at most $2$ of its pairs are saturated and contribute $\alpha$ each, and the unsaturated pair contributes at most $\alpha-1$.
-    Each of $\ell$ clusters of \TAlg contain at most one component of size $3$ (other cluster configurations contribute less: $3$ singletons contribute $0$ and a component of size $2$ contributes at most $\alpha$ to $A^I$), and in total, $ALG(\sigma_I) \leq \ell \cdot (3\cdot \alpha-1)$.
-
-    %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
-    %\maciek{not needed most likely}
-
-    In total, the cost of \TAlg is at most $ALG(\sigma_I) + ALG(\sigma_E) + ALG(M) \leq 9\alpha\cdot \ell + ALG(\sigma_E)$ during this phase.
-
-    \medskip
-
-    Now we lower bound the cost of $\OPT$ by $\OPT(\sigma_I) +\OPT(\sigma_E)+\OPT(M)$, defined with respect to components of \TAlg.
-    We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
-    While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts.
-
-    %Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
-    %Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
-    %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
-
-    We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg could not be partitioned without splitting them, and there exist a pair of nodes with at least $\alpha$ requests between them.
-    $\OPT$ either served them remotely or performed a migration.
-
-    Now we bound $\OPT(M) + \OPT(\sigma_E))$.
-
-    \medskip
-
-    Now we consider the last, unfinished phase.
-    If the unfinished phase is also the first one, then we use the fact that we started with the same initial configuration.
-    Then, we charge $\OPT$ $\alpha$ for first $\alpha$ requests or a migration,
-    and we follow the analysis regarding the unsaturated requests.
-    \maciek{todo}
-
-    If we have at least two phases, then we assume that OPT did not pay during that, and the cost of ALG increases at most twofold.
-  \end{proof}
-  
 
   \section{An old section about $k=3$}
 
