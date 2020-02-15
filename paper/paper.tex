@@ -314,7 +314,7 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
 
 
 \begin{theorem}
-  \TAlg{} is $O(\ell)$-competitive.
+  \TAlg is $O(\ell)$-competitive.
 \end{theorem}
 \begin{proof}
   Fix a completed phase of \TAlg, and consider the state of its counters at the end of it.
@@ -378,7 +378,7 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
   This gives us
   \begin{align*}
     \OPT(\sigma_E) + \OPT(M) & \geq (\TAlg(\sigma_E)-3\cdot\ell\cdot(\alpha - 1)) \cdot \frac{\alpha}{4\cdot (\alpha-1)}\\
-    &\geq ...
+    &\geq \TAlg(\sigma_E) / 4 - 4\cdot \ell \cdot \alpha
   \end{align*}
 
   \medskip
