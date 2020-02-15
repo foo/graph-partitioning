@@ -269,10 +269,10 @@ In this section we show that the classic \emph{rent-or-buy} approach\cite{borodi
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one server until the end of an epoch (that we define precisely later).
 To this end, we maintain \emph{components of nodes}, in similar fashion to previous approaches\cite{repartition-disc}.
 
-We say that the request $(u,v)$ is \emph{external}, if the algorithm that receives this request is in the configuration, where $u$ and $v$ are located at different servers.
+We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different servers.
 
 We define the algorithm \TAlg in the following way.
-\TAlg maintains components for each node.
+\TAlg partition nodes into components.
 Intially, each node is in its own singleton component.
 For each pair of nodes \TAlg maintains a counter, initiated $0$. 
 Upon receiving an external request to a pair, it increases the counter by $1$.
