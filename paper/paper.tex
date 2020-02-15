@@ -377,12 +377,12 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
     \OPT(\sigma_E) + \OPT(M) & \geq (\TAlg(\sigma_E)-3\cdot\ell\cdot(\alpha - 1)) \cdot \frac{\alpha}{4\cdot (\alpha-1)}\\
     &\geq \TAlg(\sigma_E) / 4 - 4\cdot \ell \cdot \alpha
   \end{align*}
-  From that, we obtain $\TAlg(\sigma_E) \geq (\OPT(\sigma_E)+\OPT(M))/4 + \ell \cdot \alpha$.
+  From that, we obtain $\TAlg(\sigma_E) \geq 4\cdot(\OPT(\sigma_E)+\OPT(M)) + 16\ell \cdot \alpha$.
 
   Now we are ready to bound the competitive ratio.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Then, using above bounds,
   \begin{equation*}
-    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{9\alpha \cdot \ell + \TAlg(\sigma_E)}{\alpha + \OPT(\sigma_E) + \OPT(M)} \leq \frac{10\alpha\cdot\ell + E/4}{\alpha + E} \leq 10 \ell = O(\ell).
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{9\alpha \cdot \ell + \TAlg(\sigma_E)}{\alpha + \OPT(\sigma_E) + \OPT(M)} \leq \frac{25\alpha\cdot\ell + 4\cdot E}{\alpha + E} \leq 25 \ell = O(\ell).
   \end{equation*}
 
   \medskip
