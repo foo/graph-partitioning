@@ -358,11 +358,8 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
   %First, we estimate the cost related to $\sigma_I$.
   We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg{} could not be partitioned without splitting them, and there exist a pair of nodes with at least $\alpha$ requests between them.
   $\OPT$ either served them remotely or performed a migration.
-  We obtain $\OPT \geq \max\{\alpha, \OPT(\sigma_E) + \OPT(M)\}$.
 
   \medskip
-
-  \maciek{unfinished, don't read :)}
 
   Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to $\sigma_E$.
   We begin by lower-bounding the number of requests from $\sigma_E$ that $\OPT$ must account (by either serving remotely or migrating), and we denote their number by $x$.
@@ -380,6 +377,13 @@ In our analysis, we distinguish among three types of clusters, $C_1, C_2, C_3$. 
     \OPT(\sigma_E) + \OPT(M) & \geq (\TAlg(\sigma_E)-3\cdot\ell\cdot(\alpha - 1)) \cdot \frac{\alpha}{4\cdot (\alpha-1)}\\
     &\geq \TAlg(\sigma_E) / 4 - 4\cdot \ell \cdot \alpha
   \end{align*}
+  From that, we obtain $\TAlg(\sigma_E) \geq (\OPT(\sigma_E)+\OPT(M))/4 + \ell \cdot \alpha$.
+
+  Now we are ready to bound the competitive ratio.
+  Let $E := \OPT(\sigma_E) + \OPT(M)$. Then, using above bounds,
+  \begin{equation*}
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{9\alpha \cdot \ell + \TAlg(\sigma_E)}{\alpha + \OPT(\sigma_E) + \OPT(M)} \leq \frac{10\alpha\cdot\ell + E/4}{\alpha + E} \leq 10 \ell = O(\ell).
+  \end{equation*}
 
   \medskip
 
