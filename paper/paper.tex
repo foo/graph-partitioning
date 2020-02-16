@@ -96,10 +96,10 @@
   moving (i.e., migrating) nodes between clusters at a cost.
   The goal is to jointly minimize communication and migration costs while serving the sequence.
 
-	The best known deterministic algorithm is $O(k^2\cdot \ell^2)$-competitive \cite{?????} \maciek{We should cite \cite{repartition-disc} here.},
+	The best known deterministic algorithm known so far is $O(k^2\cdot \ell^2)$-competitive \cite{repartition-disc},
 	and the best known lower bound for the competitive ratio of
 	deterministic algorithms is $\Omega(k)$,
-	which uses a reduction from the online paging problem.
+ by the reduction from online paging.
 	  In this paper, we provide the lower bound of $\Omega(k\cdot \ell)$.
     We also present an optimal algorithm for the case of $k=3$.
   Finally,
@@ -267,6 +267,7 @@ for \PPOBRP{} that we present in Section \ref{sec:ppl}.
 
 
 \section{An Optimal Algorithm for $k=3$}
+\label{sec:k3}
 
 In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book}\maciek{any better source? ski rental?} allows to obtain an optimal algorithm for $k=3$.
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one server until the end of an epoch (that we define precisely later).
