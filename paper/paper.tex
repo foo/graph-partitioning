@@ -280,7 +280,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
 \begin{lemma}
   \label{lem:1req}
-  The cost of migrations during a single repartition of \TAlg is at most $3\cdot\alpha$.
+  The cost of migrations during a single re-partition of \TAlg is at most $3\cdot\alpha$.
 \end{lemma}
 
 \begin{proof}
@@ -410,30 +410,26 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
 %\subsection{An $O(k\cdot \ell)$-competitive Algorithm for Perfect Partition}
 
-%\subsection{The Perfect Partition Variant}	\label{sec:PP}
+A \emph{perfect partition} is a partition of nodes into $\ell$ clusters
+such that it incurs no inter-cluster communication throughout the input sequence.
+Equivalently, a perfect partition it an $\ell$-way cut of the communication graph of the input sequence.
 In this section,
 we give an algorithm for a restricted variant of  \OBRP{},
-where the communication graph can be partitioned into $\ell$ clusters without any inter-cluster edges.
-\maciek{This is not sufficient! We also disallow serving requests remotely.}
-
-Moreover, we assume an optimal offline algorithm (OPT) moves to this \emph{perfect partition}
-at the beginning and stays there permanently.
-\maciek{Why do we have to assume that? This is just what OPT does, i.e., we can prove that this strategy (a) lower bounds the OPT's cost and (b) is sufficent for our analysis. But now is sounds like we restrict the model even further.}
-
+%\maciek{This is not sufficient! We also disallow serving requests remotely.}
+where an optimal offline algorithm (OPT) moves to this perfect partition
+at the beginning and stays there perpetually.
+%\maciek{Why do we have to assume that? This is just what OPT does, i.e., we can prove that this strategy (a) lower bounds the OPT's cost and (b) is sufficent for our analysis. But now is sounds like we restrict the model even further.}
 We refer this variant as \PPOBRP{}.
-The task of an online algorithm for \PPOBRP{} is to ``recover" (or learn) the perfect partition while not paying too much more than OPT.\maciek{No quotation marks should be in technical text.}
+The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to OPT.
+%
+%\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
+The first request between any two non-collocated nodes reveals an edge of the communication graph.
+Our online algorithm collocates them immediately and never separates them since by assumption OPT does the same.
+Revealed edges, up to any point in the sequence,
+induce some connected subgraphs and we refer to them as \emph{components}.
+An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component-respecting}.
 
-\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
-This implies that on a request between any two non-collocated nodes,
-any online algorithm must eventually collocate them,
-as otherwise it not competitive under a sequence that repeats the same request arbitrarily many times.
-Hence,
-any competitive algorithm,
-must at some point collocate all nodes of a  connected sub-graph of the communication graph.
-We refer to this connected sub-graph as a \emph{component}.
-An algorithm that  keeps all components collocated is \emph{component-respecting}.
-
-\subsection{PPL (working title)}
+\subsection{The Algorithm}
      
 We assume OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
@@ -444,12 +440,11 @@ $P_F = F_1, \dots, F_{\ell}$.
 In other words,
 at least $\mathit{dist}(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
 $\OPT \geq \Delta:= dist(P_F, P_I) $.
- With each re-partitioning\maciek{Use consistently: repartition or re-partition. IDK which one is better.},
-  PPL moves to a configuration that minimizes distance to the initial configuration $P_I$.
+ With each re-partitioning,
+  PPL moves to a configuration that minimizes the distance to the initial configuration $P_I$.
 As a result,
-ON never ends up in a configuration that is more than $\Delta$ away from $P_I$.
-This invariant ensures that ON does not pay too much while reaching $P_F$.
-
+ON never ends up in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$.
+This invariant ensures that ON does not pay too much while recovering $P_F$.
 
 \begin{algorithm}
     \renewcommand{\algorithmicrequire}{\textbf{Input:}}
@@ -483,7 +478,7 @@ This invariant ensures that ON does not pay too much while reaching $P_F$.
       \end{algorithm}
   
 %      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
-      We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a (perfect) partition closest to $P_I$.
+      We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a perfect partition closest to $P_I$.
 Hence it never moves to a configuration beyond distance $\Delta$.      
 \begin{property} \label{prop:dist<OPT}
     Let $P$ be any configuration chosen by Algorithm \ref{alg:ppl} at Line $\ref{line:rebalance}$.
