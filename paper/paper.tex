@@ -51,11 +51,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
 
-\newcommand{\OPT}{\mathit{OPT}}
+\newcommand{\OPT}{\textsf{OPT}}
 \newcommand{\ALG}{ALG}
 \newcommand{\OBRP}{BRP}
 \newcommand{\PPOBRP}{PP-BRP}
+\newcommand{\dist}{\textsf{dist}}
 \newcommand{\TAlg}{{\ensuremath{\textsf{ALG}_{3}}}\xspace} % we should change this name
+
 
 
 
@@ -345,7 +347,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
   %\maciek{not needed most likely}
 
-  Moreover, \TAlg paid for all requests from $\sigma_E$, and we bound it $\TAlg(\sigma_E) = |\sigma_E|$.
+  Moreover, \TAlg paid for all requests from $\sigma_E$, and thus $\TAlg(\sigma_E) = |\sigma_E|$.
   In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 10\alpha\cdot \ell + |\sigma_E|$ during this phase.
 
   \medskip
@@ -440,10 +442,10 @@ $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
 $P_F = F_1, \dots, F_{\ell}$.
  The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration is the number of nodes in $P$ that do not reside in their initial cluster.
     That is,
-    $\mathit{dist}(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
+    $\dist(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
 In other words,
-at least $\mathit{dist}(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
-$\OPT \geq \Delta:= dist(P_F, P_I) $.
+at least $\dist(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
+$\OPT \geq \Delta:= \dist(P_F, P_I) $.
  With each re-partitioning,
   PPL moves to a configuration that minimizes the distance to the initial configuration $P_I$.
 As a result,
@@ -486,7 +488,7 @@ This invariant ensures that ON does not pay too much while recovering $P_F$.
 Hence it never moves to a configuration beyond distance $\Delta$.      
 \begin{property} \label{prop:dist<OPT}
     Let $P$ be any configuration chosen by Algorithm \ref{alg:ppl} at Line $\ref{line:rebalance}$.
-    Then, $\mathit{dist}(P,P_I) \leq \Delta$.
+    Then, $\dist(P,P_I) \leq \Delta$.
 \end{property}
 
 \begin{lemma}	\label{lemma:rebalancecost}
@@ -500,13 +502,13 @@ Hence it never moves to a configuration beyond distance $\Delta$.
     Then,
     $M = M^+ \cup M^-$.
     Since $|M^-|$ nodes are not in their original cluster before the re-partitioning (i.e., in $P_{t-1}$),
-    the distance before the re-partitioning is $\mathit{dist}(P_{t-1},P_I) \geq | M^-|$.
+    the distance before the re-partitioning is $\dist(P_{t-1},P_I) \geq | M^-|$.
     Analogously,
-     the distance afterwards is $\mathit{dist}(P_{t},P_I) \geq | M^+|$.
+     the distance afterwards is $\dist(P_{t},P_I) \geq | M^+|$.
     Thus,
-    $|M| \leq \mathit{dist}(P_{t-1},P_I) + \mathit{dist}(P_{t},P_I)$.
+    $|M| \leq \dist(P_{t-1},P_I) + \dist(P_{t},P_I)$.
     By Property \ref{prop:dist<OPT},
-    $\mathit{dist}(P_{t-1},P_I) , \mathit{dist}(P_{t},P_I) \leq \Delta \leq \OPT$
+    $\dist(P_{t-1},P_I) , \dist(P_{t},P_I) \leq \Delta \leq \OPT$
     and thereby we have	
     $|M| \leq 2\cdot\OPT$.
 \end{proof}
@@ -519,9 +521,9 @@ Hence it never moves to a configuration beyond distance $\Delta$.
      the algorithm enumerates all $\ell$-way partitions of components
      that are in the same (closest) distance of $P_I$.
      That is, 
-     once it reaches a configuration $P$ at distance $\Delta = \mathit{dist} (P, P_I)$,
+     once it reaches a configuration $P$ at distance $\Delta = \dist(P, P_I)$,
      it does not move to a configuration
-     $P', \mathit{dist} (P', P_I) > \Delta$,
+     $P', \dist(P', P_I) > \Delta$,
      before it enumerates all configurations at distance $\Delta$.
      Therefore,
      PPL eventually reaches $\Delta=\OPT$ and the configuration $P_F$.
@@ -573,8 +575,6 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 \todo{Spellcheck, grammar (grammarly?)}
 
 \todo{Make sure our manuscript is autor anonymous}
-
-\todo{Font for OPT, ALG, DET, dist etc}
 
 \todo{Line endings (add tildes where necessary)}
 
