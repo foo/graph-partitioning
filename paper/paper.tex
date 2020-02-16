@@ -318,29 +318,30 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
 
 
-  In our analysis, we use two disjoint subsequences of input $\sigma$ that arrived during the phase: $\sigma_I$ and $\sigma_E$.
-  Let $\sigma'$ be the requests that at the moment of arrival were external requests for \TAlg.
-  The sequence $\sigma_I$ (inter-component requests) are the requests from $\sigma'$ issued to pairs that belong to the same component of \TAlg at the end of the phase.
-  The sequence $\sigma_E$ (extra-component requests) are the requests from $\sigma'$ issued to pairs that did not belong to the same component of \TAlg at the end of the phase.
+  Let $\sigma$ be the input sequence that arrived during the phase.
+  Let $\sigma_{cost}$ be the requests that at the moment of arrival were external requests for \TAlg (these are the only requests that incurred a cost for \TAlg).
+  In our analysis, we partition $\sigma_{cost}$ into subsequences $\sigma_I$ and $\sigma_E$.
+  The sequence $\sigma_I$ (inter-component requests) are the requests from $\sigma_{cost}$ issued to pairs that belong to the same component of \TAlg at the end of the phase.
+  The sequence $\sigma_E$ (extra-component requests) denotes the requests from $\sigma_{cost}$ that do not appear in $\sigma_I$.
 
 
   %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
   %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
   Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
-  During a single phase, it performs at most $2\cdot \ell$ component merge operations, as
-  exceeding this number means that a component of size $4$ exists.
-  Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
+  During a single phase, it performs at most $2 \ell$ component merge operations, as
+  exceeding this number means that a component of size $4$ exists, and the phase should have ended already.
+  Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 6\alpha\cdot\ell$.
   %Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
   
   Now we bound $\TAlg(\sigma_I)$.
-  Cluster of type $C_3$ contributes at most $(3\cdot \alpha - 1)$ to $\TAlg(\sigma_I)$, as at most $2$ of pairs of the component are saturated and contribute $\alpha$ each, and the remaining unsaturated pair contributes at most $\alpha-1$.
+  Cluster of type $C_3$ contributes at most $(3 \alpha - 1)$ to $\TAlg(\sigma_I)$, as at most $2$ of pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
   Other cluster types contribute less: $C_1$ contributes $0$ and $C_2$ contributes $\alpha$.
-  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq \ell \cdot (3\cdot \alpha-1)$.
+  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq \ell \cdot (3 \alpha-1) \leq 4\alpha\cdot\ell$.
 
   %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
   %\maciek{not needed most likely}
 
-  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 9\alpha\cdot \ell + \TAlg(\sigma_E)$ during this phase.
+  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 10\alpha\cdot \ell + \TAlg(\sigma_E)$ during this phase.
 
   \medskip
 
@@ -384,7 +385,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   With that, we are ready to bound the competitive ratio.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, using above bounds,
   \begin{equation*}
-    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{9\alpha \cdot \ell + \TAlg(\sigma_E)}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{50\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 50 \ell = O(\ell).
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{10\alpha \cdot \ell + \TAlg(\sigma_E)}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{52\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 52 \ell = O(\ell).
   \end{equation*}
 
   \medskip
