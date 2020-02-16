@@ -188,7 +188,7 @@ the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
 An algorithm that  keeps all components collocated is \emph{component-respecting}.
 
-\maciek{external requests}
+We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
 
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
@@ -196,7 +196,7 @@ An algorithm that  keeps all components collocated is \emph{component-respecting
 
 
 \maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
-\maciek{We should describe what we mean by  components (that we force alg to keep on the same server). We use components differently in $k=3$, but we denote them by components, too. This is understandable, but must be emphasized.}
+\maciek{We should describe what we mean by  components (that we force alg to keep on the same cluster). We use components differently in $k=3$, but we denote them by components, too. This is understandable, but must be emphasized.}
 
 \begin{theorem}
 	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
@@ -255,24 +255,26 @@ An algorithm that  keeps all components collocated is \emph{component-respecting
 \label{sec:k3}
 
 In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book}\maciek{any better source? ski rental?} allows to obtain an optimal algorithm for $k=3$.
-Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one server until the end of an epoch (that we define precisely later).
-To this end, we maintain \emph{components of nodes}, in the similar fashion to previous approaches\cite{repartition-disc}.
+Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of an epoch (that we define precisely later).
 
-%We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different servers.
+To this end, we maintain \emph{components of nodes}, in the similar fashion to previous approaches\cite{repartition-disc}.
+We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located in the same cluster.
+\maciek{Define component-respecting partition and use throughout the paper instead of "have components split"}
+
+\maciek{Consistency: collocated at OR collocated in OR collocated on}
 
 %We define the algorithm \TAlg in the following way.
 Now we describe the algorithm \TAlg.
-\TAlg partition nodes into components, and
+It partitions nodes into components, and
 intially each node belongs to its own singleton component.
-For each pair of nodes \TAlg maintains a counter, initiated to $0$. 
-Upon receiving a request to a pair that is not collocated at one server, it increases their counter by $1$.
-If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest partition where each component has all of its nodes collocated in one server.
+For each pair of nodes, \TAlg maintains a counter, initiated to $0$. 
+Upon receiving a request to a pair that is not collocated at one cluster, it increases their counter by $1$.
+If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest partition where each component has all of its nodes collocated in one cluster.
 If no such partition exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 
 %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
 
-We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located at the same server.
-Observe that this implies that \TAlg never increases any counter above $\alpha$.
+
 
 In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 
@@ -282,8 +284,8 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \end{lemma}
 
 \begin{proof}
-  If no partition of \TAlg's components exists, then it simply ends the phase and performs no repartition, thus the cost is $0$.
-  Hence, in the following we bound the cost of moving to a component-respecting partition.
+  Observe that when the repartition is triggered by \TAlg, the resulting partition is component-respecting.
+  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
 
   %We distinguish between three types of clusters: $C_1, C_2, C_3$,
   %which we define as follows.
@@ -291,10 +293,10 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
   %Finally, a cluster of type $C_3$  contains one component of size $3$.
   
-    Consider a request $(u, v)$ that triggered the repartitiong and let $U, V$ be clusters of these nodes.
-    Note that $U\neq V$, as otherwise such a request would not trigger a reconfiguration.
+    Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
+    Note that $U\neq V$, as otherwise the request would not trigger a~reconfiguration.
     We consider cases upon types of clusters $U$ and $V$.
-    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we encounter a component of size $4$ and this would contradict the case assumption that the component-respecting partition exists.
+    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component-respecting partition exists, a contradiction.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, for the cost of at most $3$ migrations.
   
     Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
@@ -311,7 +313,10 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \begin{proof}
   Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
   We consider the incomplete phase later in this proof.
+
+  As \TAlg is component respecting, it never increases any counter above $\alpha$.
   We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
+
 
   In our analysis, we use two disjoint subsequences of input $\sigma$ that arrived during the phase: $\sigma_I$ and $\sigma_E$.
   Let $\sigma'$ be the requests that at the moment of arrival were external requests for \TAlg.
@@ -353,7 +358,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
   %First, we estimate the cost related to $\sigma_I$.
   We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg{} could not be partitioned without splitting them, and there exists a pair of nodes with at least $\alpha$ requests between them.
-  $\OPT$ either served them remotely or performed a migration.
+  $\OPT$ either served them remotely or performed a~migration.
 
   \medskip
   \maciek{The weakest paragraph}
