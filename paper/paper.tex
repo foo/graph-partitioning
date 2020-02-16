@@ -365,7 +365,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
 
   %First, we estimate the cost related to $\sigma_I$.
-  We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the phase ended when the components of \TAlg{} could not be partitioned without splitting them.
+  We have $\OPT(M) + \OPT(\sigma_I) \geq \alpha$, as the phase ended when the components of \TAlg{} could not be partitioned without splitting them.
   Hence, for every possible configuration of $\OPT$, there exists a non-collocated pair of nodes with at least $\alpha$ requests between them, and
   $\OPT$ either served them remotely or performed a~migration.
 
@@ -422,22 +422,22 @@ Equivalently, a perfect partition it an $\ell$-way cut of the communication grap
 In this section,
 we give an algorithm for a restricted variant of  \OBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
-where an optimal offline algorithm (OPT) moves to this perfect partition
+where an optimal offline algorithm ($\OPT$) moves to this perfect partition
 at the beginning and stays there perpetually.
 %\maciek{Why do we have to assume that? This is just what OPT does, i.e., we can prove that this strategy (a) lower bounds the OPT's cost and (b) is sufficent for our analysis. But now is sounds like we restrict the model even further.}
 We refer this variant as \PPOBRP{}.
-The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to OPT.
+The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to \OPT.
 %
 %\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
 The first request between any two non-collocated nodes reveals an edge of the communication graph.
-Our online algorithm collocates them immediately and never separates them since by assumption OPT does the same.
+Our online algorithm collocates them immediately and never separates them since by assumption \OPT does the same.
 Revealed edges, up to any point in the sequence,
 induce some connected subgraphs and we refer to them as \emph{components}.
 An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component-respecting}.
 
 \subsection{The Algorithm}
      
-We assume OPT begins with the initial configuration
+We assume \OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
 $P_F = F_1, \dots, F_{\ell}$.
  The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration is the number of nodes in $P$ that do not reside in their initial cluster.
@@ -538,7 +538,7 @@ Hence it never moves to a configuration beyond distance $\Delta$.
  \end{proof}
 
  In Section~\ref{sec:lowerbound} we constructed a $\Omega(k \cdot \ell)$ for \OBRP{}.
- Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows OPT to move to a perfect partition.
+ Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows \OPT to move to a perfect partition.
  The corollary is that PPL is optimal.
  
 
