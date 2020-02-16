@@ -182,6 +182,15 @@ denoted by $ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
+\section{Preliminaries}
+
+\maciek{if preliminaries are short, we should merge them with the previous section}
+
+An algorithm that  keeps all components collocated is \emph{component-respecting}.
+
+\maciek{external requests}
+
+
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
 
@@ -304,6 +313,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   We consider the incomplete phase later in this proof.
   We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
 
+  \maciek{Confusion with external requests with resp. to node placement. Choose different name here.}
   \maciek{Rewrite the paragraph to emphasize in the definition that requests that did not increase the counter are not included}
   We distinguish two disjoint subsequences of input $\sigma$ that arrived during the phase: $\sigma_I$ and $\sigma_E$, called \emph{internal} and \emph{external}, respectively.
   We only account for the requests to nodes that were not collocated by \TAlg at the moment of their arrival, i.e., the requests that increased a counter.
