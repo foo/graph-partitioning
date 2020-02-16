@@ -188,6 +188,9 @@ the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
 An algorithm that  keeps all components collocated is \emph{component-respecting}.
 
+To this end, we maintain \emph{components of nodes}, in the similar fashion to previous approaches\cite{repartition-disc}.
+We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located in the same cluster.
+
 We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
 
 
@@ -254,14 +257,12 @@ We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the c
 \section{An Optimal Algorithm for $k=3$}
 \label{sec:k3}
 
-In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book}\maciek{any better source? ski rental?} allows to obtain an optimal algorithm for $k=3$.
-Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of an epoch (that we define precisely later).
+\maciek{TODO: find better source for rent-or-buy, e.g. ski rental paper}
 
-To this end, we maintain \emph{components of nodes}, in the similar fashion to previous approaches\cite{repartition-disc}.
-We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located in the same cluster.
-\maciek{Define component-respecting partition and use throughout the paper instead of "have components split"}
+In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book} allows to obtain an optimal algorithm for $k=3$.
+Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
 
-\maciek{Consistency: collocated at OR collocated in OR collocated on}
+
 
 %We define the algorithm \TAlg in the following way.
 Now we describe the algorithm \TAlg.
@@ -573,6 +574,9 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 \todo{Font for OPT, ALG, DET, dist etc}
 
 \todo{Line endings (add tildes where necessary)}
+
+\maciek{Consistency: collocated at OR collocated in OR collocated on}
+
 \end{appendix}
 
 \end{document}
