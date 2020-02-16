@@ -182,23 +182,6 @@ denoted by $ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
-\subsection{The Perfect Partition Variant}	\label{sec:PP}
-In Section \ref{sec:ppl},
-we give an algorithm for a restricted variant of  \OBRP{},
-where the communication graph can be partitioned into $\ell$ clusters without any inter-cluster edges.
-Moreover, we assume an optimal offline algorithm (OPT) moves to this \emph{perfect partition}
-at the beginning and stays there permanently.
-We refer this variant as \PPOBRP{}.
-The task of an online algorithm for \PPOBRP{} is to ``recover" (or learn) the perfect partition while not paying too much more than OPT.
-This implies that on a request between any two non-collocated nodes,
-any online algorithm must eventually collocate them,
-as otherwise it not competitive under a sequence that repeats the same request arbitrarily many times.
-Hence,
-any competitive algorithm,
-must at some point collocate all nodes of a  connected sub-graph of the communication graph.
-We refer to this connected sub-graph as a \emph{component}.
-An algorithm that  keeps all components collocated is \emph{component-respecting}.
-
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
 
@@ -403,7 +386,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \end{proof}
 
 
-\section{Recovering a Perfect Partition}	\label{sec:ppl}
+\section{An Optimal Algorithm for Perfect Partition}	\label{sec:ppl}
 %\subsection{Perfect Partition Model}\label{sec:perfectPartition}
 %\maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
 %\maciek{ every algorithm must colocate every communicating pair.
@@ -411,6 +394,31 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 %\maciek{Note that the algorithm from Section~\ref{sec:k3} is $O(\ell)$-competitive for the Perfect Partition Model, as during the first phase, a perfect partition of input exists.}
 
 %\subsection{An $O(k\cdot \ell)$-competitive Algorithm for Perfect Partition}
+
+%\subsection{The Perfect Partition Variant}	\label{sec:PP}
+In this section,
+we give an algorithm for a restricted variant of  \OBRP{},
+where the communication graph can be partitioned into $\ell$ clusters without any inter-cluster edges.
+\maciek{This is not sufficient! We also disallow serving requests remotely.}
+
+Moreover, we assume an optimal offline algorithm (OPT) moves to this \emph{perfect partition}
+at the beginning and stays there permanently.
+\maciek{Why do we have to assume that? This is just what OPT does, i.e., we can prove that this strategy (a) lower bounds the OPT's cost and (b) is sufficent for our analysis. But now is sounds like we restrict the model even further.}
+
+We refer this variant as \PPOBRP{}.
+The task of an online algorithm for \PPOBRP{} is to ``recover" (or learn) the perfect partition while not paying too much more than OPT.\maciek{No quotation marks should be in technical text.}
+
+\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
+This implies that on a request between any two non-collocated nodes,
+any online algorithm must eventually collocate them,
+as otherwise it not competitive under a sequence that repeats the same request arbitrarily many times.
+Hence,
+any competitive algorithm,
+must at some point collocate all nodes of a  connected sub-graph of the communication graph.
+We refer to this connected sub-graph as a \emph{component}.
+An algorithm that  keeps all components collocated is \emph{component-respecting}.
+
+\subsection{PPL (working title)}
      
 We assume OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
