@@ -372,9 +372,9 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
   Now we estimate the cost of $\OPT(\sigma_E)$ by accounting savings from migrations.
   By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
-  This allows to serve requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
+  This might allow to serve requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
   As $\sigma_E$ consists of requests between unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
-  Thus, by performing a migration for the cost $\alpha$, $\OPT$ does not pay the remote serving costs for at most $4\cdot (\alpha - 1)$ requests from $\sigma_E$.
+  Thus, by performing a single migration for the cost $\alpha$, $\OPT$ may not pay the remote serving costs for at most $4\cdot (\alpha - 1)$ requests from $\sigma_E$.
   Finally, for serving $\sigma_E$, $\OPT$ pays at least $W \cdot \frac{\alpha}{4\cdot (\alpha-1)}$.
   This gives us
   \begin{equation*}
