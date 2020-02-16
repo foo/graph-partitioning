@@ -328,15 +328,15 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
   %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
   Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
-  During a single phase, it performs at most $2 \ell$ component merge operations, as
+  \TAlg performs at most $2 \ell$ component merge operations, as
   exceeding this number means that a component of size $4$ exists, and the phase should have ended already.
   Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 6\alpha\cdot\ell$.
   %Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
   
   Now we bound $\TAlg(\sigma_I)$.
-  Cluster of type $C_3$ contributes at most $(3 \alpha - 1)$ to $\TAlg(\sigma_I)$, as at most $2$ of pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
+  Cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as $2$ of pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
   Other cluster types contribute less: $C_1$ contributes $0$ and $C_2$ contributes $\alpha$.
-  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq \ell \cdot (3 \alpha-1) \leq 4\alpha\cdot\ell$.
+  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 4\alpha\cdot\ell$.
 
   %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
   %\maciek{not needed most likely}
