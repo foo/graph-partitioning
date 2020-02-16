@@ -384,7 +384,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   From that, we obtain $|\sigma_E| \geq 4\cdot(\OPT(\sigma_E)+\OPT(M)) + 16\ell \cdot \alpha$.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
   \begin{equation*}
-    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{10\alpha \cdot \ell + \TAlg(\sigma_E)}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{52\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 52 \ell = O(\ell).
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{10\alpha \cdot \ell + |\sigma_E|}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{52\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 52 \ell = O(\ell).
   \end{equation*}
 
   \medskip
