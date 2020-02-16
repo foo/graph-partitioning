@@ -206,13 +206,6 @@ An algorithm that  keeps all components collocated is \emph{component-respecting
 \maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 \maciek{We should describe what we mean by  components (that we force alg to keep on the same server). We use components differently in $k=3$, but we denote them by components, too. This is understandable, but must be emphasized.}
 
-\maciek{This paragraph should be included in the corollary from PPL, right after its competitive proof.}
-In this section we show a lower bound of $\Omega(k \cdot \ell)$ for \OBRP{}.
-The constructed input sequence allows OPT to move to a perfect partition, and hence
-the construction also constitutes a lower bound for \PPOBRP{}.
-This complements an upper bound of $O(k \cdot \ell)$
-for \PPOBRP{} that we present in Section \ref{sec:ppl}.
-
 \begin{theorem}
 	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
 \end{theorem}
@@ -520,6 +513,10 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 %    	So it is 4-competitive (?)}
  \end{proof}
 
+ In Section~\ref{sec:lowerbound} we constructed a $\Omega(k \cdot \ell)$ for \OBRP{}.
+ Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows OPT to move to a perfect partition.
+ The corollary is that PPL is optimal.
+ 
 
 % \section{Corollary and Future Directions}
 
