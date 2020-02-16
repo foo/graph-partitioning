@@ -51,8 +51,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
 
-\newcommand{\OPT}{\textsf{OPT}}
-\newcommand{\ALG}{ALG}
+\newcommand{\OPT}{\textsf{OPT}\xspace}
+\newcommand{\ALG}{\textsf{ALG}\xspace}
+\newcommand{\PPL}{\textsf{PPL}\xspace}
 \newcommand{\OBRP}{BRP}
 \newcommand{\PPOBRP}{PP-BRP}
 \newcommand{\dist}{\textsf{dist}}
@@ -435,7 +436,7 @@ Revealed edges, up to any point in the sequence,
 induce some connected subgraphs and we refer to them as \emph{components}.
 An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component-respecting}.
 
-\subsection{The Algorithm}
+\subsection{Perfect Partition Learner (\PPL) Algorithm}
      
 We assume \OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
@@ -447,10 +448,10 @@ In other words,
 at least $\dist(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
 $\OPT \geq \Delta:= \dist(P_F, P_I) $.
  With each re-partitioning,
-  PPL moves to a configuration that minimizes the distance to the initial configuration $P_I$.
+  \PPL moves to a configuration that minimizes the distance to the initial configuration $P_I$.
 As a result,
-ON never ends up in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$.
-This invariant ensures that ON does not pay too much while recovering $P_F$.
+\PPL never ends up in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$.
+This invariant ensures that \PPL does not pay too much while recovering $P_F$.
 
 \begin{algorithm}
     \renewcommand{\algorithmicrequire}{\textbf{Input:}}
@@ -479,7 +480,7 @@ This invariant ensures that ON does not pay too much while recovering $P_F$.
         \ENDIF
         \ENDFOR
     \end{algorithmic}
-    \caption{Perfect Partition Learner (PPL)}
+    \caption{Perfect Partition Learner (\PPL)}
     \label{alg:ppl}
       \end{algorithm}
   
@@ -514,7 +515,7 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 \end{proof}
 
 \begin{theorem}	\label{thm:upperbound}
-    PPL reaches the final configuration $P_F$ and it is $(2\cdot k\cdot\ell)$-competitive.
+    \PPL reaches the final configuration $P_F$ and it is $(2\cdot k\cdot\ell)$-competitive.
 \end{theorem}
 \begin{proof}
       On each inter-cluster request,
@@ -526,7 +527,7 @@ Hence it never moves to a configuration beyond distance $\Delta$.
      $P', \dist(P', P_I) > \Delta$,
      before it enumerates all configurations at distance $\Delta$.
      Therefore,
-     PPL eventually reaches $\Delta=\OPT$ and the configuration $P_F$.
+     \PPL eventually reaches $\Delta=\OPT$ and the configuration $P_F$.
 %    including the request that completes revealing of all components that are collocated in $P_F$.
     There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{re\mhyphen partition}$
      (i.e., the number of internal edges in $P_F$).
