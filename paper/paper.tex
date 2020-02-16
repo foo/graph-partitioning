@@ -341,7 +341,8 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
   %\maciek{not needed most likely}
 
-  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 10\alpha\cdot \ell + \TAlg(\sigma_E)$ during this phase.
+  Moreover, \TAlg paid for all requests from $\sigma_E$, and we bound it $\TAlg(\sigma_E) = |\sigma_E|$.
+  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 10\alpha\cdot \ell + |\sigma_E|$ during this phase.
 
   \medskip
 
@@ -365,8 +366,15 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   \medskip
   \maciek{The weakest paragraph}
   \maciek{x must be a sequence of requests, not the number; better name for x}
-  Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to $\sigma_E$.
-  We begin by lower-bounding the number of requests from $\sigma_E$ that $\OPT$ must account (by either serving remotely or migrating), and we denote their number by $x$.
+  Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
+
+  In a fixed configuration of $\OPT$, it might mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
+  Recall that $\sigma_E$ consist of requests between unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ might mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
+  Faced with 
+
+  We begin by lower-bounding the number of requests from $\sigma_E$ that would incur a cost for $\OPT$ if it .
+  
+  may  account (by either serving remotely or migrating), and we denote their number by $x$.
   It holds that $x \geq \TAlg(\sigma_E) - 3\cdot\ell\cdot(\alpha - 1)$, as it received all the requests that \TAlg did, but it could ignore the cost of serving at most $3\cdot\ell$ pairs of nodes, as it might have them collocated in its clusters.
   Each such pair of nodes account for at most $\alpha-1$ requests (the pairs from $\sigma_E$ are unsaturated) in the cost of $\TAlg(\sigma_E)$, hence collocating them would decrease their number by at most $3\cdot\ell\cdot(\alpha - 1)$.
 
