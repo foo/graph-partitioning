@@ -372,15 +372,15 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   \medskip
   Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
   In a fixed configuration of $\OPT$, it may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
-  Recall that $\sigma_E$ consists of requests between unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
+  Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
   Faced with $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
 
 
   Now we estimate the cost of $\OPT(\sigma_E)$ by accounting savings from migrations.
   By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
   This may allow to serve requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
-  As $\sigma_E$ consists of requests between unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
-  Thus, by performing a single migration for the cost $\alpha$, $\OPT$ may not pay the remote serving costs for at most $4\cdot (\alpha - 1)$ requests from $\sigma_E$.
+  As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
+  Thus, by performing a single migration that costs $\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4\cdot (\alpha - 1)$ requests from $\sigma_E$.
   Finally, for serving $\sigma_E$, $\OPT$ pays at least $W \cdot \frac{\alpha}{4\cdot (\alpha-1)}$.
   This gives us
   \begin{equation*}
