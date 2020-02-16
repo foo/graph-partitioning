@@ -346,7 +346,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   \medskip
 
   Now we lower-bound the cost of $\OPT$.
-  By $\OPT(\sigma_I)$ and $\OPT(\sigma_E)$ we denote the cost of $\OPT$ on these input sequences ($\sigma_I$ and $\sigma_E$ are defined with respect to components of \TAlg in this phase).
+  By $\OPT(\sigma_I)$ and $\OPT(\sigma_E)$ we denote the cost of $\OPT$ on these input sequences (defined with respect to components of \TAlg in this phase).
   By $\OPT(M)$ we denote the cost of migrations performed by $\OPT$ in this phase.
   
   We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
@@ -358,7 +358,8 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
 
   %First, we estimate the cost related to $\sigma_I$.
-  We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the components of \TAlg{} could not be partitioned without splitting them, and there exists a pair of nodes with at least $\alpha$ requests between them.
+  We have $OPT(M) + OPT(\sigma_I) \geq \alpha$, as the phase ended when the components of \TAlg{} could not be partitioned without splitting them.
+  Hence, for every possible configuration of $\OPT$, there exists a non-collocated pair of nodes with at least $\alpha$ requests between them, and
   $\OPT$ either served them remotely or performed a~migration.
 
   \medskip
