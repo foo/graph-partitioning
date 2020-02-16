@@ -364,27 +364,18 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   $\OPT$ either served them remotely or performed a~migration.
 
   \medskip
-  \maciek{The weakest paragraph}
-  \maciek{x must be a sequence of requests, not the number; better name for x}
   Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
-
   In a fixed configuration of $\OPT$, it might mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
-  Recall that $\sigma_E$ consist of requests between unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ might mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
-  Faced with 
+  Recall that $\sigma_E$ consists of requests between unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ might mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
+  Faced with $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
 
-  We begin by lower-bounding the number of requests from $\sigma_E$ that would incur a cost for $\OPT$ if it .
-  
-  may  account (by either serving remotely or migrating), and we denote their number by $x$.
-  It holds that $x \geq \TAlg(\sigma_E) - 3\cdot\ell\cdot(\alpha - 1)$, as it received all the requests that \TAlg did, but it could ignore the cost of serving at most $3\cdot\ell$ pairs of nodes, as it might have them collocated in its clusters.
-  Each such pair of nodes account for at most $\alpha-1$ requests (the pairs from $\sigma_E$ are unsaturated) in the cost of $\TAlg(\sigma_E)$, hence collocating them would decrease their number by at most $3\cdot\ell\cdot(\alpha - 1)$.
 
-  Now we bound the cost incurred by $\OPT$ while serving requests from $x$.
-  Instead of serving all of them remotely, $\OPT$ can perform migrations to decrease its cost.
+  Now we estimate the cost of $\OPT(\sigma_E)$ by accounting savings from migrations.
   By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
   This allows to serve requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
-  (express that between a pair of nodes we accounted $\alpha-1$ requests in $x$)
-  Hence, by performing a migration for the cost $\alpha$, $\OPT$ does not pay the remote serving costs for at most $4\cdot (\alpha - 1)$ requests from $x$ ($x$ is not a sequence but its length!).
-  Finally, for serving $x$, $\OPT$ pays at least $x \cdot \frac{\alpha}{4\cdot (\alpha-1)}$.
+  As $\sigma_E$ consists of requests between unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
+  Thus, by performing a migration for the cost $\alpha$, $\OPT$ does not pay the remote serving costs for at most $4\cdot (\alpha - 1)$ requests from $\sigma_E$.
+  Finally, for serving $\sigma_E$, $\OPT$ pays at least $W \cdot \frac{\alpha}{4\cdot (\alpha-1)}$.
   This gives us
   \begin{equation*}
     \OPT(\sigma_E) + \OPT(M)  \geq (\TAlg(\sigma_E)-3\cdot\ell\cdot(\alpha - 1)) \cdot \frac{\alpha}{4\cdot (\alpha-1)}
