@@ -180,17 +180,12 @@ its cost,
 denoted by $\ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
+The objective is to minimize the total incurred cost.
 
-
-%\maciek{I just copied useful sentences. This section is TODO}
-%An algorithm that  keeps all components collocated is \emph{component-respecting}.
-%
-A \emph{component} is a subset of frequently communicating nodes.
+In this paper, we use the techinique of maintaining \emph{components} of nodes, similar to previous approaches~\cite{repartition-disc}. A \emph{component} is a subset of frequently communicating nodes.
 Initially,
 every node is trivially a \emph{singleton} component.
-We grow components similar to previous approaches~\cite{repartition-disc},
-which proved to be an effective technique for mimicking an optimal offline algorithm.
-An algorithm is \emph{component-respecting}
+An algorithm is \emph{component respecting}
 if it always keeps nodes that  belong to the same component collocated.
 That is,
 if the algorithm needs to move a node,
@@ -202,7 +197,7 @@ it moves the whole component containing the node.
 %A \emph{reconfiguration} (i.e.,\emph{ re-partitioning})
 %is performed by migrating nodes between clusters,
 %at the total cost of individual node migrations.
-The objective is to jointly minimize communication and migration costs while serving the sequence.
+%The objective is to jointly minimize communication and migration costs while serving the sequence.
 
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
