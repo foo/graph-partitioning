@@ -150,7 +150,7 @@ the currently best approximation ratio is $O(\log n)$~\cite{SarVaz95,ArKaKa99,Fe
 \section{Preliminaries}
 \label{sec:problem-definition}
 
-The online \emph{Balanced Re-Partitioning} problem (\OBRP{}) is defined as
+The online \emph{Balanced RePartitioning} problem (\OBRP{}) is defined as
 follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
@@ -162,17 +162,17 @@ if they reside in the same cluster.
 An algorithm serves a communication request between two nodes
 either \emph{locally} at cost~0
 if they are collocated,
- or \emph{remotely} at cost~1
- if they are located in different clusters.
- We refer to the two types of requests as \emph{internal}
- and \emph{external} requests, respectively.
+or \emph{remotely} at cost~1
+if they are located in different clusters.
+We refer to the two types of requests as \emph{internal}
+and \emph{external} requests, respectively.
 Before serving a request,
-an online algorithm can \emph{re-partition},
+an online algorithm may \emph{re-partition},
+%(i.e., \emph{reconfigure}).
 i.e.,
-it may (optionally) move some nodes into clusters different than their current assigneclusters while respecting the capacity of every cluster. he re-partition is executed,
-the algorithm serves the  request
-the communication request between two  nodes at cost~0 if they are collocated,
-or at cost~1 if they are located in different clusters.
+it may (optionally) move some nodes into clusters different than their current clusters while respecting the capacity of every cluster. 
+Only after a re-partition is completed,
+the algorithm serves the  request.
 The cost of migrating a node from one cluster to another
 is~$\alpha \in \mathbb{Z}^+$.
 For any algorithm $ALG$,
@@ -181,21 +181,29 @@ denoted by $ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
-An algorithm that  keeps all components collocated is \emph{component-respecting}.
+
+%\maciek{I just copied useful sentences. This section is TODO}
+%An algorithm that  keeps all components collocated is \emph{component-respecting}.
 %
-A \emph{component} is a subset of frequently communicating nodes.   ly,                                                   ,every node is trivially a \emph{singleton} component.
-We grow components similar fashion to previous approaches~\cite{repartition-disc}.
-which proved to be an effective techique for mimi                                                                it always keep.
+A \emph{component} is a subset of frequently communicating nodes.
+Initially,
+every node is trivially a \emph{singleton} component.
+We grow components similar to previous approaches~\cite{repartition-disc},
+which proved to be an effective technique for mimicking an optimal offline algorithm.
+An algorithm is \emph{component-respecting}
+if it always keeps nodes that  belong to the same component collocated.
 That is,
 if the algorithm needs to move a node,
-it moves the whole component containing the node to the sameemph{component -respecting}, i.e., it maintains the invariant that nodes of each component are collocated in the same cluster.
+it moves the whole component containing the node.
 %We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
-%
-This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
-such that frequently communicating nodes (from different clusters)
-are relocated to the same cluster before they inflict too much communication cost.
-A \emph{reconfiguration} (i.e., re-partitioning) is performed by
- migrating) nodes betwen clusters at a cost.   ,s to jointly minimize communication and migration costs while serving the sequence.
+%This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
+%such that frequently communicating nodes (from different clusters)
+%are relocated to the same cluster before they inflict too much communication cost.
+%A \emph{reconfiguration} (i.e.,\emph{ re-partitioning})
+%is performed by migrating nodes between clusters,
+%at the total cost of individual node migrations.
+The objective is to jointly minimize communication and migration costs while serving the sequence.
+
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
