@@ -120,10 +120,11 @@ which involves only two clusters.
 
 So far, the competitive ratio of the best known algorithm was the component-based algorithm with the ratio $O(k^2\cdot \ell^2)$~\cite{repartition-disc}.
 By applying classic rent-or-buy technique, we obtained an optimal algorithm for $k=3$, that we present in Section~\ref{sec:k3}.
-
 In Section~\ref{sec:ppl}, we study a restricted model of balanced repartition, called perfect partition.
 For that, we present an~$O(k\cdot \ell)$-competitive algorithm, which is optimal.
 We believe that this result is an important building block on the way to an optimal algorithm for the general model.
+\mahmoud{The mention of distributed alg, very much out of context!} 
+A distributed adaptation of a similar algorithm has been analyzed in \cite{sigmetrics19_partitioning}.
 
 \section{Related Work}
 
@@ -183,7 +184,7 @@ is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 The objective is to minimize the total incurred cost.
 
-In this paper, we use the techinique of maintaining \emph{components} of nodes, similar to previous approaches~\cite{repartition-disc}. A~\emph{component} is a subset of frequently communicating nodes.
+In this paper, we use the technique of maintaining \emph{components} of nodes, similar to previous approaches~\cite{repartition-disc}. A~\emph{component} is a subset of frequently communicating nodes.
 Initially,
 every node is trivially a \emph{singleton} component.
 An~algorithm is \emph{component respecting}
@@ -276,7 +277,7 @@ Now we describe the algorithm \TAlg.
 It partitions nodes into components, and
 initially each node belongs to its own singleton component.
 For each pair of nodes, \TAlg maintains a counter, initiated to $0$. 
-Upon receiving a request to a pair that is not collocated at one cluster, it increases their counter by $1$.
+Upon receiving a request to a pair that is not collocated in one cluster, it increases their counter by $1$.
 If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
 If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 
@@ -420,24 +421,23 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
 %\subsection{An $O(k\cdot \ell)$-competitive Algorithm for Perfect Partition}
 
-A \emph{perfect partition} is a partitioning of nodes into $\ell$ clusters
-such that it incurs no inter-cluster communication throughout the input sequence.
-Equivalently, a perfect partitioning it an $\ell$-way cut of the communication graph of the input sequence.
+%A \emph{perfect partition} is a partitioning of nodes into $\ell$ clusters
+%such that it incurs no inter-cluster communication throughout the input sequence.
+%Equivalently, a perfect partitioning it an $\ell$-way cut of the communication graph of the input sequence.
 In this section,
-we give an algorithm for a restricted variant of  \OBRP{},
+we give an algorithm for a restricted variant of  \OBRP{}, named \PPOBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
-where an optimal offline algorithm ($\OPT$) moves to this perfect partition
+where an optimal offline algorithm ($\OPT$) moves to a perfect partition
 at the beginning and stays there perpetually.
-%\maciek{Why do we have to assume that? This is just what OPT does, i.e., we can prove that this strategy (a) lower bounds the OPT's cost and (b) is sufficent for our analysis. But now is sounds like we restrict the model even further.}
-We refer this variant as \PPOBRP{}.
+%We refer this variant as \PPOBRP{}.
 The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to \OPT.
 %
 %\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
 The first request between any two non-collocated nodes reveals an edge of the communication graph.
 Our online algorithm collocates them immediately and never separates them since by assumption \OPT does the same.
 Revealed edges, up to any point in the sequence,
-induce some connected subgraphs and we refer to them as \emph{components}.
-An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component respecting}.
+induce some connected subgraphs which grow as components.
+%An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component respecting}.
 
 \subsection{Perfect Partition Learner (\PPL) Algorithm}
      
@@ -476,7 +476,7 @@ This invariant ensures that \PPL does not pay too much while recovering $P_F$.
         \IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
 	     \COMMENT{i.e.~if not in the same cluster}    
     	}       
-        \STATE {$P_{t} = \mathit{re\mhyphen partition}(P_{t-1}, P_I, \mathcal{C})$} 
+        \STATE {$P_{t} = \mathit{repartition}(P_{t-1}, P_I, \mathcal{C})$} 
          \COMMENT{move to $P$ closest to $P_I$}
         \label{line:rebalance} 
         \ENDIF
@@ -488,7 +488,7 @@ This invariant ensures that \PPL does not pay too much while recovering $P_F$.
       \end{algorithm}
   
 %      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
-      We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a perfect partition closest to $P_I$.
+      We note that the $\mathit{repartition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a perfect partition closest to $P_I$.
 Hence it never moves to a configuration beyond distance $\Delta$.      
 \begin{property} \label{prop:dist<OPT}
     Let $P$ be any configuration chosen by \PPL at Line $\ref{line:rebalance}$.
@@ -532,7 +532,7 @@ Hence it never moves to a configuration beyond distance $\Delta$.
      Therefore,
      \PPL eventually reaches $\Delta=\OPT$ and the configuration $P_F$.
 %    including the request that completes revealing of all components that are collocated in $P_F$.
-    There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{re\mhyphen partition}$
+    There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{repartition}$
      (i.e., the number of internal edges in $P_F$).
     By Lemma \ref{lemma:rebalancecost},
     each repartition costs at most $2\cdot\OPT$.
