@@ -206,7 +206,8 @@ it moves the whole component containing the node.
 \label{sec:lowerbound}
 
 In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic algorithm.
-The minimum cluster capacity for the construction to remain correct is $3$.
+It is sufficient to have clusters of capacity $k\geq 3$ for this lower bound.
+For $k=2$ a constant competitive algorithm exists.
 
 The adversary constructs components of nodes, and issues only requests among nodes in the same component.
 If an online algorithm splits the components at any moment, the adversary issues requests to split pairs of nodes.
