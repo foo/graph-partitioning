@@ -110,16 +110,17 @@
 
 \section{Introduction}
 
-Main technical contribution of this paper is the lower bound $\Omega(k\cdot\ell)$ for the competitive ratio of any deterministic algorithm for Online Balanced Partition problem (cf. Section~\ref{sec:lowerbound}).
+Main technical contribution of this paper is the lower bound $\Omega(k\cdot\ell)$ (Section~\ref{sec:lowerbound}) for the competitive ratio of any deterministic algorithm for online Balanced RePartition problem..
 The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}
 which involves only two cluster.
 
 
 So far, the competitive ratio of the best known algorithm was the component-based algorithm with the ratio $O(k^2\cdot \ell^2)$ \cite{repartition-disc}.
-We present an optimal algorithm for $k=3$ in Section~\ref{sec:k3}.
-In Section~\ref{sec:ppl}, we present a $O(k\cdot \ell)$-competitive algorithm for the restricted scenario
-where the communication graph (i.e., request sequence) admits a \emph{perfect partition} (i.e., a multi-way cut of cost zero) that is also an optimal configuration for the offline problem.
-For this setting, the algorithm is optimal, as the lower bound utilized an input sequence that has a perfect partition.
+By applying classic rent-or-buy technique, we obtained an optimal algorithm for $k=3$, that we present in Section~\ref{sec:k3}.
+
+In Section~\ref{sec:ppl}, we study a restricted model of Balanced RePartition, called Perfect Partition.
+For that, we present a $O(k\cdot \ell)$-competitive algorithm that is optimal.
+We believe that this result is an important building block on the way to an optimal algorithm for the general model.
 
 \section{Related Work}
 
