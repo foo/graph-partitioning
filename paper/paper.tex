@@ -121,7 +121,7 @@ which involves only two clusters.
 So far, the competitive ratio of the best known algorithm was the component-based algorithm with the ratio $O(k^2\cdot \ell^2)$~\cite{repartition-disc}.
 By applying classic rent-or-buy technique, we obtained an optimal algorithm for $k=3$, that we present in Section~\ref{sec:k3}.
 
-In Section~\ref{sec:ppl}, we study a restricted model of balanced re-partition, called perfect partition.
+In Section~\ref{sec:ppl}, we study a restricted model of balanced re-partition, called perfect-partition.
 For that, we present a $O(k\cdot \ell)$-competitive algorithm, which is optimal.
 We believe that this result is an important building block on the way to an optimal algorithm for the general model.
 
@@ -417,7 +417,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \end{proof}
 
 
-\section{An Optimal Algorithm for Perfect Partition}	\label{sec:ppl}
+\section{An Optimal Algorithm for Perfect-Partition}	\label{sec:ppl}
 %\subsection{Perfect Partition Model}\label{sec:perfectPartition}
 %\maciek{Here introduce a restricted model of \PPOBRP{}, the restricted variant where the input sequence can be perfectly partitioned}
 %\maciek{ every algorithm must colocate every communicating pair.
@@ -426,17 +426,17 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
 %\subsection{An $O(k\cdot \ell)$-competitive Algorithm for Perfect Partition}
 
-A \emph{perfect partition} is a partitioning of nodes into $\ell$ clusters
+A \emph{perfect-partition} is a partitioning of nodes into $\ell$ clusters
 such that it incurs no inter-cluster communication throughout the input sequence.
-Equivalently, a perfect partitioning it an $\ell$-way cut of the communication graph of the input sequence.
+Equivalently, a perfect-partitioning it an $\ell$-way cut of the communication graph of the input sequence.
 In this section,
 we give an algorithm for a restricted variant of  \OBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
-where an optimal offline algorithm ($\OPT$) moves to this perfect partition
+where an optimal offline algorithm ($\OPT$) moves to this perfect-partition
 at the beginning and stays there perpetually.
 %\maciek{Why do we have to assume that? This is just what OPT does, i.e., we can prove that this strategy (a) lower bounds the OPT's cost and (b) is sufficent for our analysis. But now is sounds like we restrict the model even further.}
 We refer this variant as \PPOBRP{}.
-The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to \OPT.
+The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect-partition while not paying too much relative to \OPT.
 %
 %\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
 The first request between any two non-collocated nodes reveals an edge of the communication graph.
@@ -445,7 +445,7 @@ Revealed edges, up to any point in the sequence,
 induce some connected subgraphs and we refer to them as \emph{components}.
 An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component-respecting}.
 
-\subsection{Perfect Partition Learner (\PPL) Algorithm}
+\subsection{Perfect-Partition Learner (\PPL) Algorithm}
      
 We assume \OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partitioning
@@ -489,12 +489,12 @@ This invariant ensures that \PPL does not pay too much while recovering $P_F$.
         \ENDIF
         \ENDFOR
     \end{algorithmic}
-    \caption{Perfect Partition Learner (\PPL)}
+    \caption{Perfect-Partition Learner (\PPL)}
     \label{alg:ppl}
       \end{algorithm}
   
 %      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
-      We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a perfect partition closest to $P_I$.
+      We note that the $\mathit{re\mhyphen partition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a perfect-partition closest to $P_I$.
 Hence it never moves to a configuration beyond distance $\Delta$.      
 \begin{property} \label{prop:dist<OPT}
     Let $P$ be any configuration chosen by \PPL at Line $\ref{line:rebalance}$.
@@ -548,7 +548,7 @@ Hence it never moves to a configuration beyond distance $\Delta$.
  \end{proof}
 
  In Section~\ref{sec:lowerbound} we constructed a $\Omega(k \cdot \ell)$ for \OBRP{}.
- Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows \OPT to move to a perfect partition.
+ Note that the lower bound holds also in the perfect-partition model, as the constructed input sequence allows \OPT to move to a perfect-partition.
  The corollary is that PPL is optimal.
  
 
