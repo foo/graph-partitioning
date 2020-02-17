@@ -283,7 +283,6 @@ For each pair of nodes, \TAlg maintains a counter, initiated to $0$.
 Upon receiving a request to a pair that is not collocated at one cluster, it increases their counter by $1$.
 If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component-respecting partitioning.
 If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
-\maciek{Serving remotely: say explicitly}
 
 %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
 
@@ -294,7 +293,6 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \begin{lemma}
   \label{lem:1req}
   A single re-partition of \TAlg consists of at most $2$ migrations.
-  \maciek{todo:propagate the optimization of cost}
 \end{lemma}
 
 \begin{proof}
@@ -346,19 +344,19 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
   \TAlg performs at most $2 \ell$ component merge operations, as
   exceeding this number means that a component of size $4$ exists, and the phase should have ended already.
-  Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 6\alpha\cdot\ell$.
+  Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 4\alpha\cdot\ell$.
   %Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
   
   Now we bound $\TAlg(\sigma_I)$.
   Cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as $2$ of pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
   Other cluster types contribute less: $C_1$ contributes $0$ and $C_2$ contributes $\alpha$.
-  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 4\alpha\cdot\ell$.
+  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
 
   %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
   %\maciek{not needed most likely}
 
   Moreover, \TAlg paid for all requests from $\sigma_E$, and thus $\TAlg(\sigma_E) = |\sigma_E|$.
-  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 10\alpha\cdot \ell + |\sigma_E|$ during this phase.
+  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 7\alpha\cdot \ell + |\sigma_E|$ during this phase.
 
   \medskip
 
@@ -400,7 +398,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   From that, we obtain $|\sigma_E| \geq 4(\OPT(\sigma_E)+\OPT(M)) + 16\alpha \cdot \ell$.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
   \begin{equation*}
-    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{10\alpha \cdot \ell + |\sigma_E|}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{52\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 52 \ell = O(\ell).
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{7\alpha \cdot \ell + |\sigma_E|}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{46\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 46 \ell = O(\ell).
   \end{equation*}
 
   \medskip
