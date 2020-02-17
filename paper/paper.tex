@@ -175,11 +175,11 @@ Only after a re-partitioning is completed,
 the algorithm serves the  request.
 The cost of migrating a node from one cluster to another
 is~$\alpha \in \mathbb{Z}^+$.
-For any algorithm $ALG$,
+For any algorithm $\ALG$,
 its cost,
-denoted by $ALG(\sigma)$,
+denoted by $\ALG(\sigma)$,
 is the total cost of communications and
-the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
+the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 
 
 %\maciek{I just copied useful sentences. This section is TODO}
@@ -210,7 +210,6 @@ The objective is to jointly minimize communication and migration costs while ser
 
 
 \maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
-\maciek{We should describe what we mean by  components (that we force alg to keep on the same cluster). We use components differently in $k=3$, but we denote them by components, too. This is understandable, but must be emphasized.}
 
 \begin{theorem}
 	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
@@ -232,7 +231,6 @@ The objective is to jointly minimize communication and migration costs while ser
 	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
 	Hence, if \ALG{} never collocates them then it is not competitive.
   
-  \maciek{Components are not introduced. Thus, the reader does not know what a single node means.}
 	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
 	Next,
 	we issue a request between $x_0$ and $y_0$.
