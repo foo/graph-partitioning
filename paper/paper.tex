@@ -204,7 +204,7 @@ it moves the whole component containing the node.
 \label{sec:lowerbound}
 
 
-\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
+%\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
 \begin{theorem}
 	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
@@ -213,7 +213,7 @@ it moves the whole component containing the node.
 \begin{proof}
 	We construct an instance of the problem with $\ell$ clusters 
 	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
-	Let $I(C)$ denote the cluster where nodes in a component $C$ are located initially.
+	Let $I(C)$ denote the cluster where nodes of a component $C$ are located initially.
 	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
 	Fix any online algorithm \ALG{}.
 	We construct the input sequence for \ALG{} as follows.
@@ -261,9 +261,8 @@ it moves the whole component containing the node.
 \section{An Optimal Algorithm for Clusters of Size 3}
 \label{sec:k3}
 
-\maciek{TODO: find better source for rent-or-buy, e.g. ski rental paper}
 
-In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book} allows to obtain an optimal algorithm for $k=3$.
+In this section we show that the classic \emph{rent-or-buy} approach\cite{borodin-book, karlin-ski-rental} allows to obtain an optimal algorithm for $k=3$.
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
 
 
