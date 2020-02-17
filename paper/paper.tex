@@ -127,7 +127,8 @@ We believe that this result is an important building block on the way to an opti
 
 \section{Related Work}
 
-The problem was studied under resource augmentation \cite{repartition-disc}, and under stochastic assumptions of input\maciek{cite}.\maciek{cite other papers that cite DISC?}
+The problem was studied under resource augmentation \cite{repartition-disc}, and under stochastic assumptions for the input\cite{stochastic-ring}.
+For clusters of size $2$ (i.e., $k=2$), a constant competitive algorithm exists~\cite{repartition-disc}.
 
 The model is related to online
 caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}. In our
@@ -202,6 +203,9 @@ it moves the whole component containing the node.
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
+
+The adversary constructs components of nodes, and $\OPT$ never splits them.
+The adversary observes the actions of an online algorithm, and if it splits the components at any moment, the adversary issues 
 
 
 %\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
