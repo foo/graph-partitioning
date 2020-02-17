@@ -89,7 +89,7 @@
 \begin{abstract}
   Distributed   applications,  including  batch  processing, streaming, and scale-out databases generate a significant amount of network traffic and a~considerable fraction of their runtime is due to network activity. In this  paper, we study  algorithms  for collocating frequently communicating nodes in a distributed networked systems in an online fashion.
 
-  In the online Graph RePartitioning problem, we are given a sequence of pairwise communication requests between n nodes, revealed online.
+  In the online graph re-partitioning problem, we are given a sequence of pairwise communication requests between n nodes, revealed online.
   The objective is to service these requests by partitioning the nodes into $\ell$ clusters, each of size $k$, such that frequently communicating nodes are located in the same cluster.
   The partitioning can be updated by migrating nodes between clusters for a fixed cost.
   The goal is to jointly minimize the amount of inter-cluster communication and migration cost.
@@ -102,7 +102,7 @@
   We follow up with an optimal algorithm for $k=3$.
   Finally,
   we provide a $O(k\cdot \ell)$-competitive algorithm for the variant
-  where the optimal configuration is always a fixed partition
+  where the optimal configuration is always a fixed partitioning (a.k.a~a \emph{configuration})
   that incurs zero communication cost through the whole request sequence.
 \end{abstract}
     
@@ -113,7 +113,7 @@
 \section{Introduction}
 
 
-Main technical contribution of this paper is the lower bound $\Omega(k\cdot\ell)$ for the competitive ratio of any deterministic algorithm for online Balanced RePartition problem (see Section~\ref{sec:lowerbound}).
+Main technical contribution of this paper is the lower bound $\Omega(k\cdot\ell)$ for the competitive ratio of any deterministic algorithm for online balanced re-partition problem (see Section~\ref{sec:lowerbound}).
 The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}
 which involves only two clusters.
 
@@ -121,7 +121,7 @@ which involves only two clusters.
 So far, the competitive ratio of the best known algorithm was the component-based algorithm with the ratio $O(k^2\cdot \ell^2)$~\cite{repartition-disc}.
 By applying classic rent-or-buy technique, we obtained an optimal algorithm for $k=3$, that we present in Section~\ref{sec:k3}.
 
-In Section~\ref{sec:ppl}, we study a restricted model of Balanced RePartition, called Perfect Partition.
+In Section~\ref{sec:ppl}, we study a restricted model of balanced re-partition, called perfect partition.
 For that, we present a $O(k\cdot \ell)$-competitive algorithm, which is optimal.
 We believe that this result is an important building block on the way to an optimal algorithm for the general model.
 
@@ -150,7 +150,7 @@ the currently best approximation ratio is $O(\log n)$~\cite{SarVaz95,ArKaKa99,Fe
 \section{Preliminaries}
 \label{sec:problem-definition}
 
-The online \emph{Balanced RePartitioning} problem (\OBRP{}) is defined as
+The online \emph{balanced re-partitioning} problem (\OBRP{}) is defined as
 follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
@@ -171,7 +171,7 @@ an online algorithm may \emph{re-partition},
 %(i.e., \emph{reconfigure}).
 i.e.,
 it may (optionally) move some nodes into clusters different than their current clusters while respecting the capacity of every cluster. 
-Only after a re-partition is completed,
+Only after a re-partitioning is completed,
 the algorithm serves the  request.
 The cost of migrating a node from one cluster to another
 is~$\alpha \in \mathbb{Z}^+$.
@@ -278,11 +278,11 @@ Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in o
 %We define the algorithm \TAlg in the following way.
 Now we describe the algorithm \TAlg.
 It partitions nodes into components, and
-intially each node belongs to its own singleton component.
+initially each node belongs to its own singleton component.
 For each pair of nodes, \TAlg maintains a counter, initiated to $0$. 
 Upon receiving a request to a pair that is not collocated at one cluster, it increases their counter by $1$.
-If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component-respecting partition.
-If no such partition exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
+If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component-respecting partitioning.
+If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 \maciek{Serving remotely: say explicitly}
 
 %\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
@@ -297,8 +297,8 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \end{lemma}
 
 \begin{proof}
-  Observe that when the repartition is triggered by \TAlg, the resulting partition is component-respecting.
-  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
+  Observe that when the re-partition is triggered by \TAlg, the resulting partitioning is component-respecting.
+  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no re-partition.
 
   %We distinguish between three types of clusters: $C_1, C_2, C_3$,
   %which we define as follows.
@@ -306,18 +306,18 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
   %Finally, a cluster of type $C_3$  contains one component of size $3$.
   
-    Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
+    Consider a request between $u$ and $v$ that triggered the re-partition and let $U$ and $V$ be their respective clusters.
     Note that $U\neq V$,
 	 as otherwise the request would not trigger a~re-partitioning.
 	 We consider cases upon types of clusters $U$ and $V$.
-    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component-respecting partition exists, a contradiction.
+    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component-respecting partitioning exists, a contradiction.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, and costs at most $3\alpha$.
     \maciek{at most $2\alpha$ is sufficient}
   
-    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component-respecting partition exists. 
+    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component-respecting partitioning exists. 
     Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
     Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component-respecting partition exists. In this case \TAlg exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost $2\alpha$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component-respecting partitioning exists. In this case \TAlg exchanges the nodes $u$ and $v$ with any two nodes of $W$, for the total cost $2\alpha$.
     \maciek{1 exchange costs $\alpha$}
 \end{proof}
 
@@ -426,9 +426,9 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
 %\subsection{An $O(k\cdot \ell)$-competitive Algorithm for Perfect Partition}
 
-A \emph{perfect partition} is a partition of nodes into $\ell$ clusters
+A \emph{perfect partition} is a partitioning of nodes into $\ell$ clusters
 such that it incurs no inter-cluster communication throughout the input sequence.
-Equivalently, a perfect partition it an $\ell$-way cut of the communication graph of the input sequence.
+Equivalently, a perfect partitioning it an $\ell$-way cut of the communication graph of the input sequence.
 In this section,
 we give an algorithm for a restricted variant of  \OBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
@@ -448,7 +448,7 @@ An algorithm that always  keeps nodes belonging to the same component collocated
 \subsection{Perfect Partition Learner (\PPL) Algorithm}
      
 We assume \OPT begins with the initial configuration
-$P_I = I_1, \dots, I_{\ell}$ and moves to the final partition
+$P_I = I_1, \dots, I_{\ell}$ and moves to the final partitioning
 $P_F = F_1, \dots, F_{\ell}$.
  The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration is the number of nodes in $P$ that do not reside in their initial cluster.
     That is,
