@@ -204,8 +204,13 @@ it moves the whole component containing the node.
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
 
-The adversary constructs components of nodes, and $\OPT$ never splits them.
-The adversary observes the actions of an online algorithm, and if it splits the components at any moment, the adversary issues 
+In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic algorithm.
+The minimum cluster capacity for the construction to remain correct is $3$.
+
+The adversary constructs components of nodes, and issues only requests among nodes in the same component.
+If an online algorithm splits the components at any moment, the adversary issues requests to split pairs of nodes.
+We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
+On the other hand, $\OPT$ never splits the components.
 
 
 %\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
