@@ -1,5 +1,5 @@
  
-\documentclass[manuscript,screen=true]{acmart}
+\documentclass[manuscript,screen=true, review, anonymous]{acmart}
 
 \usepackage[utf8]{inputenc}
 \usepackage{xspace}
@@ -12,7 +12,7 @@
 
 \title{Brief Announcement: Tight Bounds for Online Balanced Re-Partitioning}
 
-\begin{comment}
+
 \author{Maciej Pacut}
 \email{maciej.pacut@univie.ac.at}
 \orcid{0000-0002-6379-1490}
@@ -36,7 +36,6 @@
   \institution{Faculty of Computer Science, University of Vienna}
   \country{Austria}
 }
-\end{comment}
 
 \copyrightyear{2020} 
 \acmYear{2020} 
@@ -100,7 +99,7 @@ an optimal tradeoff between the benefits
 of collocation (i.e., lower network load) 
 and its costs (i.e., migrations). 
 %
-Our main contribution is a significantly improved
+Our first contribution is a significantly improved
 lower bound of $\Omega(k\cdot \ell)$ on the
 competitive ratio, where $\ell$ is the number
 of clusters and $k$ is the cluster size,
@@ -182,7 +181,7 @@ and to the latter as the \emph{online} model.
 \noindent \textbf{Contributions.}
 Our main technical contribution 
 is an improved lower bound 
-of $\Omega(k\cdot\ell)$ on the competitive ratio of any deterministic online algorithm 
+of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
 even in the learning model;
 the best known lower bound so far was $\Omega(k)$,
 even for a more general model~\cite{repartition-disc}.
@@ -271,7 +270,7 @@ On the other hand, $\OPT$ never splits the components.
 	First,
 	we issue $k-2$ (internal) requests so that \ALG{} can form a component of $k-1$
 	nodes on the cluster $S_1$.
-	Recall that internal requests does not incur any cost for \ALG{}.
+	Recall that internal requests do not incur any cost for \ALG{}.
 	If \ALG{} at any point splits a component
 	(i.e., spreads its nodes over two or more clusters),
 	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
@@ -281,7 +280,7 @@ On the other hand, $\OPT$ never splits the components.
 	Next,
 	we issue a request between $x_0$ and $y_0$.
 	Since this is an external request,
-	\ALG{} joins them into one component and collocates them in some cluster other than $S_1$.
+	\ALG{} joins the endpoints into one component and collocates them in some cluster other than $S_1$.
 	For this,
 	\ALG{} moves to a new configuration
 	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
@@ -423,9 +422,9 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 %    	So it is 4-competitive (?)}
  \end{proof}
 
- In Section~\ref{sec:lowerbound} we constructed a $\Omega(k \cdot \ell)$ for \OBRP{}.
- Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows \OPT to move to a perfect partition.
- The corollary is that PPL is optimal.
+% In Section~\ref{sec:lowerbound} we constructed a $\Omega(k \cdot \ell)$ for \OBRP{}.
+% Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows \OPT to move to a perfect partition.
+% The corollary is that PPL is optimal.
  
 \section{The Online Problem}
 \label{sec:k3}
@@ -468,7 +467,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
     Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
     Note that $U\neq V$,
 	 as otherwise the request would not trigger a~repartitioning.
-	 We consider cases upon types of clusters $U$ and $V$.
+	 We consider cases based on the types of clusters $U$ and $V$.
     Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
     For two clusters, any configuration can be reached within two migrations, due to the fact that clusters are indistiguishable.
