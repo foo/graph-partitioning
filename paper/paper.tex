@@ -91,7 +91,7 @@
 
   In the online graph repartitioning problem, we are given a sequence of pairwise communication requests between n nodes, revealed online.
   The objective is to service these requests by partitioning the nodes into $\ell$ clusters, each of size $k$, such that frequently communicating nodes are located in the same cluster.
-  The partitioning can be updated by migrating nodes between clusters for a fixed cost.
+  The partitioning can be updated by migrating nodes between clusters for a~fixed cost.
   The goal is to jointly minimize the amount of inter-cluster communication and migration cost.
 
 
@@ -102,7 +102,7 @@
   We follow up with an optimal algorithm for $k=3$.
   Finally,
   we provide a $O(k\cdot \ell)$-competitive algorithm for the variant
-  where the optimal strategy is to move to a fixed configuration
+  where the optimal strategy is to move to a~fixed configuration
   that incurs zero communication cost through the whole request sequence.
 \end{abstract}
     
@@ -122,7 +122,7 @@ So far, the competitive ratio of the best known algorithm was the component-base
 By applying classic rent-or-buy technique, we obtained an optimal algorithm for $k=3$, that we present in Section~\ref{sec:k3}.
 
 In Section~\ref{sec:ppl}, we study a restricted model of balanced repartition, called perfect partition.
-For that, we present a $O(k\cdot \ell)$-competitive algorithm, which is optimal.
+For that, we present an~$O(k\cdot \ell)$-competitive algorithm, which is optimal.
 We believe that this result is an important building block on the way to an optimal algorithm for the general model.
 
 \section{Related Work}
@@ -157,7 +157,7 @@ initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
 The input consists of a sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
-where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a fixed amount of data.
+where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a~fixed amount of data.
 Nodes in $C \subset V$ are \emph{collocated}
 if they reside in the same cluster.
 An algorithm serves a communication request between two nodes
@@ -183,10 +183,10 @@ is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 The objective is to minimize the total incurred cost.
 
-In this paper, we use the techinique of maintaining \emph{components} of nodes, similar to previous approaches~\cite{repartition-disc}. A \emph{component} is a subset of frequently communicating nodes.
+In this paper, we use the techinique of maintaining \emph{components} of nodes, similar to previous approaches~\cite{repartition-disc}. A~\emph{component} is a subset of frequently communicating nodes.
 Initially,
 every node is trivially a \emph{singleton} component.
-An algorithm is \emph{component respecting}
+An~algorithm is \emph{component respecting}
 if it always keeps nodes that  belong to the same component collocated.
 That is,
 if the algorithm needs to move a node,
@@ -375,7 +375,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
   \medskip
   Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
-  In a fixed configuration of $\OPT$, it may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
+  In a~fixed configuration of $\OPT$, it may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
   Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
   Faced with $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
 
@@ -567,7 +567,6 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 \todo{CCS concepts are mandatory}
 
 
-\todo{Line endings (add tildes where necessary)}
 
 \todo{Consistency: collocated at OR collocated in OR collocated on}
 
