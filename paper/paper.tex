@@ -87,22 +87,16 @@
 
 
 \begin{abstract}
-  In the online Graph RePartitioning problem,
-  a sequence of communication requests arrives online,
-  between pairs of $n$ nodes that are partitioned into $\ell$ clusters
-  each of size $k$ (i.e., $n = \ell \cdot k$).
-  The objective is to serve these requests while paying a cost that is reasonably close to the optimal cost of serving them given  the whole sequence in advance. 
-  This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
-  such that frequently communicating nodes (from different clusters)
-  are relocated to the same cluster before they inflict too much communication cost.
-  A \emph{reconfiguration} (i.e., re-partitioning) is performed by
-  moving (i.e., migrating) nodes between clusters at a cost.
-  The goal is to jointly minimize communication and migration costs while serving the sequence.
+  In the online Graph RePartitioning problem, we are given a sequence of pairwise communication requests between n nodes, revealed online.
+  The objective is to service these requests by partitioning the nodes into $\ell$ clusters, each of size $k$, such that frequently communicating nodes are located in the same cluster.
+  The partitioning can be updated by migrating nodes between clusters for a fixed cost.
+  The goal is to jointly minimize the amount of inter-cluster communication and migration cost.
 
-	The best known deterministic algorithm known so far is $O(k^2\cdot \ell^2)$-competitive \cite{repartition-disc},
+
+	The best known deterministic algorithm known so far was $O(k^2\cdot \ell^2)$-competitive \cite{repartition-disc},
 	and the best known lower bound for the competitive ratio of
-	deterministic algorithms is $\Omega(k)$,
- by the reduction from online paging.
+	deterministic algorithms was $\Omega(k)$,
+ by reduction from online paging.
 	  In this paper, we provide the lower bound of $\Omega(k\cdot \ell)$.
     We also present an optimal algorithm for the case of $k=3$.
   Finally,
@@ -196,6 +190,13 @@ We say that \TAlg is \emph{component respecting}, i.e., it maintains the invaria
 
 We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
 
+
+This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
+such that frequently communicating nodes (from different clusters)
+are relocated to the same cluster before they inflict too much communication cost.
+A \emph{reconfiguration} (i.e., re-partitioning) is performed by
+moving (i.e., migrating) nodes between clusters at a cost.
+The goal is to jointly minimize communication and migration costs while serving the sequence.
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
