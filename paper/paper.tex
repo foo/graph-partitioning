@@ -147,29 +147,30 @@ the currently best approximation ratio is $O(\log n)$~\cite{SarVaz95,ArKaKa99,Fe
 
 
 
-\section{Problem Definition}
+\section{Preliminaries}
 \label{sec:problem-definition}
 
-Formally, the online \emph{Balanced RePartitioning} problem (\OBRP{}) is defined as
+The online \emph{Balanced Re-Partitioning} problem (\OBRP{}) is defined as
 follows. We are given a set of $n$ nodes,
 initially arbitrarily partitioned into $\ell$~clusters,
 each of size~$k$.
-We say that nodes in $C \subset V$ are \emph{collocated}
-% in a partition $P$
-if they are assigned to the same cluster.
-%\maciek{We can ommit the formal definition: "I.e.,
-%$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". %However, if we use the notion of cluster later, then TODO: define cluster}
-%\maciek{We can ommit the formal definition: "I.e.,
-%$\forall u,v \in C: \mathit{cluster} (u,P) = \mathit{cluster} (v,P)$.". However, if we use the notion of cluster later, then TODO: define cluster}
 The input consists of a sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
 where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a fixed amount of data.
-Before serving the request,
-the online algorithm can re-partition,
+Nodes in $C \subset V$ are \emph{collocated}
+if they reside in the same cluster.
+An algorithm serves a communication request between two nodes
+either \emph{locally} at cost~0
+if they are collocated,
+ or \emph{remotely} at cost~1
+ if they are located in different clusters.
+ We refer to the two types of requests as \emph{internal}
+ and \emph{external} requests, respectively.
+Before serving a request,
+an online algorithm can \emph{re-partition},
 i.e.,
-it may (optionally) move some of the nodes into clusters different than their current assigned clusters.
-Once the re-partition is executed,
-we serve
+it may (optionally) move some nodes into clusters different than their current assigneclusters while respecting the capacity of every cluster. he re-partition is executed,
+the algorithm serves the  request
 the communication request between two  nodes at cost~0 if they are collocated,
 or at cost~1 if they are located in different clusters.
 The cost of migrating a node from one cluster to another
@@ -180,23 +181,22 @@ denoted by $ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $ALG$ while serving the sequence $\sigma$.
 
-\section{Preliminaries}
-
-\maciek{I just copied useful sentences. This section is TODO}
+ useful sentences. This section is TODO}
 An algorithm that  keeps all components collocated is \emph{component-respecting}.
-
-To this end, we maintain \emph{components of nodes}, in the similar fashion to previous approaches\cite{repartition-disc}.
-We say that \TAlg is \emph{component respecting}, i.e., it maintains the invariant that nodes of each component are located in the same cluster.
-
-We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
-
-
+%
+A \emph{component} is a subset of frequently communicating nodes.   ly,                                                   ,every node is trivially a \emph{singleton} component.
+We grow components similar fashion to previous approaches~\cite{repartition-disc}.
+which proved to be an effective techique for mimi                                                                it always keep.
+That is,
+if the algorithm needs to move a node,
+it moves the whole component containing the node to the sameemph{component -respecting}, i.e., it maintains the invariant that nodes of each component are collocated in the same cluster.
+%We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
+%
 This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
 such that frequently communicating nodes (from different clusters)
 are relocated to the same cluster before they inflict too much communication cost.
-A \emph{reconfiguration} (i.e., re-partitioning) is performed by
-moving (i.e., migrating) nodes between clusters at a cost.
-The goal is to jointly minimize communication and migration costs while serving the sequence.
+A \emph{reconfiguration} (i.e.,\re-partitioning) is performed by
+ migrating) nodes betwen clusters at a cost.   ,s to jointly minimize communication and migration costs while serving the sequence.
 
 \section{Lower bound} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 \label{sec:lowerbound}
@@ -229,7 +229,7 @@ The goal is to jointly minimize communication and migration costs while serving 
 	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
 	Next,
 	we issue a request between $x_0$ and $y_0$.
-	Since this is an external \maciek{external request is not defined at this point} request,
+	Since this is an external request,
 	\ALG{} joins them into one component and collocates them in some cluster other than $S_1$.
 	For this,
 	\ALG{} moves to a new configuration
@@ -274,7 +274,7 @@ It partitions nodes into components, and
 intially each node belongs to its own singleton component.
 For each pair of nodes, \TAlg maintains a counter, initiated to $0$. 
 Upon receiving a request to a pair that is not collocated at one cluster, it increases their counter by $1$.
-If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partition.
+If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component-respecting partition.
 If no such partition exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 \maciek{Serving remotely: say explicitly}
 
@@ -300,8 +300,9 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   %Finally, a cluster of type $C_3$  contains one component of size $3$.
   
     Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
-    Note that $U\neq V$, as otherwise the request would not trigger a~reconfiguration.
-    We consider cases upon types of clusters $U$ and $V$.
+    Note that $U\neq V$,
+	 as otherwise the request would not trigger a~re-partitioning.
+	 We consider cases upon types of clusters $U$ and $V$.
     Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component-respecting partition exists, a contradiction.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the rebalance is local within $U$ and $V$, and costs at most $3\alpha$.
     \maciek{at most $2\alpha$ is sufficient}
@@ -322,7 +323,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
   We consider the incomplete phase later in this proof.
 
-  As \TAlg is component respecting, it never increases any counter above $\alpha$.
+  As \TAlg is component-respecting, it never increases any counter above $\alpha$.
   We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
 
 
