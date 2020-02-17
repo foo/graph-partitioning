@@ -111,12 +111,12 @@
 \section{Introduction}
 Distributed   applications,  including  batch  processing, streaming, and scale-out databases generate a significant amount of network traffic and a~considerable fraction of their runtime is due to network activity. In this  paper, we study  algorithms  for collocating frequently communicating nodes in a distributed networked systems in an online fashion.
 
-Main technical contribution of this paper is the lower bound $\Omega(k\cdot\ell)$ (Section~\ref{sec:lowerbound}) for the competitive ratio of any deterministic algorithm for online Balanced RePartition problem..
+Main technical contribution of this paper is the lower bound $\Omega(k\cdot\ell)$ for the competitive ratio of any deterministic algorithm for online Balanced RePartition problem (see Section~\ref{sec:lowerbound}).
 The best known lower bound so far was $\Omega(k)$ \cite{repartition-disc}
-which involves only two cluster.
+which involves only two clusters.
 
 
-So far, the competitive ratio of the best known algorithm was the component-based algorithm with the ratio $O(k^2\cdot \ell^2)$ \cite{repartition-disc}.
+So far, the competitive ratio of the best known algorithm was the component-based algorithm with the ratio $O(k^2\cdot \ell^2)$~\cite{repartition-disc}.
 By applying classic rent-or-buy technique, we obtained an optimal algorithm for $k=3$, that we present in Section~\ref{sec:k3}.
 
 In Section~\ref{sec:ppl}, we study a restricted model of Balanced RePartition, called Perfect Partition.
