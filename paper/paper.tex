@@ -88,7 +88,7 @@
 
 \begin{abstract}
   Distributed   applications,  including  batch  processing, streaming, and scale-out databases generate a significant amount of network traffic and a~considerable fraction of their runtime is due to network activity. In this  paper, we study  algorithms  for collocating frequently communicating nodes in a distributed networked systems in an online fashion.
-  
+
   In the online Graph RePartitioning problem, we are given a sequence of pairwise communication requests between n nodes, revealed online.
   The objective is to service these requests by partitioning the nodes into $\ell$ clusters, each of size $k$, such that frequently communicating nodes are located in the same cluster.
   The partitioning can be updated by migrating nodes between clusters for a fixed cost.
@@ -122,21 +122,19 @@ So far, the competitive ratio of the best known algorithm was the component-base
 By applying classic rent-or-buy technique, we obtained an optimal algorithm for $k=3$, that we present in Section~\ref{sec:k3}.
 
 In Section~\ref{sec:ppl}, we study a restricted model of Balanced RePartition, called Perfect Partition.
-For that, we present a $O(k\cdot \ell)$-competitive algorithm that is optimal.
+For that, we present a $O(k\cdot \ell)$-competitive algorithm, which is optimal.
 We believe that this result is an important building block on the way to an optimal algorithm for the general model.
 
 \section{Related Work}
 
 The problem was studied under resource augmentation \cite{repartition-disc}, and under stochastic assumptions of input\maciek{cite}.\maciek{cite other papers that cite DISC?}
 
-%The model is related to online
-%paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}.
-In our
-setting,
-each  requests between two nodes  not in the same cluster
-(i.e., inter-cluster requests) inflicts a cost until the nodes are placed in the same cluster.
-This is a reminiscent of caching models \emph{with
-rejection} penalty~\cite{EpImLN11,EpImLN15,Irani02}.
+The model is related to online
+caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}. In our
+setting, requests can be served remotely, which is
+reminiscent of caching models \emph{with
+bypassing}~\cite{EpImLN11,EpImLN15,Irani02}.
+
 
 The static offline version of~the~problem, called the
 \emph{$\ell$-balanced graph partitioning problem} is 
