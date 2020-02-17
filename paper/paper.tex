@@ -323,7 +323,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
     Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one migration, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
 \end{proof}
 
-
+\pagebreak
 
 \begin{theorem}
   \TAlg is $O(\ell)$-competitive.
@@ -388,7 +388,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   Faced with $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
 
 
-  Now we estimate the cost of $\OPT(\sigma_E)$ by accounting savings from migrations.
+  Now we estimate the cost of $\OPT(\sigma_E)$ while accounting savings from migrations.
   By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
   This may allow to serve requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
   As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
