@@ -254,7 +254,7 @@ The adversary constructs components of nodes, whose contents are based on action
 All requests arrive to pairs of nodes within the same component.
 If an online algorithm splits the components at any moment, the adversary issues requests to split pairs of nodes.
 We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
-On the other hand, $\OPT$ initially collocates all components and never splits them again.
+On the other hand, $\OPT$ initially collocates all nodes of each component and never splits them again.
 
 %\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
@@ -263,35 +263,35 @@ On the other hand, $\OPT$ initially collocates all components and never splits t
 \end{theorem}
 
 \begin{proof}
-	We construct an instance of the problem with $\ell$ clusters 
+	Let $\alpha=1$. We construct an instance of the problem with $\ell$ clusters 
 	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
 	Let $I(C)$ denote the cluster where nodes of component $C$ are located initially.
 	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
 	Fix any online algorithm \ALG{}.
-	We construct the input sequence for \ALG{} as follows.
-	First,
-	we issue $k-2$ (internal) requests so that \ALG{} can form a component of $k-1$
-	nodes on the cluster $S_1$.
-	Recall that internal requests do not incur any cost for \ALG{}.
+  We join some nodes into components, and produce the input sequence by observing actions of \ALG{} with respect to nodes of these components.
 	If \ALG{} at any point splits a component
 	(i.e., spreads its nodes over two or more clusters),
 	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
-	Hence, if \ALG{} never collocates them then it is not competitive.
+	If \ALG{} never collocates them, then it is not competitive.
+
+  Initially each node belongs to its own component of size $1$.
+  We say that a node is single if it belongs to a singleton component.
+  We begin by forming a component of single $k-1$ nodes on the cluster $S_1$.
   
 	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
 	Next,
-	we issue a request between $x_0$ and $y_0$.
-	Since this is an external request,
-	\ALG{} joins the endpoints into one component and collocates them in a~cluster other than $S_1$.
-	For this,
+	we merge components of $x_0$~and~$y_0$.
+  Since these reside on different clusters of \ALG{}, it produces an external request.
+  \ALG{} must collocate them in a~cluster other than $S_1$.
+	To this end,
 	\ALG{} moves to a new configuration
 	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
 	
 	Next,
-	we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
+	we merge the component of $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
 	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
 	consequently replace $x_1$ with some other (single) node $x_2$.
-	We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
+	We repeat merging the component of single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
   until there are only two single nodes left that  originate from the same cluster.
 	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
 	$x'$ and $y'$,
