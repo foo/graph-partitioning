@@ -450,6 +450,7 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 
 
 In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
+Before bounding the competitive ratio of \TAlg, we introduce the lemma that estimates the cost of a single repartition of \TAlg. We defer its proof to Appendix~\ref{apx:omitted}.
 
 \begin{lemma}
   \label{lem:1req}
@@ -465,7 +466,6 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
   As \TAlg is component respecting, it never increases any counter above $\alpha$.
   We say that the pair $(u, v)$ is \emph{saturated}, if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
-
 
   Let $\sigma$ be the input sequence that arrived during the phase.
   Let $\sigma_{cost}$ be the requests that at the moment of arrival were external requests for \TAlg (these are the only requests that incurred a cost for \TAlg).
@@ -524,16 +524,11 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   This may allow to serve requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
   As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
   By performing a single migration that costs $\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$.
-  Thus, for serving $\sigma_E$, $\OPT$ pays at least $W \cdot \frac{\alpha}{4 (\alpha-1)}$.
-  This gives us
-  \begin{equation*}
-    \OPT(\sigma_E) + \OPT(M)  \geq (|\sigma_E|-3(\alpha - 1)\cdot \ell) \cdot \frac{\alpha}{4 (\alpha-1)}
-    \geq |\sigma_E| / 4 - 4 \alpha \cdot \ell.
-  \end{equation*}
+  Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 4 - 4 \alpha \cdot \ell$.
   From that, we obtain $|\sigma_E| \geq 4(\OPT(\sigma_E)+\OPT(M)) + 16\alpha \cdot \ell$.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
   \begin{equation*}
-    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{7\alpha \cdot \ell + |\sigma_E|}{(\alpha + \OPT(\sigma_E) + \OPT(M))/2} \leq \frac{46\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 46 \ell = O(\ell).
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{7\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + E/2} \leq \frac{46\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 46 \ell = O(\ell).
   \end{equation*}
 
   \medskip
@@ -556,7 +551,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 \begin{appendix}
 
 \section{Ommited proofs}
-
+\label{apx:omitted}
 
 \begin{proof}[Proof of Lemma~\ref{lem:1req}]
   Observe that when the repartition is triggered by \TAlg, the resulting partitioning is component respecting.
