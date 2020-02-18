@@ -250,7 +250,8 @@ it moves the whole component containing the node.
 %discuss an upper bound.
 
 \noindent \textbf{Lower bound.}
-The adversary constructs components of nodes, and issues only requests among nodes in the same component.
+The adversary constructs components of nodes, whose contents are based on actions of the online algorithm.
+All requests arrive to pairs of nodes within the same component.
 If an online algorithm splits the components at any moment, the adversary issues requests to split pairs of nodes.
 We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
 On the other hand, $\OPT$ initially collocates all components and never splits them again.
@@ -258,7 +259,7 @@ On the other hand, $\OPT$ initially collocates all components and never splits t
 %\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
 \begin{theorem}
-	The competitive ratio of any deterministic algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
+	The competitive ratio of any deterministic online algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
 \end{theorem}
 
 \begin{proof}
