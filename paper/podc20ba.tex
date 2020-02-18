@@ -92,12 +92,12 @@
 \begin{abstract}
 Distributed   applications,  including  batch  processing, streaming, scale-out databases,
 or machine learning, generate a significant amount of network traffic. By collocating frequently communicating nodes (e.g., virtual machines) on the same clusters (e.g., server or rack), the network load can be reduced and application performance improved. 
-However, as the communication pattern is a priori unknown and may change over time, it need to be learned efficiently, in an online manner.
+However, as the communication pattern is a priori unknown and may change over time, it needs to be learned efficiently, in an online manner.
 %
 This paper revisits the online 
 balanced re-partitioning problem 
 (introduced by Avin et al.~at DISC 2016)
-which asks for an algorithm which strikes
+which asks for an algorithm that strikes
 an optimal tradeoff between the benefits
 of collocation (i.e., lower network load) 
 and its costs (i.e., migrations). 
@@ -126,7 +126,7 @@ over time.
 \noindent \textbf{Motivation and model.}
 The \emph{balanced repartitioning} problem (\OBRP{})
 is a fundamental learning problem
-which finds applications in the context
+that finds applications in the context of
 distributed systems optimization~\cite{repartition-disc}. We are given a set $V$ of $n$ nodes 
 (e.g., virtual machines or processes),
 initially arbitrarily partitioned into $\ell$~clusters
@@ -265,7 +265,7 @@ On the other hand, $\OPT$ initially collocates all components and never splits t
 \begin{proof}
 	We construct an instance of the problem with $\ell$ clusters 
 	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
-	Let $I(C)$ denote the cluster where nodes of a component $C$ are located initially.
+	Let $I(C)$ denote the cluster where nodes of component $C$ are located initially.
 	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
 	Fix any online algorithm \ALG{}.
 	We construct the input sequence for \ALG{} as follows.
@@ -282,22 +282,22 @@ On the other hand, $\OPT$ initially collocates all components and never splits t
 	Next,
 	we issue a request between $x_0$ and $y_0$.
 	Since this is an external request,
-	\ALG{} joins the endpoints into one component and collocates them in some cluster other than $S_1$.
+	\ALG{} joins the endpoints into one component and collocates them in a~cluster other than $S_1$.
 	For this,
 	\ALG{} moves to a new configuration
 	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
 	
 	Next,
 	we issue a request between $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
-	\ALG{} must collocate $x_1$ and $C$ in some cluster other than $S_1$ and
-	consequently replaces $x_1$ with some other (single) node $x_2$.
+	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
+	consequently replace $x_1$ with some other (single) node $x_2$.
 	We repeat issuing requests between the single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
   until there are only two single nodes left that  originate from the same cluster.
 	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
 	$x'$ and $y'$,
 	we have $I(x') \neq I(y')$.
 	At this point there are at most $\ell+1$ single nodes left,
-	otherwise there would be more pairs of single nodes that were initially in the same cluster.
+	otherwise, there would be more pairs of single nodes that were initially in the same cluster.
 	
 	Given this sequence of requests,
 	the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
@@ -433,13 +433,13 @@ Hence it never moves to a configuration beyond distance $\Delta$.
 
 Let us now discuss the general online
 model where the request sequence
-can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows to obtain an optimal algorithm for $k=3$.
+can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
 
 %We define the algorithm \TAlg in the following way.
 Now we describe the algorithm \TAlg.
 It partitions nodes into components, and
-initially each node belongs to its own singleton component.
+initially, each node belongs to its own singleton component.
 For each pair of nodes, \TAlg maintains a counter, initiated to $0$. 
 Upon receiving a request to a pair that is not collocated in one cluster, it increases their counter by $1$.
 If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
@@ -564,9 +564,9 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   
     Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
     Note that $U\neq V$,
-	 as otherwise the request would not trigger a~repartitioning.
+	 as otherwise, the request would not trigger a~repartitioning.
 	 We consider cases based on the types of clusters $U$ and $V$.
-    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
+    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
     For two clusters, any configuration can be reached within two migrations, due to the fact that clusters are indistiguishable.
   
