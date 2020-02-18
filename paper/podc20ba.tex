@@ -46,9 +46,9 @@
 \acmISBN{}\acmPrice{}
 \acmDOI{}
 
-\ccsdesc[300]{Networks~Data center networks}
-\ccsdesc[300]{Theory of computation~Unsupervised learning and clustering}
-
+\ccsdesc[500]{Networks~Network algorithms}
+\ccsdesc[300]{Computer systems organization~Cloud computing}
+\ccsdesc[300]{Computer systems organization~Distributed architectures}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
@@ -520,7 +520,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
 
-
+\pagebreak
 \appendix
 \section{PPL Algorithm} \label{apx:PPL}
 \begin{algorithm}
@@ -581,27 +581,25 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
     Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
 \end{proof}
 
+
 \begin{CCSXML}
 	<ccs2012>
 	<concept>
-	<concept_id>10003033.10003106.10003110</concept_id>
-	<concept_desc>Networks~Data center networks</concept_desc>
+	<concept_id>10003033.10003068</concept_id>
+	<concept_desc>Networks~Network algorithms</concept_desc>
+	<concept_significance>500</concept_significance>
+	</concept>
+	<concept>
+	<concept_id>10010520.10010521.10010537.10003100</concept_id>
+	<concept_desc>Computer systems organization~Cloud computing</concept_desc>
 	<concept_significance>300</concept_significance>
 	</concept>
 	<concept>
-	<concept_id>10011007.10010940.10010971.10011120.10003100</concept_id>
-	<concept_desc>Software and its engineering~Cloud computing</concept_desc>
-	<concept_significance>300</concept_significance>
-	</concept>
-	<concept>
-	<concept_id>10003752.10010070.10010071.10010074</concept_id>
-	<concept_desc>Theory of computation~Unsupervised learning and clustering</concept_desc>
+	<concept_id>10010520.10010521.10010537</concept_id>
+	<concept_desc>Computer systems organization~Distributed architectures</concept_desc>
 	<concept_significance>300</concept_significance>
 	</concept>
 	</ccs2012>
 \end{CCSXML}
 
-\ccsdesc[300]{Networks~Data center networks}
-\ccsdesc[300]{Software and its engineering~Cloud computing}
-\ccsdesc[300]{Theory of computation~Unsupervised learning and clustering}
 \end{document}
