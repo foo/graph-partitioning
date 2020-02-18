@@ -455,7 +455,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 
 \begin{lemma}
   \label{lem:1req}
-  A single repartition of \TAlg consists of at most $2$ migrations.
+  During a single repartition, \TAlg exchanges at most $2$ pairs of nodes.
 \end{lemma}
 
 \begin{theorem}
@@ -479,7 +479,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
   \TAlg performs at most $2 \ell$ component merge operations, as
   exceeding this number means that a component of size $4$ exists, and the phase should have ended already.
-  Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 4\alpha\cdot\ell$.
+  Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 8\alpha\cdot\ell$ (recall that an exchange costs $2\alpha$).
   %Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
   
   Now we bound $\TAlg(\sigma_I)$.
@@ -491,7 +491,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   %\maciek{not needed most likely}
 
   Moreover, \TAlg paid for all requests from $\sigma_E$, and thus $\TAlg(\sigma_E) = |\sigma_E|$.
-  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 7\alpha\cdot \ell + |\sigma_E|$ during this phase.
+  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 11\alpha\cdot \ell + |\sigma_E|$ during this phase.
 
   \medskip
 
@@ -523,12 +523,12 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
   This may allow serving requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
   As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
-  By performing a single migration that costs $\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$.
-  Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 4 - 4 \alpha \cdot \ell$.
-  From that, we obtain $|\sigma_E| \geq 4(\OPT(\sigma_E)+\OPT(M)) + 16\alpha \cdot \ell$.
+  By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$.
+  Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
+  From that, we obtain $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
   \begin{equation*}
-    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{7\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + E/2} \leq \frac{46\alpha\cdot\ell + 8\cdot E}{\alpha + E} \leq 46 \ell = O(\ell).
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + E/2} \leq \frac{27\alpha\cdot\ell + 2\cdot E}{\alpha + E} \leq 27 \ell = O(\ell).
   \end{equation*}
 
   \medskip
