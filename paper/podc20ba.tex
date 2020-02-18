@@ -250,9 +250,10 @@ it moves the whole component containing the node.
 %discuss an upper bound.
 
 \noindent \textbf{Lower bound.}
-The adversary constructs components of nodes, whose contents are based on actions of the online algorithm.
-All requests arrive to pairs of nodes within the same component.
-If an online algorithm splits the components at any moment, the adversary issues requests to split pairs of nodes.
+The adversary constructs components of nodes based on the partitioning choices of a given online algorithm.
+Adversary issues requests between pairs of nodes that belong to the same component.
+If an online algorithm splits a component at any moment,
+the adversary issues requests to the split pair until the algorithm collocates them.
 We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
 On the other hand, $\OPT$ initially collocates all nodes of each component and never splits them again.
 
