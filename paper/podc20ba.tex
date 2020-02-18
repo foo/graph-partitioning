@@ -456,30 +456,6 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
   A single repartition of \TAlg consists of at most $2$ migrations.
 \end{lemma}
 
-\begin{proof}
-  Observe that when the repartition is triggered by \TAlg, the resulting partitioning is component respecting.
-  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
-
-  %We distinguish between three types of clusters: $C_1, C_2, C_3$,
-  %which we define as follows.
-  %A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
-  %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
-  %Finally, a cluster of type $C_3$  contains one component of size $3$.
-  
-    Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
-    Note that $U\neq V$,
-	 as otherwise the request would not trigger a~repartitioning.
-	 We consider cases based on the types of clusters $U$ and $V$.
-    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
-    If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
-    For two clusters, any configuration can be reached within two migrations, due to the fact that clusters are indistiguishable.
-  
-    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
-    Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
-    Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one migration, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
-\end{proof}
-
 \begin{theorem}
   \TAlg is $O(\ell)$-competitive.
 \end{theorem}
@@ -581,18 +557,30 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. 
 
 \section{Ommited proofs}
 
-\section{Todos}
 
-\todo{Author anonymous conference! Done}
+\begin{proof}[Proof of Lemma~\ref{lem:1req}]
+  Observe that when the repartition is triggered by \TAlg, the resulting partitioning is component respecting.
+  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
 
-\todo{ACM format for review? Is there any specific format like this? With line numbers etc. Done}
-
-
-\todo{CCS concepts are mandatory}
-
-\todo{ACM Reference format starts with a "." Possibly we did not provide all info. Done}
-
-
+  %We distinguish between three types of clusters: $C_1, C_2, C_3$,
+  %which we define as follows.
+  %A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
+  %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
+  %Finally, a cluster of type $C_3$  contains one component of size $3$.
+  
+    Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
+    Note that $U\neq V$,
+	 as otherwise the request would not trigger a~repartitioning.
+	 We consider cases based on the types of clusters $U$ and $V$.
+    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
+    If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
+    For two clusters, any configuration can be reached within two migrations, due to the fact that clusters are indistiguishable.
+  
+    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
+    Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
+    Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one migration, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
+\end{proof}
 
 \end{appendix}
 
