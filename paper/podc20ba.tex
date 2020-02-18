@@ -339,41 +339,10 @@ $\OPT \geq \Delta:= \dist(P_F, P_I) $.
 As a result,
 \PPL never ends up in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$.
 This invariant ensures that \PPL does not pay too much while recovering $P_F$.
-
-\begin{algorithm}
-    \renewcommand{\algorithmicrequire}{\textbf{Input:}}
-    \renewcommand{\algorithmicensure}{\textbf{Output:}}
-    \begin{algorithmic}
-%        \Require 
-%        $k, \ell$,
-%        initial configuration $P_I$,
-%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
-%        \Ensure A final configuration $P_F$ 
-        \STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$}
-        \STATE{$P_0 := P_I$}
-         \label{line:initcomponents}
-        \FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
-        \STATE Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
-        \IF{$C_1 \neq C_2$}
-        \STATE {Unite the two components into a single component $C'$ and
-        $\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$} \label{line:mergecomponents}
-        \IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
-	     \COMMENT{i.e.~if not in the same cluster}    
-    	}       
-        \STATE {$P_{t} = \mathit{repartition}(P_{t-1}, P_I, \mathcal{C})$} 
-         \COMMENT{move to $P$ closest to $P_I$}
-        \label{line:rebalance} 
-        \ENDIF
-        \ENDIF
-        \ENDFOR
-    \end{algorithmic}
-    \caption{Perfect Partition Learner (\PPL)}
-    \label{alg:ppl}
-      \end{algorithm}
-  
 %      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
       We note that the $\mathit{repartition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a perfect partition closest to $P_I$.
-Hence it never moves to a configuration beyond distance $\Delta$.      
+Hence it never moves to a configuration beyond distance $\Delta$.
+The scheme of the algorithm can be found in the Appendix \ref{apx:PPL}.  
 \begin{property} \label{prop:dist<OPT}
     Let $P$ be any configuration chosen by \PPL at Line $\ref{line:rebalance}$.
     Then, $\dist(P,P_I) \leq \Delta$.
@@ -548,7 +517,50 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
 
-\begin{appendix}
+
+\section{Todos}
+
+\todo{Author anonymous conference! Done}
+
+\todo{ACM format for review? Is there any specific format like this? With line numbers etc. Done}
+
+
+\todo{CCS concepts are mandatory}
+
+\todo{ACM Reference format starts with a "." Possibly we did not provide all info. Done}
+
+\appendix
+\section{PPL Algorithm} \label{apx:PPL}
+\begin{algorithm}
+	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+	\renewcommand{\algorithmicensure}{\textbf{Output:}}
+	\begin{algorithmic}
+		%        \Require 
+		%        $k, \ell$,
+		%        initial configuration $P_I$,
+		%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
+		%        \Ensure A final configuration $P_F$ 
+		\STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$}
+		\STATE{$P_0 := P_I$}
+		\label{line:initcomponents}
+		\FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
+		\STATE Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
+		\IF{$C_1 \neq C_2$}
+		\STATE {Unite the two components into a single component $C'$ and
+			$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$} \label{line:mergecomponents}
+		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
+			\COMMENT{i.e.~if not in the same cluster}    
+		}       
+		\STATE {$P_{t} = \mathit{repartition}(P_{t-1}, P_I, \mathcal{C})$} 
+		\COMMENT{move to $P$ closest to $P_I$}
+		\label{line:rebalance} 
+		\ENDIF
+		\ENDIF
+		\ENDFOR
+	\end{algorithmic}
+	\caption{Perfect Partition Learner (\PPL)}
+	\label{alg:ppl}
+\end{algorithm}
 
 \section{Ommited proofs}
 \label{apx:omitted}
@@ -576,7 +588,5 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
     Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
     Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one migration, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
 \end{proof}
-
-\end{appendix}
 
 \end{document}
