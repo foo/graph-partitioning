@@ -182,8 +182,7 @@ and to the latter as the \emph{online} model.
 
 
 \noindent \textbf{Contributions.}
-Our main technical contribution 
-is an improved lower bound 
+We provide an improved lower bound 
 of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
 even in the learning model;
 the best known lower bound so far was $\Omega(k)$,
@@ -225,8 +224,7 @@ it is known that a constant competitive algorithm exists~\cite{repartition-disc}
 
 \noindent \textbf{Preliminaries.}
 In this paper, we use the technique of maintaining \emph{(connected) components} of nodes, similar to previous approaches~\cite{repartition-disc}. A~\emph{component} is a subset of frequently communicating nodes.
-Initially,
-every node is trivially a \emph{singleton} component.
+We use this concept in both algorithms in this paper, but also in the lower bound, to incur high cost for any online algorithm that splits them.
 An~algorithm is \emph{component respecting}
 if it always keeps nodes that  belong to the same component collocated.
 That is,
@@ -255,7 +253,7 @@ it moves the whole component containing the node.
 The adversary constructs components of nodes, and issues only requests among nodes in the same component.
 If an online algorithm splits the components at any moment, the adversary issues requests to split pairs of nodes.
 We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
-On the other hand, $\OPT$ never splits the components.
+On the other hand, $\OPT$ initially collocates all components and never splits them again.
 
 %\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
