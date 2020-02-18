@@ -518,17 +518,6 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 \bibliography{references}  
 
 
-\section{Todos}
-
-\todo{Author anonymous conference! Done}
-
-\todo{ACM format for review? Is there any specific format like this? With line numbers etc. Done}
-
-
-\todo{CCS concepts are mandatory}
-
-\todo{ACM Reference format starts with a "." Possibly we did not provide all info. Done}
-
 \appendix
 \section{PPL Algorithm} \label{apx:PPL}
 \begin{algorithm}
@@ -581,12 +570,12 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 	 We consider cases based on the types of clusters $U$ and $V$.
     Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
     If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
-    For two clusters, any configuration can be reached within two migrations, due to the fact that clusters are indistiguishable.
+    For two clusters, any configuration can be reached within two swaps, due to the fact that clusters are indistinguishable.
   
     Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
     Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
     Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one migration, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
 \end{proof}
 
 \end{document}
