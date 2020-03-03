@@ -1,0 +1,618 @@
+ 
+\documentclass[manuscript,screen=true, review, anonymous]{acmart}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xspace}
+\usepackage{balance}
+\usepackage{amsmath,amsfonts,mathtools,amsthm}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
+\mathchardef\mhyphen="2D
+
+\title{Brief Announcement: Tight Bounds for Online Balanced Repartitioning}
+
+
+\author{Maciej Pacut}
+\email{maciej.pacut@univie.ac.at}
+\orcid{0000-0002-6379-1490}
+\affiliation{%
+  \institution{Faculty of Computer Science, University of Vienna}
+  \country{Austria}
+}
+
+
+\author{Mahmoud Parham} 
+\email{mahmoud.parham@univie.ac.at}
+\orcid{0000-0002-6211-077X}
+\affiliation{%
+  \institution{Faculty of Computer Science, University of Vienna}
+  \country{Austria}
+}
+
+\author{Stefan Schmid} 
+\email{stefan_schmid@univie.ac.at}
+\affiliation{%
+  \institution{Faculty of Computer Science, University of Vienna}
+  \country{Austria}
+}
+
+\copyrightyear{2020} 
+\acmYear{2020} 
+\setcopyright{acmlicensed}
+\acmConference{PODC '20}{July 29-August 2, 2020}{Toronto, Canada}
+
+\keywords{online algorithms, competitive analysis, graph partitioning, clustering}
+\acmISBN{}\acmPrice{}
+\acmDOI{}
+
+\ccsdesc[500]{Networks~Network algorithms}
+\ccsdesc[300]{Computer systems organization~Cloud computing}
+\ccsdesc[300]{Computer systems organization~Distributed architectures}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
+%  our macros start
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
+
+\newcommand{\OPT}{\textsf{OPT}\xspace}
+\newcommand{\ALG}{\textsf{ALG}\xspace}
+\newcommand{\PPL}{\textsf{PPL}\xspace}
+\newcommand{\OBRP}{BRP}
+\newcommand{\PPOBRP}{PP-BRP}
+\newcommand{\dist}{\textsf{dist}}
+\newcommand{\TAlg}{{\ensuremath{\textsf{ALG}_{3}}}\xspace} % we should change this name
+
+
+
+
+\newtheorem{claim}{Claim}
+\newtheorem{fact}{Fact}
+\newtheorem{rem}{Remark}
+\newtheorem{observation}{Observation}
+\newtheorem{property}{Property}
+
+
+\DeclarePairedDelimiter\pair{(}{)}
+\DeclarePairedDelimiter\set{\{}{\}}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand\mahmoud[1]{\color{green}\textbf{\\ Mahmoud: #1}\\\color{black}}
+\newcommand\stefan[1]{\color{blue}\textbf{\\ Stefan: #1}\color{black}}
+\newcommand\maciek[1]{\color{brown}\textbf{\\ Maciek: #1}\color{black}}
+
+
+\newcommand{\todo}[1]{\noindent\color{brown}{todo: #1}\color{black}}
+
+
+\begin{document}
+
+
+\begin{abstract}
+Distributed   applications,  including  batch  processing, streaming, scale-out databases,
+or machine learning, generate a significant amount of network traffic. By collocating frequently communicating nodes (e.g., virtual machines) on the same clusters (e.g., server or rack), the network load can be reduced and application performance improved. 
+However, as the communication pattern is a priori unknown and may change over time, it needs to be learned efficiently, in an online manner.
+%
+This paper revisits the online 
+balanced repartitioning problem 
+(introduced by Avin et al.~at DISC 2016)
+which asks for an algorithm that strikes
+an optimal tradeoff between the benefits
+of collocation (i.e., lower network load) 
+and its costs (i.e., migrations). 
+%
+Our first contribution is a significantly improved
+lower bound of $\Omega(k\cdot \ell)$ on the
+competitive ratio, where $\ell$ is the number
+of clusters and $k$ is the cluster size,
+even for a scenario in which the communication
+pattern is static and can be perfectly partitioned;
+we also provide a tight upper bound 
+of $O(k\cdot \ell)$ for this scenario.
+In addition, we present a tight upper bound
+of $\Theta(\ell)$ for $k=3$,
+for the general model in which the
+communication pattern can change arbitrarily
+over time. 
+\end{abstract}
+    
+\maketitle
+    
+\renewcommand{\shortauthors}{M.~Pacut, M.~Parham, S.~Schmid}
+
+\section{Introduction}
+
+\noindent \textbf{Motivation and model.}
+The \emph{balanced repartitioning} problem (\OBRP{})
+is a fundamental learning problem
+that finds applications in the context of
+distributed systems optimization~\cite{repartition-disc}. We are given a set $V$ of $n$ nodes 
+(e.g., virtual machines or processes),
+initially arbitrarily partitioned into $\ell$~clusters
+(e.g., servers or entire racks),
+each of size~$k$.
+The nodes interact using
+a sequence of pairwise communication requests
+$\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
+where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a~certain amount of data.
+Nodes in $C \subset V$ are \emph{collocated}
+if they reside in the same cluster.
+
+An algorithm serves a communication request between two nodes
+either \emph{locally} at cost~0
+if they are collocated,
+or \emph{remotely} at cost~1
+if they are located in different clusters.
+We refer to these two types of requests as \emph{internal}
+and \emph{external} requests, respectively.
+Before serving a request,
+an online algorithm may perform a \emph{repartition},
+%(i.e., \emph{reconfigure}).
+i.e.,
+it may move (``migrate'') some nodes into clusters different from their current clusters, while respecting the capacity of every cluster. 
+Afterwards, 
+the algorithm serves the  request.
+The cost of migrating a node from one cluster to another
+is~$\alpha \in \mathbb{Z}^+$.
+For any algorithm $\ALG$,
+its cost,
+denoted by $\ALG(\sigma)$,
+is the total cost of communications and
+the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
+
+We consider two flavors of the problem
+in this paper. In the first one, which
+was also studied by Henzinger et al.~\cite{sigmetrics19_partitioning}
+(SIGMETRICS 2019) and which
+we here mainly consider for the sake of a stronger
+lower bound, we assume that $\sigma$
+simply reveals the edges of a static graph
+that can be perfectly partitioned
+(i.e., in principle, no external requests
+are required). 
+In the second one, we consider a general
+model where $\sigma$ can be arbitrary;
+this was the original problem introduced
+by Avin et al.~\cite{repartition-disc} at DISC 2016.
+For simplicity, we will refer to the former
+model as the \emph{learning} model (as
+one has to learn the static communication graph) 
+and to the latter as the \emph{online} model.
+
+
+\noindent \textbf{Contributions.}
+We provide an improved lower bound 
+of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
+even in the learning model;
+the best known lower bound so far was $\Omega(k)$,
+even for a more general model~\cite{repartition-disc}.
+We also present an asymptotically optimal, 
+$O(k\cdot \ell)$-competitive algorithm
+for the restricted model.
+For the online model, we present  
+an asymptotically optimal,
+$\Theta(\ell)$ algorithm for $k=3$;
+the best known upper bound 
+so far was $O(\ell^2)$~\cite{repartition-disc}.
+%
+Our algorithms can be distributed
+similarly to the approach in~\cite{sigmetrics19_partitioning}.
+
+\noindent \textbf{Related work.}
+The existing results in~\cite{repartition-disc}
+and~\cite{sigmetrics19_partitioning}
+primarily focus on a model where 
+the online algorithm can use augmentation,
+i.e., has slightly larger clusters than the offline 
+algorithm. In contrast, in our paper, we focus
+on a scenario where the nodes need to be
+perfectly balanced among the clusters.
+The problem has also been studied in a weaker
+model where the adversary can only sample
+requests from a fixed distribution~\cite{stochastic-ring}.
+For clusters of size $2$ (i.e., $k=2$), 
+it is known that a constant competitive algorithm exists~\cite{repartition-disc}.
+
+%More generally, the model is related to online
+%caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
+%see~\cite{repartition-disc} for a discussion.
+%The static offline version of~the~problem, called the
+%\emph{$\ell$-balanced graph partitioning problem} is 
+%NP-complete, and cannot even be approximated within %any finite factor unless P
+%= NP~\cite{AndRae06}. 
+
+\noindent \textbf{Preliminaries.}
+In this paper, we use the technique of maintaining \emph{(connected) components} of nodes, similar to previous approaches~\cite{repartition-disc}. A~\emph{component} is a subset of frequently communicating nodes.
+We use this concept in both algorithms in this paper, but also in the lower bound, to incur high cost for any online algorithm that splits them.
+An~algorithm is \emph{component respecting}
+if it always keeps nodes that  belong to the same component collocated.
+That is,
+if the algorithm needs to move a node,
+it moves the whole component containing the node.
+%We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
+%This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
+%such that frequently communicating nodes (from different clusters)
+%are relocated to the same cluster before they inflict too much communication cost.
+%A \emph{reconfiguration} (i.e.,\emph{ re-partitioning})
+%is performed by migrating nodes between clusters,
+%at the total cost of individual node migrations.
+%The objective is to jointly minimize communication and migration costs while serving the sequence.
+
+
+\section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
+\label{sec:lowerbound}
+
+%In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
+%It is sufficient to have clusters of capacity $k\geq 3$ for this lower bound.
+%For $k=2$ a constant competitive algorithm exists.
+%At the end of this section, we also
+%discuss an upper bound.
+
+\noindent \textbf{Lower bound.}
+The adversary constructs components of nodes based on the partitioning choices of a given online algorithm.
+Adversary issues requests between pairs of nodes that belong to the same component.
+If an online algorithm splits a component at any moment,
+the adversary issues requests to the split pair until the algorithm collocates them.
+We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
+On the other hand, $\OPT$ initially collocates all nodes of each component and never splits them again.
+
+%\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
+
+\begin{theorem}
+	The competitive ratio of any deterministic online algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
+\end{theorem}
+
+\begin{proof}
+	We construct an instance of the problem with $\ell$ clusters 
+	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
+	Let $I(C)$ denote the cluster where nodes of component $C$ are located initially.
+	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
+	Fix any online algorithm \ALG{}.
+  We join some nodes into components, and produce the input sequence by observing actions of \ALG{} with respect to nodes of these components.
+	If \ALG{} at any point splits a component
+	(i.e., spreads its nodes over two or more clusters),
+	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
+	If \ALG{} never collocates them, then it is not competitive.
+
+  Initially each node belongs to its own component of size $1$.
+  We say that a node is single if it belongs to a singleton component.
+  We begin by forming a component of single $k-1$ nodes on the cluster $S_1$.
+  
+	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
+	Next,
+	we merge components of $x_0$~and~$y_0$.
+  Since these reside on different clusters of \ALG{}, it produces an external request.
+  \ALG{} must collocate them in a~cluster other than $S_1$.
+	To this end,
+	\ALG{} moves to a new configuration
+	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
+	
+	Next,
+	we merge the component of $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
+	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
+	consequently replace $x_1$ with some other (single) node $x_2$.
+	We repeat merging the component of single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
+  until there are only two single nodes left that  originate from the same cluster.
+	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
+	$x'$ and $y'$,
+	we have $I(x') \neq I(y')$.
+	At this point there are at most $\ell+1$ single nodes left,
+	otherwise, there would be more pairs of single nodes that were initially in the same cluster.
+	
+	Given this sequence of requests,
+	the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
+	swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
+	Hence,
+	OPT pays for $2$ node swaps and
+	\ALG{} incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
+	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
+  therefore $|X| \geq k \cdot \ell - k - \ell$.
+  Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
+\end{proof}
+
+\noindent \textbf{Upper bound.}
+Now we give an algorithm for a restricted variant of  \OBRP{}, named \PPOBRP{},
+%\maciek{This is not sufficient! We also disallow serving requests remotely.}
+where an optimal offline algorithm ($\OPT$) moves to a perfect partition
+at the beginning and stays there perpetually.
+%We refer this variant as \PPOBRP{}.
+The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to \OPT.
+%
+%\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
+The first request between any two non-collocated nodes reveals an edge of the communication graph.
+Our online algorithm collocates them immediately and never separates them since by assumption \OPT does the same.
+Revealed edges, up to any point in the sequence,
+induce some connected subgraphs which grow as components.
+%An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component respecting}.
+
+We assume \OPT begins with the initial configuration
+$P_I = I_1, \dots, I_{\ell}$ and moves to the final partitioning
+$P_F = F_1, \dots, F_{\ell}$.
+ The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration is the number of nodes in $P$ that do not reside in their initial cluster.
+    That is,
+    $\dist(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
+In other words,
+at least $\dist(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
+$\OPT \geq \Delta:= \dist(P_F, P_I) $.
+ With each repartitioning,
+  \PPL moves to a configuration that minimizes the distance to the initial configuration $P_I$.
+As a result,
+\PPL never ends up in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$.
+This invariant ensures that \PPL does not pay too much while recovering $P_F$.
+%      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
+      We note that the $\mathit{repartition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a~perfect partition closest to $P_I$.
+Hence it never moves to a configuration beyond distance $\Delta$.
+The scheme of the algorithm can be found in the Appendix \ref{apx:PPL}.  
+\begin{property} \label{prop:dist<OPT}
+    Let $P$ be any configuration chosen by \PPL at Line $\ref{line:rebalance}$.
+    Then, $\dist(P,P_I) \leq \Delta$.
+\end{property}
+
+\begin{lemma}	\label{lemma:rebalancecost}
+    The cost of repartitioning at Line \ref{line:rebalance} is at most $2\cdot\OPT$.
+\end{lemma}
+\begin{proof}
+    Consider the repartitioning that transforms $P_{t-1}$ to $P_t$ upon the request $\sigma_t$.
+    Let $M \subset V$ denote the set of nodes that migrate during this process.
+	Let $M^-$ and $M^+$ denote the subset of nodes that (respectively)
+    enter or leave their original cluster during the repartitioning.    
+    Then,
+    $M = M^+ \cup M^-$.
+    Since $|M^-|$ nodes are not in their original cluster before the repartitioning (i.e., in $P_{t-1}$),
+    the distance before the repartitioning is $\dist(P_{t-1},P_I) \geq | M^-|$.
+    Analogously,
+     the distance afterwards is $\dist(P_{t},P_I) \geq | M^+|$.
+    Thus,
+    $|M| \leq \dist(P_{t-1},P_I) + \dist(P_{t},P_I)$.
+    By Property \ref{prop:dist<OPT},
+    $\dist(P_{t-1},P_I) , \dist(P_{t},P_I) \leq \Delta \leq \OPT$
+    and thereby we have	
+    $|M| \leq 2\cdot\OPT$.
+\end{proof}
+
+\begin{theorem}	\label{thm:upperbound}
+    \PPL reaches the final configuration $P_F$ and it is $(2\cdot k\cdot\ell)$-competitive.
+\end{theorem}
+\begin{proof}
+      On each inter-cluster request,
+     the algorithm enumerates all $\ell$-way partitions of components
+     that are in the same (closest) distance of $P_I$.
+     That is, 
+     once it reaches a configuration $P$ at distance $\Delta = \dist(P, P_I)$,
+     it does not move to a configuration
+     $P', \dist(P', P_I) > \Delta$,
+     before it enumerates all configurations at distance $\Delta$.
+     Therefore,
+     \PPL eventually reaches $\Delta=\OPT$ and the configuration $P_F$.
+%    including the request that completes revealing of all components that are collocated in $P_F$.
+    There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{repartition}$
+     (i.e., the number of internal edges in $P_F$).
+    By Lemma \ref{lemma:rebalancecost},
+    each repartition costs at most $2\cdot\OPT$.
+    The total cost is therefore at most $2\cdot\OPT\cdot k\cdot\ell$, which implies the competitive ratio.
+%    \mahmoud{This is the cost of moving and the cost of remote comm. is not counted.
+%    	So it is 4-competitive (?)}
+ \end{proof}
+
+% In Section~\ref{sec:lowerbound} we constructed a $\Omega(k \cdot \ell)$ for \OBRP{}.
+% Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows \OPT to move to a perfect partition.
+% The corollary is that PPL is optimal.
+ 
+\section{The Online Problem}
+\label{sec:k3}
+
+Let us now discuss the general online
+model where the request sequence
+can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
+Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
+
+%We define the algorithm \TAlg in the following way.
+Now we describe the algorithm \TAlg.
+It partitions nodes into components, and
+initially, each node belongs to its own singleton component.
+For each pair of nodes, \TAlg maintains a counter, initiated to $0$. 
+Upon receiving a request to a pair that is not collocated in one cluster, it increases their counter by $1$.
+If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
+If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
+
+%\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
+
+
+
+In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
+Before bounding the competitive ratio of \TAlg, we introduce the lemma that estimates the cost of a single repartition of \TAlg. We defer its proof to Appendix~\ref{apx:omitted}.
+
+\begin{lemma}
+  \label{lem:1req}
+  During a single repartition, \TAlg exchanges at most $2$ pairs of nodes.
+\end{lemma}
+
+\begin{theorem}
+  \TAlg is $O(\ell)$-competitive.
+\end{theorem}
+\begin{proof}
+  Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
+  We consider the incomplete phase later in this proof.
+
+  As \TAlg is component respecting, it never increases any counter above $\alpha$.
+  We say that the pair $(u, v)$ is \emph{saturated} if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
+  Let $\sigma$ be the input sequence that arrived during the phase.
+  Let $\sigma_{cost}$ be the requests that at the moment of arrival were external requests for \TAlg (these are the only requests that incurred a cost for \TAlg).
+  In our analysis, we partition $\sigma_{cost}$ into subsequences $\sigma_I$ and $\sigma_E$.
+  The sequence $\sigma_I$ (inter-component requests) are the requests from $\sigma_{cost}$ issued to pairs that belong to the same component of \TAlg at the end of the phase.
+  The sequence $\sigma_E$ (extra-component requests) denotes the requests from $\sigma_{cost}$ that do not appear in $\sigma_I$.
+
+
+  %Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
+  %Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
+  Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
+  \TAlg performs at most $2 \ell$ component merge operations, as
+  exceeding this number means that a component of size $4$ exists, and the phase should have ended already.
+  Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 8\alpha\cdot\ell$ (recall that an exchange costs $2\alpha$).
+  %Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
+  
+  Now we bound $\TAlg(\sigma_I)$.
+  A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as $2$ of pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
+  Other cluster types contribute less: $C_1$ contributes $0$ and $C_2$ contributes $\alpha$.
+  Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
+
+  %We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
+  %\maciek{not needed most likely}
+
+  Moreover, \TAlg paid for all requests from $\sigma_E$, and thus $\TAlg(\sigma_E) = |\sigma_E|$.
+  In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 11\alpha\cdot \ell + |\sigma_E|$ during this phase.
+
+  \medskip
+
+  Now we lower-bound the cost of $\OPT$.
+  By $\OPT(\sigma_I)$ and $\OPT(\sigma_E)$ we denote the cost of $\OPT$ on these input sequences (defined with respect to components of \TAlg in this phase).
+  By $\OPT(M)$ we denote the cost of migrations performed by $\OPT$ in this phase.
+  
+  We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
+  While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts: we separately bound $\OPT$ by $\OPT(\sigma_I) + \OPT(M)$ and $\OPT(\sigma_E) + \OPT(M)$.
+  Combining those bounds gives us $\OPT \geq \max\{\OPT(\sigma_I) + \OPT(M), \OPT(\sigma_E) + \OPT(M)\} \geq (\OPT(\sigma_I) + \OPT(M)) / 2 + (\OPT(\sigma_E) + \OPT(M)) / 2$.
+
+  %Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
+  %Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
+  %Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
+
+  %First, we estimate the cost related to $\sigma_I$.
+  We have $\OPT(M) + \OPT(\sigma_I) \geq \alpha$, as the phase ended when the components of \TAlg{} could not be partitioned without splitting them.
+  Hence, for every possible configuration of $\OPT$, there exists a non-collocated pair of nodes with at least $\alpha$ requests between them, and
+  $\OPT$ either served them remotely or performed a~migration.
+
+  \medskip
+  Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
+  In a~fixed configuration of $\OPT$, it may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
+  Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
+  Faced with $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
+
+
+  Now we estimate the cost of $\OPT(\sigma_E)$ while accounting savings from migrations.
+  By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
+  This may allow serving requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
+  As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
+  By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$.
+  Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
+  From that, we obtain $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
+  Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
+  \begin{equation*}
+    \frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + E/2} \leq \frac{27\alpha\cdot\ell + 2\cdot E}{\alpha + E} \leq 27 \ell = O(\ell).
+  \end{equation*}
+
+  \medskip
+
+  It remains to consider the last, unfinished phase.
+  Consider the case, where the unfinished phase is also the first one.
+  Then, we cannot charge $\OPT$ due to the inability to partition the components.
+  Instead, we use the fact that \TAlg and $\OPT$ started with the same initial configuration.
+  We charge $\OPT$ $\alpha$ for the first external $\alpha$ requests or a migration,
+  and we follow the analysis regarding the unsaturated requests.
+  If the input finished before the first $\alpha$ external requests, then \TAlg is optimal.
+  Now, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
+  This way, the competitive ratio increases at most twofold.
+\end{proof}
+
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}  
+
+\pagebreak
+\appendix
+\section{PPL Algorithm} \label{apx:PPL}
+\begin{algorithm}
+	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+	\renewcommand{\algorithmicensure}{\textbf{Output:}}
+	\begin{algorithmic}
+		%        \Require 
+		%        $k, \ell$,
+		%        initial configuration $P_I$,
+		%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
+		%        \Ensure A final configuration $P_F$ 
+		\STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$}
+		\STATE{$P_0 := P_I$}
+		\label{line:initcomponents}
+		\FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
+		\STATE Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
+		\IF{$C_1 \neq C_2$}
+		\STATE {Unite the two components into a single component $C'$ and
+			$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$} \label{line:mergecomponents}
+		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
+			\COMMENT{i.e.~if not in the same cluster}    
+		}       
+		\STATE {$P_{t} = \mathit{repartition}(P_{t-1}, P_I, \mathcal{C})$} 
+		\COMMENT{move to $P$ closest to $P_I$}
+		\label{line:rebalance} 
+		\ENDIF
+		\ENDIF
+		\ENDFOR
+	\end{algorithmic}
+	\caption{Perfect Partition Learner (\PPL)}
+	\label{alg:ppl}
+\end{algorithm}
+
+\section{Omitted proofs}
+\label{apx:omitted}
+
+\begin{proof}[Proof of Lemma~\ref{lem:1req}]
+  Observe that when the repartition is triggered by \TAlg, the resulting partitioning is component respecting.
+  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
+
+  %We distinguish between three types of clusters: $C_1, C_2, C_3$,
+  %which we define as follows.
+  %A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
+  %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
+  %Finally, a cluster of type $C_3$  contains one component of size $3$.
+  
+    Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
+    Note that $U\neq V$,
+	 as otherwise, the request would not trigger a~repartitioning.
+	 We consider cases based on the types of clusters $U$ and $V$.
+    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
+    If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
+    For two clusters, any configuration can be reached within two swaps, due to the fact that clusters are indistinguishable.
+  
+    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
+    Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
+    Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
+\end{proof}
+
+\section{Omitted results}
+
+\begin{enumerate}
+  		 \item The lower bound of $\Omega(\ell)$ for the scenario with at most $(1/3-1/k)$-augmentation
+  
+  		 \item Costly cascade example (it is easy to present $k^2$ and $k\cdot \sqrt{k}$ (with different approach), and then we can combine these to obtain $k^3$)
+  
+  		 \item $k$-competitive algorithm for the ring communication pattern
+  
+  		 \item $O(\ell)$-competitive algorithm for $k=4$ and $k=5$
+  
+  \end{enumerate}
+
+
+\begin{CCSXML}
+	<ccs2012>
+	<concept>
+	<concept_id>10003033.10003068</concept_id>
+	<concept_desc>Networks~Network algorithms</concept_desc>
+	<concept_significance>500</concept_significance>
+	</concept>
+	<concept>
+	<concept_id>10010520.10010521.10010537.10003100</concept_id>
+	<concept_desc>Computer systems organization~Cloud computing</concept_desc>
+	<concept_significance>300</concept_significance>
+	</concept>
+	<concept>
+	<concept_id>10010520.10010521.10010537</concept_id>
+	<concept_desc>Computer systems organization~Distributed architectures</concept_desc>
+	<concept_significance>300</concept_significance>
+	</concept>
+	</ccs2012>
+\end{CCSXML}
+
+\end{document}
