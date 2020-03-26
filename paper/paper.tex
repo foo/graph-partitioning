@@ -220,6 +220,27 @@ so far was $O(\ell^2)$~\cite{repartition-disc}.
 %
 Our algorithms can be distributed
 similarly to the approach in~\cite{sigmetrics19_partitioning}.
+The overview of results is in Table~\ref{tab:overview}.
+
+
+\begin{table*}
+  \centering
+  \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{>{\centering\arraybackslash}p{4.5cm}|>{\centering\arraybackslash}p{4.5cm}>{\centering\arraybackslash}p{4.5cm}}
+    \rowcolor{gray!50}
+    \textbf{Clusters/capacity} & \textbf{ Lower bound} &\textbf{Upper bound}\\ \hline 
+      \textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & 3\hspace{0.3cm}(\S 9.3) \\ 
+      \rowcolor{gray!25}
+      \textbf{$k=3$}&  $1357\cdot \ell - 245 = \Omega(\ell)$\hspace{0.3cm}(\S 9.3)& $O(\ell)$\hspace{0.3cm}(\S 9.3)\\
+      \textbf{$\ell=2$}&  $2k-1$\hspace{0.3cm}(\S 9.3)&\hspace{0.3cm}$O(k^2)$\hspace{0.3cm}\cite{repartition-disc}\\
+      \rowcolor{gray!25}
+      general $k$ and $\ell$& $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S 9.3)&$O(k^2 \cdot \ell^2)$\hspace{0.3cm}\cite{repartition-disc} \\
+    \end{tabular}
+                \caption{Overview of the results. Most specific cases are tight. The general case still has a significant gap between the lower bound and the upper bound.
+                  }
+  \label{tab:overview}
+  \vspace{-7mm}
+\end{table*}
 
 \noindent \textbf{Related work.}
 The existing results in~\cite{repartition-disc}
@@ -260,6 +281,7 @@ it moves the whole component containing the node.
 %is performed by migrating nodes between clusters,
 %at the total cost of individual node migrations.
 %The objective is to jointly minimize communication and migration costs while serving the sequence.
+
 
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
@@ -614,30 +636,6 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   
   \end{enumerate}
 
-  \section{Final}
-
-  \begin{table*}
-    \centering
-    \renewcommand{\arraystretch}{1.5}
-      \begin{tabular}{>{\centering\arraybackslash}p{4.5cm}|>{\centering\arraybackslash}p{4.5cm}>{\centering\arraybackslash}p{4.5cm}}
-      \rowcolor{gray!50}
-      \textbf{Clusters/capacity} & \textbf{ Lower bound} &\textbf{Upper bound}\\ \hline 
-        \textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & 3\hspace{0.3cm}(\S 9.3) \\ 
-        \rowcolor{gray!25}
-        \textbf{$k=3$}&  $1357\cdot \ell - 245 = \Omega(\ell)$\hspace{0.3cm}(\S 9.3)& $O(\ell)$\hspace{0.3cm}(\S 9.3)\\
-        \textbf{$\ell=2$}&  $2k-1$\hspace{0.3cm}(\S 9.3)&\hspace{0.3cm}$O(k^2)$\hspace{0.3cm}\cite{repartition-disc}\\
-        \rowcolor{gray!25}
-        general $k$ and $\ell$& $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S 9.3)&$O(k^2 \cdot \ell^2)$\hspace{0.3cm}\cite{repartition-disc} \\
-      \end{tabular}
-                  \caption{Overview of the results. Most specific cases are tight. The general case still has a significant gap between the lower bound and the upper bound.
-                    }
-    \label{tab:overview}
-    \vspace{-7mm}
-  \end{table*}
-
-  Table with summary of all results. Tight for k=2, asymptotically tight for k=3, and a difference in general lk.
-
-  No bypassing model: reserach.
 
 
 \begin{CCSXML}
