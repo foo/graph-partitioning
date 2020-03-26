@@ -8,6 +8,26 @@
 \usepackage{algorithmic}
 \usepackage{algorithm}
 
+\usepackage{balance}
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\usepackage{amsthm,amsmath,amssymb,array,colortbl,graphicx,multirow}
+\usepackage{comment}
+\usepackage{balance}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{patterns} %
+\usepackage{algorithm}
+\usepackage[font={footnotesize}]{subcaption}
+\usepackage[font={footnotesize}]{caption}
+\usepackage{breakcites}
+\usepackage{booktabs}
+\usepackage{diagbox}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{cleveref}
+\usepackage{enumitem}
+
 \mathchardef\mhyphen="2D
 
 \title{Brief Announcement: Tight Bounds for Online Balanced Repartitioning}
@@ -595,6 +615,25 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   \end{enumerate}
 
   \section{Final}
+
+  \begin{table*}
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+      \begin{tabular}{>{\centering\arraybackslash}p{4.5cm}|>{\centering\arraybackslash}p{4.5cm}>{\centering\arraybackslash}p{4.5cm}}
+      \rowcolor{gray!50}
+      \textbf{Clusters/capacity} & \textbf{ Lower bound} &\textbf{Upper bound}\\ \hline 
+        \textbf{$k=2$}& 3~\cite{repartition-disc} & 3~(\S 9.3) \\ 
+        \rowcolor{gray!25}
+        \textbf{$k=3$}&  $1357\cdot \ell - 245 = \Omega(\ell)$ (\S 9.3)& $O(k \cdot \ell)$~\cite{repartition-disc}\\
+        \textbf{$\ell=2$}&  $2k-1$ (\S 9.3)& $O(k^2)$~\cite{repartition-disc}\\
+        \rowcolor{gray!25}
+        general $k$ and $\ell$& $\Omega(k\cdot \ell)$ (\S 9.3)&$O(k^2 \cdot \ell^2)$~\cite{repartition-disc} \\
+      \end{tabular}
+                  \caption{Overview of the results. Most specific cases are tight. The general case still has a significant gap between the lower bound and the upper bound.
+                    }
+    \label{tab:overview}
+    \vspace{-7mm}
+  \end{table*}
 
   Table with summary of all results. Tight for k=2, asymptotically tight for k=3, and a difference in general lk.
 
