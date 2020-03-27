@@ -681,7 +681,7 @@ Recall that the lower bound for the competitive ratio for such paging problem is
 Similarly to the lower bound TODO ref $\Omega(kl)$, we construct components of nodes, and issue the requests if the algorithm splits the component.
 In the proof in this section, the components produced are oblivious to the configuration of the algorithm, yet the requests issued depend on if the algorithm splits the components. In $\Omega(kl)$ LB, the components were constructed upon the actions of the algorithm, too.
 
-\maciek{TODO: a figure of 3 sets split.}
+\maciek{TODO: example figure of 3 sets split. Example figure of three states of OPT}
 
 \begin{theorem}
   No deterministic algorithm for BRP with two clusters can achieve a competitive ratio smaller than $2k-1$.
@@ -691,6 +691,7 @@ In the proof in this section, the components produced are oblivious to the confi
 We partition nodes into $3$ sets $A$, $B$, and $C$.
 Sets have cardinalities $|A| = k-1$, $|B| = k-1$, and $|C| = 2$.
 Each element $e$ of the universe $U$ have a corresponding node $v_e \in A\cup B\cup C$.
+\maciek{define that A,B,C is collocated/split}
 
 Intuitively, if a node is split from other nodes of any of sets $A,B,C$, then it is outside of the cache.
 Note that in every configuration, at least one of these sets is split.
@@ -701,18 +702,22 @@ When a request to element $e$ comes, we identify the set $S \in \{ A,B,C \}$ tha
 Then, the adversary forms a component $S$, and dismisses it right after the algorithm collocates the whole $S$ on one cluster.
 Recall that forming a component means that the adversary continuously issues requests to any two nodes of a component that are split.
 
-Now we bound the costs of the algorithm for any sequence of paging requests transformed the way described above.
-For any request, the algorithm pays $0$ if it has $S$ collocated, and otherwise it pays at least $2\alpha$ for at least one migration needed to achieve state where $S$ is collocated.
+Now we lower-bound the cost of the algorithm for any sequence of pairwise requests that were produced by the described transformation of paging requests.
+For any such request, the algorithm pays $0$ if it has $S$ collocated, and otherwise it pays at least $2\alpha$ for at least one migration needed to reach the state with $S$ collocated.
 
-Now we construct an offline algorithm OPT.
-OPT only resides in three types of configurations:
+We construct the following offline algorithm OPT.
+OPT only resides in three types of configurations with respect to sets $A,B,C$ (cf. Figure TODO).
+Without loss of generality, we describe the contents of clusters $X$ and $Y$:
 \begin{enumerate}
-  \item With set $A$ collocated in one cluster, set $B$ collocated in the other, and set $B$ having one node in one cluster and the other node in the second
-  \item With set $A$ collocated in one cluster, with a single node from set $B$; on the second cluster, we have both nodes from set $C$, and $k-2$ nodes from set $B$
-  \item the symmetric configuration to the previous one, with set $A$ split, and sets $B$ and $C$ collocated
+  \item In $X$ we have $A$ and one node from $C$; in $Y$ we have $B$ and the other node from $C$.
+  \item In $X$ we have $A$ and one node from $B$; in $Y$ we have $C$ and $k-2$ nodes from set $B$.
+  \item In $X$ we have $B$ and one node from $A$; in $Y$ we have $C$ and $k-2$ nodes from set $A$.
 \end{enumerate}
-To transition between any of these configuration types, a single exchange is needed, hence OPT pays $2\alpha$ for it.
-Within each type of configuration, OPT may exchange the split node with any node from his set for $2\alpha$.
+
+Now we describe the possible actions performed by OPT.
+Within each type of configuration with $S \in \{ A, B, C\}$ split, OPT may exchange the split node with any node from $S$.
+To transition between any of three configuration types, it suffices to perform a single exchange.
+Hence, for every action OPT pays $2\alpha$.
 
 OPT observes the actions of the algorithm LFD (Least Forward Distance) for the caching problem, and performs adequate reconfigurations within feasible configurations described in the previous paragraph.
 Precisely, if LFD chooses to evict the element $e$ from the cache, OPT chooses the configuration with the corresponding node $v_e$ split, and pays $2\alpha$ for it.
