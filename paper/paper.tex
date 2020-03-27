@@ -107,6 +107,26 @@
 
 \newcommand{\todo}[1]{\noindent\color{brown}{todo: #1}\color{black}}
 
+\begin{CCSXML}
+	<ccs2012>
+	<concept>
+	<concept_id>10003033.10003068</concept_id>
+	<concept_desc>Networks~Network algorithms</concept_desc>
+	<concept_significance>500</concept_significance>
+	</concept>
+	<concept>
+	<concept_id>10010520.10010521.10010537.10003100</concept_id>
+	<concept_desc>Computer systems organization~Cloud computing</concept_desc>
+	<concept_significance>300</concept_significance>
+	</concept>
+	<concept>
+	<concept_id>10010520.10010521.10010537</concept_id>
+	<concept_desc>Computer systems organization~Distributed architectures</concept_desc>
+	<concept_significance>300</concept_significance>
+	</concept>
+	</ccs2012>
+\end{CCSXML}
+
 
 \begin{document}
 
@@ -650,26 +670,19 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   
   \end{enumerate}
 
+\section{Lower bound $2k-1$ for two clusters}
+
+\maciek{Sketch only}
+
+We reduce the paging problem with the universe $U$ of size $2k$ and the cache of size $2k-1$.
+Recall that the lower bound for the competitive ratio for such paging problem is $2k-1$.
+
+We partition nodes into $3$ sets: $A$, $B$ and $C$.
+Sets has the following cardinality: $|A| = k-1$, $|B| = k-1$, and $|C| = 2$.
+We arbitratry assign all elements of the universe $U$ to nodes from $A\cup B\cup C$.
+Note that in every configuration, at least one of these sets is split, i.e., is not completely contained in one cluster.
 
 
-\begin{CCSXML}
-	<ccs2012>
-	<concept>
-	<concept_id>10003033.10003068</concept_id>
-	<concept_desc>Networks~Network algorithms</concept_desc>
-	<concept_significance>500</concept_significance>
-	</concept>
-	<concept>
-	<concept_id>10010520.10010521.10010537.10003100</concept_id>
-	<concept_desc>Computer systems organization~Cloud computing</concept_desc>
-	<concept_significance>300</concept_significance>
-	</concept>
-	<concept>
-	<concept_id>10010520.10010521.10010537</concept_id>
-	<concept_desc>Computer systems organization~Distributed architectures</concept_desc>
-	<concept_significance>300</concept_significance>
-	</concept>
-	</ccs2012>
-\end{CCSXML}
+
 
 \end{document}
