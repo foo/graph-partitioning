@@ -327,6 +327,7 @@ the adversary issues requests to the split pair until the algorithm collocates t
 We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
 On the other hand, $\OPT$ initially collocates all nodes of each component and never splits them again.
 
+
 \maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
 \begin{theorem}
@@ -677,12 +678,45 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 We reduce the paging problem with the universe $U$ of size $2k$ and the cache of size $2k-1$.
 Recall that the lower bound for the competitive ratio for such paging problem is $2k-1$.
 
+\begin{theorem}
+  Every deterministic algorithm for BRP with $\ell=2$ is at least $c$-competitive, where $c=2k-1$.
+\end{theorem}
+
+\begin{proof}
 We partition nodes into $3$ sets: $A$, $B$ and $C$.
 Sets has the following cardinality: $|A| = k-1$, $|B| = k-1$, and $|C| = 2$.
-We arbitratry assign all elements of the universe $U$ to nodes from $A\cup B\cup C$.
+We arbitrarily assign all elements of the universe $U$ to nodes from $A\cup B\cup C$.
+
 Note that in every configuration, at least one of these sets is split, i.e., is not completely contained in one cluster.
+Intuitively, if a node is split from other nodes of any of sets $A,B,C$, then it is outside of the cache.
 
+Similarly to the lower bound TODO ref $\Omega(kl)$, we construct components of nodes, and issue the requests if the algorithm splits the component.
+(In the current proof, the components produced are oblivious to the configuration of the algorithm, yet the requests issued depend on if the algorithm splits the components. In $\Omega(kl)$, the components were constructed upon the actions of the algorithm, too.)
 
+Now, we show how to simulate an algorithm for the paging problem using the constructed BRP instance.
+Fix any algorithm for the paging problem.
+If a request to element $e$ comes, we identify its corresponding node $v_e$, and the set $S$ from $A,B,C$ that contains it.
+Then, the adversary produces a component $S$, and removes it right after the algorithm collocates the whole $S$ on one cluster.
 
+Now we bound the costs of the algorithm for any sequence of paging requests transformed the way described above.
+For any request, the algorithm pays $0$ if it has $S$ collocated, and otherwise it pays at least $2\alpha$ for at least one migration needed to achieve state where $S$ is collocated.
+
+Now we construct an offline algorithm OPT.
+OPT only resides in three types of configurations:
+\begin{enumerate}
+  \item With set $A$ collocated in one cluster, set $B$ collocated in the other, and set $B$ having one node in one cluster and the other node in the second
+  \item With set $A$ collocated in one cluster, with a single node from set $B$; on the second cluster, we have both nodes from set $C$, and $k-2$ nodes from set $B$
+  \item the symmetric configuration to the previous one, with set $A$ split, and sets $B$ and $C$ collocated
+\end{enumerate}
+To transition between any of these configuration types, a single exchange is needed, hence OPT pays $2\alpha$ for it.
+Within each type of configuration, OPT may exchange the split node with any node from his set for $2\alpha$.
+
+OPT observes the actions of the algorithm LFD (Least Forward Distance) for the caching problem, and performs adequate reconfigurations within feasible configurations described in the previous paragraph.
+Precisely, if LFD chooses to evict the element $e$ from the cache, OPT chooses the configuration with the corresponding node $v_e$ split, and pays $2\alpha$ for it.
+
+The well-known property of LFD is that it pays $1$ only after $\mathbb{C}$ different pages are revealed to the algorithm, where $\mathbb{C}$ is the size of its cache.
+In our case, $\mathbb{C} = 2k-1$, and hence the algorithm pays at least $2\alpha$ for each (transformed to BRP) paging request, and OPT pays $2\alpha$ every $2k-1$ paging requests.
+Hence, the claim holds.
+\end{proof}
 
 \end{document}
