@@ -285,15 +285,21 @@ it moves the whole component containing the node.
 
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
+
+\maciek{TODO: Intro to the learning problem is missing. What is the problem definition. How is it different from the general problem. Emphasize the fact that OPT is constrained not to migrate.}
+
+\subsection{Lower bound.}
+
 \label{sec:lowerbound}
 
-%In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
-%It is sufficient to have clusters of capacity $k\geq 3$ for this lower bound.
-%For $k=2$ a constant competitive algorithm exists.
-%At the end of this section, we also
-%discuss an upper bound.
+In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
+It is sufficient to have clusters of capacity $k\geq 3$ for this lower bound.
+For $k=2$ a constant competitive algorithm exists.
+At the end of this section, we also
+discuss an upper bound.
 
-\noindent \textbf{Lower bound.}
+\maciek{TODO: better introduction of the concept of components IN THE LOWER BOUND. Perhaps other name than components to avoid confusion. Plus Figure.}
+
 The adversary constructs components of nodes based on the partitioning choices of a given online algorithm.
 Adversary issues requests between pairs of nodes that belong to the same component.
 If an online algorithm splits a component at any moment,
@@ -301,7 +307,7 @@ the adversary issues requests to the split pair until the algorithm collocates t
 We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
 On the other hand, $\OPT$ initially collocates all nodes of each component and never splits them again.
 
-%\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
+\maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
 \begin{theorem}
 	The competitive ratio of any deterministic online algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
@@ -355,7 +361,9 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
   Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
 \end{proof}
 
-\noindent \textbf{Upper bound.}
+\maciek{Remark on resource augmentation. The lower bound for k=3 works even with significant augmentation (linear).}
+
+\subsection{Upper bound.}
 Now we give an algorithm for a restricted variant of  \OBRP{}, named \PPOBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
 where an optimal offline algorithm ($\OPT$) moves to a perfect partition
