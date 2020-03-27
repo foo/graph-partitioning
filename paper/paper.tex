@@ -364,7 +364,7 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
 \maciek{Remark on resource augmentation. The lower bound for k=3 works even with significant augmentation (linear).}
 
 \subsection{Upper bound.}
-Now we give an algorithm for a restricted variant of  \OBRP{}, named \PPOBRP{},
+Now we give an algorithm for a restricthed variant of  \OBRP{}, named \PPOBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
 where an optimal offline algorithm ($\OPT$) moves to a perfect partition
 at the beginning and stays there perpetually.
@@ -454,6 +454,8 @@ The scheme of the algorithm can be found in the Appendix \ref{apx:PPL}.
 \section{The Online Problem}
 \label{sec:k3}
 
+\maciek{REALLY bad name. Both the learning problem and the general one is online.}
+
 Let us now discuss the general online
 model where the request sequence
 can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
@@ -468,7 +470,6 @@ Upon receiving a request to a pair that is not collocated in one cluster, it inc
 If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
 If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 
-%\maciek{Shouldn't we think about whole component cuts instead of single edge? Hmm. NO!}
 
 
 
@@ -555,6 +556,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 
   \medskip
 
+  \maciek{Big techincal TODO. Formalize the sketched proof for the last phase.}
   It remains to consider the last, unfinished phase.
   Consider the case, where the unfinished phase is also the first one.
   Then, we cannot charge $\OPT$ due to the inability to partition the components.
