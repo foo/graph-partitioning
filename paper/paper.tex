@@ -685,6 +685,9 @@ In the proof in this section, the components produced are oblivious to the confi
 
 \begin{theorem}
   No deterministic algorithm for BRP with two clusters can achieve a competitive ratio smaller than $2k-1$.
+
+  \maciek{better formulation below}
+  Fix any $k$. If there exists a $\gamma$-competitive \ldots (SIDMA)
 \end{theorem}
 
 \begin{proof}
@@ -696,7 +699,7 @@ Each element $e$ of the universe $U$ have a corresponding node $v_e \in A\cup B\
 Intuitively, if a node is split from other nodes of any of sets $A,B,C$, then it is outside of the cache.
 Note that in every configuration, at least one of these sets is split.
 
-For any sequence of paging requests, we produce a corresponding BRP pairwise request sequence.
+For any sequence of paging requests $I_{PAGE}$, we produce a corresponding BRP pairwise request sequence $I_{BRP}$.
 To this end, fix an algorithm ALG for the paging problem.
 When a request to element $e$ comes, we identify the set $S \in \{ A,B,C \}$ that contains the corresponding node $v_e$.
 Then, the adversary forms a component $S$, and dismisses it right after the algorithm collocates the whole $S$ on one cluster.
@@ -719,12 +722,14 @@ Within each type of configuration with $S \in \{ A, B, C\}$ split, OPT may excha
 To transition between any of three configuration types, it suffices to perform a single exchange.
 Hence, for every action OPT pays $2\alpha$.
 
-OPT observes the actions of the algorithm LFD (Least Forward Distance) for the caching problem, and performs adequate reconfigurations within feasible configurations described in the previous paragraph.
-Precisely, if LFD chooses to evict the element $e$ from the cache, OPT chooses the configuration with the corresponding node $v_e$ split, and pays $2\alpha$ for it.
+Finally, we describe the actions of OPT on the input sequence $I_{BRP}$.
+OPT observes the actions of the algorithm LFD (Least Forward Distance for the caching problem) on $I_{PAGE}$, and performs corresponding actions within its feasible configurations.
+Precisely, if LFD chooses to evict the element $e$ from the cache, OPT chooses the configuration with the corresponding node $v_e$ split.
+The cost of OPT is then $2\alpha \cdot LFD$.
 
-The well-known property of LFD is that it pays $1$ only after $\mathbb{C}$ different pages are revealed to the algorithm, where $\mathbb{C}$ is the size of its cache.
-In our case, $\mathbb{C} = 2k-1$, and hence the algorithm pays at least $2\alpha$ for each (transformed to BRP) paging request, and OPT pays $2\alpha$ every $2k-1$ paging requests.
-Hence, the claim holds.
+It is well-known that LFD is an optimal algorithm for paging, and any deterministic algorithm for paging with cache size $2k-1$ is at least $2k-1$-competitive.
+
+TODO: rewrite the conclusion in the similar way to sidma paper
 \end{proof}
 
 \end{document}
