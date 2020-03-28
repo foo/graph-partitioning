@@ -82,7 +82,9 @@
 \newcommand{\OBRP}{BRP}
 \newcommand{\PPOBRP}{PP-BRP}
 \newcommand{\dist}{\textsf{dist}}
-\newcommand{\TAlg}{{\ensuremath{\textsf{ALG}_{3}}}\xspace} % we should change this name
+\newcommand{\TAlg}{{\ensuremath{\textsf{ALG}_{3}}}\xspace}
+
+\newcommand{\comm}{\textsc{comm}}
 
 
 
@@ -715,6 +717,19 @@ In the proof in this section, the components produced are oblivious to the confi
   If the configuration $c$ of a~BRP algorithm is well-aligned, $\textsc{cache}(c)$ denotes the corresponding cache contents.
   The initial configuration for the BRP problem is the well-aligned configuration corresponding to the initial cache (pages $p_1,p_2,\ldots,p_{2k-2}$ in the cache), with sets $A$ and $B$ non-split and the node $p_{2k-1}$ from the set $C$ split.
 
+When a request $p$ to paging arrives, we create a subsequence $\comm(p)$ of communication requests for the BRP problem.
+We identify the corresponding caching node $p$ and the set $S \in \{ A,B,C \}$ that contains it.
+The construction of $\comm(p)$ depends on the actions of $B$.
+To abstract from the actions of $B$ in the construction, we use the notion of the adversary components.
+Forming an adversary component means that the adversary continuously issues requests to any two nodes of a component that are split.
+The request sequence $\comm(p)$ consists of the requests the adversary issues for $B$ after forming an adversary component $S$.
+When $B$ collocates all nodes of $S$, the adversary dismisses the adversary component $S$, i.e., no longer issues requests if $B$ splits the nodes of $S$.
+
+Note that $B$ must eventually achieve such a node configuration: otherwise its cost would be arbitrarily large while a sequence of repeated $\comm(\sigma^P_t)$ subsequences can be served at~a~constant cost.
+Therefore, the competitive ratio of~$B$ would then be unbounded.
+We denote the resulting sequence of $\comm(\sigma^P_t)$ subsequences by $\comm_t(\sigma^P_t)$.
+
+  \medskip
 
 For any sequence of paging requests $I_{PAGE}$, we produce a corresponding BRP pairwise request sequence $I_{BRP}$.
 To this end, fix an algorithm ALG for the paging problem.
