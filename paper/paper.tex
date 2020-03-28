@@ -709,30 +709,12 @@ In the proof in this section, the components produced are oblivious to the confi
     \item (symmetric to the previous condition) One cluster contains $C$ and one node from $B$ and the other cluster contains $A$ and $k-2$ nodes from set $B$.
   \end{enumerate}
   We show a bijection between cache contents and well-aligned configurations.
-  We say that a caching node $p_i \in S$, where $S \in \{ A, B, C\}$ belongs to the cache, if the entire set $S$ is collocated in a cluster.
-  Otherwise, if $S$ is split
-  
-  one cluster
-contains the node $s$ and $k-1$ caching nodes, and the other cluster contains
-one caching node and all auxiliary nodes. There is a natural bijection between
-possible cache contents and well-aligned configurations: the cache consists of
-the $k-1$ caching nodes that are in the same cluster as node $s$. (Without loss
-of generality, we may assume that the cache of any caching algorithm is always
-full, i.e., consists of $k-1$ pages.) If the configuration $c$ of a~BRP
-algorithm is well-aligned, $\textsc{cache}(c)$ denotes the corresponding cache
-contents.
-The initial configuration for the BRP problem is the well-aligned
-configuration corresponding to the initial cache (pages
-$p_1,p_2,\ldots,p_{k-1}$ in the cache).
+  We say that a caching node $p_i \in S$, where $S \in \{ A, B, C\}$ belongs to the cache if the entire set $S$ is collocated in a cluster.
+  Otherwise, if $p_i$ is located on a different cluster than the other nodes from $S$, we say that it is outside of the cache.
+  (Without loss of generality, we may assume that the cache of any caching algorithm is always full, i.e., consists of $k-1$ pages.)
+  If the configuration $c$ of a~BRP algorithm is well-aligned, $\textsc{cache}(c)$ denotes the corresponding cache contents.
+  The initial configuration for the BRP problem is the well-aligned configuration corresponding to the initial cache (pages $p_1,p_2,\ldots,p_{2k-2}$ in the cache), with sets $A$ and $B$ non-split and the node $p_{2k-1}$ from the set $C$ split.
 
-
-We partition nodes into $3$ sets $A$, $B$, and $C$.
-Sets have cardinalities $|A| = k-1$, $|B| = k-1$, and $|C| = 2$.
-Each element $e$ of the universe $U$ have a corresponding node $v_e \in A\cup B\cup C$.
-\maciek{define that A,B,C is collocated/split}
-
-Intuitively, if a node is split from other nodes of any of sets $A,B,C$, then it is outside of the cache.
-Note that in every configuration, at least one of these sets is split.
 
 For any sequence of paging requests $I_{PAGE}$, we produce a corresponding BRP pairwise request sequence $I_{BRP}$.
 To this end, fix an algorithm ALG for the paging problem.
