@@ -30,7 +30,7 @@
 
 \mathchardef\mhyphen="2D
 
-\title{Brief Announcement: Tight Bounds for Online Balanced Repartitioning}
+\title{Improved Bounds for Online Balanced Repartitioning}
 
 
 \author{Maciej Pacut}
@@ -671,7 +671,9 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   
   \end{enumerate}
 
-\section{Lower bound $2k-1$ for two clusters}
+\section{Dynamic Graph Bisection (two clusters case)}
+
+\subsection{Lower bound $2k-1$}
 
 \maciek{TODO: splitting nodes explain in the preliminaries}
 
@@ -681,13 +683,12 @@ Recall that the lower bound for the competitive ratio for such paging problem is
 Similarly to the lower bound TODO ref $\Omega(kl)$, we construct components of nodes, and issue the requests if the algorithm splits the component.
 In the proof in this section, the components produced are oblivious to the configuration of the algorithm, yet the requests issued depend on if the algorithm splits the components. In $\Omega(kl)$ LB, the components were constructed upon the actions of the algorithm, too.
 
-\maciek{TODO: figure of three states of OPT. Maybe it would fit next to the other lower bound figure?}
+\maciek{TODO: figure of three states of OPT. It should fit next to the other lower bound figure?}
 
 \begin{theorem}
-  No deterministic algorithm for BRP with two clusters can achieve a competitive ratio smaller than $2k-1$.
+  %No deterministic algorithm for BRP with two clusters can achieve a competitive ratio smaller than $2k-1$.
 
-  \maciek{better formulation below}
-  Fix any $k$. If there exists a $\gamma$-competitive \ldots (SIDMA)
+  Fix any $k$. If there exists a $\gamma$-competitive deterministic algorithm $B$ for Dynamic Bisection Problem with cluster size $k$, then there exists a $\gamma$-competitive deterministic algorithm $P$ for the paging problem with cache size $2k-1$ and where the number of different pages is $2k$. 
 \end{theorem}
 
 \begin{proof}
