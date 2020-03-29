@@ -394,10 +394,11 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
 \maciek{Remark on resource augmentation. The lower bound for k=3 works even with significant augmentation (linear).}
 
 \subsection{Upper bound.}
-Now we give an algorithm for a restricthed variant of  \OBRP{}, named \PPOBRP{},
+Now we give an algorithm for a restricted variant of  \OBRP{}, named \PPOBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
 where an optimal offline algorithm ($\OPT$) moves to a perfect partition
 at the beginning and stays there perpetually.
+\maciek{Already mention that the LB is for that scenario, too?}
 %We refer this variant as \PPOBRP{}.
 The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to \OPT.
 %
@@ -411,7 +412,9 @@ induce some connected subgraphs which grow as components.
 We assume \OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partitioning
 $P_F = F_1, \dots, F_{\ell}$.
- The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration is the number of nodes in $P$ that do not reside in their initial cluster.
+ The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration \maciek{, denoted $\dist(P)$} is the number of nodes in $P$ that do not reside in their initial cluster.
+ \maciek{It is OK to use single-argument $\dist$ (two-arg is a must in a definition, and it is already there).}
+ \maciek{We should denote distance $\Delta(P)$, and the current $\Delta$ should be R (like radius).}
     That is,
     $\dist(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
 In other words,
