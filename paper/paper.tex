@@ -450,6 +450,7 @@ The scheme of the algorithm can be found in the Appendix \ref{apx:PPL}.
     $\dist(P_{t-1},P_I) , \dist(P_{t},P_I) \leq \Delta \leq \OPT$
     and thereby we have	
     $|M| \leq 2\cdot\OPT$.
+    \maciek{the comma between $\dist$ is confusing. BOTH are bounded?}
 \end{proof}
 
 \begin{theorem}	\label{thm:upperbound}
@@ -469,6 +470,7 @@ The scheme of the algorithm can be found in the Appendix \ref{apx:PPL}.
 %    including the request that completes revealing of all components that are collocated in $P_F$.
     There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{repartition}$
      (i.e., the number of internal edges in $P_F$).
+     \maciek{Clarify why the number of internal edges bound the number of repartitions.}
     By Lemma \ref{lemma:rebalancecost},
     each repartition costs at most $2\cdot\OPT$.
     The total cost is therefore at most $2\cdot\OPT\cdot k\cdot\ell$, which implies the competitive ratio.
