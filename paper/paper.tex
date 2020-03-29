@@ -683,18 +683,47 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   
   \end{enumerate}
 
+
+\section{Perfect Partition reachable within one swap}
+
+  (The version for two clusters, but extensions possible.)
+  Results: LB = UB = k+1.
+
+  In this section we show that the competitive ratio of the BRP variant, where the perfect partition is reachable within one swap is exactly k+1.
+
+  Previously the best upper bound was $O(k^2)$ of DET \cite{repartition-disc}, and the best lower bound was $k-1$, utilizing the reduction from paging from \cite{repartition-disc}.
+  \maciek{It is possible to improve the reduction, i.e., to reduce from paging with cache $k$, but it is impossible to have reduction from paging with cache $k+1$.}
+
+  \begin{theorem}
+    If the perfect partition is reachable within one swap, the cost of any deterministic algorithm is at least k+1.
+  \end{theorem}
+
+  \begin{proof}
+    \maciek{pre-sketch}
+    A request to any pair. The algorithm puts it on the wrong cluster, evicting some node and paying $1$.
+    We continue to issue the requests to the evicted node (it changes every time), alg pays $k-2$.
+    We issue the final request, and alg must move the initial pair, paying $2$.
+  \end{proof}
+
+  \begin{theorem}
+    There exists a (k+1)-competitive algorithm for the BRP variant, where the perfect partition is reachable within one swap.
+  \end{theorem}
+  
+  \begin{proof}
+    \maciek{early sketch}
+    The algorithm maintains components of nodes, and never splits them.
+    Intially all nodes are in singleton components.
+    The only choice is where to place the component, and possibly which components to evict.
+
+  The algorithm places the first component, denoted $Z$, on an arbitrary cluster, and evicts an arbitrary node (it is a singleton).
+  Consider a request $(a,b)$.
+  If $a \in Z$ (also symmetry $b \in Z$), then we move the entire component $Z$ to the cluster $I(b)$, evicting a singleton node that is missplaced (i.e., is not on its initial cluster), and an arbitrary node (we later show that there exists a node that is misplaced).
+  Otherwise, $I(a) = I(b)$, and we place the component there, evicting an arbitrary node (non-missplaced?).
+
+  If a component collocated with $Z$ grows to $k-1$, we evict $Z$ and terminate.
+  \end{proof}
+
 \section{Dynamic Graph Bisection (two clusters case)}
-
-
-\subsection{Perfect Partition reachable within one swap}
-
-(The version for two clusters.)
-
-Results: LB = UB = k+1.
-
-
-
-
 
 \subsection{Lower bound $2k-1$}
 
