@@ -339,7 +339,8 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
 \maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
 \begin{theorem}
-	The competitive ratio of any deterministic online algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
+  The competitive ratio of any deterministic online algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
+  \maciek{TODO: the exact bound, not asymptotic}
 \end{theorem}
 
 \begin{proof}
@@ -455,6 +456,7 @@ The scheme of the algorithm can be found in the Appendix \ref{apx:PPL}.
 
 \begin{theorem}	\label{thm:upperbound}
     \PPL reaches the final configuration $P_F$ and it is $(2\cdot k\cdot\ell)$-competitive.
+    \maciek{Consider not hiding the $2(k-1)\ell$ in the theorem. This is a better bound.}
 \end{theorem}
 \begin{proof}
       On each inter-cluster request,
@@ -682,6 +684,17 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   \end{enumerate}
 
 \section{Dynamic Graph Bisection (two clusters case)}
+
+
+\subsection{Perfect Partition reachable within one swap}
+
+(The version for two clusters.)
+
+Results: LB = UB = k+1.
+
+
+
+
 
 \subsection{Lower bound $2k-1$}
 
