@@ -255,7 +255,7 @@ The overview of known results is in Table~\ref{tab:overview}.
     \textbf{Variant} & \textbf{ Lower bound} &\textbf{Upper bound}\\ \hline 
       \textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & 3\hspace{0.3cm}(\S 9.3) \\ 
       \rowcolor{gray!25}
-      \textbf{$k=3$}&  $1357\cdot \ell - 245 = \Omega(\ell)$\hspace{0.3cm}(\S 9.3)& $O(\ell)$\hspace{0.3cm}(\S 9.3)\\
+      \textbf{$k=3$}&  $27\cdot \ell $\hspace{0.3cm}(\S 9.3)& $O(\ell)$\hspace{0.3cm}(\S 9.3)\\
       \textbf{$\ell=2$}&  $2k-1$\hspace{0.3cm}(\S 9.3)&\hspace{0.3cm}$O(k^2)$\hspace{0.3cm}\cite{repartition-disc}\\
       \rowcolor{gray!25}
       $\ell \geq 3$& $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S 9.3)&$O(k^2 \cdot \ell^2)$\hspace{0.3cm}\cite{repartition-disc} \\
@@ -553,11 +553,12 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 
 
 
-\maciek{Figure: cluster types}
+\maciek{Figure: cluster signatures}
 
 \maciek{Figure: an unsaturated edge that is inside a component}
 
 
+\maciek{Rewrite: cluster types should be cluster signatures}
 In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 Before bounding the competitive ratio of \TAlg, we introduce the lemma that estimates the cost of a single repartition of \TAlg.
 
@@ -711,6 +712,15 @@ Modification is the following: when repartition is necessary, move to \emph{the 
   The corollary is, the cost of the repartition is bounded by $O(k \cdot \alpha \cdot e^{c\cdot \sqrt{k}})$ for a constant $c$.
 \end{theorem}
 
+\begin{proof}
+  \maciek{Danger zone, nothing is finished here}
+
+  A \emph{signature} of a cluster $C$, denoted $S(C)$ is a multiset of sizes of components located in this cluster.
+  Note that there are $p(k)$ possible signatures.
+
+  Consider a repartition from a perspective of a single cluster.
+  Prior to the repartition, it had a signature $S^-(C)$, and after the repartition it has a signature $S^+(C)$.
+\end{proof}
 
 
 \subsection{Perfect Partition reachable within one swap}
