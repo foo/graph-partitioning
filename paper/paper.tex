@@ -253,10 +253,10 @@ The overview of known results is in Table~\ref{tab:overview}.
     \begin{tabular}{>{\centering\arraybackslash}p{4.5cm}|>{\centering\arraybackslash}p{4.5cm}>{\centering\arraybackslash}p{4.5cm}}
     \rowcolor{gray!50}
     \textbf{Variant} & \textbf{ Lower bound} &\textbf{Upper bound}\\ \hline 
-      \textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & 3\hspace{0.3cm}(\S 9.3) \\ 
+      \textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & TBD\hspace{0.3cm}(\S 9.3) \\ 
       \rowcolor{gray!25}
       \textbf{$k=3$}&  $27\cdot \ell $\hspace{0.3cm}(\S 9.3)& $O(\ell)$\hspace{0.3cm}(\S 9.3)\\
-      \textbf{$\ell=2$}&  $2k-1$\hspace{0.3cm}(\S 9.3)&\hspace{0.3cm}$O(k^2)$\hspace{0.3cm}\cite{repartition-disc}\\
+      \textbf{$\ell=2$}&  $k+1 = \Omega(k)$\hspace{0.3cm}(\S 9.3)&\hspace{0.3cm}$O(k^2)$\hspace{0.3cm}\cite{repartition-disc}\\
       \rowcolor{gray!25}
       $\ell \geq 3$& $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S 9.3)&$O(k^2 \cdot \ell^2)$\hspace{0.3cm}\cite{repartition-disc} \\
       Perfect partition & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S 9.3)&$O(k \cdot \ell)$\hspace{0.3cm} (\S 9) \\
@@ -708,7 +708,7 @@ Consider an algorithm DET2, a modified version of DET from \cite{repartition-dis
 Modification is the following: when repartition is necessary, move to \emph{the closest} perfect partition of components.
 
 \begin{theorem}
-  A single repartition of DET2 migrates nodes among at most $p(k)^2+k$ clusters, where $p(k)$ is the number of integer partitions $k$.
+  A single repartition of DET2 migrates nodes among at most $p(k)^2+(k+1)$ clusters, where $p(k)$ is the number of integer partitions $k$.
   The corollary is, the cost of the repartition is bounded by $O(k \cdot \alpha \cdot e^{c\cdot \sqrt{k}})$ for a constant $c$.
 \end{theorem}
 
@@ -718,8 +718,18 @@ Modification is the following: when repartition is necessary, move to \emph{the 
   A \emph{signature} of a cluster $C$, denoted $S(C)$ is a multiset of sizes of components located in this cluster.
   Note that there are $p(k)$ possible signatures.
 
-  Consider a repartition from a perspective of a single cluster.
+  Fix a repartition.
+  
+  Consider the repartition from the perspective of a single cluster.
   Prior to the repartition, it had a signature $S^-(C)$, and after the repartition it has a signature $S^+(C)$.
+
+  Now we construct a graph $G$ of component exchange among clusters.
+  The vertices are the clusters.
+  If a pair of clusters $C_1, C_2$ exchange components during the repartition, we produce an edge and we label it with the \emph{signature of exchange}, i.e., a pair of cluster signatures (both ways), limited to the exchanged clusters between $C_1,C_2$ only (i.e., not necessarily summing to $k$, and  note that also not necessarily having the same size!).
+  
+  Proof by contradiction.
+  Assume that there exists a component in $G$ of size greater than $p(k)^2+(k+1)$.
+
 \end{proof}
 
 
