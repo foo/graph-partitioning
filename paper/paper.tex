@@ -349,6 +349,8 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
 \begin{theorem}
   The competitive ratio of any deterministic online algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
   \maciek{TODO: the exact bound, not asymptotic}
+
+  \maciek{The bound $(k \cdot \ell - k - \ell) / 2$ can be easily improved to $(k \cdot \ell - k - 1) / 2$ by playing a simple caching game in the first cluster, instead of just giving away the $k-1$ "blocker" (the caching game would build it gradually)}
 \end{theorem}
 
 \begin{proof}
