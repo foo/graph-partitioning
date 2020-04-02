@@ -698,8 +698,24 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   
   \end{enumerate}
 
+\section{Maciek's sketches}
 
-\section{Perfect Partition reachable within one swap}
+\subsection{Cascade}
+
+For now, assume $\alpha=1$ (not to deal with inter-component communication).
+Consider an algorithm DET2, a modified version of DET from \cite{repartition-disc}.
+Modification is the following: when repartition is necessary, move to \emph{the closest} perfect partition of components.
+
+\begin{theorem}
+  A single repartition of DET2 migrates nodes among at most $p(k)^2+k$ clusters, where $p(k)$ is the number of integer partitions $k$.
+  The corollary is, the cost of the repartition is bounded by $O(k \cdot \alpha \cdot e^{c\cdot \sqrt{k}})$ for a constant $c$.
+\end{theorem}
+
+
+
+\subsection{Perfect Partition reachable within one swap}
+
+\maciek{Best to include it in the improved LB omega(lk) to help increase the lb by k-1}
 
   (The version for two clusters, but extensions possible.)
   Results: LB = UB = k+1.
@@ -740,7 +756,6 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   If a component collocated with $Z$ grows to $k-1$, we evict $Z$ and terminate.
   \end{proof}
 
-\section{Dynamic Graph Bisection (two clusters case)}
 
 \subsection{Lower bound $2k-1$}
 
