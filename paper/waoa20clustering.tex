@@ -695,42 +695,61 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   
   		 \item $k$-competitive algorithm for the ring communication pattern
   
-  		 \item $O(\ell)$-competitive algorithm for $k=4$ and $k=5$
-  
   \end{enumerate}
 
 \section{Maciek's sketches}
 
-\subsection{Cascade}
+\subsection{Cascade bounds and an improved algorithm for general k, l}
 
 For now, assume $\alpha=1$ (not to deal with inter-component communication).
 Consider an algorithm DET2, a modified version of DET from \cite{repartition-disc}.
 Modification is the following: when repartition is necessary, move to \emph{the closest} perfect partition of components.
 
+Now we bound the cost of a single repartition of DET2 independent of $\ell$.
+First, we bound the cycle length in one of optimal solutions.
+
 \begin{theorem}
-  A single repartition of DET2 migrates nodes among at most $p(k)^2+(k+1)$ clusters, where $p(k)$ is the number of integer partitions $k$.
-  The corollary is, the cost of the repartition is bounded by $O(k \cdot \alpha \cdot e^{c\cdot \sqrt{k}})$ for a constant $c$.
+  \label{th:cascade-cycles}
+  Consider a single repartition of DET2 caused by node merge.
+  There exists a sequence of node migrations that realizes this repartition, where each node-disjoint cycle has length at most $k$.
+\end{theorem}
+Describe the graph. Edges and labels.
+
+Proof by contradiction.
+We call a sequence of node migrations that realize the repartition \emph{a solution to repartition}.
+Assume that each cost-optimal solution to repartition contains a cycle of length at least $k+1$.
+
+Fix a solution to repartition that has the shortest length of the longest cycle, and has the least edge-disjoint cycles of such length.
+
+\begin{proof}
+\end{proof}
+
+
+\begin{theorem}
+  Consider a single repartition of DET2.
+  The number of clusters it involves is bounded by $k^k$.
+  \label{th:cascade}
 \end{theorem}
 
 \begin{proof}
-  \maciek{Danger zone, nothing is finished here}
+  Each node has degree at most $k$. Combine with Theorem \ref{th:cascade-cycles}.
 
-  A \emph{signature} of a cluster $C$, denoted $S(C)$ is a multiset of sizes of components located in this cluster.
-  Note that there are $p(k)$ possible signatures.
-
-  Fix a repartition.
-  
-  Consider the repartition from the perspective of a single cluster.
-  Prior to the repartition, it had a signature $S^-(C)$, and after the repartition it has a signature $S^+(C)$.
-
-  Now we construct a graph $G$ of component exchange among clusters.
-  The vertices are the clusters.
-  If a pair of clusters $C_1, C_2$ exchange components during the repartition, we produce an edge and we label it with the \emph{signature of exchange}, i.e., a pair of cluster signatures (both ways), limited to the exchanged clusters between $C_1,C_2$ only (i.e., not necessarily summing to $k$, and  note that also not necessarily having the same size!).
-  
-  Proof by contradiction.
-  Assume that there exists a component in $G$ of size greater than $p(k)^2+(k+1)$.
-
+Important technical details:
+\begin{itemize}
+  \item There are no cycles attached to another cycles by just one vertex (by equivalent signature skipping). This is important, as otherwise we just have a bound on cycles, but the graph contains a chain of cycles.
+  Another formulation (Stefan's): each edge is a part of a cycle that goes through the "origin" part of the graph.
+\end{itemize}
 \end{proof}
+
+
+\begin{theorem}
+  Algorithm DET2 is $O(\ell \cdot k\cdot k^k)$-competitive.
+\end{theorem}
+
+\begin{proof}
+  Use Theorem~\ref{th:cascade}. Then, linearize the inner-component communication using the technique from SIDMA.
+\end{proof}
+
 
 
 \subsection{Perfect Partition reachable within one swap}
