@@ -11,7 +11,7 @@
 \usepackage{balance}
 \usepackage[english]{babel}
 \usepackage{blindtext}
-\usepackage{amsthm,amsmath,amssymb,array,colortbl,graphicx,multirow}
+\usepackage{amsthm,amsmath,array,colortbl,graphicx,multirow}
 \usepackage{comment}
 \usepackage{balance}
 \usepackage{tikz}
@@ -130,9 +130,10 @@
 	</ccs2012>
 \end{CCSXML}
 
+% for my small screen
+\setlength{\textwidth}{8cm}
 
 \begin{document}
-
 
 \begin{abstract}
 Distributed   applications,  including  batch  processing, streaming, scale-out databases,
@@ -876,7 +877,7 @@ Now, we claim that the cost of node migration of \OFF is $2 \cdot \alpha$ (two c
 $\OPT$ does not change its cache contents.
 Within each type of configuration with $S \in \{ B, C\}$ split, $\OPT$ may achieve a configuration with a different node from $S$ outside of the cache by exchanging the split node with any node from $S$.
 To transition between any of three configuration types ((1) with $A$ (2) with $B$ split and (3) with C split), it suffices to perform a single exchange.
-Therefore, $\OFF(\comm_t(\sigma^P_t)) = 2 \cdot \alpha \cdot \OPT(\sigma^P_t)$, which summed over the entire sequence $\sigma^P$ yields $\OFF(\sigma^B) = 2 \cdot \alpha \cdot \OPT(\sigma^P)$.
+Therefore, $\OFF(\comm_t(\sigma^P_t)) = 2 \cdot \alpha \cdot \OPT(\sigma^P_t)$, which summed over the entire sequence $\sigma^P$ 5yields $\OFF(\sigma^B) = 2 \cdot \alpha \cdot \OPT(\sigma^P)$.
 
 As $B$ is $\gamma$-competitive for the BRP problem, there exists a constant $\beta$, such that for any sequence $\sigma^P$ and the corresponding sequence $\sigma^B$, it holds that $B(\sigma^B) \leq \gamma \cdot \OFF(\sigma^B) +
 \beta$.
@@ -887,6 +888,69 @@ Combining this inequality with the inequalities between $P$ and $B$ and between 
 	 =\gamma \cdot 2 \cdot \alpha \cdot \OPT(\sigma^P) + \beta,
 \]
 and therefore $P$ is $\gamma$-competitive.
+\end{proof}
+
+Algorithm Alg:
+maintain a counter $C_{\set{u,v}}$ for each pair of nodes $\set{u,v}$ and increment it on every remote request between $u$ and $v$.
+Once $C_{\set{u,v}} = \lambda:=2\alpha$,
+reset the counter and collocate the pair arbitrarily in one of the two clusters where $u$ or $v$ resides.
+
+\begin{theorem}
+	The algorithm is 4-competitive.
+\end{theorem}
+\begin{proof}
+\mahmoud{still proof sketch}
+We charge both OPT and Alg on each request that triggers a collocation.
+Let $C^{t}_{\set{u,v}}$ denote the  value of $C_{\set{u,v}}$ immediately after arrival of $\sigma_t$.
+Assume on request $\sigma_{t}=\set{u,v}$,
+Alg collocates the pair,
+which means $ C^t_{\set{u,v}} = \lambda$ immediately before Alg resets the counter.
+Let $t''<t$ be the latest time (i.e.~request) when Alg collocates $\set{u,v}$ before $t$.
+Let $t', t'' < t' < t$ be the  time when Alg separates $\set{u,v}$
+in order to collocate some other pair sharing a node,
+e.g., the pair $\set{u,v'}, v' \neq v$.
+%e.g., the request $\sigma_{t'} = \set{u,v'}$.
+%By Alg's definition,
+%$C^{t'}_{\set{u,v'}}  = C^t_{\set{u,v}} = \lambda$.
+We denote the set of all requests to $\set{u,v}$
+between times $t'$ and $t$ by $\sigma_{\set{u,v}}[t',t]$.
+Thus,
+$| \sigma_{\set{u,v}}[t',t] | = \lambda$.
+The overall cost of requests that increases the counter,
+i.e.~requests in $\sigma_{\set{u,v}}[t',t]$,
+and the moving cost incurred by Alg,
+ is $\lambda + 2\alpha$.
+%That is, the cost of all requests in $\sigma_{\set{u,v}}[t',t]$.
+We distinguish three cases for the cost incurred by OPT with regards to $\set{u,v}$.
+i)
+OPT has $\set{u,v}$ separated through all requests in $\sigma_{\set{u,v}}[t',t]$
+and therefore it pays $\lambda$.
+ii)  
+OPT collocates $\set{u,v}$ some time during $[t'',t]$.
+Recall that whenever Alg collocates a pair,
+we charge OPT only for requests up to that point (i.e., not for later requests).
+Hence,
+we charge the cost of  this collocation to OPT for the first time.
+In particular,
+we charge OPT the cost of moving one node to the cluster of the other,
+e.g.~$u$ to $v$, w.l.o.g.
+Therefore in this case OPT pays $\alpha$.
+iii)
+OPT has $\set{u,v}$ collocated before $t''$ and keeps them collocated during $[t'',t]$.
+Obviously in this case OPT doesn't pays any cost for requests in $\sigma_{\set{u,v}}[t'',t]$.
+However,
+OPT must pay $\lambda$ for requests to $\set{u,v'}$.
+By induction,
+at time $t'$,
+we charge OPT $\alpha$ (out of $\lambda=2\alpha$) for this pair.
+Therefore,
+we can charge OPT another $\alpha$ to account for requests $\sigma_{\set{u,v}}[t'',t]$.
+It can be easily verified that any deviation from these cases only increases the cost to OPT.
+Thus,
+OPT pays at least $\alpha$ for each collocation by Alg
+which gives the competitive ratio 
+$(\lambda + 2\alpha)/ \alpha = 4$.
+
 \end{proof}
 
 \end{document}
