@@ -106,6 +106,7 @@
 \newcommand\mahmoud[1]{\color{green}\textbf{\\ Mahmoud: #1}\\\color{black}}
 \newcommand\stefan[1]{\color{blue}\textbf{\\ Stefan: #1}\color{black}}
 \newcommand\maciek[1]{\color{brown}\textbf{\\ Maciek: #1}\color{black}}
+%\newcommand\maciek[1]{}
 
 
 \newcommand{\todo}[1]{\noindent\color{brown}{todo: #1}\color{black}}
@@ -333,7 +334,13 @@ discuss an upper bound.
 \maciek{TODO: rename everywhere: "adversary's components", i.e., all components in lower bounds should be called "ground sets"}
 
 
-\maciek{Example figure of the construction and growing components.}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.3\textwidth]{figs/substitute}
+    \caption{Example figure of the construction of the LB and growing components.}
+    \label{fig:nptree-construction}
+  \end{figure}
 
 
 The adversary constructs components of nodes based on the partitioning choices of a given online algorithm.
@@ -544,6 +551,11 @@ model where the request sequence
 can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
 
+\maciek{Rewrite above paragraph to say that our algorithm is essentially DET from DISC16, with concretised reconfiguration strategy (i.e., the cheapest)}
+
+\subsection{Improved analysis of the component-based algorithm}
+
+
 %We define the algorithm \TAlg in the following way.
 Now we describe the algorithm \TAlg.
 It partitions nodes into components, and
@@ -555,43 +567,13 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 
 
 
-\maciek{Figure: cluster signatures}
 
-\maciek{Figure: an unsaturated edge that is inside a component}
-
-
-\maciek{Rewrite: cluster types should be cluster signatures}
-In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
-Before bounding the competitive ratio of \TAlg, we introduce the lemma that estimates the cost of a single repartition of \TAlg.
-
-\begin{lemma}
-  \label{lem:1req}
-  During a single repartition, \TAlg exchanges at most $2$ pairs of nodes.
-\end{lemma}
-
-\begin{proof}
-    Observe that when the repartition is triggered by \TAlg, the resulting partitioning is component respecting.
-  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
-
-  %We distinguish between three types of clusters: $C_1, C_2, C_3$,
-  %which we define as follows.
-  %A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
-  %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
-  %Finally, a cluster of type $C_3$  contains one component of size $3$.
+  \begin{figure}[H]
+    \centering
+      \includegraphics[width=0.3\textwidth]{figs/substitute}
+      \caption{an unsaturated edge that is inside a component}
+    \end{figure}
   
-    Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
-    Note that $U\neq V$,
-	 as otherwise, the request would not trigger a~repartitioning.
-	 We consider cases based on the types of clusters $U$ and $V$.
-    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
-    If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
-    For two clusters, any configuration can be reached within two swaps, due to the fact that clusters are indistinguishable.
-  
-    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
-    Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
-    Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
-\end{proof}
 
 \begin{theorem}
   \TAlg is $O(\ell)$-competitive.
@@ -681,27 +663,53 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 \end{proof}
 
 
-\bibliographystyle{ACM-Reference-Format}
-\bibliography{references}  
-
-\pagebreak
-\appendix
+\section{Bounding the cost of a single reconfiguration}
 
 
-\section{Omitted results}
+\subsection{Warm-up: bounding the reconfiguration for $k=3$}
 
-\begin{enumerate}
-  		 \item The lower bound of $\Omega(\ell)$ for the scenario with at most $(1/3-1/k)$-augmentation
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.3\textwidth]{figs/substitute}
+    \caption{Cluster signatures in warm-up k=3 proof}
+  \end{figure}
+
+\maciek{Rewrite: cluster types should be cluster signatures}
+In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
+Before bounding the competitive ratio of \TAlg, we introduce the lemma that estimates the cost of a single repartition of \TAlg.
+
+\begin{lemma}
+  \label{lem:1req}
+  During a single repartition, \TAlg exchanges at most $2$ pairs of nodes.
+\end{lemma}
+
+\begin{proof}
+    Observe that when the repartition is triggered by \TAlg, the resulting partitioning is component respecting.
+  Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
+
+  %We distinguish between three types of clusters: $C_1, C_2, C_3$,
+  %which we define as follows.
+  %A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
+  %A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
+  %Finally, a cluster of type $C_3$  contains one component of size $3$.
   
-  		 \item Costly cascade example (it is easy to present $k^2$ and $k\cdot \sqrt{k}$ (with different approach), and then we can combine these to obtain $k^3$)
+    Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
+    Note that $U\neq V$,
+	 as otherwise, the request would not trigger a~repartitioning.
+	 We consider cases based on the types of clusters $U$ and $V$.
+    Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
+    If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
+    For two clusters, any configuration can be reached within two swaps, due to the fact that clusters are indistinguishable.
   
-  		 \item $k$-competitive algorithm for the ring communication pattern
-       
-       \item lower and upper bound $k+1$ for two clusters, perfect partition and the optimal configuration reachable within one swap
-  
-  \end{enumerate}
+    Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
+    Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
+    Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
+    Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
+\end{proof}
 
-\section{Maciek's sketches}
+\subsection{Characterization of the reconfiguration graph}
+
 
 \subsection{Cascade bounds and an improved algorithm for general k, l}
 
@@ -711,6 +719,14 @@ Modification is the following: when repartition is necessary, move to \emph{the 
 
 Now we bound the cost of a single repartition of DET2 independent of $\ell$.
 First, we bound the cycle length in one of optimal solutions.
+
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.3\textwidth]{figs/substitute}
+    \caption{Illustration to bounding the path length.}
+    \label{fig:nptree-construction}
+  \end{figure}
 
 \begin{theorem}
   \label{th:cascade-cycles}
@@ -746,13 +762,11 @@ Important technical details:
 \end{proof}
 
 
-\begin{theorem}
-  Algorithm DET2 is $O(\ell \cdot k\cdot k^k)$-competitive.
-\end{theorem}
+Corollary: Algorithm DET2 is $O(\ell \cdot k\cdot k^k)$-competitive.
 
-\begin{proof}
-  Use Theorem~\ref{th:cascade}. Then, linearize the inner-component communication using the technique from SIDMA.
-\end{proof}
+
+
+\section{Improved algorithm for $k=2$}
 
 
 
@@ -818,5 +832,26 @@ which gives the competitive ratio
 $(\lambda + 2\alpha)/ \alpha = 4$.
 
 \end{proof}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}  
+
+\pagebreak
+\appendix
+
+
+\section{Omitted results}
+
+\begin{enumerate}
+  		 \item The lower bound of $\Omega(\ell)$ for the scenario with at most $(1/3-1/k)$-augmentation
+  
+  		 \item Costly cascade example (it is easy to present $k^2$ and $k\cdot \sqrt{k}$ (with different approach), and then we can combine these to obtain $k^3$)
+  
+  		 \item $k$-competitive algorithm for the ring communication pattern
+       
+       \item lower and upper bound $k+1$ for two clusters, perfect partition and the optimal configuration reachable within one swap
+  
+  \end{enumerate}
+
 
 \end{document}
