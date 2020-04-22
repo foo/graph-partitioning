@@ -544,7 +544,10 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 \section{The Online Problem}
 \label{sec:k3}
 
-\maciek{REALLY bad name. Both the learning problem and the general one is online.}
+
+\maciek{Not precise name? Both the learning problem and the general one is online.}
+
+\maciek{Start with referencing the table of results, saying that some results are known already. And really emphasize here that we now have an improved lower bound from the previous section, as that model was a subproblem.}
 
 Let us now discuss the general online
 model where the request sequence
@@ -552,6 +555,8 @@ can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{kar
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
 
 \maciek{Rewrite above paragraph to say that our algorithm is essentially DET from DISC16, with concretised reconfiguration strategy (i.e., the cheapest)}
+
+\maciek{Better name than DET?}
 
 \subsection{Improved analysis of the component-based algorithm}
 
@@ -710,6 +715,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 
 \subsection{Characterization of the reconfiguration graph}
 
+\maciek{I'll write it some day. Maciek.}
 
 \subsection{Cascade bounds and an improved algorithm for general k, l}
 
@@ -832,6 +838,10 @@ which gives the competitive ratio
 $(\lambda + 2\alpha)/ \alpha = 4$.
 
 \end{proof}
+
+\section{Note on distributed algorithms}
+
+\maciek{How to distribute our algorithms: PPL, k=2 and DET}
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
