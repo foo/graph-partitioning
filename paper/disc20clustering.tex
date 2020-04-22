@@ -774,13 +774,25 @@ Combined with other properties, this allows to bound the size of the migration g
 \label{ssec:example}
 
 
-\maciek{A linear path in reconfiguration graph.}
 
-\subsection{Bounds on the size of a cluster reconfiguration graph}
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.3\textwidth]{figs/substitute}
+    \caption{A costly cascade example. On the left: the configuration prior to the merge and the merge of two components (denoted solid). On the right: corresponding migration graph for the optimal (unique) reconfiguration.}
+  \end{figure}
+
+
+In this section we present an example of a merge action that results in a $k/3$(?) length path in an optimal migration graph.
+
+\subsection{Bounds on the size of a migration graph}
 \label{ssec:cascade}
 
-Now we bound the cost of a single repartition of DET2 independent of $\ell$.
-First, we bound the length of each path in one of optimal solutions.
+In \cite{repartition-disc}, authors trivially bounded the reconfiguration cost for each merge action by $k \cdot \ell$.
+This roughly corresponds to migrating every node in every cluster.
+Now, we bound the cost of a single repartition of \TAlg as a function of $k$.
+Note that the bound of $k \cdot \ell$ is still valid, and the resulting bound is the minimum of these two.
+
+We begin, by bounding the length of each path in one of optimal solutions.
 
 
 \begin{figure}[H]
