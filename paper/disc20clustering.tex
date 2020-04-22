@@ -572,6 +572,8 @@ Upon receiving a request to a pair that is not collocated in one cluster, it inc
 If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
 If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 
+\maciek{Emphasize the difference to DET: "Modification is the following: when repartition is necessary, move to \emph{the closest} perfect partition of components."}
+
 
 
 
@@ -719,18 +721,17 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 
 \maciek{I'll write it some day. Maciek.}
 
+Describe the graph. Edges and labels.
+
 \subsection{Costly reconfiguration example}
 
 \maciek{A linear path in reconfiguration graph.}
 
 \subsection{Cascade bounds and an improved algorithm for general k, l}
 
-For now, assume $\alpha=1$ (not to deal with inter-component communication).
-Consider an algorithm DET2, a modified version of DET from \cite{repartition-disc}.
-Modification is the following: when repartition is necessary, move to \emph{the closest} perfect partition of components.
 
 Now we bound the cost of a single repartition of DET2 independent of $\ell$.
-First, we bound the cycle length in one of optimal solutions.
+First, we bound the length of each path in one of optimal solutions.
 
 
 \begin{figure}[H]
@@ -741,11 +742,12 @@ First, we bound the cycle length in one of optimal solutions.
   \end{figure}
 
 \begin{theorem}
-  \label{th:cascade-cycles}
+  \label{th:cascade-paths}
   Consider a single repartition of DET2 caused by node merge.
   There exists a sequence of node migrations that realizes this repartition, where each node-disjoint cycle has length at most $k$.
 \end{theorem}
-Describe the graph. Edges and labels.
+
+\begin{proof}
 
 Proof by contradiction.
 We call a sequence of node migrations that realize the repartition \emph{a solution to repartition}.
@@ -753,7 +755,6 @@ Assume that each cost-optimal solution to repartition contains a cycle of length
 
 Fix a solution to repartition that has the shortest length of the longest cycle, and has the least edge-disjoint cycles of such length.
 
-\begin{proof}
 \end{proof}
 
 
@@ -764,13 +765,8 @@ Fix a solution to repartition that has the shortest length of the longest cycle,
 \end{theorem}
 
 \begin{proof}
-  Each node has degree at most $k$. Combine with Theorem \ref{th:cascade-cycles}.
+  Each node has degree at most $k$. Combine with Theorem \ref{th:cascade-paths}.
 
-Important technical details:
-\begin{itemize}
-  \item There are no cycles attached to another cycles by just one vertex (by equivalent signature skipping). This is important, as otherwise we just have a bound on cycles, but the graph contains a chain of cycles.
-  Another formulation (Stefan's): each edge is a part of a cycle that goes through the "origin" part of the graph.
-\end{itemize}
 \end{proof}
 
 
