@@ -696,6 +696,8 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
   		 \item Costly cascade example (it is easy to present $k^2$ and $k\cdot \sqrt{k}$ (with different approach), and then we can combine these to obtain $k^3$)
   
   		 \item $k$-competitive algorithm for the ring communication pattern
+       
+       \item lower and upper bound $k+1$ for two clusters, perfect partition and the optimal configuration reachable within one swap
   
   \end{enumerate}
 
@@ -753,142 +755,6 @@ Important technical details:
 \end{proof}
 
 
-
-\subsection{Perfect Partition reachable within one swap}
-
-\maciek{Best to include it in the improved LB omega(lk) to help increase the lb by k-1}
-
-  (The version for two clusters, but extensions possible.)
-  Results: LB = UB = k+1.
-
-  In this section we show that the competitive ratio of the BRP variant, where the perfect partition is reachable within one swap is exactly k+1.
-
-  Previously the best upper bound was $O(k^2)$ of DET \cite{repartition-disc}, and the best lower bound was $k-1$, utilizing the reduction from paging from \cite{repartition-disc}.
-  \maciek{It is possible to improve the reduction, i.e., to reduce from paging with cache $k$, but it is impossible to have reduction from paging with cache $k+1$.}
-
-  \begin{theorem}
-    If the perfect partition is reachable within one swap, the cost of any deterministic algorithm is at least k+1.
-  \end{theorem}
-
-  \begin{proof}
-    \maciek{pre-sketch}
-    A request to any pair. The algorithm puts it on the wrong cluster, evicting some node and paying $1$.
-    We continue to issue the requests to the evicted node (it changes every time), alg pays $k-2$.
-    We issue the final request, and alg must move the initial pair, paying $2$.
-  \end{proof}
-
-  \begin{theorem}
-    There exists a (k+1)-competitive algorithm for the BRP variant, where the perfect partition is reachable within one swap.
-  \end{theorem}
-  
-  \begin{proof}
-    \maciek{Maybe PPL can be used instead?}
-
-    \maciek{early sketch}
-    The algorithm maintains components of nodes, and never splits them.
-    Intially all nodes are in singleton components.
-    The only choice is where to place the component, and possibly which components to evict.
-
-  The algorithm places the first component, denoted $Z$, on an arbitrary cluster, and evicts an arbitrary node (it is a singleton).
-  Consider a request $(a,b)$.
-  If $a \in Z$ (also symmetry $b \in Z$), then we move the entire component $Z$ to the cluster $I(b)$, evicting a singleton node that is missplaced (i.e., is not on its initial cluster), and an arbitrary node (we later show that there exists a node that is misplaced).
-  Otherwise, $I(a) = I(b)$, and we place the component there, evicting an arbitrary node (non-missplaced?).
-
-  If a component collocated with $Z$ grows to $k-1$, we evict $Z$ and terminate.
-  \end{proof}
-
-
-\subsection{Lower bound $2k-1$}
-
-
-
-\maciek{Dont include in WAOA}
-
-We show the reduction from the paging problem with the universe $U$ of size $2k$ and the cache of size $2k-1$.
-Recall that the lower bound for the competitive ratio for such paging problem is $2k-1$.
-
-Similarly to the lower bound TODO ref $\Omega(kl)$, we construct components of nodes, and issue the requests if the algorithm splits the component.
-In the proof in this section, the components produced are oblivious to the configuration of the algorithm, yet the requests issued depend on if the algorithm splits the components. In $\Omega(kl)$ LB, the components were constructed upon the actions of the algorithm, too.
-
-\maciek{TODO: figure of three states of OPT. It should fit next to the other lower bound figure?}
-
-\begin{theorem}
-  %No deterministic algorithm for BRP with two clusters can achieve a competitive ratio smaller than $2k-1$.
-
-  Fix any $k$. If there exists a $\gamma$-competitive deterministic algorithm $B$ for Dynamic Bisection Problem with cluster size $k$, then there exists a $\gamma$-competitive deterministic algorithm $P$ for the paging problem with cache size $2k-2$ and where the number of different pages is $2k-1$. 
-\end{theorem}
-
-\begin{proof}
-  The pages are denoted by $p_1,p_2,\ldots,p_{2k-1}$. Without loss of generality, we assume that the initial cache is equal to $p_1,p_2,\ldots,p_{k-2}$.
-  We fix any input sequence $\sigma^P = (\sigma^P_1, \sigma^P_2, \sigma^P_3, \ldots)$ for the caching problem, where $\sigma^P_t$ denotes the $t$-th accessed page.
-  We show how to construct an online algorithm $P$ for the caching problem that proceeds in the following online manner.
-  The algorithm internally runs the algorithm~$B$, starting on the initial assignment of nodes to clusters that will be defined below.
-  For a requested page $\sigma^P_t$, it creates a subsequence of~communication requests for the BRP problem, runs $B$ on them, and serves $\sigma^P_t$ on the basis of $B$'s responses.
-
-  We use $2k$ nodes for the BRP problem: $2k-1$ caching nodes denoted $p_1,p_2, \ldots, p_{2k-1}$, and an auxiliary node $a$.
-  We partition nodes into sets $A = \{ a, p_1 \}$, $B = \{ p_2, p_3, \ldots, p_{k+1}\}$, and $C = \{ p_{k+2}, p_{k+3} \ldots, p_{2k-1}\}$.
-  Their cardinalities are $|A| = 2$ and $|B| = |C| = k-1$.
-
-  We say that the node configuration is \emph{well-aligned} if any of the following conditions hold:
-  \begin{enumerate}
-    \item One cluster contains $B$ and one node from $A$ and the other cluster contains $C$ and the other node from $A$.
-    \item One cluster contains $B$ and one node from $C$ and the other cluster contains $A$ and $k-2$ nodes from set $C$.
-    \item (symmetric to the previous condition) One cluster contains $C$ and one node from $B$ and the other cluster contains $A$ and $k-2$ nodes from set $B$.
-  \end{enumerate}
-  We show a bijection between cache contents and well-aligned configurations.
-  We say that a caching node $p_i \in S$, where $S \in \{ A, B, C\}$ belongs to the cache if the entire set $S$ is collocated in a cluster.
-  Otherwise, if $p_i$ is located on a different cluster than the other nodes from $S$, we say that it is outside of the cache.
-  (Without loss of generality, we may assume that the cache of any caching algorithm is always full, i.e., consists of $k-1$ pages.)
-  If the configuration $c$ of a~BRP algorithm is well-aligned, $\textsc{cache}(c)$ denotes the corresponding cache contents.
-  The initial configuration for the BRP problem is the well-aligned configuration corresponding to the initial cache (pages $p_1,p_2,\ldots,p_{2k-2}$ in the cache), with sets $A$ and $B$ non-split and the node $p_{2k-1}$ from the set $C$ split.
-
-\medskip
-
-When a request $p$ to paging arrives, we create a subsequence $\comm(p)$ of communication requests for the BRP problem.
-We identify the corresponding caching node $p$ and the set $S \in \{ A,B,C \}$ that contains it.
-The construction of $\comm(p)$ depends on the actions of $B$.
-To abstract from the actions of $B$ in the construction, we use the notion of the adversary components.
-Forming an adversary component means that the adversary continuously issues requests to any two nodes of a component that are split.
-The request sequence $\comm(p)$ consists of the requests the adversary issues for $B$ after forming an adversary component $S$.
-When $B$ collocates all nodes of $S$, the adversary dismisses the adversary component $S$, i.e., no longer issues requests if $B$ splits the nodes of $S$.
-
-Note that $B$ must eventually achieve such a node configuration: otherwise its cost would be arbitrarily large while a sequence of repeated $\comm(\sigma^P_t)$ subsequences can be served at~a~constant cost.
-Therefore, the competitive ratio of~$B$ would then be unbounded.
-We denote the resulting sequence of $\comm(\sigma^P_t)$ subsequences by $\comm_t(\sigma^P_t)$.
-
-
-To construct the response to the caching request $\sigma^P_t$, the algorithm $P$ runs $B$ on $\comm_t(\sigma^P_t)$.
-Right after processing $\comm_t(\sigma^P_t)$, the node configuration $c$ of $B$ is well-aligned and $\sigma^P_t$ is collocated with other nodes from $S_t$ where $S_t \in \{A,B, C\}$ and $\sigma^P_t \in S_t$.
-Hence, $P$ may change its cache configuration to $\textsc{cache}(c)$: such a response is feasible, because since $S_t$ is collocated, it is included by $P$ in the cache.
-Furthermore, we may relate the cost of $P$ to the cost of~$B$: If $P$ modifies the cache contents, the corresponding cost is $1$, as exactly one page has to
-be fetched.
-Such a change occurs only if $B$ changed the configuration (at a~cost of at least $2 \cdot \alpha$).
-Therefore, $2\cdot \alpha \cdot P(\sigma^P_t) \leq B(\comm_t(\sigma^P_t))$, which, summed over all requests from sequence $\sigma^P$, yields $2 \cdot
-\alpha \cdot P(\sigma^P) \leq B(\sigma^B)$.
-
-\medskip
-
-Now we show that there exists an (offline) solution \OFF to $\sigma^B$, whose cost is exactly ${2 \cdot \alpha \cdot \OPT(\sigma^P)}$.
-Recall that, for a caching request $\sigma^P_t$, $\sigma^B$ contains the~corresponding sequence $\comm_t(\sigma^P_t)$.
-Before serving the first request of~$\comm_t(\sigma^P_t)$, \OFF changes its state to a well-aligned configuration corresponding to the cache of $\OPT$ right after serving caching request $\sigma^P_t$.
-This ensures that the subsequence $\comm_t(\sigma^P_t)$ is free for \OFF. 
-
-Now, we claim that the cost of node migration of \OFF is $2 \cdot \alpha$ (two caching nodes are swapped) if $\OPT$ performs a fetch, and 0 if
-$\OPT$ does not change its cache contents.
-Within each type of configuration with $S \in \{ B, C\}$ split, $\OPT$ may achieve a configuration with a different node from $S$ outside of the cache by exchanging the split node with any node from $S$.
-To transition between any of three configuration types ((1) with $A$ (2) with $B$ split and (3) with C split), it suffices to perform a single exchange.
-Therefore, $\OFF(\comm_t(\sigma^P_t)) = 2 \cdot \alpha \cdot \OPT(\sigma^P_t)$, which summed over the entire sequence $\sigma^P$ 5yields $\OFF(\sigma^B) = 2 \cdot \alpha \cdot \OPT(\sigma^P)$.
-
-As $B$ is $\gamma$-competitive for the BRP problem, there exists a constant $\beta$, such that for any sequence $\sigma^P$ and the corresponding sequence $\sigma^B$, it holds that $B(\sigma^B) \leq \gamma \cdot \OFF(\sigma^B) +
-\beta$.
-Combining this inequality with the inequalities between $P$ and $B$ and between \OFF and \OPT yields
-\[
-	2 \cdot \alpha \cdot P(\sigma^P) \leq 
-	B(\sigma^B) \leq \gamma \cdot \OFF(\sigma^B) + \beta
-	 =\gamma \cdot 2 \cdot \alpha \cdot \OPT(\sigma^P) + \beta,
-\]
-and therefore $P$ is $\gamma$-competitive.
-\end{proof}
 
 Algorithm Alg:
 maintain a counter $C_{\set{u,v}}$ for each pair of nodes $\set{u,v}$ and increment it on every remote request between $u$ and $v$.
