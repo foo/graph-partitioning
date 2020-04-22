@@ -817,62 +817,97 @@ maintain a counter $C_{\set{u,v}}$ for each pair of nodes $\set{u,v}$ and increm
 Once $C_{\set{u,v}} = \lambda:=2\alpha$,
 reset the counter and collocate the pair arbitrarily in one of the two clusters where $u$ or $v$ resides.
 
-\begin{theorem}
-	The algorithm is 4-competitive.
+\begin{theorem} \label{thm:k=2}
+	The algorithm is (strictly) 4-competitive.
 \end{theorem}
-\begin{proof}
-\mahmoud{still proof sketch}
-We charge both OPT and Alg on each request that triggers a collocation.
-Let $C^{t}_{\set{u,v}}$ denote the  value of $C_{\set{u,v}}$ immediately after arrival of $\sigma_t$.
-Assume on request $\sigma_{t}=\set{u,v}$,
-Alg collocates the pair,
-which means $ C^t_{\set{u,v}} = \lambda$ immediately before Alg resets the counter.
-Let $t''<t$ be the latest time (i.e.~request) when Alg collocates $\set{u,v}$ before $t$.
-Let $t', t'' < t' < t$ be the  time when Alg separates $\set{u,v}$
-in order to collocate some other pair sharing a node,
-e.g., the pair $\set{u,v'}, v' \neq v$.
-%e.g., the request $\sigma_{t'} = \set{u,v'}$.
-%By Alg's definition,
-%$C^{t'}_{\set{u,v'}}  = C^t_{\set{u,v}} = \lambda$.
-We denote the set of all requests to $\set{u,v}$
-between times $t'$ and $t$ by $\sigma_{\set{u,v}}[t',t]$.
-Thus,
-$| \sigma_{\set{u,v}}[t',t] | = \lambda$.
-The overall cost of requests that increases the counter,
-i.e.~requests in $\sigma_{\set{u,v}}[t',t]$,
-and the moving cost incurred by Alg,
- is $\lambda + 2\alpha$.
-%That is, the cost of all requests in $\sigma_{\set{u,v}}[t',t]$.
-We distinguish three cases for the cost incurred by OPT with regards to $\set{u,v}$.
-i)
-OPT has $\set{u,v}$ separated through all requests in $\sigma_{\set{u,v}}[t',t]$
-and therefore it pays $\lambda$.
-ii)  
-OPT collocates $\set{u,v}$ some time during $[t'',t]$.
-Recall that whenever Alg collocates a pair,
-we charge OPT only for requests up to that point (i.e., not for later requests).
-Hence,
-we charge the cost of  this collocation to OPT for the first time.
-In particular,
-we charge OPT the cost of moving one node to the cluster of the other,
-e.g.~$u$ to $v$, w.l.o.g.
-Therefore in this case OPT pays $\alpha$.
-iii)
-OPT has $\set{u,v}$ collocated before $t''$ and keeps them collocated during $[t'',t]$.
-Obviously in this case OPT doesn't pays any cost for requests in $\sigma_{\set{u,v}}[t'',t]$.
-However,
-OPT must pay $\lambda$ for requests to $\set{u,v'}$.
-By induction,
-at time $t'$,
-we charge OPT $\alpha$ (out of $\lambda=2\alpha$) for this pair.
-Therefore,
-we can charge OPT another $\alpha$ to account for requests $\sigma_{\set{u,v}}[t'',t]$.
-It can be easily verified that any deviation from these cases only increases the cost to OPT.
-Thus,
-OPT pays at least $\alpha$ for each collocation by Alg
-which gives the competitive ratio 
-$(\lambda + 2\alpha)/ \alpha = 4$.
 
+We charge both OPT and Alg whenever Alg collocates a pair (i.e., on a collocation event).
+%More precisely,we charge them only the cost of the collocation, per such event.
+%Hence,we charge the cost of  this collocation to OPT for the first time.
+Alg collocates a pair always with a swap (i.e., two simultaneous migrations),
+which  costs $2\alpha$.
+%We charge OPT only for requests up to the one that triggers a collocation (i.e., not for later requests on the same pair).
+OPT may save some costs by collocating multiple pairs at once (before they incur too much cost),
+paying the price of only one migration per pair.
+This observation suggests that we can't charge OPT more than $\alpha$ per collocation,
+even when OPT actually pays more that that.
+E.g.,
+OPT can collocate two costly pairs with a single swap if it has both pairs on the cut of same two clusters.
+Later, Alg collocates those pairs with two swaps (see Figure \ref{fig:TBD}).
+Hence,
+whenever OPT collocates a pair,
+we charge OPT only the cost of moving a single node to the cluster of the other,
+i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
+
+\begin{proof}[Proof of Theorem \ref{thm:k=2}]
+	\mahmoud{still proof sketch}
+	Let $C^{t}_{\set{u,v}}$ denote the  value of $C_{\set{u,v}}$ immediately after arrival of $\sigma_t$.
+	Assume on request $\sigma_{t}=\set{u,v}$,
+	Alg collocates the pair,
+	which means $ C^t_{\set{u,v}} = \lambda$ immediately before Alg resets the counter.
+	Let $\sigma_{t''}, t''<t$ be the last request (before $\sigma_{t}$)
+	on which Alg collocates $\set{u,v}$.
+	Let $t'$ s.t.~$t'' < t' < t$ be the  time when Alg separates $\set{u,v}$
+	in order to collocate some other pair that shares a node with $\set{u,v}$,
+	denoted by $\set{u,v'}, v' \neq v$.
+	%e.g., the request $\sigma_{t'} = \set{u,v'}$.
+	%By Alg's definition,
+	%$C^{t'}_{\set{u,v'}}  = C^t_{\set{u,v}} = \lambda$.
+	We denote the set of all requests to $\set{u,v}$
+	between times $t'$ and $t$ by $\sigma_{\set{u,v}}[t',t]$.
+	Thus,
+	$| \sigma_{\set{u,v}}[t',t] | = \lambda$.
+	The overall cost of requests that increase the counter,
+	i.e.~requests in $\sigma_{\set{u,v}}[t',t]$,
+	and the moving cost,
+	incurred by Alg is $\lambda + 2\alpha$.
+	%That is, the cost of all requests in $\sigma_{\set{u,v}}[t',t]$.
+	We distinguish three cases for the cost incurred by OPT due to $\set{u,v}$.
+	Case i)
+	OPT has $\set{u,v}$ separated (in OPT's configuration) during $[t',t]$
+	and therefore it pays $\lambda$.
+	We charge OPT $\lambda/2 = \alpha$.
+	The remaining cost will be used in a latter case.
+	Case ii)  
+	OPT collocates $\set{u,v}$ some time during $[t'',t]$.
+	Any cost that we charge to OPT upon $\sigma_{t''}$,
+	accounts for OPT's actions before $t''$.
+	Therefore in this case,
+	we charge OPT the (unaccounted) cost $\alpha$.
+	Case iii)
+	OPT has $\set{u,v}$ collocated before $t''$ and keeps them collocated during $[t'',t]$.
+	Obviously in this case OPT doesn't pays any cost for requests in $\sigma_{\set{u,v}}[t'',t]$ and
+	we can't charge it directly.
+	However,
+	OPT must pay $\lambda$ for all requests in $\sigma_{\set{u,v'}}[t'',t']$,
+	and we charge it partially to OPT at $t'$ (as in Case i).
+	Since we always charge OPT no more than $\alpha$,
+	we can charge OPT another $\alpha$,
+	the remaining cost of requests $\sigma_{\set{u,v'}}[t'',t']$.
+	Intuitively,
+	at $t$,
+	we charge OPT $\alpha$ for separating $\set{u,v}$ at $t'$.
+	It can be easily verified that any deviation from these cases only increases the cost to OPT.
+	Thus,
+	OPT pays at least $\alpha$ for each collocation performed by Alg,
+	which gives the competitive ratio 
+	$(\lambda + 2\alpha)/ \alpha = 4$.
+	
+	It remains to charge both Alg and OPT for requests that do not lead to collocations when the sequence ends.
+	Consider  pairs $\set{u,v}$ and $\set{u,v'}$ and
+	times $t'' < t' < t = t_m$ as defined previously.
+	Assume $\sigma_{\set{u,v}}[t'', t_m] \leq \lambda - 1$.
+	This means Alg has the pair separated at $t_m$
+	and paid the (communication) cost $r_{\set{u,v}} := | \sigma_{\set{u,v}}[t'', t_m]|$.
+	If OPT has the pair separated during $[t'',t_m]$ then it pays $r_{\set{u,v}}$.
+	If OPT collocates the pair some time during $[t'', t]$ then analogous to Case (ii),
+	we charge it $\alpha$.
+	Otherwise,
+	if OPT collocates the pair before $t''$,
+	then we charge it $\alpha$ analogously to Case (iii).
+	Hence, 
+	$Cost(OPT)_{\set{u,v}} / Cost(Alg)_{\set{u,v}} = r_{\set{u,v}}/ \alpha \leq (\lambda-1) / \alpha < 2$.
+	The claim follows from here.
 \end{proof}
 
 \section{Note on distributed algorithms}
