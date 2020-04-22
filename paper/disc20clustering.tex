@@ -910,20 +910,25 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 	i.e.~requests in $\sigma_{\set{u,v}}[t',t]$,
 	and the moving cost,
 	incurred by Alg is $\lambda + 2\alpha$.
-	%That is, the cost of all requests in $\sigma_{\set{u,v}}[t',t]$.
+  %That is, the cost of all requests in $\sigma_{\set{u,v}}[t',t]$.
+  
 	We distinguish three cases for the cost incurred by OPT due to $\set{u,v}$.
-	Case i)
+  
+  \begin{enumerate}
+  \item Case i)
 	OPT has $\set{u,v}$ separated (in OPT's configuration) during $[t',t]$
 	and therefore it pays $\lambda$.
 	We charge OPT $\lambda/2 = \alpha$.
 	The remaining cost will be used in a latter case.
-	Case ii)  
+  
+  \item Case ii)  
 	OPT collocates $\set{u,v}$ some time during $[t'',t]$.
 	Any cost that we charge to OPT upon $\sigma_{t''}$,
 	accounts for OPT's actions before $t''$.
 	Therefore in this case,
 	we charge OPT the (unaccounted) cost $\alpha$.
-	Case iii)
+  
+  \item Case iii)
 	OPT has $\set{u,v}$ collocated before $t''$ and keeps them collocated during $[t'',t]$.
 	Obviously in this case OPT doesn't pays any cost for requests in $\sigma_{\set{u,v}}[t'',t]$ and
 	we can't charge it directly.
@@ -935,7 +940,9 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 	the remaining cost of requests $\sigma_{\set{u,v'}}[t'',t']$.
 	Intuitively,
 	at $t$,
-	we charge OPT $\alpha$ for separating $\set{u,v}$ at $t'$.
+  we charge OPT $\alpha$ for separating $\set{u,v}$ at $t'$.
+  \end{enumerate}
+  
 	It can be easily verified that any deviation from these cases only increases the cost to OPT.
 	Thus,
 	OPT pays at least $\alpha$ for each collocation performed by Alg,
@@ -958,6 +965,11 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 	$Cost(OPT)_{\set{u,v}} / Cost(Alg)_{\set{u,v}} = r_{\set{u,v}}/ \alpha \leq (\lambda-1) / \alpha < 2$.
 	The claim follows from here.
 \end{proof}
+
+\maciek{Missing the case of the first-time collocation. What if t' does not exist? What if t'' does not exist?}
+\maciek{Define $C^t$ to use once}
+\maciek{"It can be easily verified"... True, but avoid such formulation. Something along these lines: if opt migrates earlier than t', then additionally pays for X, if later than Y.}
+\maciek{"Thus, OPT pays ... which gives the competitive ratio" It is too early to give the competitive ratio if in the next paragraph we consider yet another case}
 
 \section{Note on distributed algorithms}
 
