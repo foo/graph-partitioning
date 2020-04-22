@@ -502,7 +502,7 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
     enter or leave their original cluster during the repartitioning.    
     Then,
     $M = M^+ \cup M^-$.
-    Since $|M^-|$ nodes are not in their original cluster before the repartitioning \maciek{This is non-obvious to me. Why does it hold?} (i.e., in $P_{t-1}$),
+    Since \maciek{at least?} $|M^-|$ nodes are not in their original cluster before the repartitioning (i.e., in $P_{t-1}$),
     the distance before the repartitioning is $\dist(P_{t-1},P_I) \geq | M^-|$.
     Analogously,
      the distance afterwards is $\dist(P_{t},P_I) \geq | M^+|$.
