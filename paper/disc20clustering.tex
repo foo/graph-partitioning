@@ -586,7 +586,7 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 
 \begin{theorem}
   \TAlg is $O(\ell)$-competitive.
-  \maciek{Let Reconf(k,l) be a bound on the cost of the reconfiguration. Then \TAlg is $O(Reconf(k,l)\cdot k \cdot \ell)$-competitive.}
+  \maciek{Proposed new formulation (current version is all about k=3 still): Let Reconf(k,l) be a bound on the cost of a single reconfiguration. Then \TAlg is $O(Reconf(k,l)\cdot k \cdot \ell)$-competitive.}
 \end{theorem}
 \begin{proof}
   Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
@@ -720,6 +720,8 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
     Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
 \end{proof}
 
+Corollary: DET2 is $O(\ell)$-competitive for $k=3$.
+
 \subsection{Characterization of the reconfiguration graph}
 
 \maciek{I'll write it some day. Maciek.}
@@ -781,7 +783,7 @@ Corollary: Algorithm DET2 is $O(\ell \cdot k\cdot k^k)$-competitive.
 
 \section{Improved algorithm for $k=2$}
 
-\maciek{Intro: compare to previous algorithm. Note strict competitive ratio vs large additive term.}
+\maciek{Intro: compare to previous 7-competitive algorithm. Note strict competitive ratio vs large additive term. Also, emphasize that in this section the algorithm is different than DET2}
 
 Algorithm Alg:
 maintain a counter $C_{\set{u,v}}$ for each pair of nodes $\set{u,v}$ and increment it on every remote request between $u$ and $v$.
