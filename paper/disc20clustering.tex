@@ -722,18 +722,44 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 
 Corollary: DET2 is $O(\ell)$-competitive for $k=3$.
 
-\subsection{Characterization of the reconfiguration graph}
+\subsection{Characterization of the migration graph}
 
-\maciek{I'll write it some day. Maciek.}
+Consider a component merge action performed by \TAlg that triggers a reconfiguration from a configuration $C_I$ to a configuration $C_F$.
+To execute the reconfiguration, the nodes of two non-collocated components migrate to a common cluster.
+Each cluster contains exactly $k$ nodes, thus other nodes migrate to take the place of nodes of merged components.
+Their place must be occupied, too, and this way a single merge action may trigger migrations in clusters not directly involved in a merge action (for an example, see Section~\ref{ssec:example}). 
+Recall that both $C_I$ and $C_F$ are component-respecting configurations, hence a migration of a single node entails migrations of all nodes of its cluster.
 
-Describe the graph. Edges and labels.
+In Section~\ref{ssec:cascade}, we upper bound the cost incurred by a reconfiguration that follows a single component merge.
+To this end, we introduce a \emph{migration graph} that models the reconfiguration.
+In the following, we characterize the structure of the migration graph.
 
-\subsection{Costly reconfiguration example}
+\noindent
+\textbf{Vertices.}
+The vertices of the migration graph are all $\ell$ clusters of the instance.
+We distinguish the \emph{core vertices} that correspond to clusters directly involved in the merge operation: the clusters containing the to-be-merged components in $C_I$ and the cluster containing the merged component in $C_F$.
+There are at most $3$ core vertices in each migration graph (at most two components participate in the merge, and these may migrate to a third cluster).
+
+\noindent
+\textbf{Edges and their labels.}
+
+Cost of cluster reconfiguration is the number of exchanged nodes, and from the standpoind of a migration graph, it is the sum of labels on edges of the graph.
+It is bounded by $2k$ times the size of the connected component.
+
+Core of the graph and the component merge.
+
+Multiple migration graphs for a component merge exist, and multiple of them might have the optimal cost.
+In Section \ref{ssec:cascade}, we show that among all migration graphs for given component merge, there exists an optimal graph with the bounded path length.
+
+
+\subsection{Costly cluster reconfiguration example}
+\label{ssec:example}
+
 
 \maciek{A linear path in reconfiguration graph.}
 
-\subsection{Cascade bounds and an improved algorithm for general k, l}
-
+\subsection{Bounds on the size of a cluster reconfiguration graph}
+\label{ssec:cascade}
 
 Now we bound the cost of a single repartition of DET2 independent of $\ell$.
 First, we bound the length of each path in one of optimal solutions.
@@ -753,6 +779,7 @@ First, we bound the length of each path in one of optimal solutions.
 \end{theorem}
 
 \begin{proof}
+  Assume that there exists a cluster reconfiguration
 
 Proof by contradiction.
 We call a sequence of node migrations that realize the repartition \emph{a solution to repartition}.
