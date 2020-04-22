@@ -757,6 +757,7 @@ This implies that the number of ingoing and outgoing edges is also bounded by $k
 \textbf{Flow preservation.}
 In any feasible configuration, each cluster contains exactly $k$ nodes.
 Thus, for any vertex, the sum of labels of ingoing edges must equal the sum of labels of outgoing edges.
+\maciek{Can we say that this implies that the graph is a circulation?}
 
 \noindent
 \textbf{Migration graph and the cost of reconfiguration.}
@@ -767,7 +768,7 @@ A trivial upper bound on the cost is the size of the connected component in the 
 \medskip
 
 Note that for a single component merge, multiple migration graphs may exist, and multiple of them might have the optimal cost.
-In Section \ref{ssec:cascade}, we show that among all migration graphs for given component merge, there exists an optimal graph with the bounded path length.
+In Section \ref{ssec:cascade}, we show that among all migration graphs for given component merge, there exists an optimal graph with the bounded cycle length.
 Combined with other properties, this allows to bound the size of the migration graph, and consequently bound the cost of each repartition, that results in a bound of the competitive ratio for \TAlg.
 
 \subsection{Costly cluster reconfiguration example}
@@ -782,7 +783,7 @@ Combined with other properties, this allows to bound the size of the migration g
   \end{figure}
 
 
-In this section we present an example of a merge action that results in a $k/3$(?) length path in an optimal migration graph.
+In this section we present an example of a merge action that results in a $k/3$(?) length cycle in an optimal migration graph.
 
 \subsection{Bounds on the size of a migration graph}
 \label{ssec:cascade}
@@ -792,27 +793,45 @@ This roughly corresponds to migrating every node in every cluster.
 Now, we bound the cost of a single repartition of \TAlg as a function of $k$.
 Note that the bound of $k \cdot \ell$ is still valid, and the resulting bound is the minimum of these two.
 
-We begin, by bounding the length of each path in one of optimal solutions.
+We begin, by bounding the length of each cycle in one of optimal solutions.
 
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.3\textwidth]{figs/substitute}
-    \caption{Illustration to bounding the path length.}
-    \label{fig:nptree-construction}
+    \caption{Illustration to bounding the cycle length.}
+    \label{fig:cascade-illustration}
   \end{figure}
 
 \begin{theorem}
-  \label{th:cascade-paths}
+  \label{th:cascade-cycles}
   Consider a single merge action of \TAlg.
-  There exists an optimal cost reconfiguration with the migration graph, where each path have length at most $k$.
+  There exists an optimal cost reconfiguration with the migration graph, where each cycle have length at most $k$.
 \end{theorem}
 
 \begin{proof}
-  Assume the contrary, i.e., for each optimal cluster reconfiguration, its migration graph contains a path at least $k+1$.
+  Assume the contrary, i.e., for each optimal cluster reconfiguration, its migration graph contains a cycle at least $k+1$.
 
-Fix a reconfiguration and its migration graph that has the shortest length $L$ of the longest path, and has the least number of paths of length $L$.
-Let $p = \lbrace v_1, v_2, \ldots, v_L \rbrace$ be any path of length $L$.
+Fix a reconfiguration and its migration graph $G$ that has the shortest length $L$ of the longest cycle, and has the least number of cycles of length $L$.
+Let $p = \lbrace v_1, v_2, \ldots, v_L \rbrace$ be any cycle of length $L$.
+As edge labels are from $\{ 1, 2, \ldots, k \}$, there exists a pair of edges $e, f$ with equal labels.
+
+We show that in such case, we can modify the solution without affecting its cost and feasibility to decrease the number of cycles of length $L$ by $1$.
+This would contradict the assumption that we consider a solution with the minimal number of cycles of length $L$.
+
+We construct a new migration graph $G'$ of equal cost by swapping the (destination) endpoints of $e$ and $f$ (cf. Figure~\ref{fig:cascade-illustration})
+Formally, let $\lbrace a, b \rbrace = e$ and $\lbrace c, d \rbrace = f$.
+We remove $e$ and $f$ and add $e' = \lbrace a, d \rbrace$ and $f' = \lbrace c, d \rbrace$.
+This way we produced a feasible solution.
+
+It remains to show that while decreasing the number of cycles of length $L$, we did not created any new cycles of length at least $L$.
+Assume that adding $e'$ created a new cycle of length at least $L$.
+However, $a$ and $d$ were already connected in $G$ by a directed path of length at least $2$, and a cycle strictly longer than $L$ existed in $G$.
+
+Assume that adding $f'$ created a new cycle $s^*$ of length $L' \geq L$.
+Contrary to the previous case, the directed cycle from $e$ to $b$ might not exist in $G$.
+However, this would mean that $b$ and $e$ were connected by a path of length $L'-1$.
+This means that we might have followed this alternative path from $b$ to $e$ to obtain a cycle strictly longer than $L$ (cf. Figure~\ref{fig:cascade-illustration}).
 
 \end{proof}
 
@@ -825,8 +844,8 @@ Let $p = \lbrace v_1, v_2, \ldots, v_L \rbrace$ be any path of length $L$.
 
 \begin{proof}
   Each node has degree at most $k$.
-  Every subset has flow conservation property, hence each path traverses one of the nodes of graph origin/core. (no subsets with just incoming edges to the origin part)
-  Combine with Theorem \ref{th:cascade-paths}.
+  Every subset has flow conservation property, hence each cycle traverses one of the nodes of graph origin/core. (no subsets with just incoming edges to the origin part)
+  Combine with Theorem \ref{th:cascade-cycles}.
 
 \end{proof}
 
