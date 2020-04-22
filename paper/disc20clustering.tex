@@ -324,7 +324,9 @@ it moves the whole component containing the node.
 
 \label{sec:lowerbound}
 
-\maciek{The text before the proof should have two parts: a description of adversary components and then general intro to the proof.}
+\maciek{TODO: rename everywhere: "adversary's components", i.e., all components in lower bounds should be called "ground sets"}
+
+\maciek{The text before the proof should have two parts: a description of ground sets and then general intro to the proof.}
 
 In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
 It is sufficient to have clusters of capacity $k\geq 3$ for this lower bound.
@@ -332,7 +334,6 @@ For $k=2$, a constant competitive algorithm exists.
 At the end of this section, we also
 discuss an upper bound.
 
-\maciek{TODO: rename everywhere: "adversary's components", i.e., all components in lower bounds should be called "ground sets"}
 
 
 
@@ -354,7 +355,7 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
 
 \maciek{Here, we would like to introduce insights about the proof, emphasize the conditions for the bound to work (such as $k\geq 3$), and maybe compare to previously known lower bounds. Also, introduce the notation and definitions that are needed.}
 
-\maciek{Here: we abstract from the value of $\alpha$, but works for any alpha.}
+\maciek{Note that the lower bound works for any value of $\alpha$, and we just use the number of migrations}
 
 \begin{theorem}
   The competitive ratio of any deterministic online algorithm for \OBRP{} is in $\Omega(k\cdot \ell)$ for any $k\geq 3$.
@@ -370,7 +371,7 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
 	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
   Fix any online algorithm \ALG{}.
   
-  \maciek{This paragraph should be before the proof, merged with section about adversary components.}
+  \maciek{This paragraph should be before the proof, merged with section about ground sets (i.e., adversary components.)}
   We join some nodes into components, and produce the input sequence by observing actions of \ALG{} with respect to nodes of these components.
 	If \ALG{} at any point splits a component
 	(i.e., spreads its nodes over two or more clusters),
@@ -547,7 +548,7 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 
 \maciek{Not precise name? Both the learning problem and the general one is online.}
 
-\maciek{Start with referencing the table of results, saying that some results are known already. And really emphasize here that we now have an improved lower bound from the previous section, as that model was a subproblem.}
+\maciek{Start with referencing the table of results, saying that some results are known already in the literature. And emphasize here that we now have an improved lower bound from the previous section, as that model was a subproblem.}
 
 Let us now discuss the general online
 model where the request sequence
@@ -776,7 +777,7 @@ Fix a solution to repartition that has the shortest length of the longest cycle,
 \end{proof}
 
 
-Corollary: Algorithm DET2 is $O(\ell \cdot k\cdot k^k)$-competitive.
+Corollary: Algorithm DET2 is $O(\ell \cdot k \cdot \min \{ \ell, k^k \})$-competitive.
 
 
 
@@ -868,6 +869,8 @@ $(\lambda + 2\alpha)/ \alpha = 4$.
   		 \item $k$-competitive algorithm for the ring communication pattern
        
        \item lower and upper bound $k+1$ for two clusters, perfect partition and the optimal configuration reachable within one swap
+       \item 
+       The bound $(k \cdot \ell - k - \ell) / 2$ can be easily improved to $(k \cdot \ell - k - 1) / 2$ by playing a simple caching game in the first cluster, instead of just giving away the $k-1$ "blocker" (the caching game would build it gradually)
   
   \end{enumerate}
 
