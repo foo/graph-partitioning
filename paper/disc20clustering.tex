@@ -804,18 +804,15 @@ We begin, by bounding the length of each path in one of optimal solutions.
 
 \begin{theorem}
   \label{th:cascade-paths}
-  Consider a single repartition of DET2 caused by node merge.
-  There exists a sequence of node migrations that realizes this repartition, where each node-disjoint cycle has length at most $k$.
+  Consider a single merge action of \TAlg.
+  There exists an optimal cost reconfiguration with the migration graph, where each path have length at most $k$.
 \end{theorem}
 
 \begin{proof}
-  Assume that there exists a cluster reconfiguration
+  Assume the contrary, i.e., for each optimal cluster reconfiguration, its migration graph contains a path at least $k+1$.
 
-Proof by contradiction.
-We call a sequence of node migrations that realize the repartition \emph{a solution to repartition}.
-Assume that each cost-optimal solution to repartition contains a cycle of length at least $k+1$.
-
-Fix a solution to repartition that has the shortest length of the longest cycle, and has the least edge-disjoint cycles of such length.
+Fix a reconfiguration and its migration graph that has the shortest length $L$ of the longest path, and has the least number of paths of length $L$.
+Let $p = \lbrace v_1, v_2, \ldots, v_L \rbrace$ be any path of length $L$.
 
 \end{proof}
 
