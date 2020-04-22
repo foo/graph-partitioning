@@ -436,8 +436,7 @@ We assume \OPT begins with the initial configuration
 $P_I = I_1, \dots, I_{\ell}$ and moves to the final partitioning
 $P_F = F_1, \dots, F_{\ell}$.
  The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration \maciek{, denoted $\dist(P)$} is the number of nodes in $P$ that do not reside in their initial cluster.
- \maciek{It is OK to use single-argument $\dist$ (two-arg is a must in a definition, and it is already there).}
- \maciek{We should denote distance $\Delta(P)$, and the current $\Delta$ should be R (like radius).}
+ \maciek{We might denote distance $\Delta(P)$, and the current $\Delta$ might be R (like radius).}
     That is,
     $\dist(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
 In other words,
@@ -510,7 +509,7 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
     $\dist(P_{t-1},P_I) , \dist(P_{t},P_I) \leq \Delta \leq \OPT$
     and thereby we have	
     $|M| \leq 2\cdot\OPT$.
-    \maciek{the comma between $\dist$ is confusing. BOTH are bounded?}
+    \maciek{the comma between $\dist$ is confusing. BOTH are bounded? If so, expand the sentence and write both individual bounds.}
 \end{proof}
 
 \begin{theorem}	\label{thm:upperbound}
@@ -558,7 +557,7 @@ Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in o
 
 \maciek{Rewrite above paragraph to say that our algorithm is essentially DET from DISC16, with concretised reconfiguration strategy (i.e., the cheapest)}
 
-\maciek{Better name than DET?}
+\maciek{Better name than DET? Currently it is \TAlg, hence it is wrong}
 
 \subsection{Improved analysis of the component-based algorithm}
 
@@ -584,8 +583,10 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
     \end{figure}
   
 
+
 \begin{theorem}
   \TAlg is $O(\ell)$-competitive.
+  \maciek{Let Reconf(k,l) be a bound on the cost of the reconfiguration. Then \TAlg is $O(Reconf(k,l)\cdot k \cdot \ell)$-competitive.}
 \end{theorem}
 \begin{proof}
   Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
@@ -649,7 +650,8 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
   By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
   This may allow serving requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
   As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
-  By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$.
+  By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$
+  \maciek{This changes in the general case, and introduces the factor $~1/k$ in opt's cost, increasing the competitive ratio by $O(k)$}.
   Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
   From that, we obtain $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
   Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
@@ -659,7 +661,6 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 
   \medskip
 
-  \maciek{Big techincal TODO. Formalize the sketched proof for the last phase.}
   It remains to consider the last, unfinished phase.
   Consider the case, where the unfinished phase is also the first one.
   Then, we cannot charge $\OPT$ due to the inability to partition the components.
@@ -667,13 +668,15 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
   We charge $\OPT$ $\alpha$ for the first external $\alpha$ requests or a migration,
   and we follow the analysis regarding the unsaturated requests.
   If the input finished before the first $\alpha$ external requests, then \TAlg is optimal.
+  \maciek{Missing second case: then we just charge opt alpha for this one edge and this is sufficient, as the cost of alg only decreases from the full phase}
   Now, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
   This way, the competitive ratio increases at most twofold.
 \end{proof}
 
 
-\section{Bounding the cost of a single reconfiguration}
+\section{Bounding the cost of a single reconfiguration of components}
 
+\maciek{Overview of the section, intro. Defer introducing the graph notation, the warm-up does not need it}
 
 \subsection{Warm-up: bounding the reconfiguration for $k=3$}
 
