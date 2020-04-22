@@ -555,7 +555,7 @@ model where the request sequence
 can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
 
-\maciek{Rewrite above paragraph to say that our algorithm is essentially DET from DISC16, with concretised reconfiguration strategy (i.e., the cheapest)}
+\maciek{Rewrite above paragraph to say that our algorithm is essentially DET from DISC16, with concretised reconfiguration strategy (i.e., an arbitrary one among the minimum cost reconfigurations)}
 
 \maciek{Better name than DET? Currently it is \TAlg, hence it is wrong}
 
@@ -735,21 +735,40 @@ To this end, we introduce a \emph{migration graph} that models the reconfigurati
 In the following, we characterize the structure of the migration graph.
 
 \noindent
-\textbf{Vertices.}
+\textbf{Vertices of the migration graph and the core vertices.}
 The vertices of the migration graph are all $\ell$ clusters of the instance.
 We distinguish the \emph{core vertices} that correspond to clusters directly involved in the merge operation: the clusters containing the to-be-merged components in $C_I$ and the cluster containing the merged component in $C_F$.
 There are at most $3$ core vertices in each migration graph (at most two components participate in the merge, and these may migrate to a third cluster).
 
 \noindent
 \textbf{Edges and their labels.}
+The edges of the migration graph denote the migration of nodes from $C_I$ to $C_F$.
+Each edge is labeled with a number $m$ that denotes the number of migrated nodes between clusters.
+Each edge is directed from the cluster that contained the nodes to the cluster they migrated to.
+Both edges might exists between a pair of nodes, as whole components of nodes migrate, and the back-and-forth exchange may be needed for the configuration $C_F$ to be component-respecting.
 
-Cost of cluster reconfiguration is the number of exchanged nodes, and from the standpoind of a migration graph, it is the sum of labels on edges of the graph.
-It is bounded by $2k$ times the size of the connected component.
+\noindent
+\textbf{Vertex degree.}
+At most $k$ nodes may migrate from a cluster and at most $k$ nodes may migrate into a cluster.
+Thus, the sum of the labels for both ingoing and outgoing edges of each vertex is at most $k$.
+This implies that the number of ingoing and outgoing edges is also bounded by $k$.
 
-Core of the graph and the component merge.
+\noindent
+\textbf{Flow preservation.}
+In any feasible configuration, each cluster contains exactly $k$ nodes.
+Thus, for any vertex, the sum of labels of ingoing edges must equal the sum of labels of outgoing edges.
 
-Multiple migration graphs for a component merge exist, and multiple of them might have the optimal cost.
+\noindent
+\textbf{Migration graph and the cost of reconfiguration.}
+The cost of cluster reconfiguration equals the number of exchanged nodes multiplied by $\alpha$.
+From the standpoint of a migration graph, this corresponds to the sum of labels on edges of the graph.
+A trivial upper bound on the cost is the size of the connected component in the migration graph multiplied by $2\alpha k$.
+
+\medskip
+
+Note that for a single component merge, multiple migration graphs may exist, and multiple of them might have the optimal cost.
 In Section \ref{ssec:cascade}, we show that among all migration graphs for given component merge, there exists an optimal graph with the bounded path length.
+Combined with other properties, this allows to bound the size of the migration graph, and consequently bound the cost of each repartition, that results in a bound of the competitive ratio for \TAlg.
 
 
 \subsection{Costly cluster reconfiguration example}
