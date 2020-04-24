@@ -881,7 +881,8 @@ paying the price of only one migration per pair.
 This observation suggests that we can't charge OPT more than $\alpha$ per collocation,
 even when OPT actually pays more that that.
 E.g.,
-OPT can collocate two costly pairs with a single swap if it has both pairs on the cut of same two clusters.
+OPT can collocate two costly pairs with a single swap if
+it has both pairs on the cut of  the same two clusters.
 Later, Alg collocates those pairs with two swaps (see Figure \ref{fig:TBD}).
 Hence,
 whenever OPT collocates a pair,
@@ -890,15 +891,23 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	\mahmoud{still proof sketch}
-	Let $C^{t}_{\set{u,v}}$ denote the  value of $C_{\set{u,v}}$ immediately after arrival of $\sigma_t$.
-	Assume on request $\sigma_{t}=\set{u,v}$,
+	Let $C^{t}_{\set{u,v}}$ denote the  value of $C_{\set{u,v}}$
+	immediately after arrival of the $t$th request,
+	$\sigma_t$.
+	Assume on request $\sigma_{t}=\set{u,v}$, 
+	i.e., at (time) $t \geq 1$,
 	Alg collocates the pair,
 	which means $ C^t_{\set{u,v}} = \lambda$ immediately before Alg resets the counter.
 	Let $\sigma_{t''}, t''<t$ be the last request (before $\sigma_{t}$)
-	on which Alg collocates $\set{u,v}$.
+	upon which Alg collocates $\set{u,v}$.
 	Let $t'$ s.t.~$t'' < t' < t$ be the  time when Alg separates $\set{u,v}$
 	in order to collocate some other pair that shares a node with $\set{u,v}$,
 	denoted by $\set{u,v'}, v' \neq v$.
+	In case the first collocation of $\set{u,v}$ occurs at $t$,
+	if the pair is collocated in the initial configuration then
+	we set $t''=0$,
+	else,
+	we set $ t'' = -\infty, t'=0$.
 	%e.g., the request $\sigma_{t'} = \set{u,v'}$.
 	%By Alg's definition,
 	%$C^{t'}_{\set{u,v'}}  = C^t_{\set{u,v}} = \lambda$.
@@ -919,35 +928,35 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 	OPT has $\set{u,v}$ separated (in OPT's configuration) during $[t',t]$
 	and therefore it pays $\lambda$.
 	We charge OPT $\lambda/2 = \alpha$.
-	The remaining cost will be used in a latter case.
-  
+%	The remaining cost will be used in a latter case.
+	  
   \item Case ii)  
-	OPT collocates $\set{u,v}$ some time during $[t'',t]$.
+	OPT collocates $\set{u,v}$ some time during $[t',t]$.
 	Any cost that we charge to OPT upon $\sigma_{t''}$,
 	accounts for OPT's actions before $t''$.
 	Therefore in this case,
 	we charge OPT the (unaccounted) cost $\alpha$.
   
   \item Case iii)
-	OPT has $\set{u,v}$ collocated before $t''$ and keeps them collocated during $[t'',t]$.
-	Obviously in this case OPT doesn't pays any cost for requests in $\sigma_{\set{u,v}}[t'',t]$ and
+	$t'' \geq 0$ and OPT has $\set{u,v}$ collocated before $t''$ and keeps them collocated during $[t'',t]$.
+	In this case OPT doesn't pays any cost for requests in $\sigma_{\set{u,v}}[t'',t]$ and
 	we can't charge it directly.
 	However,
 	OPT must pay $\lambda$ for all requests in $\sigma_{\set{u,v'}}[t'',t']$,
-	and we charge it partially to OPT at $t'$ (as in Case i).
-	Since we always charge OPT no more than $\alpha$,
-	we can charge OPT another $\alpha$,
-	the remaining cost of requests $\sigma_{\set{u,v'}}[t'',t']$.
-	Intuitively,
-	at $t$,
-  we charge OPT $\alpha$ for separating $\set{u,v}$ at $t'$.
+	 i.e.,
+	 Case (i) applies to $\set{u,v'}$  at $t'$ and
+ 	we charge only $\lambda/2$ to OPT (at $t'$).
+	This means,
+	we can charge OPT an additional $\alpha$,
+	i.e.~the remaining cost of requests $\sigma_{\set{u,v'}}[t'',t']$.
+%	Intuitively, at $t$,  we charge $\alpha$ to OPT for separating $\set{u,v}$ (at $t'$) by Alg.
   \end{enumerate}
   
 	It can be easily verified that any deviation from these cases only increases the cost to OPT.
 	Thus,
-	OPT pays at least $\alpha$ for each collocation performed by Alg,
-	which gives the competitive ratio 
-	$(\lambda + 2\alpha)/ \alpha = 4$.
+	OPT pays at least $\alpha$ for each collocation performed by Alg.
+%	which gives the competitive ratio 
+%	$(\lambda + 2\alpha)/ \alpha = 4$.
 	
 	It remains to charge both Alg and OPT for requests that do not lead to collocations when the sequence ends.
 	Consider  pairs $\set{u,v}$ and $\set{u,v'}$ and
@@ -962,22 +971,25 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 	if OPT collocates the pair before $t''$,
 	then we charge it $\alpha$ analogously to Case (iii).
 	Hence, 
-	$Cost(OPT)_{\set{u,v}} / Cost(Alg)_{\set{u,v}} = r_{\set{u,v}}/ \alpha \leq (\lambda-1) / \alpha < 2$.
-	The claim follows from here.
+	$Cost(OPT)_{\set{u,v}} / Cost(Alg)_{\set{u,v}} =
+	\max \set{ r_{\set{u,v}}/ \alpha \leq (\lambda-1) / \alpha , (\lambda + 2\alpha)/ \alpha} = 4$.
+%	The claim follows from here.
 \end{proof}
 
 Missing:
-\maciek{Reason that the cost sharing between cases C1 and C3 is possible. Unclear to me, why every time C3 happens there must be a corresponding C1.}
-\maciek{Missing the case of the first-time collocation. What if t' does not exist? What if t'' does not exist? }
+\maciek{Reason that the cost sharing between cases C1 and C3 is possible. Unclear to me, why every time C3 happens there must be a corresponding C1. \mahmoud{done}}
+\maciek{Missing the case of the first-time collocation. What if t' does not exist? What if t'' does not exist? 
+\mahmoud{added remark for this case: $t''=0$}}
 
 Minor:
 \maciek{"It can be easily verified"... True, but avoid such formulation. Something along these lines: if opt migrates earlier than t', then additionally pays for X, if later than Y.}
-\maciek{"Thus, OPT pays ... which gives the competitive ratio" It is too early to give the competitive ratio if in the next paragraph we consider yet another case. }
+\maciek{"Thus, OPT pays ... which gives the competitive ratio" It is too early to give the competitive ratio if in the next paragraph we consider yet another case. \mahmoud{done!}}
 
 Tiny:
-\maciek{$\sigma_t$ undefined (I know what it is, though).}
-\maciek{Define $C^t$ to use once}
-\maciek{A word "Obviously" is unnecessary, and most people, including me are allergic to it in writing}
+\maciek{$\sigma_t$ undefined (I know what it is, though). \mahmoud{added inline def. Do we have a global def for this?}}
+\maciek{Define $C^t$ to use once \mahmoud{already defined! I don't get it.}}
+\maciek{A word "Obviously" is unnecessary, and most people, including me are allergic to it in writing
+\mahmoud{obviously that's true!}}
 
 \section{Note on distributed algorithms}
 
