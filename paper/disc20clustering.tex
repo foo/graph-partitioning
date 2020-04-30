@@ -916,7 +916,7 @@ i.e., $\alpha$ (in contrast to $2\alpha$ on Alg).
 	Therefore in this case ,
 	OPT pays $\min{\{ \lambda,\alpha \}}$.
 	
-	In the remainder of this proof, we consider that Alg collocated $\{u,v\}$ in the past.
+	Else, we consider that Alg collocated $\{u,v\}$ in the past.
 	Let $t'$, $t' < t$ be the  time when Alg separates $\set{u,v}$
 	in order to collocate some (intersecting) pair
 	$\{x,y\} \neq \{u,v\}, \{x,y\} \cap \{u,v\} \neq \emptyset$, 
@@ -1073,6 +1073,39 @@ $\mathit{Cost}_{\mathit{OPT}} (r_t) = \alpha$.
 	%	The claim follows from here.
 \end{proof}
 
+Major:
+
+\maciek{I feel slightly uneasy here: "In particular,
+we charge OPT a cost incurred by requests in
+$\sigma_{\{u,v'\}}(t'',t']$ and $\sigma_{\{u,v\}}(t',t]$,
+if and only if  OPT incurs the cost within  intervals $(t'', t']$ and $(t', t]$,
+respectively.	"}
+
+\maciek{"Observe that for requests in $r_t$". First the separate sentence with the definition of $r_t$ (it is challenging enough to just understand it. Then reason why it pays the minimum of three values (I don't see it, and later you show that cost(rt) is at least minimum of other two values). Is it a consequence of three cases?}
+
+\maciek{"We charge OPT the cost
+$\mathit{Cost}_{\mathit{OPT}} (\sigma_{\{u,v\}}[1,t]) 
+\geq \min{ \{ \alpha, C^{m}_{ \{u,v\} } \} }$,
+for collocating this pair or (and) paying (partially) for requests in $\sigma_{\{u,v\}}[1,t]$." No issues with charge sharing from "regular collocation" case? Maybe I just don't understand "partially" here}
+
+Minor:
+
+\maciek{Remove all "charge both". Just sum up costs. I would say not use "charge" at all, but it's up to you.}
+
+
+\maciek{Structure in paragraphs. 3 parts: first collocation, regular collocation and unfinished. Do this for ALG and then for OPT, and do not mix (unless I don't see some dependencies). Start each paragraph by the sentence that says what the paragraph is about (first/opt, regular/alg etc.). Assume that the reader reads only the first sentence of each paragraph (if it's short), and the proof must be clear from this (for a professional)}
+
+\maciek{$r_t$ is the central concept in this proof. Possibly even start with the paragraph: charging OPT, regular collocation. Make this definition in its separate line to further emphasize? It would suffice for a profesional to see the definiton of $t''/t'$ and this line to convince himself that the proof is correct.}
+
+\maciek{I think that "deviate" is OK to use like this.}
+
+Notation:
+
+\maciek{End of the time proposition: $t_e / t^* / T$ instead of $m$? Or capital $T$ (but I am aware of the conflict)}
+
+\maciek{Instead of $cost_{opt}$ just use opt / alg?}
+
+\maciek{Consider naming the adjacent edges $e$ and $f$.}
 
 \begin{comment}
 We charge both OPT and Alg whenever Alg collocates a pair (i.e., on a collocation event).
@@ -1188,27 +1221,6 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 %	The claim follows from here.
 \end{proof}
 \end{comment}
-
-Missing:
-\maciek{Missing the case of the first-time collocation. What if t' does not exist? What if t'' does not exist? 
-\mahmoud{added remark for this case: $t''=0$
-\maciek{But t' might not exist (as it might be the first collocation).}}}
-
-Minor:
-\maciek{"It can be easily verified"... True, but avoid such formulation. Something along these lines: if opt migrates earlier than t', then additionally pays for X, if later than Y.}
-
-Tiny:
-\maciek{$\sigma_t$ undefined (I know what it is, though). \mahmoud{added inline def. Do we have a global def for this?}
-\maciek{Not yet, but we still must write the "Problem definition" section (yes, we don't have one!), and we can put it there.}}
-
-
-\maciek{Define $C^t$ to use once \mahmoud{already defined! I don't get it.
-\maciek{discussed}}}
-
-\maciek{$\sigma_t$ undefined (I know what it is, though). \mahmoud{added inline def. Do we have a global def for this?}}
-\maciek{Define $C^t$ to use once \mahmoud{already defined! I don't get it.}}
-\maciek{A word "Obviously" is unnecessary, and most people, including me are allergic to it in writing
-\mahmoud{obviously that's true! connect the two sentences}}
 
 \section{Note on distributed algorithms}
 
