@@ -880,16 +880,15 @@ Alg collocates a pair always with a swap (i.e., two simultaneous migrations),
 which  costs $2\alpha$.
 %We charge OPT only for requests up to the one that triggers a collocation (i.e., not for later requests on the same pair).
 OPT may save some costs by collocating multiple pairs at once (before they incur too much cost),
-paying the price of only one migration per pair.
-This observation suggests that we can't charge OPT more than $\alpha$ per collocation,
-even when OPT actually pays more than that.
-E.g.,
-OPT can collocate two costly pairs with a single swap if
-it has both pairs on the cut of  the same two clusters  (see Figure \ref{fig:TBD}).
-Later, Alg collocates those pairs with two swaps.
+paying the price of only one migration per pair  (see Figure \ref{fig:TBD}).
+%This observation suggests that we can't charge OPT more than $\alpha$ per collocation.
+%E.g.,
+%OPT can collocate two costly pairs with a single swap if
+%it has both pairs on the cut of  the same two clusters.
+%Later, Alg collocates those pairs with two swaps.
 Hence,
 whenever OPT collocates a pair,
-we charge OPT only the cost of moving a single node to the cluster of the other,
+we charge it only the cost of moving a single node to the cluster of the other,
 i.e., $\alpha$ (in contrast to $2\alpha$ on Alg).
 
 
@@ -908,9 +907,9 @@ i.e., $\alpha$ (in contrast to $2\alpha$ on Alg).
 %	we set $t''=0$,
 %	else,
 %	we set $ t'' = -\infty, t'=0$.
-	We denote the set of all requests to $\set{x,y}$
+	We denote the set of all requests to a pair $\set{x,y}$ that arrive
 	during $(t_1,t_2]$ by $\sigma_{\set{x,y}}(t_1,t_2]$.
-	If $t$ is the first time Alg collocates $\{u,v\}$ then we can charge
+	If $t$ is the first time that Alg collocates $\{u,v\}$ then we  charge
 	OPT $\lambda$ for serving requests in $\sigma_{\set{u,v}}[0,t]$ (remotely),
 	 or $\alpha$ for collocating the pair and serving them with no additional cost.
 	Therefore in this case ,
@@ -918,30 +917,40 @@ i.e., $\alpha$ (in contrast to $2\alpha$ on Alg).
 	Else,
 	let $t'$, $t' < t$ be the  time when Alg separates $\set{u,v}$
 	in order to collocate some (intersecting) pair
-	$\{x,y\} \neq \{u,v\}, x \in \{u,v\}$, 
+	$\{x,y\} \neq \{u,v\}, \{x,y\} \cap \{u,v\} \neq \emptyset$, 
 	e.g.,
 	$\{x,y\}=\{u,v'\}$.
 %	I.e., $ C^{t'}_{\set{u,v'}} = \lambda$.
 	Similarly,
-	if $t'$ is not the first time that Alg has $\{u,v'\}$ collocated
+	if $t'$ is not the first time that Alg  collocates $\{u,v'\}$ 
 	then let $t''<t'$ be the last time before $t'$ when Alg separates $\set{u,v'}$.
 	Else,
-	$\{u,v'\}$ is not collocated in the initial configuration and let $t''=0$.
-	Then by these definitions,
+	$\{u,v'\}$ is not collocated in the initial configuration and we let $t''=0$.
+	By these definitions,
 	we have
 	$| \sigma_{\set{u,v'}}(t'',t'] | = | \sigma_{\set{u,v}}(t',t] |  =  \lambda$.
 	The overall cost of requests in $\sigma_{\set{u,v}}(t',t]$,
 	and the moving cost,
 	incurred by Alg is
 	$\lambda + 2\alpha$.
-	We charge OPT the cost of serving requests in
-	$\sigma_{\{u,v'\}}[t'',t']$ ($\sigma_{\{u,v\}}(t',t]$ ) 
-	that it pays only within the interval $(t'', t']$ ($(t', t]$).
 	Observe that for requests in $r_t := \sigma_{\{u,v'\}}(t'',t'] \cup \sigma_{\{u,v\}}(t',t]$,
-	OPT must pay at least
+	OPT must pay a total cost of serving and (or) migration at least
 	$\min{ \{ 2\lambda, \lambda+\alpha, 2\alpha \} }$
 	within $(0,m]$,
 	regardless of its choices.
+	%% 
+	However,
+	we cannot charge this cost to OPT repeatedly,
+	i.e.,
+	when Alg collocates the two pairs a second time.
+	In particular,
+	we charge OPT a cost incurred by requests in
+	$\sigma_{\{u,v'\}}(t'',t']$ and $\sigma_{\{u,v\}}(t',t]$,
+	if and only if  OPT incurs the cost within  intervals $(t'', t']$ and $(t', t]$,
+	respectively.	
+	Latter,
+	this ensures us that we do not charge OPT for a cost more than twice.
+	%%
 	Based on this observation,
 	we distinguish three cases of OPT's choices
 	while it serves requests in	$r_t $.
@@ -950,7 +959,7 @@ i.e., $\alpha$ (in contrast to $2\alpha$ on Alg).
 	+ \mathit{Cost}_{\mathit{OPT}} (\sigma_{\{u,v\}}(t',t]) $.
 	\begin{enumerate}[label=\roman*.]
 		\item
-		OPT collocates $\{u,v'\}$ and $\{u,v\}$  at times  $t''$ and $t'$ respectively
+		OPT collocates $\{u,v'\}$ at  $t''$, $\{u,v\}$  at $t'$,
 		and keeps them so during $(t'',t']$ and $(t',t]$, respectively.
 		Therefore it serves all requests in $r_t$ with no additional cost and
 		$\mathit{Cost}_{\mathit{OPT}} (r_t) = 2\alpha$.
@@ -976,33 +985,33 @@ $\mathit{Cost}_{\mathit{OPT}} (r_t) = \alpha$.
   	OPT may deviate from these cases,
 	e.g.~by collocating a pair after partially paying for requests to this pair.
 	 However,
-	 any deviation only increases the cost to OPT.
+	 no deviation can decrease the cost to OPT.
 	 \mahmoud{It would be better to describe and bound the "deviation" formally.}
 	Therefore in any case,
  	$\mathit{Cost}_{\mathit{OPT}} (r_t) \geq  \min{ \{ \lambda, \alpha \}}$.
 	
-	It remains to charge both Alg and OPT for requests that do not lead to collocations until the  end of the sequence at $m$.
-	Assume $\{u,v\}$ is not collocated at $m$
+	It remains to charge both Alg and OPT for requests that do not lead to collocations until the  end of the sequence at $t=m$.
+	Assume $\{u,v\}$ is not collocated at $t=m$
 	and $0 < C^{m}_{ \{u,v\} } < \lambda $,
 	which means Alg pays $C^{m}_{ \{u,v\} }$
-	for requests to $\{u,v\}$ not accounted previously.
+	for requests to $\{u,v\}$ so far unaccounted.
 	If $\{u,v\}$ is not collocated in the initial configuration
 	and Alg never collocates it through the sequence,
-	then $ C^{m}_{ \{u,v\} } =| \sigma_{\{u,v\}}[0,m] |$.
+	then $ C^{m}_{ \{u,v\} } =| \sigma_{\{u,v\}}[1,m] |$.
 	We charge OPT the cost
-	$\mathit{Cost}_{\mathit{OPT}} (\sigma_{\{u,v\}}[0,t]) 
+	$\mathit{Cost}_{\mathit{OPT}} (\sigma_{\{u,v\}}[1,t]) 
 	\geq \min{ \{ \alpha, C^{m}_{ \{u,v\} } \} }$,
-	for collocating this pair or (and) paying (partially) for requests in $\sigma_{\{u,v\}}[0,t]$.
+	for collocating this pair or (and) paying (partially) for requests in $\sigma_{\{u,v\}}[1,t]$.
 	Else,
 	either $\{u,v\}$ is collocated in the initial configuration
 	or Alg collocates it at some point.
 	Then there exists an intersecting pair $\set{u,v'}$
 	that is collocated by Alg at $t' < m$ (separating $\{u,v\}$).
 	We define times $t'' < t' < m$ similarly to the case where Alg collocates $\{u,v\}$.
-	Let $r_{\{u,v\}} := \sigma_{\{u,v'\}} (t'',t'] \cup \sigma_{\{u,v\}} (t',t]$.
+	Let $r_{\{u,v\}} := \sigma_{\{u,v'\}} (t'',t'] \cup \sigma_{\{u,v\}} (t',m]$.
 	Then,
-	we apply cases (i) to (iii) for $t=m$ in an analogous way,
-	after replacing $\lambda$ with $C^{m}_{ \{u,v\}}$.
+	we apply cases (i) to (iii) in an analogous way,
+	 replacing $\lambda$ with $C^{m}_{ \{u,v\}}$ in the analysis.
 	Thus, 
 	we obtain
 	 $\mathit{Cost}_{\mathit{OPT}} (r_{\{u,v\}}) 
@@ -1012,12 +1021,16 @@ $\mathit{Cost}_{\mathit{OPT}} (r_t) = \alpha$.
 	 Observe that by definition,
 	 $r_{t'} \cap r_t = \sigma_{\{u,v'\}}[t'',t']$.
 	 This means,
-	 the cost of r.h.s.~to OPT is counted at most two times in the expression
+	 the cost of r.h.s.~to OPT is counted at most twice in the expression
 	 $\mathit{Cost}_{\mathit{OPT}} (r_{t'}) + \mathit{Cost}_{\mathit{OPT}} (r_t)$.
 	 Hence,
-	 for all collocations performed by Alg and for $t=m$,
+	 for all collocations performed by Alg,
+	 and for final costs at $t=m$,
 	 OPT pays at least 
-	 $\sum_{ 0 < t \leq |\sigma|} \mathit{Cost}_{\mathit{OPT}} (r_t) / 2$.
+	 $(
+	 \sum_{ 0 < t \leq |\sigma|} \mathit{Cost}_{\mathit{OPT}} (r_t) +
+	 \sum_{\{u,v\}} \mathit{Cost}_{\mathit{OPT}} (r_{\{u,v\}})
+	 ) / 2$.
 	Let
 	$T := \{ 0 < t \leq m ~\vert~ \exists \{u,v\}: C^{t}_{\{u,v\}} = \lambda \}$.
 	By setting $\lambda= \alpha$,
@@ -1030,27 +1043,29 @@ $\mathit{Cost}_{\mathit{OPT}} (r_t) = \alpha$.
 	 \sum_{ t \in T}(\lambda + 2\alpha) +
 	 \sum_{\{u,v\}} C^{m}_{\{u,v\}}
 	 \Big)	 \big /
+	 \frac{1}{2}
 	 \Big(
-	 \sum_{ t \in T} \mathit{Cost}_{\mathit{OPT}} (r_t) / 2
-	 + \sum_{\{u,v\}}\mathit{Cost}_{\mathit{OPT}} (r_{\{u,v\}})  / 2 
+	 \sum_{ t \in T} \mathit{Cost}_{\mathit{OPT}} (r_t) 
+	 + \sum_{\{u,v\}}\mathit{Cost}_{\mathit{OPT}} (r_{\{u,v\}})
 	 \Big)	\\
 	 &\leq
 	 \Big(
 	 \sum_{ t \in T}(\lambda + 2\alpha) +
 	 \sum_{\{u,v\}} C^{m}_{\{u,v\}}
 	 \Big)	 \big /
+		\frac{1}{2}
 	 \Big(
-	 \sum_{ t \in T} \min{ \{ \lambda, \alpha \}}  / 2
-	 + \sum_{\{u,v\}} \min{ \{C^{m}_{\{u,v\}} , \alpha \}  / 2 } 
+	 \sum_{ t \in T} \min{ \{ \lambda, \alpha \}}  +
+   \sum_{\{u,v\}} \min{ \{C^{m}_{\{u,v\}} , \alpha \} } 
 	 \Big)	\\
 	 &=
-	 \Big(
+	 2\Big(
 	\sum_{ t \in T} 3\alpha +
 	\sum_{\{u,v\}} C^{m}_{\{u,v\}}
 	\Big)	 \big /
 	\Big(
-	\sum_{ t \in T} \alpha  / 2
-	+ \sum_{\{u,v\}} C^{m}_{\{u,v\}}  / 2 
+	\sum_{ t \in T} \alpha  
+	+ \sum_{\{u,v\}} C^{m}_{\{u,v\}}  
 	\Big)	< 6
 \end{align*}.
 	%	The claim follows from here.
