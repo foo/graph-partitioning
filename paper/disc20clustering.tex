@@ -317,9 +317,8 @@ We emphasize that ground sets are revealed only upon their nodes are split.
 
 We say that a component or a ground set is \emph{trivial}, if it contains exactly one node.
 We say that the node that belongs to trivial component or a ground set is \emph{alone}.
-We say that a~configuration is \emph{component respecting}
+We say that a~configuration is \emph{component-respecting}
 if the nodes belonging to the same component are collocated.
-Similarly, we define a \emph{ground-set-respecting} configuration.
 
 \maciek{Eviction - introduce.}
 
@@ -359,8 +358,8 @@ Once we construct a ground set, it lasts until the end of the input sequence.
 If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
 
 We construct the ground sets in a way that they always form a balanced partition of nodes.
-This way, the optimal algorithm moves to a~ground-set-respecting configuration, and serves all requests for free.
-(This implies that the algorithm must eventually move to any ground-set-respecting configuration if it is competitive.)
+This way, the optimal algorithm moves to such a configuration, and serves all requests for free.\maciek{i can do better: such a?}
+(This implies that the algorithm must eventually collocate nodes of a ground set to be competitive.)
 
 First, we construct a ground set of size $k-1$ on one of the clusters.
 In any configuration, there exists a node that accompanies it.
