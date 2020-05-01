@@ -288,15 +288,29 @@ it is known that a $7$-competitive algorithm exists~\cite{repartition-disc} with
 
 \section{Preliminaries.}
 
-\maciek{Here, we need a good and broad description of what a component is.}
+Across this paper, we often refer to groups of communicating nodes.
+As this concept is used differently in the lower bound and the upper bounds, we name them differently to avoid confusion.
 
-In this paper, we use the technique of maintaining \emph{(connected) components} of nodes, similar to previous approaches~\cite{repartition-disc}. A~\emph{component} is a subset of frequently communicating nodes \maciek{This is not a definition, just some intuitions. More formal needed.}.
-We use this concept in both algorithms in this paper, but also in the lower bound, to incur high cost for any online algorithm that splits them.
-An~algorithm is \emph{component respecting}
+\noindent
+\textbf{Components.}
+In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
+We maintain all nodes of each component collocated in one cluster~\cite{repartition-disc}.
+If we need to move a node, we move the whole component that contains it.
+We maintain a balanced partition of our components, a similar concept to partition of integers into sets with equal sum (\maciek{TODO: cite}).
+In contrast, our partition is time-varying: communicating components are merged into one, and we adjust the partition.
+
+\noindent
+\textbf{Ground sets.}
+In the lower bound, a~\emph{ground set} is a group of nodes that start communicating if an algorithm splits them (places at different clusters).
+Their role is to ensure that the algorithm maintains a partition of ground sets.
+We emphasize that ground sets are revealed only upon their nodes are split.
+\maciek{Other names: division, segmentation, alignment, formation}
+
+\maciek{Needed? "An~algorithm is \emph{component respecting}
 if it always keeps nodes that  belong to the same component collocated.
 That is,
 if the algorithm needs to move a node,
-it moves the whole component containing the node.
+it moves the whole component containing the node."}
 %We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
 %This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
 %such that frequently communicating nodes (from different clusters)
@@ -306,26 +320,24 @@ it moves the whole component containing the node.
 %at the total cost of individual node migrations.
 %The objective is to jointly minimize communication and migration costs while serving the sequence.
 
-\maciek{Let's follow the SIDMA notation here. For example, a "single" node (the one that belongs to singleton component) is called "trivial" there.}
+We say that a component or a ground set is \emph{trivial}, if it contains a single node.
 
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
 \maciek{TODO: Intro to the learning problem is missing. What is the problem definition. How is it different from the general problem. Emphasize the fact that OPT is constrained not to migrate.}
 
+At the end of this section, we discuss an asymptotically optimal upper bound.
+
+
 \subsection{Lower bound.}
 
 \label{sec:lowerbound}
 
-\maciek{TODO: rename everywhere: "adversary's components", i.e., all components in lower bounds should be called "ground sets"}
-
-\maciek{The text before the proof should have two parts: a description of ground sets and then general intro to the proof.}
 
 In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
-It is sufficient to have clusters of capacity $k\geq 3$ for this lower bound.
-For $k=2$, a constant competitive algorithm exists.
-At the end of this section, we also
-discuss an upper bound.
+To show it, clusters of capacity $k\geq 3$ are sufficient.
+Note that for $k=2$, a lower bound of $3$ is known \cite{repartition-disc}.
 
 
 
@@ -338,10 +350,16 @@ discuss an upper bound.
   \end{figure}
 
 
-The adversary constructs components of nodes based on the partitioning choices of a given online algorithm.
-Adversary issues requests between pairs of nodes that belong to the same component.
-If an online algorithm splits a component at any moment,
-the adversary issues requests to the split pair until the algorithm collocates them.
+The adversary constructs ground sets in reaction to choices of a deterministic online algorithm.
+Once we construct a ground set, it lasts until the end of the input sequence.
+If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
+
+We construct the ground sets in a way that they always form a balanced partition of nodes.
+This way, the optimal algorithm may move to the ground-set-respecting configuration, and serve all requests for free.
+(This implies that the algorithm must eventually move to a ground-set-respecting configuration if it is competitive.)
+
+\maciek{Finished here.}
+
 We utilize the fact that the online algorithm does not know the components of the adversary, and it may split some components while evicting nodes.
 On the other hand, $\OPT$ initially collocates all nodes of each component and never splits them again.
 
