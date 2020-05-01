@@ -426,7 +426,9 @@ We note that this lower bound provides insights into this scenario as well.
 Consider an instance with $k$ divisible by $3$, and construct $3$ ground sets of size $k/3$ in each cluster.
 Then, apply the construction from the lower bound for $k=3$, now treating these ground sets in the way we used individual nodes.
 For the resource augmentation as large as $1+1/3-\epsilon$, no more than $3$ such ground sets fit in one cluster.
-Therefore, the lower bound $\Omega(\ell)$ holds.
+The cost of any algorithm (including \OPT) scales up by $k/3$, and the lower bound $\Omega(\ell)$ holds.
+
+Finally, we note the possibility for improvement (a gap). The algorithm CREP~\cite{repartition-disc} requires $(2+\epsilon)$-augmentation to guarantee the competitive ratio independent of $\ell$.
 
 \subsection{Upper bound.}
 \label{sec:ppl}
