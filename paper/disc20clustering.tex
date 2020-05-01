@@ -1224,6 +1224,19 @@ i.e., $\alpha$ (in contrast to $2\alpha$ for Alg).
 
 \section{Note on distributed algorithms}
 
+\subsection{Distributed implementation of $k=2$ algorithm}
+
+For a repartition, it is sufficient to find the cluster with the signature $1,1,1$. 
+We call any such cluster \emph{X (todo name)}.
+Idea of distributed implementation of this procedure:
+\begin{enumerate}
+	\item Assign ids to clusters and order them
+	\item Recursively partition clusters into two groups
+	\item Each group maintains the pointer to a subgroup that contains at least one X cluster; a pointer may be null (then no X there)
+	\item This way, finding a cluster X requires $\log_2(\ell)$ communication
+	\item After removing an X cluster, we need to fix the pointers. This is done by following the path from the removed X cluster to the root. We simply ask the sibling if it contains X.
+\end{enumerate}
+
 \maciek{How to distribute our algorithms: PPL, k=2 and DET}
 
 \bibliographystyle{ACM-Reference-Format}
