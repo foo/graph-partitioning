@@ -315,7 +315,8 @@ We emphasize that ground sets are revealed only upon their nodes are split.
 %at the total cost of individual node migrations.
 %The objective is to jointly minimize communication and migration costs while serving the sequence.
 
-We say that a component or a ground set is \emph{trivial}, if it contains a single node.
+We say that a component or a ground set is \emph{trivial}, if it contains exactly one node.
+We say that the node that belongs to trivial component or a ground set is \emph{alone}.
 We say that a~configuration is \emph{component respecting}
 if the nodes belonging to the same component are collocated.
 Similarly, we define a \emph{ground-set-respecting} configuration.
@@ -336,7 +337,8 @@ At the end of this section, we discuss an asymptotically optimal upper bound.
 
 
 In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
-To show it, clusters of capacity $k\geq 3$ are sufficient.
+It is oblivious to the choice of the reconfiguration cost $\alpha$, and we compare the number of performed node exchanges.
+The lower bound requires $k\geq 3$.
 Note that for $k=2$, a lower bound of $3$ is known \cite{repartition-disc}.
 
 
@@ -360,55 +362,54 @@ We construct the ground sets in a way that they always form a balanced partition
 This way, the optimal algorithm moves to a~ground-set-respecting configuration, and serves all requests for free.
 (This implies that the algorithm must eventually move to any ground-set-respecting configuration if it is competitive.)
 
-The lower bound requires $k\geq 3$.
-It is oblivious to the choice of the reconfiguration cost $\alpha$, and we compare the number of performed node exchanges.
+First, we construct a ground set of size $k-1$ on one of the clusters.
+In any configuration, there exists a node that accompanies it.
+We only issue requests between such accompanying (time-varying) node, and any node that was initially collocated with it.
+Repeating such requests, almost every node must visit this cluster.
+In comparison, \OPT performs one migration.
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for \OBRP{} is  $(k \cdot \ell - k - \ell) / 2 = \Omega(k\cdot \ell)$ for any $k\geq 3$.
+	The competitive ratio of any deterministic online algorithm for \OBRP{} is  $(k \cdot \ell - k - \ell) / 2 = \Omega(k\cdot \ell)$ for any $k\geq 3$ and for any $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
-	We construct an instance of the problem with $\ell$ clusters 
-	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
-	Let $I(C)$ denote the cluster where nodes of component $C$ are located initially.
-	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
 	Fix any online algorithm \ALG{}.
+	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
+	\maciek{A problem with the definition! The first pair does not have the same initial location of its nodes.}
+	Initially all nodes are single (they belong to their own trivial ground sets).
+
+	We distinguish a cluster $S_1$, where we form a ground set of size $k-1$.
+	We never dismiss any constructed ground set.
+	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S_1$.
+
+	We construct a ground set containing this alone node (and some other node).
+	Precisely, let $x_0$  be the alone node from $S_1$ and let $y_0$ be an arbitrary node that does not reside in $S_1$.
+	First,
+	we construct a ground set $\{x_0, y_0\}$.
+	Since \ALG{} has them split, the adversary produces an external request.
+	Since $S_1$ contains a ground set of size $k$, \ALG{} must collocate $\{x_0, y_0\}$ in another cluster.
+	To preserve a feasible partition of nodes into clusters,
+	\ALG must replace $x_0$ with another single node $x_1$.
 	
-	\maciek{This paragraph should be before the proof, merged with section about ground sets (i.e., adversary components.)}
-	We join some nodes into components, and produce the input sequence by observing actions of \ALG{} with respect to nodes of these components.
-	If \ALG{} at any point splits a component
-	(i.e., spreads its nodes over two or more clusters),
-	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
-	If \ALG{} never collocates them, then it is not competitive.
-	
-	Initially each node belongs to its own component of size $1$.
-	We say that a node is single if it belongs to a singleton component.
-	We begin by forming a component of single $k-1$ nodes on the cluster $S_1$.
-	
-	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
-	Next,
-	we merge components of $x_0$~and~$y_0$.
-	Since these reside on different clusters of \ALG{}, it produces an external request.
-	\ALG{} must collocate them in a~cluster other than $S_1$.
-	To this end,
-	\ALG{} moves to a new configuration
-	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
-	
-	Next,
-	we merge the component of $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
+	We continue to construct ground sets containing the current alone node from $S_1$.
+	Precisely, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t.~$I(C) = I(x_1)$.
+	To preserve a feasible partition of nodes into clusters,
 	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
-	consequently replace $x_1$ with some other (single) node $x_2$.
+	consequently replace $x_1$ with another alone node $x_2$.
+
+	We end this procedure prematurely (before all nodes visit $S_1$) to keep \OPT's cost low.
 	We repeat merging the component of single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
 	until there are only two single nodes left that  originate from the same cluster.
 	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
 	$x'$ and $y'$,
 	we have $I(x') \neq I(y')$.
-	At this point there are at most $\ell+1$ single nodes left,
+	Note that at this point there are at most $\ell+1$ single nodes left,
 	otherwise, there would be more pairs of single nodes that were initially in the same cluster.
 	
+	Finally, we bound the cost of \OPT.
 	Given this sequence of requests,
-	the optimal strategy is to migrate $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
+	\OPT migrates $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
 	swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
 	Hence,
 	OPT pays for $2$ node swaps and
