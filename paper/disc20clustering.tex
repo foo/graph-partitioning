@@ -30,7 +30,7 @@
 
 \mathchardef\mhyphen="2D
 
-\title{Improved Bounds for Online Balanced Repartitioning}
+\title{Online Balanced Graph Partitioning: Optimizations for Large Clusters}
 
 
 \author{Maciej Pacut}
@@ -60,7 +60,7 @@
 \copyrightyear{2020} 
 \acmYear{2020} 
 \setcopyright{acmlicensed}
-\acmConference{PODC '20}{July 29-August 2, 2020}{Toronto, Canada}
+\acmConference{DISC '20}{October 12-16, 2020}{Freiburg, Germany}
 
 \keywords{online algorithms, competitive analysis, graph partitioning, clustering}
 \acmISBN{}\acmPrice{}
@@ -86,6 +86,7 @@
 
 \newcommand{\comm}{\textsc{comm}}
 \newcommand{\OFF}{\textsc{Off}\xspace}
+\newcommand{\Rep}{\textsc{Rep}}
 
 
 
@@ -170,8 +171,6 @@ over time.
 
 \section{Introduction}
 
-\maciek{Title discussion: "Online Balanced Graph Partitioning: Understanding the role of clusters". Reason: all our results most notably pertain to the number of clusters.}
-
 \noindent \textbf{Motivation and model.}
 The \emph{balanced repartitioning} problem (\OBRP{})
 is a fundamental learning problem
@@ -195,7 +194,6 @@ or \emph{remotely} at cost~1
 if they are located in different clusters.
 We refer to these two types of requests as \emph{internal}
 and \emph{external} requests, respectively.
-\mahmoud{"Before serving a request": does this mean that only after a request arrives and before serving it we migrate? In our algorithms we migrate after serving $\lambda$ requests. Do we have discrepancy with the model?}
 Before serving a request,
 an online algorithm may perform a \emph{repartition},
 %(i.e., \emph{reconfigure}).
@@ -205,6 +203,7 @@ Afterwards,
 the algorithm serves the  request.
 The cost of migrating a node from one cluster to another
 is~$\alpha \in \mathbb{Z}^+$.
+\maciek{Why restrict $\alpha$? It should just be positive}
 For any algorithm $\ALG$,
 its cost,
 denoted by $\ALG(\sigma)$,
@@ -258,15 +257,14 @@ The overview of known results is in Table~\ref{tab:overview}.
     \begin{tabular}{>{\centering\arraybackslash}p{4.5cm}|>{\centering\arraybackslash}p{4.5cm}>{\centering\arraybackslash}p{4.5cm}}
     \rowcolor{gray!50}
     \textbf{Variant} & \textbf{ Lower bound} &\textbf{Upper bound}\\ \hline 
-      \textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & TBD\hspace{0.3cm}(\S 9.3) \\ 
+      \textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & 6\hspace{0.3cm}(\S \ref{sec:k2}) \\ 
       \rowcolor{gray!25}
-      \textbf{$k=3$}&  $27\cdot \ell $\hspace{0.3cm}(\S 9.3)& $O(\ell)$\hspace{0.3cm}(\S 9.3)\\
-      \textbf{$\ell=2$}&  $k+1 = \Omega(k)$\hspace{0.3cm}(\S 9.3)&\hspace{0.3cm}$O(k^2)$\hspace{0.3cm}\cite{repartition-disc}\\
+      \textbf{$k=3$}&  $\ell - 3/2$ \hspace{0.3cm}(\S \ref{sec:lowerbound})& $54\cdot \ell $\hspace{0.3cm}(\S \ref{sec:k3})\\
+      $k > 3$ & $(k\cdot \ell - k - \ell) / 2$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell \cdot \min \{ k \cdot \ell, \Rep(k, \ell) \})$\hspace{0.3cm} (\S \ref{sec:k3}) \\
       \rowcolor{gray!25}
-      $\ell \geq 3$& $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S 9.3)&$O(k^2 \cdot \ell^2)$\hspace{0.3cm}\cite{repartition-disc} \\
-      Perfect partition & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S 9.3)&$O(k \cdot \ell)$\hspace{0.3cm} (\S 9) \\
+      Perfect partition & $(k\cdot \ell - k - \ell) / 2$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$2(k -1 )\cdot \ell$\hspace{0.3cm} (\S \ref{sec:ppl}) \\
     \end{tabular}
-                \caption{Overview of the results. Most specific cases are tight. The general case still has a significant gap between the lower bound and the upper bound. If either $k$ or $\ell$ is missing from a variant description, it is assumed to be arbitrary.
+                \caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}
                   }
   \label{tab:overview}
   \vspace{-7mm}
@@ -419,6 +417,7 @@ On the other hand, $\OPT$ initially collocates all nodes of each component and n
 \maciek{Remark on resource augmentation. The lower bound for k=3 works even with significant augmentation (linear).}
 
 \subsection{Upper bound.}
+\label{sec:ppl}
 Now we give an algorithm for a restricted variant of  \OBRP{}, named \PPOBRP{},
 %\maciek{This is not sufficient! We also disallow serving requests remotely.}
 where an optimal offline algorithm ($\OPT$) moves to a perfect partition
@@ -860,6 +859,7 @@ Corollary: Algorithm DET2 is $O(\ell \cdot k \cdot \min \{ \ell, k^k \})$-compet
 
 
 \section{Improved algorithm for $k=2$}
+\label{sec:k2}
 
 \maciek{Intro: compare to previous 7-competitive algorithm. Note strict competitive ratio vs large additive term. Also, emphasize that in this section the algorithm is different than DET2}
 
