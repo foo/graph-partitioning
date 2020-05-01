@@ -1239,7 +1239,11 @@ Idea of distributed implementation of this procedure:
 	\item Possible improvement: we can have a fixed number of rounds for finding the X cluster by maintaining a direct pointer to an X cluster (not only to subgroup). However, the fix still requires the log number of rounds. But we improved the responsiveness.
 \end{enumerate}
 
-\maciek{How to distribute algorithms: PPL and DET}
+\subsection{Distributed implementation of $k=2$ algorithm}
+
+Trivial? Counters are local. We migrate between the clusters that have just communicated.
+
+\maciek{How to distribute PPL better?}
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
