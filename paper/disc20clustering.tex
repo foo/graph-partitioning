@@ -210,24 +210,19 @@ denoted by $\ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 
-We consider two flavors of the problem
-in this paper. In the first one, which
-was also studied by Henzinger et al.~\cite{sigmetrics19_partitioning}
-(SIGMETRICS 2019) and which
-we here mainly consider for the sake of a stronger
-lower bound, we assume that $\sigma$
-simply reveals the edges of a static graph
+In addition to the general model, we study a simplified Perfect Partition model (also studied by Henzinger et al.~\cite{sigmetrics19_partitioning} (SIGMETRICS 2019)) that we consider for a stronger lower bound.
+There, we assume that $\sigma$
+reveals the edges of a static graph
 that can be perfectly partitioned
-(i.e., in principle, no external requests
-are required). 
-In the second one, we consider a general
-model where $\sigma$ can be arbitrary;
-this was the original problem introduced
+(no external requests are required). 
+
+The general model, where $\sigma$ can be arbitrary
+was the original problem introduced
 by Avin et al.~\cite{repartition-disc} at DISC 2016.
-For simplicity, we will refer to the former
+For simplicity, we will refer to the Perfect Partition
 model as the \emph{learning} model (as
 one has to learn the static communication graph) 
-and to the latter as the \emph{online} model.
+and to the original as the \emph{repartitioning} model (as one continuously adjusts the partition in response to changing communication graph).
 
 
 \noindent \textbf{Contributions.}
@@ -238,18 +233,16 @@ the best known lower bound so far was $\Omega(k)$,
 even for a more general model~\cite{repartition-disc}.
 We also present an asymptotically optimal, 
 $O(k\cdot \ell)$-competitive algorithm
-for the restricted model.
-For the online model, we present  
+for the learning model.
+For the repartitioning model, we present  
 an asymptotically optimal,
 $\Theta(\ell)$ algorithm for $k=3$;
 the best known upper bound 
 so far was $O(\ell^2)$~\cite{repartition-disc}.
+Then, we present a strictly $6$-competitive algorithm for $k=2$.
+In addition, we show a new, improved analysis of the algorithm from \cite{repartition-disc} that depends on the solutions to an interesting combinatorial problem (see Section~\ref{ssec:cascade}, The Cascade Problem).
 %
-Our algorithms can be distributed
-similarly to the approach in~\cite{sigmetrics19_partitioning}.
 The overview of known results is in Table~\ref{tab:overview}.
-
-\maciek{TODO: fill the table: results and references to sections.}
 
 \begin{table*}
   \centering
@@ -283,7 +276,7 @@ The problem has also been studied in a weaker
 model where the adversary can only sample
 requests from a fixed distribution~\cite{stochastic-ring}.
 For clusters of size $2$ (i.e., $k=2$), 
-it is known that a constant competitive algorithm exists~\cite{repartition-disc}.
+it is known that a $7$-competitive algorithm exists~\cite{repartition-disc} with large ($\Omega(\ell^2)$) additive constant.
 
 %More generally, the model is related to online
 %caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
@@ -293,7 +286,7 @@ it is known that a constant competitive algorithm exists~\cite{repartition-disc}
 %NP-complete, and cannot even be approximated within %any finite factor unless P
 %= NP~\cite{AndRae06}. 
 
-\noindent \textbf{Preliminaries.}
+\section{Preliminaries.}
 
 \maciek{Here, we need a good and broad description of what a component is.}
 
@@ -1246,6 +1239,9 @@ Trivial? Counters are local. We migrate between the clusters that have just comm
 \subsection{Distributed implementation of PPL}
 
 \maciek{How to distribute PPL better?}
+
+Our algorithms can be distributed
+similarly to the approach in~\cite{sigmetrics19_partitioning}.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
