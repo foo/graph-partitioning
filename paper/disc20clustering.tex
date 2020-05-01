@@ -373,6 +373,7 @@ In comparison, \OPT performs one migration.
 \end{theorem}
 
 \begin{proof}
+	\maciek{Better name than $S_1$?}
 	Fix any online algorithm \ALG{}.
 	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
 	\maciek{A problem with the definition! The first pair does not have the same initial location of its nodes.}
@@ -414,7 +415,7 @@ In comparison, \OPT performs one migration.
 	OPT pays for $2$ node swaps and
 	\ALG{} incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
 	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
-	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate on exclusion?}.
+	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate. Don't use the word "exclude" unless very obvious. Just sum up the real cost.}.
 	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
 \end{proof}
 
