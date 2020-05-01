@@ -315,7 +315,8 @@ We emphasize that ground sets are revealed only upon their nodes are split.
 %at the total cost of individual node migrations.
 %The objective is to jointly minimize communication and migration costs while serving the sequence.
 
-We say that a component or a ground set is \emph{trivial}, if it contains a single node.
+We say that a component or a ground set is \emph{trivial}, if it contains exactly one node.
+We say that the node that belongs to trivial component or a ground set is single.
 We say that a~configuration is \emph{component respecting}
 if the nodes belonging to the same component are collocated.
 Similarly, we define a \emph{ground-set-respecting} configuration.
@@ -365,35 +366,24 @@ It is oblivious to the choice of the reconfiguration cost $\alpha$, and we compa
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for \OBRP{} is  $(k \cdot \ell - k - \ell) / 2 = \Omega(k\cdot \ell)$ for any $k\geq 3$.
+	The competitive ratio of any deterministic online algorithm for \OBRP{} is  $(k \cdot \ell - k - \ell) / 2 = \Omega(k\cdot \ell)$ for any $k\geq 3$ and for any $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
-	We construct an instance of the problem with $\ell$ clusters 
-	$\set{ S_1, S_2,\dots , S_{\ell}}, |S_i|  = k$.
-	Let $I(C)$ denote the cluster where nodes of component $C$ are located initially.
-	%	\maciek{So far components were not introduced; the best place to introduce these would be around the definition of \PPOBRP}.
 	Fix any online algorithm \ALG{}.
-	
-	\maciek{This paragraph should be before the proof, merged with section about ground sets (i.e., adversary components.)}
-	We join some nodes into components, and produce the input sequence by observing actions of \ALG{} with respect to nodes of these components.
-	If \ALG{} at any point splits a component
-	(i.e., spreads its nodes over two or more clusters),
-	then we continue to issue requests between non-collocated nodes of the component until \ALG{} collocates the nodes of the component.
-	If \ALG{} never collocates them, then it is not competitive.
-	
-	Initially each node belongs to its own component of size $1$.
-	We say that a node is single if it belongs to a singleton component.
-	We begin by forming a component of single $k-1$ nodes on the cluster $S_1$.
-	
-	Let $x_0$  be the only single node left on $S_1$ and  $y_0 \in S_2$ be any single node on $S_2$.
-	Next,
-	we merge components of $x_0$~and~$y_0$.
-	Since these reside on different clusters of \ALG{}, it produces an external request.
-	\ALG{} must collocate them in a~cluster other than $S_1$.
-	To this end,
-	\ALG{} moves to a new configuration
-	that replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
+	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
+	\maciek{The problem with the definition! The first pair does not have the same initial location of its nodes.}
+	Initially all nodes are single (they belong to their own trivial ground sets).
+
+	In our construction we distinguish a cluster $S_1$, where we form a ground set of size $k-1$.
+	Let $x_0$  be the only single node left on $S_1$ and let $y_0$ be an  arbitrary node that does not reside in $S_1$.
+	First,
+	we construct a ground set $\{x_0, y_0\}$.
+	Since \ALG{} has them split, the adversary produces an external request.
+	Since $S_1$ contains a ground set of size $k$, \ALG{} must collocate $\{x_0, y_0\}$ in another cluster.
+	To preserve a feasible partition of nodes into clusters,
+	 replaces $x_0$ and $y_0$ with two other single nodes $x_1$ and $y_1$ respectively.
+	 \maciek{Not covering all cases. $y_0$ may stay in its place. This sentence should be about $x_0$ replaced by $x_1$ only.}
 	
 	Next,
 	we merge the component of $x_1$ and the largest component $C$ s.t.~$I(C) = I(x_1)$.
