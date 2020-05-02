@@ -252,12 +252,12 @@ The overview of known results is in Table~\ref{tab:overview}.
 		\textbf{Variant} & \textbf{ Lower bound} &\textbf{Upper bound}\\ \hline 
 		\textbf{$k=2$}& 3\hspace{0.3cm}\cite{repartition-disc} & 6\hspace{0.3cm}(\S \ref{sec:k2}) \\ 
 		\rowcolor{gray!25}
-		\textbf{$k=3$}&  $\ell - 3/2$ \hspace{0.3cm}(\S \ref{sec:lowerbound})& $54\cdot \ell $\hspace{0.3cm}(\S \ref{sec:k3})\\
-		$k > 3$ & $(k\cdot \ell - k - \ell) / 2$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell \cdot \min \{ k \cdot \ell, \Rep(k, \ell) \})$\hspace{0.3cm} (\S \ref{sec:k3}) \\
+		\textbf{$k=3$}&  $\Omega(\ell)$ \hspace{0.3cm}(\S \ref{sec:lowerbound})& $O(\ell) $\hspace{0.3cm}(\S \ref{sec:k3})\\
+		$k > 3$ & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell \cdot \min \{ k \cdot \ell, \Rep(k, \ell) \})$\hspace{0.1cm} (\S \ref{sec:k3}) \\
 		\rowcolor{gray!25}
-		Perfect partition & $(k\cdot \ell - k - \ell) / 2$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$2(k -1 )\cdot \ell$\hspace{0.3cm} (\S \ref{sec:ppl}) \\
+		Learning model & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell)$\hspace{0.3cm} (\S \ref{sec:ppl}) \\
 	\end{tabular}
-	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}
+	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The results pertain to the general partitioning model, but the last row, that pertains to the learning model for arbitrary $k$ and $\ell$.
 	}
 	\label{tab:overview}
 	\vspace{-7mm}
@@ -320,13 +320,18 @@ We say that the node that belongs to trivial component or a ground set is \emph{
 We say that a~configuration is \emph{component-respecting}
 if the nodes belonging to the same component are collocated.
 
-\maciek{Eviction - introduce.}
+\maciek{Eviction - introduce the concept.}
 
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-\maciek{TODO: Intro to the learning problem is missing. What is the problem definition. How is it different from the general problem. Emphasize the fact that OPT is constrained not to migrate.}
+In this section we consider a variant of Online Balanced Partitioning, where requests are permanent: once a pair of nodes start communicating, they continue forever.
+Each communicating pair must be collocated, as otherwise the cost would be infinite.
+We study the instances with finite cost: where the communication graph can be perfectly partitioned in the clusters.
 
+
+For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$.
+The lower bound can be easily translated to the partitioning model (Section~\ref{sec:part}) with finite request sequence.
 At the end of this section, we discuss an asymptotically optimal upper bound.
 
 
@@ -419,10 +424,23 @@ In comparison, \OPT performs one migration.
 	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
 \end{proof}
 
+We conclude by emphasizing the generality of the lower bound.
+
 \noindent
-\textbf{Remark on resource augmentation.}
-The majority of work on Online Balanced Partioning so far (todo: cite) focuses on the scenerio with resource augmentation.
+\textbf{General partitioning problem.}
+Every lower bound for the learning problem constitutes a valid lower bound for the partitioning problem.
+The bound for partitioning converges to the bound for learning as the input sequence grows.
+
+Our construction allows for an exact lower bound for partitioning with finite input sequence.
+To this end, we issue only enough requests until the algorithm collocates the nodes of each ground set.
+If it never does, we repeat until it pays $k\cdot \ell$.
+
+
+\noindent
+\textbf{Resource augmentation.}
+The majority of work on Online Balanced Partitioning so far (todo: cite) focuses on the scenario with resource augmentation.
 We note that this lower bound provides insights into this scenario as well.
+
 Consider an instance with $k$ divisible by $3$, and construct $3$ ground sets of size $k/3$ in each cluster.
 Then, apply the construction from the lower bound for $k=3$, now treating these ground sets in the way we used individual nodes.
 For the resource augmentation as large as $1+1/3-\epsilon$, no more than $3$ such ground sets fit in one cluster.
@@ -560,17 +578,17 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 % Note that the lower bound holds also in the perfect partition model, as the constructed input sequence allows \OPT to move to a perfect partition.
 % The corollary is that PPL is optimal.
 
-\section{The Online Problem}
-\label{sec:k3}
+\section{The Partitioning Problem}
+\label{sec:part}
 
 
-\maciek{Not precise name? Both the learning problem and the general one is online.}
 
 \maciek{Start with referencing the table of results, saying that some results are known already in the literature. And emphasize here that we now have an improved lower bound from the previous section, as that model was a subproblem.}
 
 Let us now discuss the general online
 model where the request sequence
-can be arbitrary. We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
+can be arbitrary.
+We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
 Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
 
 \maciek{Rewrite above paragraph to say that our algorithm is essentially DET from DISC16, with concretised reconfiguration strategy (i.e., an arbitrary one among the minimum cost reconfigurations)}
@@ -578,6 +596,7 @@ Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in o
 \maciek{Better name than DET? Currently it is \TAlg, hence it is wrong}
 
 \subsection{Improved analysis of the component-based algorithm}
+\label{sec:k3}
 
 
 %We define the algorithm \TAlg in the following way.
