@@ -287,6 +287,7 @@ it is known that a $7$-competitive algorithm exists~\cite{repartition-disc} with
 %= NP~\cite{AndRae06}. 
 
 \section{Preliminaries.}
+\label{sec:prelim}
 
 Across this paper, we often refer to groups of communicating nodes.
 As this concept is used differently in the lower bound and the upper bounds, we name them differently to avoid confusion.
@@ -341,9 +342,9 @@ At the end of this section, we discuss an asymptotically optimal upper bound.
 
 
 In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
-It is oblivious to the choice of the reconfiguration cost $\alpha$, and we compare the number of performed node exchanges.
+The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the number of node exchanges.
 The lower bound requires $k\geq 3$.
-Note that for $k=2$, a lower bound of $3$ is known \cite{repartition-disc}.
+For $k=2$, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a $6$-competitive algorithm (see Section~\ref{sec:k2}).
 
 
 
@@ -357,14 +358,13 @@ Note that for $k=2$, a lower bound of $3$ is known \cite{repartition-disc}.
 
 
 The adversary constructs ground sets in reaction to choices of a deterministic online algorithm.
-The algorithm does not know the ground set before they are revealed, and it may split some of them while evicting nodes.
-
+We emphasize that the algorithm does not know the ground set before they are revealed.
 Once we construct a ground set, it lasts until the end of the input sequence.
-If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
 
-We construct the ground sets in a way that they always form a balanced partition of nodes.
-This way, the optimal algorithm moves to such a configuration, and serves all requests for free.\maciek{i can do better: such a?}
-(This implies that the algorithm must eventually collocate nodes of a ground set to be competitive.)
+The constructed ground sets can be partitioned into our clusters (without splitting nodes).
+This way, the optimal algorithm moves to such a partition, and serves all requests for free.
+If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
+These two observations imply that the algorithm must eventually collocate nodes of a ground set to be competitive.
 
 First, we construct a ground set of size $k-1$ on one of the clusters.
 In any configuration, there exists a node that accompanies it.
@@ -450,41 +450,37 @@ Finally, we note the possibility for improvement (a gap). The algorithm CREP~\ci
 
 \subsection{Upper bound.}
 \label{sec:ppl}
-Now we give an algorithm for a restricted variant of  \OBRP{}, named \PPOBRP{},
-%\maciek{This is not sufficient! We also disallow serving requests remotely.}
-where an optimal offline algorithm ($\OPT$) moves to a perfect partition
-at the beginning and stays there perpetually.
-\maciek{Already mention that the LB is for that scenario}
-%We refer this variant as \PPOBRP{}.
-The task of an online algorithm for \PPOBRP{} is to recover (or learn) the perfect partition while not paying too much relative to \OPT.
-%
-%\maciek{This is not a valid description of the model. We need the assumption that collocation is needed in our model. Otherwise OPT would just serve some requests remotely, and our analysis would not hold.}
-The first request between any two non-collocated nodes reveals an edge of the communication graph.
-Our online algorithm collocates them immediately and never separates them since by assumption \OPT does the same.
-Revealed edges, up to any point in the sequence,
-induce some connected subgraphs which grow as components \maciek{rewrite sentence, expand}.
-%An algorithm that always  keeps nodes belonging to the same component collocated is \emph{component respecting}.
+
+We present an asymptotically optimal algorithm for the learning problem.
+The algorithm immediately collocates every communicating pair and never separates them.
+In other words, it maintains components, introduced in the preliminaries (Section~\ref{sec:prelim}).
+
+Upon receiving any external request, two components merge --- and this requires a reconfiguration.
+Many configurations may be feasible, and we choose the one that is \emph{closest to the initial configuration}.
 
 \maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here.}
 
-We assume \OPT begins with the initial configuration
-$P_I = I_1, \dots, I_{\ell}$ and moves to the final partitioning
-$P_F = F_1, \dots, F_{\ell}$.
+\noindent
+\textbf{Perfect Partition Learner algorithm.}
+Fix the initial configuration
+$P_I = I_1, \dots, I_{\ell}$ and \OPT's final configuration
+$P_F = F_1, \dots, F_{\ell}$\maciek{How do we define a configuration?}.
 The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration \maciek{, denoted $\dist(P)$} is the number of nodes in $P$ that do not reside in their initial cluster.
 \maciek{We might denote distance $\Delta(P)$, and the current $\Delta$ might be R (like radius).}
 That is,
-$\dist(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$. 
+$\dist(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$
+\maciek{Major: what does this definition mean? This is highly unclear, most likely because a configuration was not defined.}. 
 In other words,
 at least $\dist(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
 $\OPT \geq \Delta:= \dist(P_F, P_I) $.
 With each repartitioning,
 \PPL moves to a configuration that minimizes the distance to the initial configuration $P_I$.
 As a result,
-\PPL never ends up in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$.
-This invariant ensures that \PPL does not pay too much while recovering $P_F$.
+\PPL never ends up \maciek{ends up is informal} in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$ \maciek{This is not an algorithm definition, that's its property. Should not be in this paragraph}.
+This invariant ensures that \PPL does not pay too much while recovering $P_F$ \maciek{Recovering $P_F$? It's not the goal. At least at this point the reader is confused: it does not know yet that PPL is proven to end up in $P_F$}.
 %      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
-We note that the $\mathit{repartition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a~perfect partition closest to $P_I$.
-Hence it never moves to a configuration beyond distance $\Delta$.
+We note \maciek{Define?} that the $\mathit{repartition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a~perfect partition closest to $P_I$.
+Hence it never moves to a configuration beyond distance $\Delta$ \maciek{This is again mixing the properties of ppl and its definition. Restructure}.
 The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 
 \section{PPL Algorithm} \label{alg:PPL}
@@ -519,14 +515,23 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 	\label{alg:ppl}
 \end{algorithm}
 
+
+\maciek{Algorithm pseudocode comments}
+\maciek{This is not good that we need a comment about what $cluster \neq cluster$ means}
+\maciek{In pseudocode we need extremely short sentences. $C := singleton components ... $?; $Merge C, C'$ etc}
+\maciek{No need to maintain $P_i$'s. Just use one $P$? Or without naming: "move to partition (closeToInit(...))", and remove the partition args from cluster().}
+\maciek{Online algorithms should have different pseudocode. Instead of for loop, start with "When a request u,v arrives" (before that it is ok to have init phase just like it is now)}
+
 \begin{property} \label{prop:dist<OPT}
 	Let $P$ be any configuration chosen by \PPL at Line $\ref{line:rebalance}$.
 	Then, $\dist(P,P_I) \leq \Delta$.
+	\maciek{Express the configuration without refering to pseudocode?}
 \end{property}
-\maciek{The property is explained in the previous paragraph. Here, reader thinks that this is obvious and wonders why. Move closer to the exlaination text.}
+\maciek{The property is explained in the previous paragraph. Here, reader thinks that this is obvious and wonders why. Restructure: Move closer to the exlaination text. Or even make this property a lemma (most likely better).}
 
 \begin{lemma}	\label{lemma:rebalancecost}
 	The cost of repartitioning at Line \ref{line:rebalance} is at most $2\cdot\OPT$.
+	\maciek{Express the reconfiguration without pseudocode?}
 \end{lemma}
 \begin{proof}
 	Consider the repartitioning that transforms $P_{t-1}$ to $P_t$ upon the request $\sigma_t$.
