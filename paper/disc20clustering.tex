@@ -403,7 +403,7 @@ In comparison, \OPT performs one migration.
 	\maciek{Better name than $S_1$?}
 	Fix any online algorithm \ALG{}.
 	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
-	\maciek{A problem with the definition! The first pair does not have the same initial location of its nodes.}
+	If $C$ contains nodes that originate in different clusters, $I(C)$ is undefined.
 	Initially all nodes are single (they belong to their own trivial ground sets).
 
 	We distinguish a cluster $S_1$, where we form a ground set of size $k-1$.
@@ -442,7 +442,7 @@ In comparison, \OPT performs one migration.
 	OPT pays for $2$ node swaps and
 	\ALG{} incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
 	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
-	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate. Don't use the word "exclude" unless very obvious. Just sum up the real cost.}.
+	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate on exclude. Just sum up the real cost.}.
 	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
 
 
@@ -500,7 +500,7 @@ In comparison, \OPT performs one migration.
 	\ALG incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
 
 	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
-	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate. Don't use the word "exclude" unless very obvious. Just sum up the real cost.}.
+	therefore $|X| \geq k \cdot \ell - k - \ell$.
 	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
 \end{proof}
 
