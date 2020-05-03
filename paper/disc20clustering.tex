@@ -239,7 +239,7 @@ an asymptotically optimal,
 $\Theta(\ell)$ algorithm for $k=3$;
 the best known upper bound 
 so far was $O(\ell^2)$~\cite{repartition-disc}.
-Then, we present a strictly $6$-competitive algorithm for $k=2$.
+Then, we present a strictly $6$-competitive algorithm for $k=2$ that improves upon previous $7$-competitive algorithm with $O(\ell^2)$ additive constant..
 In addition, we show a new, improved analysis of the algorithm from \cite{repartition-disc} that depends on the solutions to an interesting combinatorial problem (see Section~\ref{ssec:cascade}, The Cascade Problem).
 %
 The overview of known results is in Table~\ref{tab:overview}.
@@ -263,7 +263,12 @@ The overview of known results is in Table~\ref{tab:overview}.
 	\vspace{-7mm}
 \end{table*}
 
-\noindent \textbf{Related work.}
+\section{Related work}
+
+In the paper that originated a study on BRP \cite{repartition-disc} (DISC 2016), authors provided a $O(k^2 \cdot \ell^2)$-competitive algorithm, and a lower bound $\Omega(k)$.
+For $k=2$, they presented a $7$-competitive algorithm~\cite{repartition-disc} with substantial ($\Omega(\ell^2)$) additive constant.
+
+
 The existing results in~\cite{repartition-disc}
 and~\cite{sigmetrics19_partitioning}
 primarily focus on a model where 
@@ -275,8 +280,6 @@ perfectly balanced among the clusters.
 The problem has also been studied in a weaker
 model where the adversary can only sample
 requests from a fixed distribution~\cite{stochastic-ring}.
-For clusters of size $2$ (i.e., $k=2$), 
-it is known that a $7$-competitive algorithm exists~\cite{repartition-disc} with large ($\Omega(\ell^2)$) additive constant.
 
 %More generally, the model is related to online
 %caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
