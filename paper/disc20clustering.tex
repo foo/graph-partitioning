@@ -420,7 +420,7 @@ In comparison, \OPT performs one migration.
 	\ALG must replace $x_0$ with another single node $x_1$.
 	
 	We continue to construct ground sets containing the current alone node from $S_1$.
-	Precisely, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t.~$I(C) = I(x_1)$.
+	Precisely, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t. and $C \neq \{x_0,y_0\}$~$I(C) = I(x_1)$.
 	To preserve a feasible partition of nodes into clusters,
 	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
 	consequently replace $x_1$ with another alone node $x_2$.
