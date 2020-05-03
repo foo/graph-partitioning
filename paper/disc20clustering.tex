@@ -185,8 +185,7 @@ model as the \emph{learning} model (as
 one has to learn the static communication graph) 
 and to the original as the \emph{repartitioning} model (as one continuously adjusts the partition in response to changing communication graph).
 
-\noindent
-\textbf{Partitioning model.}
+\subsubsection{Partitioning model.}
 The \emph{balanced repartitioning} problem (\OBRP{})
 is a fundamental learning problem
 that finds applications in the context of
@@ -225,9 +224,12 @@ denoted by $\ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 
+\maciek{The competitive ratio definition and the worst case inputs}
 
-\noindent
-\textbf{Learning model.}
+\maciek{Ilustrate the challenges. Rent-or-buy. Decision what to evict}
+
+
+\subsubsection{Learning model.}
 In addition to the general model, we study a simplified Perfect Partition model (also studied by Henzinger et al.~\cite{sigmetrics19_partitioning} (SIGMETRICS 2019)) that we consider for a stronger lower bound.
 There, we assume that $\sigma$
 reveals the edges of a static graph
@@ -238,24 +240,25 @@ that can be perfectly partitioned
 
 \subsection{Related work}
 
+
+The existing results in~\cite{repartition-disc} and~\cite{sigmetrics19_partitioning} primarily focus on a model with resource augmentation, where  the online algorithm has slightly larger clusters than the offline algorithm.
+They showed that their lower bound $\Omega(k)$ holds even for a significant resource augmentation.
+They provided an algorithm with the competitive ratio independent of $\ell$ using the $(2+\epsilon)$-augmented cluster capacity.
+
+
+In contrast, we study the non-augmented setting, where the nodes need to be perfectly balanced  among the clusters.
 In the paper that originated a study on BRP \cite{repartition-disc} (DISC 2016), authors provided a $O(k^2 \cdot \ell^2)$-competitive algorithm, and a lower bound $\Omega(k)$.
-For $k=2$, they presented a $7$-competitive algorithm~\cite{repartition-disc} with substantial ($\Omega(\ell^2)$) additive constant.
+For $k=2$, they presented a $7$-competitive algorithm~\cite{repartition-disc} with a~substantial ($\Omega(\ell^2)$) additive constant.
 
 
-The existing results in~\cite{repartition-disc}
-and~\cite{sigmetrics19_partitioning}
-primarily focus on a model where 
-the online algorithm can use augmentation,
-i.e., has slightly larger clusters than the offline 
-algorithm. In contrast, in our paper, we focus
-on a scenario where the nodes need to be
-perfectly balanced among the clusters.
 The problem has also been studied in a weaker
 model where the adversary can only sample
 requests from a fixed distribution~\cite{stochastic-ring}.
 
+
+
 \maciek{Offline results}
-\maciek{Links to paging}
+\maciek{Links other problems: for $k=2$ a flavor of online matching, for $\ell = 2$ it generalizes paging}
 
 %More generally, the model is related to online
 %caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
@@ -323,7 +326,7 @@ In contrast, our partition is time-varying: communicating components are merged 
 In the lower bound, a~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
 Their role is to ensure that the algorithm maintains a partition of ground sets into clusters.
 We emphasize that ground sets are revealed only upon their nodes are split.
-\maciek{Other names: division, segmentation, alignment, formation}
+%\maciek{Other names: division, segmentation, alignment, formation}
 
 %We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
 %This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
@@ -339,7 +342,6 @@ We say that the node that belongs to trivial component or a ground set is \emph{
 We say that a~configuration is \emph{component-respecting}
 if the nodes belonging to the same component are collocated.
 
-\maciek{Eviction - introduce the concept.}
 
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
@@ -385,59 +387,70 @@ This way, the optimal algorithm moves to such a partition, and serves all reques
 If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
 These two observations imply that the algorithm must eventually collocate nodes of a ground set to be competitive.
 
-First, we construct a ground set of size $k-1$ on one of the clusters.
+\maciek{Better name than $S_1$? Here and in the proof}
+First, we construct a ground set of size $k-1$ on one of the clusters $S_1$.
 In any configuration, there exists a node that accompanies it.
-We only issue requests between such accompanying (time-varying) node, and any node that was initially collocated with it.
-Repeating such requests, almost every node must visit this cluster.
+We only issue requests between such accompanying (time-varying) node, and any alone node that was initially collocated with it.
+Repeating such requests, almost half of all node must visit the cluster $S_1$.
 In comparison, \OPT performs one migration.
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for \OBRP{} is  $(k \cdot \ell - k - \ell) / 2 = \Omega(k\cdot \ell)$ for any $k\geq 3$ and for any $\ell \geq 2$.
+	The competitive ratio of any deterministic online algorithm for \OBRP{} is  $\Omega(k\cdot \ell)$ for any $k\geq 3$ and for any $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
-	\maciek{Better name than $S_1$?}
 	Fix any online algorithm \ALG{}.
-	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
-	\maciek{A problem with the definition! The first pair does not have the same initial location of its nodes.}
-	Initially all nodes are single (they belong to their own trivial ground sets).
+	Assume that $k$ is odd.
+	We show how to proceed with even $k$ later in this proof.
+	Let $I(z)$ denote the cluster where the node $z$ was located initially.
+	Throughout the construction, we maintain ground sets for each node.
+	Initially all nodes are \emph{alone} (they belong to their own trivial ground sets).
 
 	We distinguish a cluster $S_1$, where we form a ground set of size $k-1$.
 	We never dismiss any constructed ground set.
 	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S_1$.
 
-	We construct a ground set containing this alone node (and some other node).
+	We construct a ground set containing this alone node from $S_1$ to force its eviction.
 	Precisely, let $x_0$  be the alone node from $S_1$ and let $y_0$ be an arbitrary node that does not reside in $S_1$.
-	First,
-	we construct a ground set $\{x_0, y_0\}$.
-	Since \ALG{} has them split, the adversary produces an external request.
-	Since $S_1$ contains a ground set of size $k$, \ALG{} must collocate $\{x_0, y_0\}$ in another cluster.
-	To preserve a feasible partition of nodes into clusters,
-	\ALG must replace $x_0$ with another single node $x_1$.
-	
-	We continue to construct ground sets containing the current alone node from $S_1$.
-	Precisely, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t.~$I(C) = I(x_1)$.
-	To preserve a feasible partition of nodes into clusters,
-	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
-	consequently replace $x_1$ with another alone node $x_2$.
+	We construct a ground set $\{x_0, y_0\}$.
+	\ALG has them split, and the adversary produces an external request.
+	$S_1$ already contains a ground set of size $k-1$, hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
 
-	We end this procedure prematurely (before all nodes visit $S_1$) to keep \OPT's cost low.
-	We repeat merging the component of single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
-	until there are only two single nodes left that  originate from the same cluster.
-	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
-	$x'$ and $y'$,
-	we have $I(x') \neq I(y')$.
-	Note that at this point there are at most $\ell+1$ single nodes left,
-	otherwise, there would be more pairs of single nodes that were initially in the same cluster.
+	We continue to construct ground sets containing the current alone node from $S_1$.
+	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
+	\ALG must replace $x_0$ with another single node (that we name $x_1$).
+	Then, we merge the ground sets of $x_1$ and an arbitrary node $y_1$ that was initially collocated with $x_1$.
+	Continuing this, we observe a sequence $X := x_0, x_1, x_2\dots$ of alone nodes that visit $S_1$.
+	(Note that subsequent ground sets are different than the first ground set $\{x_0, y_0\}$, whose nodes were initially in different clusters.)
+
+	We claim that this procedure can continue as long as a perfect partition of ground sets still exists.
+	%and we construct a sequence of ground sets $X := \langle \{x_0, y_0\}, \{x_1, y_2\}, \{x_2, y_2\}, \ldots \rangle$ of length $\Omega(k \cdot \ell)$.
+	Consider the moment of creating a ground set $\{x_i, y_i\}$.
+	If a perfect partition of ground sets still exists, then
+	\ALG{} must collocate $\{x_i,y_i\}$ in a~cluster other than $S_1$.
+	To this end, it replaces $x_i$ with another alone node $x_{i+1}$.
+	To continue, we must guarantee the existence of an alone node that was initially collocated with $x_{i+1}$.
 	
-	Finally, we bound the cost of \OPT.
-	Given this sequence of requests,
-	\OPT migrates $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
-	swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
-	Hence,
-	OPT pays for $2$ node swaps and
-	\ALG{} incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
+	We end this procedure prematurely to keep \OPT's cost low.
+	The sequence must end when no perfect partition of ground sets exists ---
+	however, we end it when \emph{two more} ground sets are still possible to give.
+	Precisely, we repeat constructing ground sets,
+	until there are only two alone nodes left that originate from the same cluster.
+	We denote these two nodes by $x^*, y^*$.
+	Observe that at this point there are at most $\ell+1$ alone nodes left:
+	otherwise, by pigeon hole principle, there would be more pairs of alone nodes that were initially in the same cluster.
+
+	Now we lower bound the length of the sequence $X := x_0, x_1,\dots$.
+	
+	The optimal strategy is to perform two node swaps.
+	Precisely, \OPT collocates $\set{x_0,y_0}$ by swapping them with $x^*$ and $y^*$.
+	In this configuration, no ground set is split.
+	We never issue requests between nodes $x^*, y^*$ that are split in this configuration.
+
+	Finally, we bound the cost of \ALG.
+	\ALG incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
+
 	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
 	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate. Don't use the word "exclude" unless very obvious. Just sum up the real cost.}.
 	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
@@ -915,8 +928,10 @@ Corollary: Algorithm DET2 is $O(\ell \cdot k \cdot \min \{ \ell, k^k \})$-compet
 
 
 
-\section{Improved algorithm for $k=2$}
+\section{Improved algorithm for Online Rematching}
 \label{sec:k2}
+
+
 
 \maciek{Intro: compare to previous 7-competitive algorithm. Note strict competitive ratio vs large additive term. Also, emphasize that in this section the algorithm is different than DET2}
 
@@ -927,6 +942,7 @@ reset the counter and collocate the pair arbitrarily in one of the two clusters 
 
 \begin{theorem} \label{thm:k=2}
 	The algorithm is (strictly) 6-competitive.
+	\maciek{for what lambda?}
 \end{theorem}
 
 
