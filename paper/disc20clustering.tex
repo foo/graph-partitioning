@@ -400,6 +400,54 @@ In comparison, \OPT performs one migration.
 \end{theorem}
 
 \begin{proof}
+	\maciek{Better name than $S_1$?}
+	Fix any online algorithm \ALG{}.
+	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
+	\maciek{A problem with the definition! The first pair does not have the same initial location of its nodes.}
+	Initially all nodes are single (they belong to their own trivial ground sets).
+
+	We distinguish a cluster $S_1$, where we form a ground set of size $k-1$.
+	We never dismiss any constructed ground set.
+	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S_1$.
+
+	We construct a ground set containing this alone node (and some other node).
+	Precisely, let $x_0$  be the alone node from $S_1$ and let $y_0$ be an arbitrary node that does not reside in $S_1$.
+	First,
+	we construct a ground set $\{x_0, y_0\}$.
+	Since \ALG{} has them split, the adversary produces an external request.
+	Since $S_1$ contains a ground set of size $k$, \ALG{} must collocate $\{x_0, y_0\}$ in another cluster.
+	To preserve a feasible partition of nodes into clusters,
+	\ALG must replace $x_0$ with another single node $x_1$.
+	
+	We continue to construct ground sets containing the current alone node from $S_1$.
+	Precisely, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t.~$I(C) = I(x_1)$.
+	To preserve a feasible partition of nodes into clusters,
+	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
+	consequently replace $x_1$ with another alone node $x_2$.
+
+	We end this procedure prematurely (before all nodes visit $S_1$) to keep \OPT's cost low.
+	We repeat merging the component of single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
+	until there are only two single nodes left that  originate from the same cluster.
+	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
+	$x'$ and $y'$,
+	we have $I(x') \neq I(y')$.
+	Note that at this point there are at most $\ell+1$ single nodes left,
+	otherwise, there would be more pairs of single nodes that were initially in the same cluster.
+	
+	Finally, we bound the cost of \OPT.
+	Given this sequence of requests,
+	\OPT migrates $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
+	swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
+	Hence,
+	OPT pays for $2$ node swaps and
+	\ALG{} incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
+	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
+	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate. Don't use the word "exclude" unless very obvious. Just sum up the real cost.}.
+	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
+
+
+	\maciek{BELOW OLD VERSION. TODO: INCORPORATE BETTER SENTENCES}
+
 	Fix any online algorithm \ALG{}.
 	Assume that $k$ is odd.
 	We show how to proceed with even $k$ later in this proof.
