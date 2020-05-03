@@ -171,7 +171,22 @@
 
 \section{Introduction}
 
-\noindent \textbf{Motivation and model.}
+\maciek{Practical motivation}
+
+\subsection{Model.}
+
+\maciek{We study two models. One is a subproblem.}
+
+The general model, where $\sigma$ can be arbitrary
+was the original problem introduced
+by Avin et al.~\cite{repartition-disc} at DISC 2016.
+For simplicity, we will refer to the Perfect Partition
+model as the \emph{learning} model (as
+one has to learn the static communication graph) 
+and to the original as the \emph{repartitioning} model (as one continuously adjusts the partition in response to changing communication graph).
+
+\noindent
+\textbf{Partitioning model.}
 The \emph{balanced repartitioning} problem (\OBRP{})
 is a fundamental learning problem
 that finds applications in the context of
@@ -210,22 +225,47 @@ denoted by $\ALG(\sigma)$,
 is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 
+
+\noindent
+\textbf{Learning model.}
 In addition to the general model, we study a simplified Perfect Partition model (also studied by Henzinger et al.~\cite{sigmetrics19_partitioning} (SIGMETRICS 2019)) that we consider for a stronger lower bound.
 There, we assume that $\sigma$
 reveals the edges of a static graph
 that can be perfectly partitioned
 (no external requests are required). 
 
-The general model, where $\sigma$ can be arbitrary
-was the original problem introduced
-by Avin et al.~\cite{repartition-disc} at DISC 2016.
-For simplicity, we will refer to the Perfect Partition
-model as the \emph{learning} model (as
-one has to learn the static communication graph) 
-and to the original as the \emph{repartitioning} model (as one continuously adjusts the partition in response to changing communication graph).
 
 
-\noindent \textbf{Contributions.}
+\subsection{Related work}
+
+In the paper that originated a study on BRP \cite{repartition-disc} (DISC 2016), authors provided a $O(k^2 \cdot \ell^2)$-competitive algorithm, and a lower bound $\Omega(k)$.
+For $k=2$, they presented a $7$-competitive algorithm~\cite{repartition-disc} with substantial ($\Omega(\ell^2)$) additive constant.
+
+
+The existing results in~\cite{repartition-disc}
+and~\cite{sigmetrics19_partitioning}
+primarily focus on a model where 
+the online algorithm can use augmentation,
+i.e., has slightly larger clusters than the offline 
+algorithm. In contrast, in our paper, we focus
+on a scenario where the nodes need to be
+perfectly balanced among the clusters.
+The problem has also been studied in a weaker
+model where the adversary can only sample
+requests from a fixed distribution~\cite{stochastic-ring}.
+
+\maciek{Offline results}
+\maciek{Links to paging}
+
+%More generally, the model is related to online
+%caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
+%see~\cite{repartition-disc} for a discussion.
+%The static offline version of~the~problem, called the
+%\emph{$\ell$-balanced graph partitioning problem} is 
+%NP-complete, and cannot even be approximated within %any finite factor unless P
+%= NP~\cite{AndRae06}. 
+
+\subsection{Our Contributions.}
 We provide an improved lower bound 
 of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
 even in the learning model;
@@ -263,38 +303,12 @@ The overview of known results is in Table~\ref{tab:overview}.
 	\vspace{-7mm}
 \end{table*}
 
-\section{Related work}
-
-In the paper that originated a study on BRP \cite{repartition-disc} (DISC 2016), authors provided a $O(k^2 \cdot \ell^2)$-competitive algorithm, and a lower bound $\Omega(k)$.
-For $k=2$, they presented a $7$-competitive algorithm~\cite{repartition-disc} with substantial ($\Omega(\ell^2)$) additive constant.
-
-
-The existing results in~\cite{repartition-disc}
-and~\cite{sigmetrics19_partitioning}
-primarily focus on a model where 
-the online algorithm can use augmentation,
-i.e., has slightly larger clusters than the offline 
-algorithm. In contrast, in our paper, we focus
-on a scenario where the nodes need to be
-perfectly balanced among the clusters.
-The problem has also been studied in a weaker
-model where the adversary can only sample
-requests from a fixed distribution~\cite{stochastic-ring}.
-
-%More generally, the model is related to online
-%caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
-%see~\cite{repartition-disc} for a discussion.
-%The static offline version of~the~problem, called the
-%\emph{$\ell$-balanced graph partitioning problem} is 
-%NP-complete, and cannot even be approximated within %any finite factor unless P
-%= NP~\cite{AndRae06}. 
-
 \section{Preliminaries.}
 \label{sec:prelim}
 
 Across this paper, we often refer to groups of communicating nodes.
 We use this concept slightly differently in the lower bound and the upper bounds.
-In our algorithms, we group communicating nodes into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
+In our algorithms, we group nodes with a communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
 
 \noindent
 \textbf{Components.}
@@ -306,8 +320,8 @@ In contrast, our partition is time-varying: communicating components are merged 
 
 \noindent
 \textbf{Ground sets.}
-In the lower bound, a~\emph{ground set} is a group of nodes that start communicating if an algorithm splits them (places at different clusters).
-Their role is to ensure that the algorithm maintains a partition of ground sets.
+In the lower bound, a~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
+Their role is to ensure that the algorithm maintains a partition of ground sets into clusters.
 We emphasize that ground sets are revealed only upon their nodes are split.
 \maciek{Other names: division, segmentation, alignment, formation}
 
@@ -330,9 +344,10 @@ if the nodes belonging to the same component are collocated.
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-In this section we consider a variant of Online Balanced Partitioning, where requests are permanent: once a pair of nodes start communicating, they continue forever.
-Each communicating pair must be collocated, as otherwise the cost would be infinite.
-We study the instances with finite cost: where the communication graph can be perfectly partitioned in the clusters.
+In this section we consider a variant of Online Balanced Partitioning, where communication requests are permanent: once a pair of nodes start communicating, they continue forever.
+To avoid infinite cost, each communicating pair must be collocated.
+We study the instances with finite cost: we assume that the communication graph can be perfectly partitioned in the clusters.
+The algorithm's goal is to \emph{learn} the communication graph's partition.
 
 
 For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$.
