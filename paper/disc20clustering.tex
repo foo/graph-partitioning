@@ -551,6 +551,7 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 
 
 \maciek{Algorithm pseudocode comments}
+\maciek{Major thing to discuss: do we even need this? The algorithm is very simple, and the description in the paragraph would be much better. The only way to save it would be to have a general algorithm pseudocode (equivalent to DET), and parametrize it with the repartition procedure. Here, we would say that we choose the closest to initial, and it ALG3 we say that we choose the closest to current.}
 \maciek{This is not good that we need a comment about what $cluster \neq cluster$ means}
 \maciek{In pseudocode we need extremely short sentences. $C := singleton components ... $?; $Merge C, C'$ etc}
 \maciek{No need to maintain $P_i$'s. Just use one $P$? Or without naming: "move to partition (closeToInit(...))", and remove the partition args from cluster().}
