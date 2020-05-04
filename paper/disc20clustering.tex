@@ -403,55 +403,7 @@ In comparison, \OPT performs one migration.
 	\maciek{Better name than $S_1$?}
 	Fix any online algorithm \ALG{}.
 	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
-	If $C$ contains nodes that originate in different clusters, $I(C)$ is undefined.
-	Initially all nodes are single (they belong to their own trivial ground sets).
-
-	We distinguish a cluster $S_1$, where we form a ground set of size $k-1$.
-	We never dismiss any constructed ground set.
-	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S_1$.
-
-	We construct a ground set containing this alone node (and some other node).
-	Precisely, let $x_0$  be the alone node from $S_1$ and let $y_0$ be an arbitrary node that does not reside in $S_1$.
-	First,
-	we construct a ground set $\{x_0, y_0\}$.
-	Since \ALG{} has them split, the adversary produces an external request.
-	Since $S_1$ contains a ground set of size $k$, \ALG{} must collocate $\{x_0, y_0\}$ in another cluster.
-	To preserve a feasible partition of nodes into clusters,
-	\ALG must replace $x_0$ with another single node $x_1$.
-	
-	We continue to construct ground sets containing the current alone node from $S_1$.
-	Precisely, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t. and $C \neq \{x_0,y_0\}$~$I(C) = I(x_1)$.
-	To preserve a feasible partition of nodes into clusters,
-	\ALG{} must collocate $x_1$ and $C$ in a~cluster other than $S_1$ and
-	consequently replace $x_1$ with another alone node $x_2$.
-
-	We end this procedure prematurely (before all nodes visit $S_1$) to keep \OPT's cost low.
-	We repeat merging the component of single node $x_i$ on $S_1$ and the largest component $C'$ s.t.~$I(C')=I(x_i)$,
-	until there are only two single nodes left that  originate from the same cluster.
-	Formally, we denote these two single nodes by $x^*, y^*$, and we have $I(x^*) = I(y^*)$, and~for any other pair of single nodes
-	$x'$ and $y'$,
-	we have $I(x') \neq I(y')$.
-	Note that at this point there are at most $\ell+1$ single nodes left,
-	otherwise, there would be more pairs of single nodes that were initially in the same cluster.
-	
-	Finally, we bound the cost of \OPT.
-	Given this sequence of requests,
-	\OPT migrates $\set{x_0,y_0}$ to the cluster $I(x^*)$ by
-	swapping $\set{x_0,y_0}$ with $\set{x^*,y^*}$.
-	Hence,
-	OPT pays for $2$ node swaps and
-	\ALG{} incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
-	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
-	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate on exclude. Just sum up the real cost.}.
-	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
-
-
-	\maciek{BELOW OLD VERSION. TODO: INCORPORATE BETTER SENTENCES}
-
-	Fix any online algorithm \ALG{}.
-	Assume that $k$ is odd.
-	We show how to proceed with even $k$ later in this proof.
-	Let $I(z)$ denote the cluster where the node $z$ was located initially.
+	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially all nodes are \emph{alone} (they belong to their own trivial ground sets).
 
@@ -459,28 +411,32 @@ In comparison, \OPT performs one migration.
 	We never dismiss any constructed ground set.
 	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S_1$.
 
-	We construct a ground set containing this alone node from $S_1$ to force its eviction.
+	We construct a ground set containing this alone node (and some other node).
 	Precisely, let $x_0$  be the alone node from $S_1$ and let $y_0$ be an arbitrary node that does not reside in $S_1$.
 	We construct a ground set $\{x_0, y_0\}$.
-	\ALG has them split, and the adversary produces an external request.
-	$S_1$ already contains a ground set of size $k-1$, hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
+	\ALG has them split, and the adversary produces external requests until these are collocated.
+	$S_1$ already contains a ground set of size $k-1$ (that it cannot split), hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
+	
 
 	We continue to construct ground sets containing the current alone node from $S_1$.
 	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
 	\ALG must replace $x_0$ with another single node (that we name $x_1$).
-	Then, we merge the ground sets of $x_1$ and an arbitrary node $y_1$ that was initially collocated with $x_1$.
+	Then, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t. and $C \neq \{x_0,y_0\}$~$I(C) = I(x_1)$.
 	Continuing this, we observe a sequence $X := x_0, x_1, x_2\dots$ of alone nodes that visit $S_1$.
 	(Note that subsequent ground sets are different than the first ground set $\{x_0, y_0\}$, whose nodes were initially in different clusters.)
 
-	We claim that this procedure can continue as long as a perfect partition of ground sets still exists.
+
+	We claim that this procedure (of constructing ground sets) can continue as long as a perfect partition of ground sets still exists.
 	%and we construct a sequence of ground sets $X := \langle \{x_0, y_0\}, \{x_1, y_2\}, \{x_2, y_2\}, \ldots \rangle$ of length $\Omega(k \cdot \ell)$.
 	Consider the moment of creating a ground set $\{x_i, y_i\}$.
 	If a perfect partition of ground sets still exists, then
 	\ALG{} must collocate $\{x_i,y_i\}$ in a~cluster other than $S_1$.
 	To this end, it replaces $x_i$ with another alone node $x_{i+1}$.
 	To continue, we must guarantee the existence of an alone node that was initially collocated with $x_{i+1}$.
+	\maciek{elaborate more}
 	
-	We end this procedure prematurely to keep \OPT's cost low.
+
+	We end this procedure prematurely (before all nodes visit $S_1$) to keep \OPT's cost low.
 	The sequence must end when no perfect partition of ground sets exists ---
 	however, we end it when \emph{two more} ground sets are still possible to give.
 	Precisely, we repeat constructing ground sets,
@@ -489,19 +445,23 @@ In comparison, \OPT performs one migration.
 	Observe that at this point there are at most $\ell+1$ alone nodes left:
 	otherwise, by pigeon hole principle, there would be more pairs of alone nodes that were initially in the same cluster.
 
-	Now we lower bound the length of the sequence $X := x_0, x_1,\dots$.
+
+	\ALG incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
+	We lower bound the length of the sequence $X := x_0, x_1,\dots$.
+	\maciek{TODO}
+	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
+	therefore $|X| \geq k \cdot \ell - k - \ell$ \maciek{elaborate on exclude. Just sum up the real cost.}.
 	
 	The optimal strategy is to perform two node swaps.
 	Precisely, \OPT collocates $\set{x_0,y_0}$ by swapping them with $x^*$ and $y^*$.
 	In this configuration, no ground set is split.
 	We never issue requests between nodes $x^*, y^*$ that are split in this configuration.
 
-	Finally, we bound the cost of \ALG.
-	\ALG incurs at least one swap for each node in the sequence $X := x_0, x_1,\dots$.
 
-	We exclude at most $(k-1) + ( \ell+1)$ nodes out of $k \cdot \ell$ nodes,
-	therefore $|X| \geq k \cdot \ell - k - \ell$.
-	Finally, $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
+	
+	
+	
+	The competitive ratio is then: $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
 \end{proof}
 
 We conclude by emphasizing the generality of the lower bound.
