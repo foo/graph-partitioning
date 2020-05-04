@@ -387,8 +387,7 @@ This way, the optimal algorithm moves to such a partition, and serves all reques
 If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
 These two observations imply that the algorithm must eventually collocate nodes of a ground set to be competitive.
 
-\maciek{Better name than $S_1$? Here and in the proof}
-First, we construct a ground set of size $k-1$ on one of the clusters $S_1$.
+First, we construct a ground set of size $k-1$ on one of the clusters $S$.
 In any configuration, there exists a node that accompanies it.
 We only issue requests between such accompanying (time-varying) node, and any alone node that was initially collocated with it.
 Repeating such requests, almost half of all node must visit the cluster $S_1$.
@@ -400,29 +399,28 @@ In comparison, \OPT performs one migration.
 \end{theorem}
 
 \begin{proof}
-	\maciek{Better name than $S_1$?}
 	Fix any online algorithm \ALG{}.
 	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially all nodes are \emph{alone} (they belong to their own trivial ground sets).
 
-	We distinguish a cluster $S_1$, where we form a ground set of size $k-1$.
+	We distinguish a cluster $S$, where we form a ground set of size $k-1$.
 	We never dismiss any constructed ground set.
-	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S_1$.
+	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S$.
 
 	We construct a ground set containing this alone node (and some other node).
-	Precisely, let $x_0$  be the alone node from $S_1$ and let $y_0$ be an arbitrary node that does not reside in $S_1$.
+	Precisely, let $x_0$  be the alone node from $S_1$ and let $y_0$ be an arbitrary node that does not reside in $S$.
 	We construct a ground set $\{x_0, y_0\}$.
 	\ALG has them split, and the adversary produces external requests until these are collocated.
 	$S_1$ already contains a ground set of size $k-1$ (that it cannot split), hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
 	
 
-	We continue to construct ground sets containing the current alone node from $S_1$.
+	We continue to construct ground sets containing the current alone node from $S$.
 	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
 	\ALG must replace $x_0$ with another single node (that we name $x_1$).
 	Then, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t. and $C \neq \{x_0,y_0\}$~$I(C) = I(x_1)$.
-	Continuing this, we observe a sequence $X := x_0, x_1, x_2\dots$ of alone nodes that visit $S_1$.
+	Continuing this, we observe a sequence $X := x_0, x_1, x_2\dots$ of alone nodes that visit $S$.
 	(Note that subsequent ground sets are different than the first ground set $\{x_0, y_0\}$, whose nodes were initially in different clusters.)
 
 
@@ -430,13 +428,13 @@ In comparison, \OPT performs one migration.
 	%and we construct a sequence of ground sets $X := \langle \{x_0, y_0\}, \{x_1, y_2\}, \{x_2, y_2\}, \ldots \rangle$ of length $\Omega(k \cdot \ell)$.
 	Consider the moment of creating a ground set $\{x_i, y_i\}$.
 	If a perfect partition of ground sets still exists, then
-	\ALG{} must collocate $\{x_i,y_i\}$ in a~cluster other than $S_1$.
+	\ALG{} must collocate $\{x_i,y_i\}$ in a~cluster other than $S$.
 	To this end, it replaces $x_i$ with another alone node $x_{i+1}$.
-	To continue, we must guarantee the existence of an alone node that was initially collocated with $x_{i+1}$.
-	\maciek{elaborate more}
+	To continue, we must guarantee that
+	\maciek{elaborate}
 	
 
-	We end this procedure prematurely (before all nodes visit $S_1$) to keep \OPT's cost low.
+	We end this procedure prematurely (before all nodes visit $S$) to keep \OPT's cost low.
 	The sequence must end when no perfect partition of ground sets exists ---
 	however, we end it when \emph{two more} ground sets are still possible to give.
 	Precisely, we repeat constructing ground sets,
@@ -456,10 +454,6 @@ In comparison, \OPT performs one migration.
 	Precisely, \OPT collocates $\set{x_0,y_0}$ by swapping them with $x^*$ and $y^*$.
 	In this configuration, no ground set is split.
 	We never issue requests between nodes $x^*, y^*$ that are split in this configuration.
-
-
-	
-	
 	
 	The competitive ratio is then: $\ALG/\OPT \geq (k \cdot \ell - k - \ell) / 2\in \Omega(k\cdot\ell)$.
 \end{proof}
