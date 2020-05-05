@@ -405,42 +405,41 @@ In comparison, \OPT performs one migration.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially all nodes are \emph{alone} (they belong to their own trivial ground sets).
 
-	First, where we form a ground set of size $k-1$ on an arbitrarily chosen cluster $S$.
+	First, we create a ground set of size $k-1$ on an arbitrarily chosen cluster $S$.
 	%We never dismiss any constructed ground set.
-	Each cluster host exactly $k$ nodes, hence in any configuration of \ALG, there exists a single alone node in $S$.
+	Each cluster hosts exactly $k$ nodes, and in any configuration a single alone node resides in $S$.
 
-	Then, we construct a ground set containing this alone node (and some other node).
+	Then, we create a ground set containing this alone node.
 	Precisely,
-	we construct a ground set $\{x_0, y_0\}$, 
+	we create a ground set $\{x_0, y_0\}$, 
 	where $x_0$ is the alone node from $S$ and $y_0$ is an arbitrary node that does not reside in $S$.
-	\ALG has them split, and the adversary produces external requests until these are collocated.
-	$S$ already contains a ground set of size $k-1$ (that it cannot split), hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
+	\ALG has them split, and the adversary produces external requests until they are collocated.
+	The cluster $S$ already contains a ground set of size $k-1$, hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
+	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
+	\ALG must replace $x_0$ with another single node.
 	
 
-	We continue to construct ground sets containing the node that is currently alone in $S$.
-	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
-	\ALG must replace $x_0$ with another single node (that we name $x_1$).
-	Consequently, we merge the ground sets of $x_1$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x_1)$.
-	Repeating this, we observe a sequence $X := x_0, x_1, x_2\dots$ of alone nodes that visit $S$.
-	(Note that subsequent ground sets are different than the first ground set $\{x_0, y_0\}$, whose nodes were initially in different clusters.)
+	We continue adding the node that is currently alone in $S$ to a larger ground set.
+	Precisely, for an alone node $x$ from $S$, we merge the ground sets of $x$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x)$.
+	This way, $x$ is evicted similarly to $x_0$, and we continue creating such ground sets (we describe the termination condition shortly).
+	Note that subsequent ground sets are different than the first ground set $\{x_0, y_0\}$: now the nodes originate in the same cluster, whereas nodes $x_0$ and $y_0$ were initially in different clusters.
 
-
-	We claim that constructing such ground sets can continue as long as at least $\ell$ alone node exists.
+	We claim that expanding ground sets in this way can continue as long as at least $\ell$ alone node exists.
 	Fix the moment just before the creation of a ground set with the node $x_i$.
 	We show that if at least $\ell$ alone nodes exists (including $x_i, y_i$), then there exists a perfect partition of ground sets.
 	
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
 	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some alone nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(x_i)$ contains an alone node, then we simply obtain a perfect partition by swapping it with $x_i$.
-	Otherwise, $\{x_0, y_0\}$ is present on $I(x_i)$ (a single ground set cannot occupy $I(x_i)$, as without $x_i$ its size is at most $k-1$).
+	Otherwise, $\{x_0, y_0\}$ is present on $I(x_i)$ (a single ground set cannot occupy the whole cluster $I(x_i)$, as without $x_i$ its size is at most $k-1$).
 	In this case, we first swap $\{x_0, y_0\}$ with two alone nodes that occupy the same cluster.
 	To see that such two nodes must exist, observe that we have at most $\ell-1$ clusters with alone nodes, and by the assumption we have $\ell$ alone nodes.
 	After this swap, we migrate $x_i$ to $I(x_i)$, evicting a lone node to $S$, and we conclude that the perfect partition exists.
 	
 
-	To keep \OPT's cost low, we end constructing ground sets prematurely --- while there are still $\ell+1$ alone nodes (i.e., not performing two last constructions).
-	Then, there two alone nodes exists that originate from the same cluster (we have $\ell+1$ alone nodes and $\ell$ clusters).
-	We denote these two nodes by $x^*, y^*$.
+	To keep \OPT's cost low, we end extending ground sets prematurely --- while there are still $\ell+1$ alone nodes (i.e., neglecting two last ground set expansions).
+	At the moment of termination, there exist two alone nodes that originate from the same cluster (as we have $\ell+1$ alone nodes and $\ell$ clusters).
+	We denote these two nodes by $x^*$ and $y^*$.
 
 	The optimal strategy is to perform two node swaps.
 	Precisely, \OPT collocates $\set{x_0,y_0}$ by swapping them with $x^*$ and $y^*$.
@@ -448,8 +447,9 @@ In comparison, \OPT performs one migration.
 	We never issue requests between nodes $x^*, y^*$ that are split in this configuration.
 
 
-	\ALG performs at least one swap for each ground set $\langle \{x_0, y_0\}, \{x_1, y_1\}, \{x_2, y_2\}, \ldots \rangle$.
-	We start with $k \cdot \ell - (k-1)$ single nodes (a single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with $\ell+1$ nodes.
+	\ALG performs at least one swap for every expansion of a ground set.
+	Each expansion reduces the number of alone nodes by $1$.
+	We start with $k \cdot \ell - (k-1)$ alone nodes (a single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with alone $\ell+1$ nodes.
 	The competitive ratio is then $\ALG / \OPT \geq (k\cdot \ell - k - l) / 2$.
 \end{proof}
 
