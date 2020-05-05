@@ -348,12 +348,12 @@ if the nodes belonging to the same component are collocated.
 
 In this section we consider a variant of Online Balanced Partitioning, where communication requests are permanent: once a pair of nodes start communicating, they continue forever.
 To avoid infinite cost, each communicating pair must be collocated.
-We study the instances with finite cost: we assume that the communication graph can be perfectly partitioned in the clusters.
-The algorithm's goal is to \emph{learn} the communication graph's partition.
+We study instances with finite cost: we assume that the communication graph can be perfectly partitioned in the clusters.
+The algorithm's goal is to \emph{learn} the communication graph, and partition it without too many reconfigurations.
 
 
 For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$.
-The lower bound can be easily translated to the partitioning model (Section~\ref{sec:part}) with finite request sequence.
+The lower bound can be easily translated to the partitioning model (studied in Section~\ref{sec:part}) with finite request sequence.
 At the end of this section, we discuss an asymptotically optimal upper bound.
 
 
@@ -362,10 +362,11 @@ At the end of this section, we discuss an asymptotically optimal upper bound.
 \label{sec:lowerbound}
 
 
-In this section, we provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm.
-The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the number of node exchanges.
+We provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm for the learning problem.
+Later we elaborate on how to efficiently transform it to a lower bound for the partitioning problem.
 The lower bound requires $k\geq 3$.
-For $k=2$, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a $6$-competitive algorithm (see Section~\ref{sec:k2}).
+For $k=2$, the learning problem is trivial: immediate collocation of a communicating pair is $1$-competitive.
+(A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a $6$-competitive algorithm (see Section~\ref{sec:k2}).)
 
 
 
@@ -378,14 +379,14 @@ For $k=2$, a lower bound of $3$ is known \cite{repartition-disc}, and we provide
 \end{figure}
 
 
-The adversary constructs ground sets in reaction to choices of a deterministic online algorithm.
-We emphasize that the algorithm does not know the ground set before they are revealed.
+The adversary constructs ground sets (a set of nodes that may communicate, see Section~\ref{sec:prelim}) depending on choices of a deterministic online algorithm.
+We emphasize that the algorithm does not know ground sets before they are revealed.
 Once we construct a ground set, it lasts until the end of the input sequence.
 
-The constructed ground sets can be partitioned into our clusters (without splitting nodes).
-This way, the optimal algorithm moves to such a partition, and serves all requests for free.
+The constructed ground sets can be perfectly partitioned into the clusters (i.e., nodes of each ground set collocated).
+This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost $0$), thus its cost is bounded.
 If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
-These two observations imply that the algorithm must eventually collocate nodes of a ground set to be competitive.
+These two observations imply that the algorithm must eventually collocate all nodes of a ground set to be competitive.
 
 First, we construct a ground set of size $k-1$ on one of the clusters $S$.
 In any configuration, there exists a node that accompanies it.
@@ -453,16 +454,15 @@ In comparison, \OPT performs one migration.
 	The competitive ratio is then $\ALG / \OPT \geq (k\cdot \ell - k - l) / 2$.
 \end{proof}
 
-We conclude by emphasizing the generality of the lower bound.
 
 \noindent
 \textbf{General partitioning problem.}
 Every lower bound for the learning problem constitutes a valid lower bound for the partitioning problem.
 The bound for partitioning converges to the bound for learning as the input sequence grows.
+However, our construction allows for an exact lower bound for partitioning with finite input sequence.
+To this end, we issue only enough requests until the algorithm collocates the nodes of each ground set (if it never does, we terminate after it pays $k\cdot \ell$).
+The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
 
-Our construction allows for an exact lower bound for partitioning with finite input sequence.
-To this end, we issue only enough requests until the algorithm collocates the nodes of each ground set.
-If it never does, we repeat until it pays $k\cdot \ell$.
 
 
 \noindent
