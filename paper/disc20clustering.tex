@@ -388,9 +388,9 @@ If the algorithm splits any pair of nodes of a ground set, the adversary issue r
 These two observations imply that the algorithm must eventually collocate nodes of a ground set to be competitive.
 
 First, we construct a ground set of size $k-1$ on one of the clusters $S$.
-In any configuration, there exists an alone node that accompanies it.
-We only issue requests between the current alone node from $S$, and some node that was initially collocated with it.
-Repeating such requests, almost all node must visit the cluster $S_1$.
+This, way, in any configuration, there exists an alone node that accompanies it.
+In such setting, we only issue requests between the current alone node from $S$, and some node that was initially collocated with it.
+Repeating such requests, almost all node must visit the cluster $S$.
 In comparison, \OPT performs one migration.
 
 \begin{theorem}
