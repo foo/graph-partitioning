@@ -169,6 +169,8 @@
 
 \renewcommand{\shortauthors}{M.~Pacut, M.~Parham, S.~Schmid}
 
+\maciek{TODOs: "requests between nodes" to "requests to pair of nodes"}
+
 \section{Introduction}
 
 \maciek{Practical motivation}
@@ -392,7 +394,7 @@ First, we construct a ground set of size $k-1$ on an arbitrary cluster $S$.
 In any configuration, there exists an alone node on $S$.
 We issue requests between the current alone node from $S$, and some node that was initially collocated with it.
 Repeating such requests, almost all the nodes must visit the cluster $S$.
-In comparison, \OPT performs one migration.
+In comparison, \OPT performs only two migrations.
 
 \begin{theorem}
 	\label{th:lowerbound}
