@@ -106,7 +106,7 @@
  
  \newcommand\mahmoud[1]{\color{orange}\textbf{\\ Mahmoud: #1}\\\color{black}}
  \newcommand\stefan[1]{\color{blue}\textbf{\\ Stefan: #1}\color{black}}
- \newcommand\maciek[1]{\color{brown}\textbf{\\ Maciek: #1}\color{black}}
+ \newcommand\maciek[1]{\color{brown}\textbf{(Maciek: #1)}\color{black}}
  %\newcommand\maciek[1]{}
  
  
@@ -1296,7 +1296,6 @@ Notation:
 \end{comment}
 
 
-
 \section{Distributed implementation.}
 The algorithm PPL from Section~\ref{sec:ppl} can be distributed
 similarly to the approach in~\cite{sigmetrics19_partitioning}.
@@ -1305,43 +1304,42 @@ The algorithm for $k=2$ from Section~\ref{sec:k2} performs only local communicat
 The algorithm for $k=3$ from Section~\ref{sec:k3} can be efficiently distributed.
 There are two non-local operations:
 \begin{enumerate}
-	\item We broadcast the end of the phase to reset all counters.
-	\item Merge of two  may require finding a third cluster that contains $3$ alone nodes (For the details, see the proof of Lemma~\ref{lem:1req})).
+	\item Broadcasting the end of the phase.\label{it:broadcast}
+	\item Component merge.
+	\label{it:merge}
 \end{enumerate}
 
-If a component grows to size $4$ or fresh cluster is found, we conclude that no perfect partition exists, and we broadcast (\maciek{TODO: efficient broadcast cite}) the message to end the phase and reset the counters in all clusters.
+If a component reaches size $4$ or fresh cluster is not found, we conclude that no perfect partition exists.
+Then, we end the phase and broadcast (\maciek{TODO: efficient broadcast cite}) the message to  reset the counters in all clusters.
 
-Let's call the cluster containing $3$ alone nodes \emph{fresh}.
-Now we show how to efficiently find a fresh cluster.
-We organize the clusters into an arbitrary balanced binary tree (\maciek{TODO: how to do it efficiently? Does not matter much, as this is performed once at the beginning}), and broadcast the root.
-Each cluster counts the number of fresh clusters in its subtree.
+A merge of two components may require finding a third cluster that contains $3$ alone nodes (for details see the proof of Lemma~\ref{lem:1req})).
+We say that a cluster containing $3$ alone nodes is \emph{fresh}.
+In the following, we show how to efficiently find a fresh cluster in a distributed manner.
+We organize the clusters into an arbitrary rooted balanced binary tree (\maciek{TODO: how to do it efficiently? Does not matter much, as this is performed once at the beginning}), and we broadcast the root to each cluster.
+Each cluster maintains the counter of fresh clusters in its subtree.
 To find a fresh cluster, we traverse an arbitrary path of non-zero counters from the root.
 Upon encountering a fresh cluster, we stop the traversal and decrease the counters on the followed path by $1$.
 
-The operation (ref1) requires a single broadcast, and the operation (ref2) requires $O(\log(\ell))$ communication.
-Each of these may occur on every request.
+The operation (\ref{it:broadcast}) requires a single broadcast, and the operation (\ref{it:merge}) requires $O(\log(\ell))$ communication.
+Each of these may occur, on average, every $\alpha$ external requests.
 
-\maciek{Possible improvement: we can have a fixed number of rounds for finding the X cluster by maintaining a direct pointer to an X cluster (not only to subgroup). However, the fix still requires the log number of rounds. But we improved the responsiveness.}
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
 
-\pagebreak
 \appendix
 
 
-\section{Omitted results}
+\section{Omitted results (for our future papers)}
 
 \begin{enumerate}
-	\item The lower bound of $\Omega(\ell)$ for the scenario with at most $(1/3-1/k)$-augmentation
-	
 	\item Costly cascade example (it is easy to present $k^2$ and $k\cdot \sqrt{k}$ (with different approach), and then we can combine these to obtain $k^3$)
 	
 	\item $k$-competitive algorithm for the ring communication pattern
 	
 	\item lower and upper bound $k+1$ for two clusters, perfect partition and the optimal configuration reachable within one swap
-	\item 
-	The bound $(k \cdot \ell - k - \ell) / 2$ can be easily improved to $(k \cdot \ell - k - 1) / 2$ by playing a simple caching game in the first cluster, instead of just giving away the $k-1$ "blocker" (the caching game would build it gradually)
+	
+	\item The lower bound $(k \cdot \ell - k - \ell) / 2$ can be easily improved to $(k \cdot \ell - k - 1) / 2$ by playing a simple caching game in the first cluster, instead of just giving away the $k-1$ "blocker" (the caching game would build it gradually)
 	
 \end{enumerate}
 
