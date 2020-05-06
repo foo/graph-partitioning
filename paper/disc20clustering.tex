@@ -441,7 +441,8 @@ In comparison, \OPT performs one migration.
 	
 
 	To keep \OPT's cost low, we end extending ground sets prematurely --- while there are still $\ell+1$ alone nodes (i.e., neglecting two last ground set expansions).
-	At the moment of termination, there exist two alone nodes that originate from the same cluster (as we have $\ell+1$ alone nodes and $\ell$ clusters).
+	Consider \ALG's configuration after the last expansion.
+	Among $\ell+1$ alone nodes there must exist a pair that originates from the same cluster (we have $\ell$ clusters). 
 	We denote these two nodes by $x^*$ and $y^*$.
 
 	The optimal strategy is to perform two node swaps.
