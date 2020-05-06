@@ -462,8 +462,7 @@ In comparison, \OPT performs only two migrations.
 
 \noindent
 \textbf{General partitioning problem.}
-Every lower bound for the learning problem constitutes a valid lower bound for the partitioning problem.
-The bound for partitioning converges to the bound for learning as the input sequence grows.
+Every lower bound for the learning problem constitutes a converging lower bound for the partitioning problem as the input sequence grows to infinity.
 However, our construction allows for an exact lower bound for partitioning with finite input sequence.
 To this end, we issue only enough requests until the algorithm collocates the nodes of each ground set (if it never does, we terminate after it pays $k\cdot \ell$).
 The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
