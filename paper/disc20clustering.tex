@@ -433,8 +433,9 @@ In comparison, \OPT performs one migration.
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
 	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some alone nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(z)$ contains an alone node, then we simply obtain a~perfect partition by swapping it with $z$.
-	Otherwise, if no alone nodes exist on $I(z)$, then its largest ground set is at most $k-1$, because $z$ is on $S$.
-	Hence, $\{x_0, y_0\}$ is present on $I(z)$, and we must evict it to make space for $z$.
+	In the following we assume that no alone nodes exist on $I(z)$.
+	The largest ground set of $I(z)$ is at most $k-1$, because $z$ is on $S$.
+	Therefore $\{x_0, y_0\}$ is present on $I(z)$, and we must evict it to make space for $z$.
 	To find the cluster for $\{x_0, y_0\}$, observe that we have at most $\ell-1$ clusters with alone nodes, and we have at least $\ell$ alone nodes --- hence a cluster with two alone nodes exists.
 	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated alone nodes, and then we swap an alone node from $I(z)$ with $z$.
 	
