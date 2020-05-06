@@ -383,20 +383,20 @@ The adversary constructs ground sets (a set of nodes that may communicate, see S
 We emphasize that the algorithm does not know ground sets before they are revealed.
 Once we construct a ground set, it lasts until the end of the input sequence.
 
-The constructed ground sets can be perfectly partitioned into the clusters (i.e., nodes of each ground set collocated).
-This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost $0$), thus its cost is bounded.
-If the algorithm splits any pair of nodes of a ground set, the adversary issue requests to any pair of split nodes.
-These two observations imply that the algorithm must eventually collocate all nodes of a ground set to be competitive.
+The constructed ground sets can be perfectly partitioned into the clusters (i.e., with nodes of each ground set collocated).
+This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost~$0$), thus its cost is bounded.
+If the algorithm splits any pair of nodes of a ground set, the adversary issues requests to any pair of split nodes.
+These two observations imply that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
 
-First, we construct a ground set of size $k-1$ on one of the clusters $S$.
-Then, in any configuration, there exists an alone node on $S$.
-In such setting, we only issue requests between the current alone node from $S$, and some node that was initially collocated with it.
+First, we construct a ground set of size $k-1$ on an arbitrary cluster $S$.
+In any configuration, there exists an alone node on $S$.
+We issue requests between the current alone node from $S$, and some node that was initially collocated with it.
 Repeating such requests, almost all the nodes must visit the cluster $S$.
 In comparison, \OPT performs one migration.
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for \OBRP{} is  $(k\cdot \ell - k - \ell)/2$ for any $k\geq 3$ and for any $\ell \geq 2$.
+	The competitive ratio of any deterministic online algorithm for \OBRP is at least $(k\cdot \ell - k - \ell)/2$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
@@ -410,7 +410,7 @@ In comparison, \OPT performs one migration.
 	%We never dismiss any constructed ground set.
 	Each cluster hosts exactly $k$ nodes, and in any configuration a single alone node resides in $S$.
 
-	Then, we create a ground set containing this alone node.
+	Then, we add the alone node from $S$ to a larger ground set to force its eviction.
 	Precisely,
 	we create a ground set $\{x_0, y_0\}$, 
 	where $x_0$ is the alone node from $S$ and $y_0$ is an arbitrary node that does not reside in $S$.
@@ -421,21 +421,22 @@ In comparison, \OPT performs one migration.
 	
 
 	We continue adding the node that is currently alone in $S$ to a larger ground set.
-	Precisely, for an alone node $x$ from $S$, we merge the ground sets of $x$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x)$.
-	This way, $x$ is evicted similarly to $x_0$, and we continue creating such ground sets (we describe the termination condition shortly).
-	Note that subsequent ground sets are different than the first ground set $\{x_0, y_0\}$: now the nodes originate in the same cluster, whereas nodes $x_0$ and $y_0$ were initially in different clusters.
+	Precisely, for an alone node $x$ from~$S$, we merge the ground sets of $x$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x)$.
+	This way, $x$ is evicted similarly to $x_0$, and we continue creating such ground sets.
+	We describe the termination condition shortly.
+	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from different clusters.)
 
 	We claim that expanding ground sets in this way can continue as long as at least $\ell$ alone node exists.
-	Fix the moment just before the creation of a ground set with the node $x_i$.\maciek{no $x_i$ def any more}
-	We show that if at least $\ell$ alone nodes exists (including $x_i, y_i$), then there exists a perfect partition of ground sets.
+	Fix the moment just before the creation of a ground set with the alone node $z$ that currently resides in $S$.
+	We show that if at least $\ell$ alone nodes exists (including $z$), then there exists a perfect partition of ground sets after expanding a ground set with $z$.
 	
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
 	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some alone nodes, and possibly the ground set $\{x_0, y_0\}$.
-	If $I(x_i)$ contains an alone node, then we simply obtain a perfect partition by swapping it with $x_i$.
-	Otherwise, $\{x_0, y_0\}$ is present on $I(x_i)$ (a single ground set cannot occupy the whole cluster $I(x_i)$, as without $x_i$ its size is at most $k-1$).
-	In this case, we first swap $\{x_0, y_0\}$ with two alone nodes that occupy the same cluster.
-	To see that such two nodes must exist, observe that we have at most $\ell-1$ clusters with alone nodes, and by the assumption we have $\ell$ alone nodes.
-	After this swap, we migrate $x_i$ to $I(x_i)$, evicting a lone node to $S$, and we conclude that the perfect partition exists.
+	If $I(z)$ contains an alone node, then we simply obtain a~perfect partition by swapping it with $z$.
+	Otherwise, if no alone nodes exist on $I(z)$, then its largest ground set is at most $k-1$, because $z$ is on $S$.
+	Hence, $\{x_0, y_0\}$ is present on $I(z)$, and we must evict it to make space for $z$.
+	To find the cluster for $\{x_0, y_0\}$, observe that we have at most $\ell-1$ clusters with alone nodes, and we have at least $\ell$ alone nodes --- hence a cluster with two alone nodes exists.
+	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated alone nodes, and then we swap an alone node from $I(z)$ with $z$.
 	
 
 	To keep \OPT's cost low, we end extending ground sets prematurely --- while there are still $\ell+1$ alone nodes (i.e., neglecting two last ground set expansions).
