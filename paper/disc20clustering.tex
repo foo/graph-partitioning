@@ -76,6 +76,7 @@
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
  
  \newcommand{\OPT}{\textsf{OPT}\xspace}
+  \newcommand{\OPTM}{\mathit{OPT}}
  \newcommand{\ALG}{\textsf{ALG}\xspace}
  \newcommand{\PPL}{\textsf{PPL}\xspace}
  \newcommand{\OBRP}{BRP}
@@ -962,47 +963,46 @@ reset the counter and collocate the pair arbitrarily in one of the two clusters 
 We charge both \OPT and \RM whenever \RM collocates a pair (i.e., on a collocation event).
 %More precisely,we charge them only the cost of the collocation, per such event.
 %Hence,we charge the cost of  this collocation to \OPT for the first time.
-Alg collocates a pair always with a swap (i.e., two simultaneous migrations),
-which  costs $2\alpha$.
-%We charge \OPT only for requests up to the one that triggers a collocation (i.e., not for later requests on the same pair).
-OPT may save some costs by collocating multiple pairs at once (before they incur too much cost),
-paying the price of only one migration per pair  (\mahmoud{see Figure \ref{fig:TBD}}).
-%This observation suggests that we can't charge \OPT more than $\alpha$ per collocation.
-%E.g.,
-%OPT can collocate two costly pairs with a single swap if
-%it has both pairs on the cut of  the same two clusters.
-%Later, \RM collocates those pairs with two swaps.
+\RM collocates a pair always with a swap (i.e., two simultaneous migrations),
+which  costs $2\alpha$,
+while OPT may save some costs by collocating multiple pairs at once, 
+ before they inflict too much communication cost.
+ Therefore it pays the price of only one migration per pair  (\mahmoud{see Figure \ref{fig:TBD}}).
 Hence,
 whenever \OPT collocates a pair,
 we charge it only the cost of moving a single node to the cluster of the other,
-i.e., $\alpha$ (in contrast to $2\alpha$ on Alg).
+i.e., $\alpha$ (in contrast to $2\alpha$ on \RM).
 
-
-Observe that for requests in
-$R_t := \sigma_{\{u,w\}}(t'',t'] \cup \sigma_{\{u,v\}}(t',t] $ 
-and the entire duration of the input sequence (i.e., $(0,m]$),
-OPT must pay a total cost
-%We denote the cost w.r.t~$r_t$ by
-$\mathit{OPT} (R_t) \geq 
-	c_{R_t} := \min{ \{ 2\lambda, \lambda+\alpha, 2\alpha \} }$,
-for serving (some of) these requests remotely or (and) collocating (one of) the pairs,
-regardless of its choices.
-Then the cost per pair, in particular the cost w.r.t.~$\{u,v\}$, is
-$\mathit{OPT} (\sigma_{\{u,v\}}) \geq c_{R_t} / 2$.
+\textbf{The charging Scheme.}
+Consider two  pairs that share a same node, 
+i.e.~\emph{intersecting pairs},
+and the set of requests that causes the collocation of both pairs,
+at some  times during  $[1,m]$.
+%i.e.~the entire duration of the sequence.
+Observe that \OPT must pay a non-zero cost
+for these requests over the entire $\sigma$,
+since it cannot have both pairs initially collocated.
+%More precisely,
+%OPT  pays a total cost at least
+%	$\min{ \{ 2\lambda, \lambda+\alpha, 2\alpha \} }$ for, respectively,
+%	serving requests to both pairs remotely,
+%	serving requests to one pair remotely and collocating the other,
+%	or collocating both pairs. 
+%
+%for serving (some of) these requests remotely or (and) collocating (one of) the pairs,
+%regardless of its choices.
+%Then the cost per pair, in particular the cost w.r.t.~$\{u,v\}$, is
+%$\mathit{OPT} (\sigma_{\{u,v\}}) \geq c_{R_t} / 2$.
 %
 However,
-we can charge this cost to \OPT only at $t=t_0$,
-i.e.~the first time \RM collocates $\{u,v\}$,
-and not at any consequent time that \RM collocates $\{u,v\}$.
-That is,
-we charge \OPT a cost incurred by requests in
-$\sigma_{\{u,w\}}$ or $\sigma_{\{u,v\}}$,
-if and only if  \OPT incurs the cost during  intervals $(t'', t']$ or $(t', t]$,
-respectively.	
-Latter,
-this ensures us that we do not charge \OPT for a cost more than twice.
+we can charge the whole cost to \OPT only the first time \RM collocates a pair,
+and not at any consequent time when \RM collocates it a second time.
+Otherwise,
+ \OPT is possibly charged for a same cost repeatedly.
+For this reason,
+we charge \OPT a cost inflicted by a pair,
+if and only if  \OPT incurs the cost some time since the last time \RM separated the pair.
 %%
-We use notations defined so far in the proof that follows.
 
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Assume on request $\sigma_{t}=\set{u,v}$, 
@@ -1031,7 +1031,7 @@ We use notations defined so far in the proof that follows.
 	
 	If $t$ is not the first time that \RM collocates $\{u,v\}$ then
 	let $0 < t' < t$ be the latest time when \RM separates $\set{u,v}$
-	in order to collocate some (intersecting) pair
+	in order to collocate some intersecting pair
 	$\{x,y\} \neq \{u,v\}, \{x,y\} \cap \{u,v\} \neq \emptyset$, 
 	e.g.,
 	$\{x,y\}=\{u,w\}$.
@@ -1045,37 +1045,41 @@ We use notations defined so far in the proof that follows.
 	%
 	
 	First,
-	we bound the costs incurred by \RM for requests that
+	we bound  costs incurred by \RM for requests that
 	lead to the collocation of $\{u,v\}$ at time $t \in T$, where
 	$T := \{ i \in [1,m] ~\vert~ \exists \{x,y\}: C^{i}_{\{x,y\}} = \lambda \}$
 	is the set of times when \RM performs a collocation.
 	By definitions of $t$ and $t'$,
-	the overall cost of requests in $\sigma_{\set{u,v}}$ incurred by Alg,
+	the overall cost of requests in $\sigma_{\set{u,v}}$ incurred by \RM,
 	i.e., the total cost of remote serving
 	and the moving cost, is
 	$\lambda + 2\alpha$.	
 	Next,
-	we bound the cost incurred by Alg
+	we bound costs incurred by \RM
 	for requests that do not lead to collocations until the  end of the sequence at $t=m$.
 	Assume $\{u,v\}$ is not collocated at $t=m$
 	and $0 < C^{m}_{ \{u,v\} } < \lambda $,
 	which means \RM pays $C^{m}_{ \{u,v\} }$
-	for these requests $\sigma_{\set{u,v}}(t',m]$.
+	for  requests in $\sigma_{\set{u,v}}(t',m]$.
     Then the overall cost to \RM is
-	
-	\begin{align*}	%\label{eq:costAlg}
-	\mathit{ALG} (\sigma)
-	=
-	\sum_{ t \in T}(\lambda + 2\alpha) +
-	\sum_{\{u,v\}} C^{m}_{\{u,v\}}	
-	\leq
-	\sum_{ t \in T}(\lambda + 2\alpha) +
-	\sum_{\{u,v\}} C^{m}_{\{u,v\}}	
-	=
-	\sum_{ t \in T} 3\alpha +
-	\sum_{\{u,v\}} C^{m}_{\{u,v\}}
-	.
-	\end{align*}
+$	\mathit{RM} (\sigma)
+=
+\sum_{ t \in T}(\lambda + 2\alpha) +
+\sum_{\{u,v\}} C^{m}_{\{u,v\}}	
+$.
+%	\begin{align*}	%\label{eq:costAlg}
+%	\mathit{RM} (\sigma)
+%	=
+%	\sum_{ t \in T}(\lambda + 2\alpha) +
+%	\sum_{\{u,v\}} C^{m}_{\{u,v\}}	
+%	\leq
+%	\sum_{ t \in T}(\lambda + 2\alpha) +
+%	\sum_{\{u,v\}} C^{m}_{\{u,v\}}	
+%	=
+%	\sum_{ t \in T} 3\alpha +
+%	\sum_{\{u,v\}} C^{m}_{\{u,v\}}
+%	.
+%	\end{align*}
 	
 	Next,
 	we bound  costs incurred by \OPT for requests that trigger collocation of $\{u,v\}$ at $t \in T$.
@@ -1084,7 +1088,7 @@ We use notations defined so far in the proof that follows.
 	or $\alpha$ for collocating the pair and
 	serving (some of) the requests with cost 0.
 	Therefore in this case,
-	$\mathit{OPT} (\sigma_{\{u,v\}}(0,t]) \geq  \min{\{ \lambda,\alpha \}}$.
+	$\OPTM (\sigma_{\{u,v\}}(0,t]) \geq  \min{\{ \lambda,\alpha \}}$.
 	%
 	Otherwise,
 	it is not the first collocation and
@@ -1093,8 +1097,8 @@ We use notations defined so far in the proof that follows.
 	$R_t := \sigma_{\{u,w\}}(t'',t'] \cup \sigma_{\{u,v\}}(t',t] $.
 	We define $R_{t'}$ for the collocation at $t'$ in an analogous way.
 	Then,
-	$\mathit{OPT} (R_t) = \mathit{OPT} (\sigma_{\{u,w\}}) 
-	+ \mathit{OPT} (\sigma_{\{u,v\}}) $.
+	$\OPTM(R_t) = \mathit{OPT} (\sigma_{\{u,w\}}) 
+	+ \OPTM(\sigma_{\{u,v\}}) $.
 	We distinguish three (non-exhaustive) cases for the cost to \OPT w.r.t.~$R_t$.
 	Latter,
 	 we argue that \OPT cannot save cost by deviating from these cases.
@@ -1103,24 +1107,24 @@ We use notations defined so far in the proof that follows.
 		\OPT collocates $\{u,w\}$ at  $t''$, $\{u,v\}$  at $t'$,
 		and keeps them so during $(t'',t']$ and $(t',t]$, respectively.
 		Therefore it serves all requests in $R_t$ with no additional cost and
-		let $\OPT_1 (R_t) := 2\alpha$.
+		let $\OPTM_1 (R_t) := 2\alpha$.
 		\item
 		\OPT has one of the pairs  already collocated and the other pair separated,
 			  prior to and during their respective intervals.
 		Hence,
 		it pays only $\lambda$ for serving all requests in $R_t$
-		and let $\OPT_2 (R_t) := \lambda$.
+		and let $\OPTM_2 (R_t) := \lambda$.
 		\item
 		\OPT has one of the pairs already collocated prior to its interval,
 		and it collocates the other pair during the respective interval.
 		Then it pays 0 for one pair and $\alpha$ for the other and 
-		let $\OPT_3 (R_t) := \alpha$.
+		let $\OPTM_3 (R_t) := \alpha$.
 	\end{enumerate}
 %	We consider cases (ii) and (iii) also for the pair $\{u,w\}$, symmetrically.
 	If \OPT behaves in one of these cases,
 	then
 	$\mathit{OPT} (R_t) \geq
-		\min{\{ \OPT_1(R_t), \OPT_2(R_t), \OPT_3(R_t) \}}  =
+		\min{\{ \OPTM_1(R_t), \OPTM_2(R_t), \OPTM_3(R_t) \}}  =
 		\min{ \{ \lambda, \alpha \}}$.
 	Otherwise,
 	\OPT deviates from these cases,
@@ -1159,17 +1163,17 @@ We use notations defined so far in the proof that follows.
 	$R_{t'} \cap R^*_{\{u,v\}} = \sigma_{\{u,w\}}$
 	(\mahmoud{See figure \ref{fig:doubleCount}}). 
 	This means,
-	$\mathit{Cost}_{OPT} ( \sigma_{\{u,w\}})$
+	$\OPTM ( \sigma_{\{u,w\}})$
 	is counted at most twice in each of  the expressions
 	$\mathit{OPT} (R_{t'}) + \mathit{OPT} (R_t)$
 	and  
 	$\mathit{OPT} (R_{t'}) + \mathit{OPT} (R^*_{\{u,v\}})$.
 	Hence,
-	for all collocations performed by Alg,
+	for all collocations performed by \RM,
 	and for final costs at $t=m$,
 	\OPT pays at least 
 	$\frac{1}{2}(
-	\sum_{ t \in [1,m] } \mathit{OPT} (R_t) +
+	\sum_{ t \in T } \mathit{OPT} (R_t) +
 	\sum_{\{u,v\}} \mathit{OPT} (R^*_{\{u,v\}})
 	) $.
 	Then,
@@ -1183,7 +1187,7 @@ We use notations defined so far in the proof that follows.
 		\sum_{ t \in T} \mathit{OPT} (R_t) 
 		+ \sum_{\{u,v\}}\mathit{OPT} (R^*_{\{u,v\}})
 		\Big)	\\
-		&\leq
+		&\geq
 		\Big(
 		\sum_{ t \in T} \min{ \{ \lambda, \alpha \}}  +
 		\sum_{\{u,v\}} \min{ \{C^{m}_{\{u,v\}} , \alpha \} } 
