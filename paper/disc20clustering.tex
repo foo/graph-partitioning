@@ -104,8 +104,10 @@
  \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
  
  \newcommand\mahmoud[1]{\color{orange}\textbf{Mahmoud: #1~}\color{black}}
- \newcommand\stefan[1]{\color{blue}\textbf{\\ Stefan: #1}\color{black}}
+ \newcommand\stefan[1]{\color{blue}\textbf{Stefan: #1}\color{black}}
  \newcommand\maciek[1]{\color{brown}\textbf{(Maciek: #1)}\color{black}}
+ %\newcommand\mahmoud[1]{}
+ %\newcommand\stefan[1]{}
  %\newcommand\maciek[1]{}
  
  
@@ -755,10 +757,6 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 \end{proof}
 
 
-\section{Bounding the cost of a single reconfiguration of components}
-
-\maciek{Overview of the section, intro. Defer introducing the graph notation, the warm-up does not need it}
-
 \subsection{Warm-up: bounding the reconfiguration for $k=3$}
 
 
@@ -802,6 +800,12 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 \end{proof}
 
 Corollary: DET2 is $O(\ell)$-competitive for $k=3$.
+
+
+\begin{comment}
+\section{Bounding the cost of a single reconfiguration of components}
+
+\maciek{Overview of the section, intro. Defer introducing the graph notation, the warm-up does not need it}
 
 \subsection{Characterization of the migration graph}
 
@@ -932,7 +936,7 @@ We begin, by bounding the length of each cycle in one of optimal solutions.
 
 
 Corollary: Algorithm DET2 is $O(\ell \cdot k \cdot \min \{ \ell, k^k \})$-competitive.
-
+\end{comment}
 
 
 \section{Improved algorithm for Online Rematching}
