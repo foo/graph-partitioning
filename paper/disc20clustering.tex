@@ -103,7 +103,7 @@
  \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
  \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
  
- \newcommand\mahmoud[1]{\color{orange}\textbf{Mahmoud: #1}\\\color{black}}
+ \newcommand\mahmoud[1]{\color{orange}\textbf{Mahmoud: #1~}\color{black}}
  \newcommand\stefan[1]{\color{blue}\textbf{\\ Stefan: #1}\color{black}}
  \newcommand\maciek[1]{\color{brown}\textbf{(Maciek: #1)}\color{black}}
  %\newcommand\maciek[1]{}
@@ -402,35 +402,40 @@ In comparison, \OPT performs only two migrations.
 
 \begin{proof}
 	Fix any online algorithm \ALG{}.
-	Let $I(C)$ denote the cluster where nodes of ground set $C$ are located initially.
+	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located initially.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
+	\mahmoud{i.e., $I(C):=...$formalized with notations}.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially all nodes are \emph{alone} (they belong to their own trivial ground sets).
-
+\mahmoud{isolated would be a better word for "alone"}
 	First, we create a ground set of size $k-1$ on an arbitrarily chosen cluster $S$.
+	\mahmoud{$\mathcal{S}$ is better for a set of sets.}
 	%We never dismiss any constructed ground set.
-	Each cluster hosts exactly $k$ nodes, and in any configuration a single alone node resides in $S$.
+	Each cluster hosts exactly $k$ nodes, and in any configuration a single alone node resides in $S$. \mahmoud{an isolated node is collocated with  this GS in $\mathcal{S}$. We denote the first such node by $x_0$.}
 
 	Then, we add the alone node from $S$ to a larger ground set to force its eviction.
 	Precisely,
 	we create a ground set $\{x_0, y_0\}$, 
 	where $x_0$ is the alone node from $S$ and $y_0$ is an arbitrary node that does not reside in $S$.
-	\ALG has them split, and the adversary produces external requests until they are collocated.
+	\ALG has them split, and the adversary issues external requests until \ALG collocates them.
 	The cluster $S$ already contains a ground set of size $k-1$, hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
 	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
 	\ALG must replace $x_0$ with another single node.
+	\mahmoud{In any new partition, \ALG must replace $x_0$..., otherwise it is not a feasible partition.}
 	
 
 	We continue adding the node that is currently alone in $S$ to a larger ground set.
 	Precisely, for an alone node $x$ from~$S$, we merge the ground sets of $x$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x)$.
+	\mahmoud{$x_i$?}
 	This way, $x$ is evicted similarly to $x_0$, and we continue creating such ground sets.
 	We describe the termination condition shortly.
-	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from different clusters.)
+	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from distinct clusters.)
 
 	We claim that expanding ground sets in this way can continue as long as at least $\ell$ alone node exists.
-	Fix the moment just before the creation of a ground set with the alone node $z$ that currently resides in $S$.
+	Fix the moment just before the creation of a ground set with the alone node \mahmoud{$x_{t^*}$?} that currently resides in $S$.
+	\mahmoud{ALG might change $S$. We can say, "currently collocated with the...".}
 	We show that if at least $\ell$ alone nodes exists (including $z$), then there exists a perfect partition of ground sets after expanding a ground set with $z$.
-	
+	\mahmoud{the termination condition is needed before the claim statement.}
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
 	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some alone nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(z)$ contains an alone node, then we simply obtain a~perfect partition by swapping it with $z$.
@@ -1138,10 +1143,13 @@ We use notations defined so far in the proof that follows.
 	\geq  \min{ \{ C^{m}_{ \{u,v\}}, \alpha \}}$.
 	
 	Next, we sum up all costs incurred by OPT.
-	Observe that by definition,
-	$R_{t'} \cap R_t = \sigma_{\{u,v'\}}[t'',t']$.
+	By definitions of $R_t$ and $R_{\{u,v\}}$, we have either
+	$R_{t'} \cap R_t = \sigma_{\{u,v'\}}[t'',t']$ or
+	$R_{t'} \cap R_{\{u,v\}} = \sigma_{\{u,v'\}}[t'',t']$
+	(\mahmoud{See figure \ref{fig:doubleCount}}). 
 	This means,
-	the cost of r.h.s.~to OPT is counted at most twice in each of  the expressions
+	$\mathit{Cost}_{OPT} ( \sigma_{\{u,v'\}}[t'',t'])$
+	is counted at most twice in each of  the expressions
 	$\mathit{Cost}_{\mathit{OPT}} (R_{t'}) + \mathit{Cost}_{\mathit{OPT}} (R_t)$
 	and  
 	$\mathit{Cost}_{\mathit{OPT}} (R_{t'}) + \mathit{Cost}_{\mathit{OPT}} (R_{\{u,v\}})$.
