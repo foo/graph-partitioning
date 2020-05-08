@@ -392,12 +392,7 @@ In \TAlg, we choose the partition closest to the previous configuration (a repar
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-In this section we consider a variant of Online Balanced Partitioning, where communication requests are permanent: once a pair of nodes start communicating, they continue forever.
-To avoid infinite cost, each communicating pair must be collocated.
-We study instances with finite cost: we assume that the communication graph can be perfectly partitioned in the clusters.
-The algorithm's goal is to \emph{learn} the communication graph, and partition it without too many reconfigurations.
-
-
+In this section we consider the learning variant of Online Balanced Partitioning.
 For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$.
 The lower bound can be easily translated to the partitioning model (studied in Section~\ref{sec:part}) with finite request sequence.
 At the end of this section, we discuss an asymptotically optimal upper bound.
@@ -756,8 +751,8 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	As \TAlg is component respecting, it never increases any counter above $\alpha$.
 	We say that the pair $(u, v)$ is \emph{saturated} if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
-	Let $\sigma$ be the input sequence that arrived during the phase.
-	Let $\sigma_{cost}$ be the requests that at the moment of arrival were external requests for \TAlg (these are the only requests that incurred a cost for \TAlg).
+	By $\sigma$ we denote the input sequence that arrived during the phase.
+	By $\sigma_{cost}$ we denote the requests that at the moment of arrival were external requests for \TAlg (these are the only requests that incur cost for \TAlg).
 	In our analysis, we partition $\sigma_{cost}$ into subsequences $\sigma_I$ and $\sigma_E$.
 	The sequence $\sigma_I$ (inter-component requests) are the requests from $\sigma_{cost}$ issued to pairs that belong to the same component of \TAlg at the end of the phase.
 	The sequence $\sigma_E$ (extra-component requests) denotes the requests from $\sigma_{cost}$ that do not appear in $\sigma_I$.
@@ -785,7 +780,8 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	\medskip
 	
 	Now we lower-bound the cost of $\OPT$.
-	By $\OPT(\sigma_I)$ and $\OPT(\sigma_E)$ we denote the cost of $\OPT$ on these input sequences (defined with respect to components of \TAlg in this phase).
+	By $\OPT(\sigma_I)$ and $\OPT(\sigma_E)$ we denote the cost of $\OPT$ on requests from sequences $\sigma_I$ and $\sigma_E$, respectively.
+	Note that these costs are defined with respect to components of \TAlg in this phase.
 	By $\OPT(M)$ we denote the cost of migrations performed by $\OPT$ in this phase.
 	
 	We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
