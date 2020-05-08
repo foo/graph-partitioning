@@ -339,7 +339,7 @@ The overview of known results is in Table~\ref{tab:overview}.
 		\rowcolor{gray!25}
 		Learning model & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell)$\hspace{0.3cm} (\S \ref{sec:ppl}) \\
 	\end{tabular}
-	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The results pertain to the general partitioning model, but the last row, that pertains to the learning model for arbitrary $k$ and $\ell$.
+	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The first three rows show the results for the general partitioning model, and last row shows the results for the learning model for arbitrary $k$ and $\ell$.
 	}
 	\label{tab:overview}
 	\vspace{-7mm}
@@ -408,7 +408,7 @@ We provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any 
 Later we elaborate on how to efficiently transform it to a lower bound for the partitioning problem.
 The lower bound requires $k\geq 3$.
 For $k=2$, the learning problem is trivial: immediate collocation of a communicating pair is $1$-competitive.
-(A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a $6$-competitive algorithm (see Section~\ref{sec:k2}).)
+(A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a~$6$-competitive algorithm (see Section~\ref{sec:k2}).)
 
 
 
@@ -699,7 +699,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 
 \begin{lemma}
 	\label{lem:1req}
-	During a single reconfiguration of nodes, \TAlg exchanges at most $2$ pairs of nodes.
+	In a single reconfiguration of nodes (after a merge of components), \TAlg exchanges at most $2$ pairs of nodes.
 \end{lemma}
 
 \begin{proof}
