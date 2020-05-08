@@ -799,7 +799,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	\medskip
 	Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
-	In a~fixed configuration of $\OPT$, it may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
+	By entering some fixed configuration before serving $\sigma_E$, \OPT may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
 	Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
 	Faced with $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
 	
