@@ -179,7 +179,20 @@
 
 \section{Introduction}
 
-\maciek{Practical motivation}
+We study a problem of managing the virtual machines in a data center.
+We focus on the scenario where virtual machines can be migrated during runtime to another physical machine.
+The possibility of migration allows reacting to unpredictable communication patterns.
+For example, if some distant virtual machines communicate often, it is vital to reduce their distance to save network bandwidth.
+The objective is to~minimize the total network bandwidth used for communication and for migration.
+
+
+Intuitively, we would like to minimize inter-machine
+interactions by mapping frequently communicating virtual machines to the same physical machine
+Since communication patterns change over time, the~placement of virtual machines should be managed in an online manner, by migrating them between physical machines.
+The~objective is to minimize the weighted sum of inter-machine communication and repartitioning costs.
+The former is defined as the number of communication requests between virtual machines placed at distinct physical machines, and the latter as the number of migrations.
+
+
 
 \subsection{Model.}
 
@@ -230,21 +243,21 @@ the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 
 
 
-\subsubsection{Learning model.}
-
-
-We consider a variant of Online Balanced Partitioning, where communication requests are permanent: once a pair of nodes start communicating, they continue forever.
+\noindent
+\textbf{Learning model.}
+We study a variant of Online Balanced Partitioning, where communication requests are permanent: once a pair of nodes start communicating, they continue forever.
 To avoid infinite cost, each communicating pair must be collocated.
 We study instances with finite cost: we assume that the communication graph can be perfectly partitioned in the clusters (no external requests are required).
 The algorithm's goal is to \emph{learn} the communication graph, and partition it without too many reconfigurations.
+We refer to this problem variant as the \emph{learning} problem.
 
-\noindent
-\textbf{Adversarial input and the competitive analysis.}
-\maciek{The competitive ratio definition and the worst case inputs}
 
-\noindent
-\textbf{Challenges.}
-The partitioning model has a rent-or-buy dilemas. The decision, what to evict is present in both models.
+\medskip 
+In both models we assume that the communication patterns are not known in advance to our algorithm.
+We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
+In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
+
+
 
 
 
