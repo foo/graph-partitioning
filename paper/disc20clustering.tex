@@ -79,7 +79,7 @@
   \newcommand{\OPTM}{\mathit{OPT}}
  \newcommand{\ALG}{\textsf{ALG}\xspace}
  \newcommand{\PPL}{\textsf{PPL}\xspace}
- \newcommand{\OBRP}{BRP}
+ \newcommand{\OBRP}{BRP\xspace}
  \newcommand{\PPOBRP}{PP-BRP}
  \newcommand{\dist}{\textsf{dist}}
  \newcommand{\TAlg}{{\ensuremath{\textsf{ALG}_{3}}}\xspace}
@@ -825,16 +825,27 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	This way, the competitive ratio increases at most twofold.
 \end{proof}
 
+\subsection{Improved algorithm for Online Rematching} \label{sec:k2}
+In this section,
+we present \RM,
+ an algorithm for the \OBRP restricted to clusters of capacity 2,
+i.e.~$k=2$.
+We interpret a pair of nodes collocated in one cluster as a matched pair.
+Hence,
+the problem is an online variant of the classic matching problem where
+a matched pair can separate from each other in order to ``rematch'' with two other nodes.
+This is known as the  \emph{Online Rematching} 
+problem and a (non-strict) 7-competitive algorithm is already given by \cite{repartition-disc},
+in which the ratio comes with an additive factor in $O(\alpha\ell^2)$.
+We do not only improve upon their competitive ratio,
+but also show that our ratio holds \emph{strictly}
+(i.e., with no additive factor).
+In addition,
+our algorithm is similar
+and slightly simpler than the one in \cite{repartition-disc}, 
+while our analysis is significantly more simple and concise,
+thanks to the charging scheme we devise here.
 
-
-
-
-\subsection{Improved Algorithm for Online Rematching}
-\label{sec:k2}
-
-
-
-\maciek{Intro: compare to previous 7-competitive algorithm. Note strict competitive ratio vs large additive term. Also, emphasize that in this section the algorithm is different than DET2}
 
 We describe the algorithm \RM for the online rematching problem as follows.
 The input to \RM is a sequence of  requests
@@ -870,18 +881,6 @@ at some  times during  $[1,m]$.
 Observe that \OPT must pay a non-zero cost
 for these requests over the entire $\sigma$,
 since it cannot have both pairs initially collocated.
-%More precisely,
-%OPT  pays a total cost at least
-%	$\min{ \{ 2\lambda, \lambda+\alpha, 2\alpha \} }$ for, respectively,
-%	serving requests to both pairs remotely,
-%	serving requests to one pair remotely and collocating the other,
-%	or collocating both pairs. 
-%
-%for serving (some of) these requests remotely or (and) collocating (one of) the pairs,
-%regardless of its choices.
-%Then the cost per pair, in particular the cost w.r.t.~$\{u,v\}$, is
-%$\mathit{OPT} (\sigma_{\{u,v\}}) \geq c_{R_t} / 2$.
-%
 However,
 we can charge the whole cost to \OPT only the first time \RM collocates a pair,
 and not at any consequent time when \RM collocates it a second time.
@@ -902,11 +901,6 @@ if and only if  \OPT incurs the cost some time since the last time \RM separated
 	reaches $\lambda$ immediately before \RM resets the counter.
 	I.e.,
 	$ C^t_{\set{u,v}} = \lambda$.
-	%	In case the first collocation of $\set{u,v}$ occurs at $t$,
-	%	if the pair is collocated in the initial configuration then
-	%	we set $t''=0$,
-	%	else,
-	%	we set $ t'' = -\infty, t'=0$.
 	We denote the set of all requests to a pair $\set{x,y}$ that arrive
 	during $[t_1,t_2]$ by $\sigma_{\set{x,y}}[t_1,t_2]$,
 	and its overall cost to \OPT by
@@ -955,19 +949,6 @@ $	\mathit{RM} (\sigma)
 \sum_{ t \in T}(\lambda + 2\alpha) +
 \sum_{\{u,v\}} C^{m}_{\{u,v\}}	
 $.
-%	\begin{align*}	%\label{eq:costAlg}
-%	\mathit{RM} (\sigma)
-%	=
-%	\sum_{ t \in T}(\lambda + 2\alpha) +
-%	\sum_{\{u,v\}} C^{m}_{\{u,v\}}	
-%	\leq
-%	\sum_{ t \in T}(\lambda + 2\alpha) +
-%	\sum_{\{u,v\}} C^{m}_{\{u,v\}}	
-%	=
-%	\sum_{ t \in T} 3\alpha +
-%	\sum_{\{u,v\}} C^{m}_{\{u,v\}}
-%	.
-%	\end{align*}
 	
 	Next,
 	we bound  costs incurred by \OPT for requests that trigger collocation of $\{u,v\}$ at $t \in T$.
@@ -998,42 +979,6 @@ $.
 	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$. 
 	Therefore in any case,
 	$\OPTM(R_t) \geq  \min{\{ \lambda,\alpha \}}$.
-	\begin{comment}
-	We distinguish three (non-exhaustive) cases for the cost to \OPT w.r.t.~$R_t$.
-	Latter,
-	 we argue that \OPT cannot save cost by deviating from these cases.
-	\begin{enumerate}[label=\roman*.]
-		\item
-		\OPT collocates $\{u,w\}$ at  $t''$, $\{u,v\}$  at $t'$,
-		and keeps them so during $(t'',t']$ and $(t',t]$, respectively.
-		Therefore it serves all requests in $R_t$ with no additional cost and
-		let $\OPTM_1 (R_t) := 2\alpha$.
-		\item
-		\OPT has one of the pairs  already collocated and the other pair separated,
-			  prior to and during their respective intervals.
-		Hence,
-		it pays only $\lambda$ for serving all requests in $R_t$
-		and let $\OPTM_2 (R_t) := \lambda$.
-		\item
-		\OPT has one of the pairs already collocated prior to its interval,
-		and it collocates the other pair during the respective interval.
-		Then it pays 0 for one pair and $\alpha$ for the other and 
-		let $\OPTM_3 (R_t) := \alpha$.
-	\end{enumerate}
-%	We consider cases (ii) and (iii) also for the pair $\{u,w\}$, symmetrically.
-	If \OPT behaves in one of these cases,
-	then
-	$\mathit{OPT} (R_t) \geq
-		\min{\{ \OPTM_1(R_t), \OPTM_2(R_t), \OPTM_3(R_t) \}}  =
-		\min{ \{ \lambda, \alpha \}}$.
-	Otherwise,
-	\OPT deviates from these cases,
-	e.g.~by collocating a pair after paying for some of requests to this pair.
-	However,
-	no deviation can decrease the cost to \OPT. \mahmoud{prove this!}
-	Therefore in any case,
-	$\mathit{OPT} (R_t) \geq  \min{ \{ \lambda, \alpha \}}$.
-	\end{comment}
 	
 	It remains to bound the cost  incurred by \OPT due to requests to $\{u,v\}$ that do not lead to its collocation until the end of the sequence at $t=m$.
 	We bound the cost analogously to the case where \RM collocates $\{u,v\}$.
