@@ -234,7 +234,6 @@ Afterwards,
 the algorithm serves the  request.
 The cost of migrating a node from one cluster to another
 is~$\alpha \in \mathbb{Z}^+$.
-\maciek{Why restrict $\alpha$? It should just be positive}
 For any algorithm $\ALG$,
 its cost,
 denoted by $\ALG(\sigma)$,
@@ -430,8 +429,8 @@ If the algorithm splits any pair of nodes of a ground set, the adversary issues 
 These two observations imply that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
 
 First, we construct a ground set of size $k-1$ on an arbitrary cluster $S$.
-In any configuration, there exists an alone node on $S$.
-We issue requests between the current alone node from $S$, and some node that was initially collocated with it.
+In any configuration, there exists an isolated node on $S$.
+We issue requests between the current isolated node from $S$, and some node that was initially collocated with it.
 Repeating such requests, almost all the nodes must visit the cluster $S$.
 In comparison, \OPT performs only two migrations.
 
@@ -442,53 +441,47 @@ In comparison, \OPT performs only two migrations.
 
 \begin{proof}
 	Fix any online algorithm \ALG{}.
-	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located initially.
+	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located in the initial configuration.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
-	\mahmoud{i.e., $I(C):=...$formalized with notations}.
 	Throughout the construction, we maintain ground sets for each node.
-	Initially all nodes are \emph{alone} (they belong to their own trivial ground sets).
-\mahmoud{isolated would be a better word for "alone"}
-	First, we create a ground set of size $k-1$ on an arbitrarily chosen cluster $S$.
-	\mahmoud{$\mathcal{S}$ is better for a set of sets.}
+	Initially all nodes are \emph{isolated}.
+	First, we create a ground set $B$ of size $k-1$ on an arbitrarily.
 	%We never dismiss any constructed ground set.
-	Each cluster hosts exactly $k$ nodes, and in any configuration a single alone node resides in $S$. \mahmoud{an isolated node is collocated with  this GS in $\mathcal{S}$. We denote the first such node by $x_0$.}
+	Each cluster hosts exactly $k$ nodes, and in any configuration a single isolated node resides in $S$.
+	We say that this isolated node that accompany the ground set $B$ is \emph{special}.
+	We denote the first special node by $x_0$.
 
-	Then, we add the alone node from $S$ to a larger ground set to force its eviction.
+	Then, we add the special node to a larger ground set to force its eviction.
 	Precisely,
 	we create a ground set $\{x_0, y_0\}$, 
-	where $x_0$ is the alone node from $S$ and $y_0$ is an arbitrary node that does not reside in $S$.
+	where $x_0$ is the current special node and $y_0$ is an arbitrary node that does not reside in $S$.
 	\ALG has them split, and the adversary issues external requests until \ALG collocates them.
-	The cluster $S$ already contains a ground set of size $k-1$, hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
+	There is no space to accommodate $\{x_0, y_0\}$ in the cluster of $x_0$ (as $B$'s size is $k-1$), hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
 	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
-	\ALG must replace $x_0$ with another single node.
-	\mahmoud{In any new partition, \ALG must replace $x_0$..., otherwise it is not a feasible partition.}
-	
+	\ALG must replace $x_0$ with another single node that we call $x_1$.
 
-	We continue adding the node that is currently alone in $S$ to a larger ground set.
-	Precisely, for an alone node $x$ from~$S$, we merge the ground sets of $x$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x)$.
-	\mahmoud{$x_i$?}
-	This way, $x$ is evicted similarly to $x_0$, and we continue creating such ground sets.
+	We continue adding the current special node to a larger ground set.
+	Precisely, for an isolated node $x_i$ from~$S$, we merge the ground sets of $x_i$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x_i)$.
+	This way, $x_i$ is evicted similarly to $x_0$, and we continue creating such ground sets.
 	We describe the termination condition shortly.
 	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from distinct clusters.)
 
-	We claim that expanding ground sets in this way can continue as long as at least $\ell$ alone node exists.
-	Fix the moment just before the creation of a ground set with the alone node \mahmoud{$x_{t^*}$?} that currently resides in $S$.
-	\mahmoud{ALG might change $S$. We can say, "currently collocated with the...".}
-	We show that if at least $\ell$ alone nodes exists (including $z$), then there exists a perfect partition of ground sets after expanding a ground set with $z$.
-	\mahmoud{the termination condition is needed before the claim statement.}
+	We claim that expanding ground sets in this way can continue as long as at least $\ell$ isolated nodes exists.
+	Fix the configuration just before the creation of a ground set with $x_i$ for some $i$.
+	We show that if at least $\ell$ isolated nodes exists (including $x_i$), then there exists a perfect partition of ground sets after expanding a ground set with $x_i$.
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
-	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some alone nodes, and possibly the ground set $\{x_0, y_0\}$.
-	If $I(z)$ contains an alone node, then we simply obtain a~perfect partition by swapping it with $z$.
-	In the following we assume that no alone nodes exist on $I(z)$.
-	The largest ground set of $I(z)$ is at most $k-1$, because $z$ is on $S$.
-	Therefore $\{x_0, y_0\}$ is present on $I(z)$, and we must evict it to make space for $z$.
-	To find the cluster for $\{x_0, y_0\}$, observe that we have at most $\ell-1$ clusters with alone nodes, and we have at least $\ell$ alone nodes --- hence a cluster with two alone nodes exists.
-	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated alone nodes, and then we swap an alone node from $I(z)$ with $z$.
+	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some isolated nodes, and possibly the ground set $\{x_0, y_0\}$.
+	If $I(x_i)$ contains an isolated node, then we simply obtain a~perfect partition by swapping it with $x_i$.
+	In the following we assume that no isolated nodes exist on $I(x_i)$.
+	The largest ground set of $I(x_i)$ is at most $k-1$, because $x_i$ is on $S$.
+	Therefore $\{x_0, y_0\}$ is present on $I(x_i)$, and we must evict it to make space for $x_i$.
+	To find the cluster for $\{x_0, y_0\}$, observe that we have at most $\ell-1$ clusters with isolated nodes, and we have at least $\ell$ isolated nodes --- hence a cluster with two isolated nodes exists.
+	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated isolated nodes, and then we swap an isolated node from $I(x_i)$ with $x_i$.
 	
 
-	To keep \OPT's cost low, we end extending ground sets prematurely --- while there are still $\ell+1$ alone nodes (i.e., neglecting two last ground set expansions).
+	To keep \OPT's cost low, we end extending ground sets prematurely --- while there are still $\ell+1$ isolated nodes (i.e., neglecting two last ground set expansions).
 	Consider \ALG's configuration after the last expansion.
-	Among $\ell+1$ alone nodes there must exist a pair that originates from the same cluster (we have $\ell$ clusters). 
+	Among $\ell+1$ isolated nodes there must exist a pair that originates from the same cluster (we have $\ell$ clusters). 
 	We denote these two nodes by $x^*$ and $y^*$.
 
 	The optimal strategy is to perform two node swaps.
@@ -498,8 +491,8 @@ In comparison, \OPT performs only two migrations.
 
 
 	\ALG performs at least one swap for every expansion of a ground set.
-	Each expansion reduces the number of alone nodes by $1$.
-	We start with $k \cdot \ell - (k-1)$ alone nodes (a single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with alone $\ell+1$ nodes.
+	Each expansion reduces the number of isolated nodes by $1$.
+	We start with $k \cdot \ell - (k-1)$ isolated nodes (a single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with isolated $\ell+1$ nodes.
 	The competitive ratio is then $\ALG / \OPT \geq (k\cdot \ell - k - l) / 2$.
 \end{proof}
 
@@ -811,7 +804,9 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$
 	Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
 	From that, we obtain $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
-	Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
+	Let $E := \OPT(\sigma_E) + \OPT(M)$.
+	
+	Finally, we are ready to bound the competitive ratio
 	\begin{equation*}
 		\frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + E/2} \leq \frac{27\alpha\cdot\ell + 2\cdot E}{\alpha + E} \leq 27 \ell = O(\ell).
 	\end{equation*}
