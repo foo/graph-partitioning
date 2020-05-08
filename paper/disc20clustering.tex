@@ -30,7 +30,7 @@
  
  \mathchardef\mhyphen="2D
  
- \title{Tigth Bounds for Online Balanced Graph Partitioning}
+ \title{Tight Bounds for Online Balanced Graph Partitioning}
  
  \author{Maciej Pacut}
  \email{maciej.pacut@univie.ac.at}
@@ -685,7 +685,11 @@ Now  we discuss the general online
 model where the request sequence
 can be arbitrary.
 In Section~\ref{sec:k3}, we show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} provides an optimal algorithm for $k=3$.
+We showed a lower bound of $\Omega(k \cdot \ell)$ that holds for $k=3$ (cf. Section~\ref{sec:lowerbound}), hence the result from this section is asymptotically optimal.
+
 Then, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorithm for $k=2$.
+\maciek{Intro: compare to previous 7-competitive algorithm. Note strict competitive ratio vs large additive term. Also, emphasize that the algorithm is different than 7-competitive}
+
 
 
 \subsection{An Optimal Algorithm for Clusters of Size $3$}
@@ -697,7 +701,7 @@ Then, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorithm for 
 \noindent
 \textbf{Component-based algorithm.}
 Now we describe the algorithm \TAlg that we use throughout this section.
-It partitions nodes into components, and
+The algorithm partitions nodes into components, and
 initially, each node belongs to its own singleton component.
 For each pair of nodes $\set{x,y}$, \TAlg maintains a counter $C_{\set{x,y}}$ and increments it on every external request between $x$ and $y$.
 Once $C_{\set{x,y}} = \alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
@@ -707,11 +711,11 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.3\textwidth]{figs/substitute}
-	\caption{Cluster signatures in warm-up k=3 proof}
+	\caption{Cluster types used in the analysis of \TAlg.}
 \end{figure}
 
 In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
-Before bounding the competitive ratio of \TAlg, we introduce the lemma that estimates the cost of a single repartition of \TAlg.
+Before bounding the competitive ratio of \TAlg, we introduce the lemma that upper bounds the cost of a single repartition of \TAlg.
 
 \begin{lemma}
 	\label{lem:1req}
@@ -729,14 +733,15 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 	%Finally, a cluster of type $C_3$  contains one component of size $3$.
 	
 	Consider a request between $u$ and $v$ that triggered the repartition and let $U$ and $V$ be their respective clusters.
-	Note that $U\neq V$,
-	as otherwise, the request would not trigger a~repartitioning.
+	The request triggered the repartition, hence it was external and $U\neq V$.
 	We consider cases based on the types of clusters $U$ and $V$.
-	Note that this is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, we merge components of size $3$, and no component respecting partitioning exists, a contradiction.
-	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
-	For two clusters, any configuration can be reached within two swaps, due to the fact that clusters are indistinguishable.
 	
-	Finally, we consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
+	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
+	In this case, a local repartition is possible (within $U$ and $V$), for a cost of at most $2$ swaps.
+	Note that it is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, a components of size $3$ participates in a merge, which results in a component of size at least $4$, and in this case no component respecting partitioning exists, a contradiction.
+	
+	
+	It remains to consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
 	Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
 	Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
 	Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes of $W$.
