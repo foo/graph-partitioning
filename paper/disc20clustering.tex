@@ -391,6 +391,14 @@ We say that a~configuration is \emph{component-respecting}
 if the nodes belonging to the same component are collocated.
 
 
+\noindent
+\textbf{Note on our algorithms.}
+\maciek{Should not be here probably, but where?}
+Two of our algorithms (for the learning model and for $k=3$ in the partitioning model) are modified versions of the algorithm DET from \cite{repartition-disc}.
+The difference is in the the choice of partition after a component merge.
+In DET, the partition was arbitrary.
+In PPL, we choose the partition closest to the initial configuration.
+In \TAlg, we choose the partition closest to the previous configuration (a repartition of minimum cost).
 
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
@@ -685,30 +693,15 @@ Then, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorithm for 
 
 
 
-\maciek{Start with referencing the table of results, saying that some results are known already in the literature. And emphasize here that we now have an improved lower bound from the previous section, as that model was a subproblem.}
 
-Let us now discuss the general online
-model where the request sequence
-can be arbitrary.
-We show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} allows obtaining an optimal algorithm for $k=3$.
-Upon receiving $\alpha$ requests between a pair of nodes, we collocate them in one cluster until the end of a phase (that we define precisely later).
-
-\maciek{Rewrite above paragraph to say that our algorithm is essentially DET from DISC16, with concretised reconfiguration strategy (i.e., an arbitrary one among the minimum cost reconfigurations)}
-
-\maciek{Better name than DET? Currently it is \TAlg, hence it is wrong}
-
-
-
-%We define the algorithm \TAlg in the following way.
-Now we describe the algorithm \TAlg.
+\noindent
+\textbf{Component-based algorithm.}
+Now we describe the algorithm \TAlg that we use throughout this section.
 It partitions nodes into components, and
 initially, each node belongs to its own singleton component.
-For each pair of nodes, \TAlg maintains a counter, initiated to $0$. 
-Upon receiving a request to a pair that is not collocated in one cluster, it increases their counter by $1$.
-If the counter for a pair $(u,v)$ reaches $\alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
+For each pair of nodes $\set{x,y}$, \TAlg maintains a counter $C_{\set{x,y}}$ and increments it on every external request between $x$ and $y$.
+Once $C_{\set{x,y}} = \alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
 If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
-
-\maciek{Emphasize the difference to DET: "Modification is the following: when repartition is necessary, move to \emph{the closest} perfect partition of components."}
 
 
 \begin{figure}[H]
@@ -717,13 +710,12 @@ If no such partitioning exists, \TAlg resets all components to singletons, reset
 	\caption{Cluster signatures in warm-up k=3 proof}
 \end{figure}
 
-\maciek{Rewrite: cluster types should be cluster signatures}
 In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 Before bounding the competitive ratio of \TAlg, we introduce the lemma that estimates the cost of a single repartition of \TAlg.
 
 \begin{lemma}
 	\label{lem:1req}
-	During a single repartition, \TAlg exchanges at most $2$ pairs of nodes.
+	During a single reconfiguration of nodes, \TAlg exchanges at most $2$ pairs of nodes.
 \end{lemma}
 
 \begin{proof}
@@ -761,15 +753,14 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 
 
 \begin{theorem}
-	\TAlg is $O(\ell)$-competitive.
-	\maciek{Proposed new formulation (current version is all about k=3 still): Let Reconf(k,l) be a bound on the cost of a single reconfiguration. Then \TAlg is $O(Reconf(k,l)\cdot k \cdot \ell)$-competitive.}
+	\TAlg is $O(\ell)$-competitive for $k=3$.
 \end{theorem}
 \begin{proof}
 	Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
 	We consider the incomplete phase later in this proof.
 	
 	As \TAlg is component respecting, it never increases any counter above $\alpha$.
-	We say that the pair $(u, v)$ is \emph{saturated} if the counter has value $\alpha$, and \emph{unsaturated} otherwise \maciek{Rename: saturated/unsaturated edge instead of a pair}.
+	We say that the pair $(u, v)$ is \emph{saturated} if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
 	Let $\sigma$ be the input sequence that arrived during the phase.
 	Let $\sigma_{cost}$ be the requests that at the moment of arrival were external requests for \TAlg (these are the only requests that incurred a cost for \TAlg).
 	In our analysis, we partition $\sigma_{cost}$ into subsequences $\sigma_I$ and $\sigma_E$.
@@ -827,7 +818,6 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 	This may allow serving requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
 	As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
 	By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$
-	\maciek{This changes in the general case, and introduces the factor $~1/k$ in opt's cost, increasing the competitive ratio by $O(k)$}.
 	Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
 	From that, we obtain $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
 	Let $E := \OPT(\sigma_E) + \OPT(M)$. Finally, we are ready to bound the competitive ratio
@@ -841,10 +831,8 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that esti
 	Consider the case, where the unfinished phase is also the first one.
 	Then, we cannot charge $\OPT$ due to the inability to partition the components.
 	Instead, we use the fact that \TAlg and $\OPT$ started with the same initial configuration.
-	We charge $\OPT$ $\alpha$ for the first external $\alpha$ requests or a migration,
-	and we follow the analysis regarding the unsaturated requests.
-	If the input finished before the first $\alpha$ external requests, then \TAlg is optimal.
-	\maciek{Missing second case: then we just charge opt alpha for this one edge and this is sufficient, as the cost of alg only decreases from the full phase}
+	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
+	If there were at least $\alpha$ external requests, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
 	Now, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
 	This way, the competitive ratio increases at most twofold.
 \end{proof}
