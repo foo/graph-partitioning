@@ -105,12 +105,12 @@
  \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
  \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
  
- \newcommand\mahmoud[1]{\color{orange}\textbf{Mahmoud: #1~}\color{black}}
+ %\newcommand\mahmoud[1]{\color{orange}\textbf{Mahmoud: #1~}\color{black}}
  \newcommand\stefan[1]{\color{blue}\textbf{Stefan: #1}\color{black}}
- \newcommand\maciek[1]{\color{brown}\textbf{(Maciek: #1)}\color{black}}
- %\newcommand\mahmoud[1]{}
+ %\newcommand\maciek[1]{\color{brown}\textbf{(Maciek: #1)}\color{black}}
+ \newcommand\mahmoud[1]{}
  %\newcommand\stefan[1]{}
- %\newcommand\maciek[1]{}
+ \newcommand\maciek[1]{}
  
  
  \newcommand{\todo}[1]{\noindent\color{brown}{todo: #1}\color{black}}
@@ -805,7 +805,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	From that, we obtain $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
 	Let $E := \OPT(\sigma_E) + \OPT(M)$.
 	
-	Finally, we are ready to bound the competitive ratio
+	Finally, we bound the competitive ratio
 	\begin{equation*}
 		\frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + E/2} \leq \frac{27\alpha\cdot\ell + 2\cdot E}{\alpha + E} \leq 27 \ell = O(\ell).
 	\end{equation*}
@@ -813,12 +813,12 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	\medskip
 	
 	It remains to consider the last, unfinished phase.
-	Consider the case, where the unfinished phase is also the first one.
+	First, consider the case, where the unfinished phase is also the first one.
 	Then, we cannot charge $\OPT$ due to the inability to partition the components.
 	Instead, we use the fact that \TAlg and $\OPT$ started with the same initial configuration.
 	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
 	If there were at least $\alpha$ external requests, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
-	Now, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
+	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
 	This way, the competitive ratio increases at most twofold.
 \end{proof}
 
