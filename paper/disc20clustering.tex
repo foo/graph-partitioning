@@ -1086,7 +1086,7 @@ $.
 	If $t$ is the first time that \RM collocates $\{u,v\}$ then  \OPT pays
 	$\lambda$ for serving requests in $\sigma_{\set{u,v}}[0,t]$ (remotely),
 	or $\alpha$ for collocating the pair and
-	serving (some of) the requests with cost 0.
+	serving (some of) the requests with  cost zero.
 	Therefore in this case,
 	$\OPTM (\sigma_{\{u,v\}}(0,t]) \geq  \min{\{ \lambda,\alpha \}}$.
 	%
@@ -1095,10 +1095,21 @@ $.
 	consider times $t'$ and $t''$ as define previously,
 	 and let 
 	$R_t := \sigma_{\{u,w\}}(t'',t'] \cup \sigma_{\{u,v\}}(t',t] $.
-	We define $R_{t'}$ for the collocation at $t'$ in an analogous way.
+	We define $R_{t'}$ for the collocation at $t'$  analogously.
 	Then,
 	$\OPTM(R_t) = \mathit{OPT} (\sigma_{\{u,w\}}) 
 	+ \OPTM(\sigma_{\{u,v\}}) $.
+	Note that \OPT cannot have both pairs collocated at the same time.
+	However, it can have one of the pairs already collocated prior to its respective interval.
+	Let us assume  \OPT has one pair,
+	e.g.~$\{u,v\}$ collocated already prior its respective interval, i.e.~$(t',t]$,
+	 and keeps it so during the interval.
+	 Then it pays zero while serving $\sigma_{\{u,v\}}$.
+	Hence,
+	it must pay $\alpha$ for collocating the other pair, in this case $\{u,w\}$,
+	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$. 
+	Therefore in any case $\OPTM(R_t) \geq  \min{\{ \lambda,\alpha \}}$.
+	\begin{comment}
 	We distinguish three (non-exhaustive) cases for the cost to \OPT w.r.t.~$R_t$.
 	Latter,
 	 we argue that \OPT cannot save cost by deviating from these cases.
@@ -1133,27 +1144,28 @@ $.
 	no deviation can decrease the cost to \OPT. \mahmoud{prove this!}
 	Therefore in any case,
 	$\mathit{OPT} (R_t) \geq  \min{ \{ \lambda, \alpha \}}$.
-
-	It remains to bound the cost  incurred by \OPT for requests to $\{u,v\}$ that do not lead to its collocation until the end of the sequence at $t=m$.
+	\end{comment}
+	
+	It remains to bound the cost  incurred by \OPT due to requests to $\{u,v\}$ that do not lead to its collocation until the end of the sequence at $t=m$.
+	We bound the cost analogously to the case where \RM collocates $\{u,v\}$.
 	If $\{u,v\}$ is not collocated in the initial matching
 	and \RM never collocates it,
 	then $ C^{m}_{ \{u,v\} } =| \sigma_{\{u,v\}}[1,m] |$.
 	\OPT pays
 	$\mathit{OPT} (\sigma_{\{u,v\}}[1,m]) 
 	\geq \min{ \{ \alpha, C^{m}_{ \{u,v\} } \} }$,
-	for collocating this pair or (and) paying for (some of) requests in $\sigma_{\{u,v\}}[1,m]$.
+	for collocating this pair or (and) paying for (resp.~some of) requests in $\sigma_{\{u,v\}}[1,m]$.
 	Else,
 	either $\{u,v\}$ is collocated in the initial matching
 	or \RM collocates it at some point.
 	Then there exists an intersecting pair $\set{u,w}$
 	that is collocated by \RM at $t' < m$ (separating $\{u,v\}$).
-	We define times $t'' < t' < m$ similarly to the case where \RM collocates $\{u,v\}$.
+	We define times $t'' < t' < m$ similarly as in the former case.
 	Let $R^*_{\{u,v\}} := \sigma_{\{u,w\}} (t'',t'] \cup \sigma_{\{u,v\}} (t',m]$.
 	Then,
-	we apply cases (i) to (iii) in an analogous way,
-	replacing $\lambda$ with $C^{m}_{ \{u,v\}}$ in the analysis.
-	Thus, 
-	we obtain
+	\OPT must pay for collocating at least one pair or (and) serving requests 
+	to the other pair remotely.
+	Thus,
 	$\mathit{OPT} (R^*_{\{u,v\}}) 
 	\geq  \min{ \{ C^{m}_{ \{u,v\}}, \alpha \}}$.
 	
