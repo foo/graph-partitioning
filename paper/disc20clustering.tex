@@ -1119,45 +1119,6 @@ Finally, we have
 
 \end{proof}
 
-Major:
-
-\maciek{I feel slightly uneasy here: "In particular,
-we charge \OPT a cost incurred by requests in
-$\sigma_{\{u,w\}}$ and $\sigma_{\{u,v\}}$,
-if and only if  \OPT incurs the cost within  intervals $(t'', t']$ and $(t', t]$,
-respectively.
-\mahmoud{this is only for intuition but a key statement. It is meant to say: \OPT may pay cost for the same two pairs outside the intervals. But we don't charge \OPT  those costs at $t$. This way we avoid over charging \OPT as only intervals $r_{t'}$ and $r_t$ can overlap which leads to double charging and we take care of it.}
-"}
-
-\maciek{"Observe that for requests in $R_t$". First the separate sentence with the definition of $R_t$ (it is challenging enough to just understand it. Then reason why it pays the minimum of three values (I don't see it, and later you show that cost(rt) is at least minimum of other two values). Is it a consequence of three cases? \mahmoud{the duration is the key and the latter duration is different. I reworded the whole thing. And yes, the same three cases can be used to explain this observation. Now the "some of" in the parenthesis might be enough for a clue. This observation is  used implicitly in the proof when it bounds the cost of first time collocation.}}
-
-\maciek{"We charge \OPT the cost
-$\mathit{\OPT} (\sigma_{\{u,v\}}[1,t]) 
-\geq \min{ \{ \alpha, C^{m}_{ \{u,v\} } \} }$,
-for collocating this pair or (and) paying (partially) for requests in $\sigma_{\{u,v\}}[1,t]$." No issues with charge sharing from "regular collocation" case? Maybe I just don't understand "partially" here. Not necessarily rewrite! Just maybe check if it's true.
-\mahmoud{this is the cost of first collocation of $\{u,v\}$. "partially" is confusing and now it says "some of" instead.}}
-
-Minor:
-
-\maciek{The big inequality is impressive, but not a lot change in each row. Instead, bound the cost of ALG separately in one line, and the cost of \OPT in another. (possibly far away from eachother) \mahmoud{done}}
-
-\maciek{Remove all "charge both". Just sum up costs. I would say not use "charge" at all, but it's up to you. \mahmoud{done}}
-
-
-\maciek{Structure in paragraphs. 3 parts: first collocation, regular collocation and unfinished. Do this for ALG and then for \OPT, and do not mix (unless I don't see some dependencies). Start each paragraph by the sentence that says what the paragraph is about (first/opt, regular/alg etc.). Assume that the reader reads only the first sentence of each paragraph (if it's short), and the proof structure must be clear from this. Some other important things go to their own paragraph too, and the first sentence must describe what we do there.}
-
-\maciek{$R_t$ is the central concept in this proof. Possibly even start with the paragraph: charging \OPT, regular collocation. Make this definition in its separate line to further emphasize? It would suffice for a profesional to see the definiton of $t''/t'$ and this line to convince himself that the proof is correct.}
-
-\maciek{I think that "deviate" is OK to use like this.}
-
-Notation:
-
-\maciek{End of the time proposition: $t_e / t^* / T$ instead of $m$? Or capital $T$ (but I am aware of the conflict)}
-
-\maciek{Instead of $cost_{opt}$ just use opt / alg?}
-
-\maciek{Consider naming the adjacent edges $e$ and $f$.}
-
 \section{Distributed implementation.}
 The algorithm PPL from Section~\ref{sec:ppl} can be distributed
 similarly to the approach in~\cite{sigmetrics19_partitioning}.
