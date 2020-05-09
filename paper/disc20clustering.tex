@@ -30,7 +30,7 @@
  
  \mathchardef\mhyphen="2D
  
- \title{Tight Bounds for Online Balanced Graph Partitioning}
+ \title{Tight Bounds for Dynamic Balanced Graph Partitioning}
  
  \author{Maciej Pacut}
  \email{maciej.pacut@univie.ac.at}
@@ -144,7 +144,7 @@
 	Distributed   applications,  including  batch  processing, streaming, scale-out databases,
 	or machine learning, generate a significant amount of network traffic.
 	By collocating frequently communicating nodes (e.g., virtual machines) on the same clusters (e.g., server or rack), we can reduce the network load and  improve application performance. 
-	However, the communication pattern is a priori unknown and may change over time, hence it needs to be learned in an online manner.
+	However, the communication pattern of different application is often unknown a priori, and may change over time, hence it needs to be learned in an online manner.
 	%
 	This paper revisits the online 
 	balanced repartitioning problem 
@@ -168,6 +168,7 @@
 	communication pattern can change arbitrarily
 	over time.
 	We improve the result for $k=2$ by providing a strictly $6$-competitive upper bound for the general model.
+	In contrast to most prior work, our algorithms respect all capacity constraints, and do not require resource augmentation.
 	
 \end{abstract}
 
@@ -181,34 +182,30 @@
 \maciek{TODO style: documentclass[a4paper,anonymous,USenglish] lipics-v2019.}
 \maciek{Keywords: distributed computing?}
 
-We study a problem of managing the virtual machines in a data center.
-We focus on the scenario where virtual machines can be migrated during runtime to another physical machine.
-The possibility of migration allows reacting to unpredictable communication patterns.
-For example, if some distant virtual machines communicate often, it is vital to reduce their distance to save network bandwidth.
-The objective is to~minimize the total network bandwidth used for communication and for migration.
+The popularity of data-centric, distributed applications has led to an explosive growth of network traffic, especially in data centers \cite{roy2015inside,singh2015jupiter}.
+As the performance of these distributed applications often critically depends on the underlying network \cite{mogul2012we}, an efficient operation of these networks is important.
+At the same time, distributed systems are often highly virtualized today, and provide interesting new opportunities for resource optimization.
+In particular, it has become possible to operate data centers in a more demand-aware manner: 
+by dynamically migrating nodes (e.g., virtual machines) which communicate frequently topologically closer to each other, network traffic can be reduced significantly.  
+However, migrations should be used moderately, as migrations also entail overheads. 
 
+This paper studies the algorithmic problem underlying such demand-aware
+optimizations, aiming to strike a balance between the benefits of migrations (e.g., reduced network load) and their costs.
+In particular, we are interested in an online variant of the problem: since communication patterns can change over time, an online algorithm needs to react dynamically to new traffic patterns, and migrate nodes  accordingly.
+Ideally, this algorithm should perform close to an optimal offline algorithm, without requiring any information about future traffic demands. 
 
-Intuitively, we would like to minimize inter-machine
-interactions by mapping frequently communicating virtual machines to the same physical machine
-Since communication patterns change over time, the~placement of virtual machines should be managed in an online manner, by migrating them between physical machines.
-The~objective is to minimize the weighted sum of inter-machine communication and repartitioning costs.
-The former is defined as the number of communication requests between virtual machines placed at distinct physical machines, and the latter as the number of migrations.
+This problem is known as the dynamic balanced graph partitioning problem introduced by Avin et al. \cite{repartition-disc, sidma-arxiv} at DISC 2016. A special variant of the general problem has later been studied by Henzinger et al. \cite{sigmetrics19_partitioning} at SIGMETRICS 2019.
+We will refer to the latter as the learning model.
 
 
 
 \subsection{Model}
 
-We study two models in this paper: a general \emph{partitioning} model, and its subproblem, a \emph{learning} variant.
-The general partitioning model was introduced by Avin et al.~\cite{repartition-disc} at DISC 2016.
-The learning model was introduced by Henzinger et al.~\cite{sigmetrics19_partitioning} at SIGMETRICS 2019.
-
+We study two models in this paper: the \emph{general partitioning} model, and its subproblem, the \emph{learning} model.
 
 \noindent
-\textbf{Partitioning model.}
-The \emph{balanced repartitioning} problem (\OBRP{})
-is a fundamental learning problem
-that finds applications in the context of
-distributed systems optimization~\cite{repartition-disc}. We are given a set $V$ of $n$ nodes 
+\textbf{General partitioning model.}
+In the \emph{dynamic balanced graph partitioning} problem, we are given a set $V$ of $n$ nodes 
 (e.g., virtual machines or processes),
 initially arbitrarily partitioned into $\ell$~clusters
 (e.g., servers or entire racks),
@@ -248,8 +245,8 @@ the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 \textbf{Learning model.}
 We study a variant of Online Balanced Partitioning, where communication requests are permanent: once a pair of nodes start communicating, they continue forever.
 To avoid infinite cost, each communicating pair must be collocated.
-We study instances with finite cost: we assume that the communication graph can be perfectly partitioned in the clusters (no external requests are required).
-In the partitioning model, $\alpha$ denoted the ratio between the cost of a single communication request and the cost of migration; in the learning model, we set $\alpha = 1$.
+As in Henzinger et al. \cite{sigmetrics19_partitioning}, we assume that the communication graph can be perfectly partitioned in the clusters (no external requests are required).
+For the learning model, we will assume that the migration cost is $\alpha=1$.
 The algorithm's goal is to \emph{learn} the communication graph, and partition it without too many reconfigurations.
 
 
@@ -268,15 +265,17 @@ In the competitive analysis, the goal is to~optimize \emph{the competitive ratio
 
 \subsection{Related work}
 
+The two works closest to ours are by Avin et al. (on the general partitioning model) \cite{repartition-disc, sidma-arxiv} and by Henzinger et al. (on the learning model) \cite{sigmetrics19_partitioning}.
+The focus of these papers however is primarily on models with resource augmentation: the online algorithm can use slightly larger clusters than the offline algorithm.  
+Avin et al. actually showed that their lower bound $\Omega(k)$ holds even for a significant resource augmentation, and they provided an algorithm with the competitive ratio $O(k \log k)$ using the $(2+\epsilon)$-augmented cluster capacity.
+Their ratio is independent of $\ell$, which is impossible without significant resource augmentation.
 
-The existing results in~\cite{repartition-disc} and~\cite{sigmetrics19_partitioning} primarily focus on a model with resource augmentation, where  the online algorithm has slightly larger clusters than the offline algorithm.
-They showed that their lower bound $\Omega(k)$ holds even for a significant resource augmentation.
-They provided an algorithm with the competitive ratio independent of $\ell$ using the $(2+\epsilon)$-augmented cluster capacity.
 
 
 In contrast, we study the non-augmented setting, where the nodes need to be perfectly balanced  among the clusters.
-In the paper that originated a study on BRP \cite{repartition-disc} (DISC 2016), authors provided a $O(k^2 \cdot \ell^2)$-competitive algorithm, and a lower bound $\Omega(k)$.
-For $k=2$, they presented a $7$-competitive algorithm~\cite{repartition-disc} with a~substantial ($\Omega(\ell^2)$) additive constant.
+This assumption is not only more realistic but also significantly more challenging, as it is related to hard problems such as integer partitioning \cite{integer-partitions-book}.
+In terms of results without augmentation, so far, it is only known that there exists a $O(k^2 \cdot \ell^2)$-competitive algorithm \cite{repartition-disc}; the best known lower bound is significantly lower, namely $\Omega(k)$.
+For $k=2$, Avin et al.\cite{repartition-disc} presented a $7$-competitive algorithm with a~substantial ($\Omega(\ell^2)$) additive constant.
 
 
 The problem has also been studied in a weaker
