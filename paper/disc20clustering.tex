@@ -240,8 +240,9 @@ as otherwise it cannot be competitive.
 As in Henzinger et al. \cite{sigmetrics19_partitioning}, we assume that the communication graph admits a \emph{perfect partition},
 i.e., a partition in which no inter-cluster request ever occurs.
 %any algorithm must learn this perfect partition.
-The algorithm's objective is to \emph{learn} the (static) communication graph on-the-fly,
-without executing too many migrations.
+The algorithm's objective is to \emph{learn} the (static) communication graph
+ while serving all requests,
+and without executing too many migrations.
 For the learning model, we  assume that the migration cost is $\alpha=1$.
 
 \medskip 
