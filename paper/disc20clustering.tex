@@ -1051,12 +1051,13 @@ Finally, we have
 \end{proof}
 
 \section{Discussion and Future Work}
+
+While we have described our algorithms globally so far, we note that these allow for efficient distributed implementations. 
 The algorithm PPL from Section~\ref{sec:ppl} can be distributed
 similarly to the approach in~\cite{sigmetrics19_partitioning}.
 The algorithm for $k=2$ from Section~\ref{sec:k2} performs only local communication for each request: counters are kept on the clusters and updated locally, and each migration concerns only two clusters.
 \medskip
-
-In the rest of this section, we propose the distributed implementation of the algorithm for $k=3$ from Section~\ref{sec:k3}.
+Now, we propose the distributed implementation of the algorithm for $k=3$ from Section~\ref{sec:k3}.
 The algorithm performs two non-local operations:
 \begin{enumerate}
 	\item Broadcasting the end of the phase.\label{it:broadcast}
@@ -1064,179 +1065,32 @@ The algorithm performs two non-local operations:
 	\label{it:merge}
 \end{enumerate}
 
-If a component reaches size $4$ or fresh cluster is not found, we conclude that no perfect partition exists.
-Then, we end the phase and broadcast (\maciek{TODO: efficient broadcast cite}) the message to  reset the counters in all clusters.
+If a component reaches size $4$ or a fresh cluster is not found, we conclude that no perfect partition exists.
+Then, we end the phase and broadcast the message to  reset the counters in all clusters.
 
-A merge of two components may require finding a third cluster that contains $3$ alone nodes (for details see the proof of Lemma~\ref{lem:1req})).
-We say that a cluster containing $3$ alone nodes is \emph{fresh}.
+A merge of two components may require finding a third cluster that contains $3$ isolated nodes (for details see the proof of Lemma~\ref{lem:1req})).
+We say that a cluster containing $3$ isolated nodes is \emph{fresh}.
 In the following, we show how to efficiently find a fresh cluster in a distributed manner.
-We organize the clusters into an arbitrary rooted balanced binary tree (\maciek{TODO: how to do it efficiently? Does not matter much, as this is performed once at the beginning}), and we broadcast the root to each cluster.
+We organize the clusters into an arbitrary rooted balanced binary tree, and we broadcast the root to each cluster.
 Each cluster maintains the counter of fresh clusters in its subtree.
 To find a fresh cluster, we traverse an arbitrary path of non-zero counters from the root.
 Upon encountering a fresh cluster, we stop the traversal and decrease the counters on the followed path by $1$.
 
-The operation (\ref{it:broadcast}) requires a single broadcast, and the operation (\ref{it:merge}) requires $O(\log(\ell))$ communication.
+The operation (\ref{it:broadcast}) requires a single broadcast, and the operation (\ref{it:merge}) requires $O(\log \ell)$ communication.
 Each of these may occur, on average, every $\alpha$ external requests.
 
+\medskip
+
+This paper revisited the dynamic graph partitioning problem and presented several tight bounds for the important model where capacities cannot be exceeded, both for a general partitioning model and for a special learning model. 
+
+While are bounds are tight, there are several interesting avenues for future research.
+In particular, we have so far focused on deterministic algorithms, and it would be interesting to study the power of randomization in this context.
+On the practical side, it would also be interesting to study our algorithms empirically, under realistic workloads.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}  
 
 \appendix
 
-
-\begin{comment}
-
-
-\section{Omitted results (for our future papers)}
-
-\begin{enumerate}
-	\item Costly cascade example (it is easy to present $k^2$ and $k\cdot \sqrt{k}$ (with different approach), and then we can combine these to obtain $k^3$)
-	
-	\item $k$-competitive algorithm for the ring communication pattern
-	
-	\item lower and upper bound $k+1$ for two clusters, perfect partition and the optimal configuration reachable within one swap
-	
-	\item The lower bound $(k \cdot \ell - k - \ell) / 2$ can be easily improved to $(k \cdot \ell - k - 1) / 2$ by playing a simple caching game in the first cluster, instead of just giving away the $k-1$ "blocker" (the caching game would build it gradually)
-	
-\end{enumerate}
-
-
-
-	\section{Bounding the cost of a single reconfiguration of components}
-	
-	\maciek{Overview of the section, intro. Defer introducing the graph notation, the warm-up does not need it}
-	
-	\subsection{Characterization of the migration graph}
-	
-	Consider a component merge action performed by \TAlg that triggers a reconfiguration from a configuration $C_I$ to a configuration $C_F$.
-	To execute the reconfiguration, the nodes of two non-collocated components migrate to a common cluster.
-	Each cluster contains exactly $k$ nodes, thus other nodes migrate to take the place of nodes of merged components.
-	Their place must be occupied, too, and this way a single merge action may trigger migrations in clusters not directly involved in a merge action (for an example, see Section~\ref{ssec:example}). 
-	Recall that both $C_I$ and $C_F$ are component-respecting configurations, hence a migration of a single node entails migrations of all nodes of its cluster.
-	
-	In Section~\ref{ssec:cascade}, we upper bound the cost incurred by a reconfiguration that follows a single component merge.
-	To this end, we introduce a \emph{migration graph} that models the reconfiguration.
-	In the following, we characterize the structure of the migration graph.
-	
-	\noindent
-	\textbf{Vertices of the migration graph and the core vertices.}
-	The vertices of the migration graph are all $\ell$ clusters of the instance.
-	We distinguish the \emph{core vertices} that correspond to clusters directly involved in the merge operation: the clusters containing the to-be-merged components in $C_I$ and the cluster containing the merged component in $C_F$.
-	There are at most $3$ core vertices in each migration graph (at most two components participate in the merge, and these may migrate to a third cluster).
-	
-	\noindent
-	\textbf{Edges and their labels.}
-	The edges of the migration graph denote the migration of nodes from $C_I$ to $C_F$.
-	Each edge is labeled with a number $m$ that denotes the number of migrated nodes between clusters.
-	Each edge is directed from the cluster that contained the nodes to the cluster they migrated to.
-	Both edges might exists between a pair of nodes, as whole components of nodes migrate, and the back-and-forth exchange may be needed for the configuration $C_F$ to be component-respecting.
-	
-	\noindent
-	\textbf{Vertex degree.}
-	At most $k$ nodes may migrate from a cluster and at most $k$ nodes may migrate into a cluster.
-	Thus, the sum of the labels for both ingoing and outgoing edges of each vertex is at most $k$.
-	This implies that the number of ingoing and outgoing edges is also bounded by $k$.
-	
-	\noindent
-	\textbf{Flow preservation.}
-	In any feasible configuration, each cluster contains exactly $k$ nodes.
-	Thus, for any vertex, the sum of labels of ingoing edges must equal the sum of labels of outgoing edges.
-	\maciek{Can we say that this implies that the graph is a circulation?}
-	
-	\noindent
-	\textbf{Migration graph and the cost of reconfiguration.}
-	The cost of cluster reconfiguration equals the number of exchanged nodes multiplied by $\alpha$.
-	From the standpoint of a migration graph, this corresponds to the sum of labels on edges of the graph.
-	A trivial upper bound on the cost is the size of the connected component in the migration graph multiplied by $2\alpha k$.
-	
-	\medskip
-	
-	Note that for a single component merge, multiple migration graphs may exist, and multiple of them might have the optimal cost.
-	In Section \ref{ssec:cascade}, we show that among all migration graphs for given component merge, there exists an optimal graph with the bounded cycle length.
-	Combined with other properties, this allows to bound the size of the migration graph, and consequently bound the cost of each repartition, that results in a bound of the competitive ratio for \TAlg.
-	
-	\subsection{Costly cluster reconfiguration example}
-	\label{ssec:example}
-	
-	
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.3\textwidth]{figs/substitute}
-		\caption{A costly cascade example. On the left: the configuration prior to the merge and the merge of two components (denoted solid). On the right: corresponding migration graph for the optimal (unique) reconfiguration.}
-	\end{figure}
-	
-	
-	In this section we present an example of a merge action that results in a $k/3$(?) length cycle in an optimal migration graph.
-	
-	\subsection{Bounds on the size of a migration graph}
-	\label{ssec:cascade}
-	
-	In \cite{repartition-disc}, authors trivially bounded the reconfiguration cost for each merge action by $k \cdot \ell$.
-	This roughly corresponds to migrating every node in every cluster.
-	Now, we bound the cost of a single repartition of \TAlg as a function of $k$.
-	Note that the bound of $k \cdot \ell$ is still valid, and the resulting bound is the minimum of these two.
-	
-	We begin, by bounding the length of each cycle in one of optimal solutions.
-	
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.3\textwidth]{figs/substitute}
-		\caption{Illustration to bounding the cycle length.}
-		\label{fig:cascade-illustration}
-	\end{figure}
-	
-	\begin{theorem}
-		\label{th:cascade-cycles}
-		Consider a single merge action of \TAlg.
-		There exists an optimal cost reconfiguration with the migration graph, where each cycle have length at most $k$.
-	\end{theorem}
-	
-	\begin{proof}
-		Assume the contrary, i.e., for each optimal cluster reconfiguration, its migration graph contains a cycle at least $k+1$.
-		
-		Fix a reconfiguration and its migration graph $G$ that has the shortest length $L$ of the longest cycle, and has the least number of cycles of length $L$.
-		Let $p = \lbrace v_1, v_2, \ldots, v_L \rbrace$ be any cycle of length $L$.
-		As edge labels are from $\{ 1, 2, \ldots, k \}$, there exists a pair of edges $e, f$ with equal labels.
-		
-		We show that in such case, we can modify the solution without affecting its cost and feasibility to decrease the number of cycles of length $L$ by $1$.
-		This would contradict the assumption that we consider a solution with the minimal number of cycles of length $L$.
-		
-		We construct a new migration graph $G'$ of equal cost by swapping the (destination) endpoints of $e$ and $f$ (cf. Figure~\ref{fig:cascade-illustration})
-		Formally, let $\lbrace a, b \rbrace = e$ and $\lbrace c, d \rbrace = f$.
-		We remove $e$ and $f$ and add $e' = \lbrace a, d \rbrace$ and $f' = \lbrace c, d \rbrace$.
-		This way we produced a feasible solution.
-		
-		It remains to show that while decreasing the number of cycles of length $L$, we did not created any new cycles of length at least $L$.
-		Assume that adding $e'$ created a new cycle of length at least $L$.
-		However, $a$ and $d$ were already connected in $G$ by a directed path of length at least $2$, and a cycle strictly longer than $L$ existed in $G$.
-		
-		Assume that adding $f'$ created a new cycle $s^*$ of length $L' \geq L$.
-		Contrary to the previous case, the directed cycle from $e$ to $b$ might not exist in $G$.
-		However, this would mean that $b$ and $e$ were connected by a path of length $L'-1$.
-		This means that we might have followed this alternative path from $b$ to $e$ to obtain a cycle strictly longer than $L$ (cf. Figure~\ref{fig:cascade-illustration}).
-		
-	\end{proof}
-	
-	
-	\begin{theorem}
-		Consider a single repartition of DET2.
-		The number of clusters it involves is bounded by $k^k$.
-		\label{th:cascade}
-	\end{theorem}
-	
-	\begin{proof}
-		Each node has degree at most $k$.
-		Every subset has flow conservation property, hence each cycle traverses one of the nodes of graph origin/core. (no subsets with just incoming edges to the origin part)
-		Combine with Theorem \ref{th:cascade-cycles}.
-		
-	\end{proof}
-	
-	
-	Corollary: Algorithm DET2 is $O(\ell \cdot k \cdot \min \{ \ell, k^k \})$-competitive.
-	\end{comment}
-	
 
 \end{document}
