@@ -489,7 +489,7 @@ The algorithm immediately collocates every communicating pair and never separate
 To help maintain the collocation of communicating pairs, we use the concept of components, introduced by Avin et al. \cite{repartition-disc}.
 
 In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
-We maintain all nodes of a component always collocated in a same cluster~\cite{repartition-disc}.
+We maintain all nodes of a component always collocated in the same cluster~\cite{repartition-disc}.
 When we  move a~node, we move the whole component that contains it.
 We maintain a balanced partition of our components,
 a reminiscent of partitioning given integers into sets of equal sum \cite{integer-partitions-book}.
@@ -847,7 +847,7 @@ we charge it only the cost of moving a single node to the cluster of the other,
 i.e., $\alpha$ (in contrast to $2\alpha$ on \RM).
 
 \textbf{The charging scheme.}
-Consider two  pairs that share a same node, 
+Consider two  pairs that share the same node, 
 i.e.~\emph{intersecting pairs},
 and the set of requests that causes the collocation of both pairs,
 at some  times during  $[1,m]$.
@@ -859,12 +859,11 @@ However,
 we can charge the whole cost to \OPT only the first time \RM collocates a pair,
 and not at any consequent time when \RM collocates it a second time.
 Otherwise,
- \OPT is possibly charged for a same cost repeatedly.
+ \OPT is possibly charged for the same cost repeatedly.
 For this reason,
 we charge \OPT a cost inflicted by a pair,
 if and only if  \OPT incurs that cost after the latest separation of the pair by \RM.
 %%
-\maciek{"a same" I think it should always be "the same", does not sound right with a}
 
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Assume on request $\sigma_{t}=\set{u,v}$, 
