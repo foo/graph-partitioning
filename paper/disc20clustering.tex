@@ -644,13 +644,11 @@ model where the request sequence
 can be arbitrary.
 In Section~\ref{sec:k3}, we show that the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental} provides an optimal algorithm for $k=3$.
 We showed a lower bound of $\Omega(k \cdot \ell)$ that holds for $k=3$ (cf. Section~\ref{sec:lowerbound}), hence the result from this section is asymptotically optimal.
-
-Then, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorithm for $k=2$.
-\maciek{Intro: compare to previous 7-competitive algorithm. Note strict competitive ratio vs large additive term. Also, emphasize that the algorithm is different than 7-competitive}
+Furthermore, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorithm for $k=2$.
 
 
 
-\subsection{An Optimal Algorithm for Clusters of Size $3$}
+\subsection{An Optimal Algorithm for Clusters of Size 3}
 \label{sec:k3}
 
 
@@ -666,11 +664,11 @@ Once $C_{\set{x,y}} = \alpha$, \TAlg merges the components of $u$ and $v$, and m
 If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
 
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.3\textwidth]{figs/substitute}
-	\caption{Cluster types used in the analysis of \TAlg.}
-\end{figure}
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.3\textwidth]{figs/substitute}
+%	\caption{Cluster types used in the analysis of \TAlg.}
+%\end{figure}
 
 In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 Before bounding the competitive ratio of \TAlg, we introduce the lemma that upper bounds the cost of a single repartition of \TAlg.
@@ -711,7 +709,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.3\textwidth]{figs/substitute}
-	\caption{an unsaturated edge that is inside a component}
+	\caption{an unsaturated edge that is inside a component. If there is a space next to it, maybe cluster types should fit next to it? Not sure.}
 \end{figure}
 
 
