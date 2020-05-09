@@ -525,39 +525,7 @@ In other words,
 at least $\Delta(P, P_I)$ node migrations are required in order to reach the partition $P$ from $P_I$, and thus
 $\OPT \geq \Delta^*:= \Delta(P_F, P_I) $.
 We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context.
-The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
-
-\label{alg:PPL}
-\begin{algorithm}
-	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-	\renewcommand{\algorithmicensure}{\textbf{Output:}}
-	\begin{algorithmic}
-		%        \Require 
-		%        $k, \ell$,
-		%        initial configuration $P_I$,
-		%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
-		%        \Ensure A final configuration $P_F$ 
-		\STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$.}
-		\STATE{$P := P_I$}
-		\label{line:initcomponents}
-		\FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
-		\STATE{Let $C_1 \ni u$ and $C_2 \ni v$ be the  components containing $u$ and $v$, respectively.}
-		\IF{$C_1 \neq C_2$}
-		\STATE {Unite $C_1$ and $C_2$ into one component $C'$ and
-		$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$.} \label{line:mergecomponents}
-%		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
-%		\COMMENT{i.e.~if not in the same cluster.}}       
-		\IF{$C_1$ and $C_2$ are not collcoated}
-		\STATE {Move to a partition closest to $P_I$, respecting all components in $\mathcal{C}$.} 
-%		\COMMENT{move to a partition closest to $P_I$}
-		\label{line:rebalance} 
-		\ENDIF
-		\ENDIF
-		\ENDFOR
-	\end{algorithmic}
-	\caption{Perfect Partition Learner (\PPL)}
-	\label{alg:ppl}
-\end{algorithm}
+The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
 With each repartitioning,
 \PPL moves to a partition that minimizes the distance to the initial partition $P_I$.
@@ -1107,7 +1075,39 @@ On the practical side, it would also be interesting to study our algorithms empi
 
 \bibliographystyle{plainurl}
 \bibliography{references}
+
 \appendix
+
+\begin{algorithm}
+	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+	\renewcommand{\algorithmicensure}{\textbf{Output:}}
+	\begin{algorithmic}
+		%        \Require 
+		%        $k, \ell$,
+		%        initial configuration $P_I$,
+		%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
+		%        \Ensure A final configuration $P_F$ 
+		\STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$.}
+		\STATE{$P := P_I$}
+		\label{line:initcomponents}
+		\FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
+		\STATE{Let $C_1 \ni u$ and $C_2 \ni v$ be the  components containing $u$ and $v$, respectively.}
+		\IF{$C_1 \neq C_2$}
+		\STATE {Unite $C_1$ and $C_2$ into one component $C'$ and
+			$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$.} \label{line:mergecomponents}
+		%		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
+		%		\COMMENT{i.e.~if not in the same cluster.}}       
+		\IF{$C_1$ and $C_2$ are not collcoated}
+		\STATE {Move to a partition closest to $P_I$, respecting all components in $\mathcal{C}$.} 
+		%		\COMMENT{move to a partition closest to $P_I$}
+		\label{line:rebalance} 
+		\ENDIF
+		\ENDIF
+		\ENDFOR
+	\end{algorithmic}
+	\caption{Perfect Partition Learner (\PPL)}
+	\label{alg:ppl}
+\end{algorithm}
 
 
 \end{document}
