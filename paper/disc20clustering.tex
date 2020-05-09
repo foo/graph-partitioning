@@ -870,6 +870,23 @@ we charge \OPT a cost inflicted by a pair,
 if and only if  \OPT incurs the cost some time since the last time \RM separated the pair.
 %%
 
+	\maciek{Proposition 1: For $\lambda=\alpha$ the algorithm \RM is strictly 6-competitive.	Proposition 2: "The algorithm \RM is strictly 6-competitive for $\lambda=\alpha$.	"?}
+
+\maciek{First the intuitions, then the theorem, and right after the proof?}
+
+
+\maciek{The first sentence of the proof: first parenthesis does not explain things better, can be omitted. The second parenthesis also, I think: we use swap a lot all over the paper, and it should be understandable at the last proof.}
+
+\maciek{by collocating multiple pairs at once. "by collocating \textbf{two} pairs at once"}
+
+\maciek{"before they inflict too much cost" Unnecessary? Just collocating is enough.}
+
+\maciek{"Therefore it pays a cost of 1 migration per pair". I am confused by this sentence. Charging one is ok, but payment is always the same. Maybe it will become clear with the pic}
+
+\maciek{"a cost inflicted by a pair" the cost?}
+
+\maciek{"incurs the cost some time since" Maybe a different word than some? It is unclear if we refer to interval or a specific moment.}
+
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Assume on request $\sigma_{t}=\set{u,v}$, 
 	i.e., at (time) $t$,
@@ -1044,6 +1061,25 @@ Finally, we have
 %	The claim follows from here.
 
 \end{proof}
+\maciek{Fonts of OPT and \OPT differ. The latter is better.}
+
+\maciek{Excessive comma before ", is $\lambda +2\alpha$?}
+
+\maciek{m not introduced as the end of time in the proof, and also used in the intuitions. Consider some other symbol like $\tau$ or $t_F$}
+
+\maciek{"then \OPT pays $\lambda$ for serving" comma before then?}
+
+\maciek{", or $\alpha$ for collocating \textbf{and serving some requests remotely}" remove what's bold? The migration is sufficient}
+
+\maciek{"it can have one edge already collocated" at most one edge?}
+
+\maciek{"at the same time. However" One sentence? joined with "but"}
+
+\maciek{"similarly as in the former" "\textbf{similarly to the former}"}
+
+\maciek{"this means," "\textbf{this means that}"}
+
+\maciek{Suggestion: maybe call "its intervals" "\textbf{the saturating intervals}"?}
 
 \section{Discussion and Future Work}
 
