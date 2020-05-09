@@ -715,7 +715,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 
 
 \begin{theorem}
-	\TAlg is $O(\ell)$-competitive for $k=3$.
+	\TAlg is $(54\ell)$-competitive for $k=3$.
 \end{theorem}
 \begin{proof}
 	Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
@@ -773,7 +773,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
 	By entering some fixed configuration before serving $\sigma_E$, \OPT may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
 	Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
-	Faced with $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
+	Faced with at least $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
 	
 	
 	Now we estimate the cost of $\OPT(\sigma_E)$ while accounting savings from migrations.
@@ -781,14 +781,17 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	This may allow serving requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterwards.
 	As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
 	By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$
-	Thus, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
-	From that, we obtain $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
-	Let $E := \OPT(\sigma_E) + \OPT(M)$.
+	Hence, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
+
 	
-	Finally, we bound the competitive ratio
-	\begin{equation*}
-		\frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + E/2} \leq \frac{27\alpha\cdot\ell + 2\cdot E}{\alpha + E} \leq 27 \ell = O(\ell).
-	\end{equation*}
+	Finally, we bound the competitive ratio.
+	From the bound on \OPT's cost we have $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
+	Let $\xi := \OPT(\sigma_E) + \OPT(M)$.
+	The competitive ratio is
+
+	\[
+		\frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + \xi/2} \leq \frac{27\alpha\cdot\ell + 2\cdot \xi}{\alpha + \xi} \leq 27 \ell.
+	\]
 	
 	\medskip
 	
@@ -799,7 +802,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
 	If there were at least $\alpha$ external requests, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
 	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
-	This way, the competitive ratio increases at most twofold.
+	This way, the competitive ratio increases at most twofold in comparison to a finished phase, and the competitive ratio is $\TAlg(\sigma)/\OPT(\sigma) \leq 54\ell$.
 \end{proof}
 
 \subsection{Improved algorithm for Online Rematching} \label{sec:k2}
