@@ -514,9 +514,10 @@ In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to t
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
 Fix the initial partition
-$P_I = I_1, \dots, I_{\ell}$ and \OPT's final partition
-$P_F = F_1, \dots, F_{\ell}$.
-The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ from the initial partition,
+$P_I :=\{ I_1, \dots, I_{\ell}\}$ and \OPT's final partition
+$P_F := \{F_1, \dots, F_{\ell}\}$.
+The \emph{distance} of a partition
+ $P = \{C_1, \dots, C_{\ell}\}$ from the initial partition,
 defined as 
 $\Delta(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$,
  is the number of nodes in $P$ that do not reside in their initial cluster.
@@ -567,57 +568,65 @@ We emphasis that a repartitioning by \PPL replaces the current partition $P$ wit
 Meaning, it never moves to a partition beyond distance $\Delta^*$.
 
 \begin{property} \label{prop:dist<OPT}
-	Let $P$ be any configuration chosen by \PPL at any time.
-	Then, $\Delta(P,P_I) \leq \Delta^*$.	
+	Let $P$ be any partition chosen by \PPL at any time.
+	Then, $\Delta(P) \leq \Delta^*$.	
 \end{property}
 
 \begin{lemma}	\label{lemma:rebalancecost}
 	The cost of each repartitioning by \PPL is $2\cdot\OPT$.
 \end{lemma}
 \begin{proof}
-	Consider the repartitioning that transforms $P_{t-1}$ to $P_t$ upon the request $\sigma_t$.
+	Let $P_i$ denote the partition of \PPL immediately after serving $\sigma_{i}$.
+	Consider the repartitioning that transforms 
+	$P_{t-1}$ to $P_t$ upon the request $\sigma_t$.
 	Let $M \subset V$ denote the set of nodes that migrate during this process.
-	Let $M^-$ and $M^+$ denote the subset of nodes that (respectively)
-	enter or leave their original cluster during the repartitioning.    
+	Let $M^-$ and $M^+$ denote the subset of nodes that, respectively,
+	enter or leave their initial cluster during the repartitioning.    
 	Then,
 	$M = M^+ \cup M^-$.
-	Since \maciek{at least?} $|M^-|$ nodes are not in their original cluster before the repartitioning (i.e., in $P_{t-1}$),
-	the distance before the repartitioning is $\Delta(P_{t-1},P_I) \geq | M^-|$.
+	Since at least $|M^-|$ nodes are not in their initial cluster before the repartitioning (i.e., in $P_{t-1}$),
+	the distance before the repartitioning is $\Delta(P_{t-1}) \geq | M^-|$.
 	Analogously,
-	the distance afterwards is $\Delta(P_{t},P_I) \geq | M^+|$.
+	the distance afterwards is $\Delta(P_{t}) \geq | M^+|$.
 	Thus,
-	$|M| \leq \Delta(P_{t-1},P_I) + \Delta(P_{t},P_I)$.
+	$|M| \leq \Delta(P_{t-1}) + \Delta(P_{t})$.
 	By Property \ref{prop:dist<OPT},
-	$\Delta(P_{t-1},P_I) , \Delta(P_{t},P_I) \leq \Delta^* \leq \OPT$
-	and thereby we have	
-	$|M| \leq 2\cdot\OPT$.
-	\maciek{the comma between $\Delta$ is confusing. BOTH are bounded? If so, expand the sentence and write both individual bounds.}
+	$\Delta(P_{t-1})  \leq \Delta^*$ and
+	$\Delta(P_{t}) \leq \Delta^*$.
+	Since $\Delta^* \leq \OPT$,
+	we obtain	 $|M| \leq 2\cdot\OPT$.
 \end{proof}
 
 \begin{theorem}	\label{thm:upperbound}
-	\PPL reaches the final configuration $P_F$ and it is $(2\cdot k\cdot\ell)$-competitive.
-	\maciek{Do not hide that we have $2(k-1)\ell$ in the theorem. This is a better bound.}
+	\PPL reaches the final partition $P_F$
+	 and it is $(2\cdot (k-1)\cdot\ell)$-competitive.
 \end{theorem}
 \begin{proof}
 	On each inter-cluster request,
 	the algorithm enumerates all $\ell$-way partitions of components
-	that are in the same (closest) distance of $P_I$.
+	that are in the same (closest) distance to $P_I$.
 	That is, 
-	once it reaches a configuration $P$ at distance $\Delta^* = \Delta(P, P_I)$,
-	it does not move to a configuration
-	$P', \Delta(P', P_I) > \Delta^*$,
-	before it enumerates all configurations at distance $\Delta^*$.
+	once it reaches a partition $P$ at distance $\Delta^* = \Delta(P)$,
+	it does not move to a partition
+	$P', \Delta(P') > \Delta^*$,
+	before it enumerates all partitions at distance $\Delta^*$.
 	Therefore,
-	\PPL eventually reaches $\Delta^*=\OPT$ and the configuration $P_F$.
-	%    including the request that completes revealing of all components that are collocated in $P_F$.
-	There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{repartition}$
-	(i.e., the number of internal edges in $P_F$).
-	\maciek{Clarify why the number of internal edges bound the number of repartitions.}
+	\PPL eventually reaches  the partition $P_F$ at distance $\Delta^*=\OPT$.
+	With each distinct request, 
+	the size of some component increases by one.
+	For any cluster $F_i \in P_F$,
+	we have $\sum_{C \in F_i} |C| = k$.
+	A component $C \in F_i$,
+	 initially begins as an isolated node and it grows by gaining $|C|-1$ more nodes.
+	Hence, the total number of times a component in $F_i$ grows is 
+	$\sum_{C \in F_i} (|C|-1) \leq k-1$.
+	Therefore, there are at most  $(k-1)\cdot\ell $ distinct requests
+	for which \PPL performs a repartitioning.
+	I.e.,
+	 \PPL performs at most $(k-1)\cdot\ell $ repartitionings.
 	By Lemma \ref{lemma:rebalancecost},
-	each repartition costs at most $2\cdot\OPT$.
-	The total cost is therefore at most $2\cdot\OPT\cdot k\cdot\ell$, which implies the competitive ratio.
-	%    \mahmoud{This is the cost of moving and the cost of remote comm. is not counted.
-	%    	So it is 4-competitive (?)}
+	each repartitioning costs at most $2\cdot\OPT$.
+	The total cost is therefore at most $2\cdot\OPT\cdot (k-1) \cdot\ell$, which implies the competitive ratio.
 \end{proof}
 
 % In Section~\ref{sec:lowerbound} we constructed a $\Omega(k \cdot \ell)$ for \OBRP{}.
@@ -626,7 +635,6 @@ Meaning, it never moves to a partition beyond distance $\Delta^*$.
 
 \section{General Partitioning Model}
 \label{sec:part}
-
 
 Now  we discuss the general online
 model where the request sequence
