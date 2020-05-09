@@ -65,18 +65,16 @@
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
  
- \newcommand{\OPT}{\textsf{OPT}\xspace}
+ \newcommand{\OPT}{\textsc{OPT}\xspace}
   \newcommand{\OPTM}{\mathit{OPT}}
- \newcommand{\ALG}{\textsf{ALG}\xspace}
- \newcommand{\PPL}{\textsf{PPL}\xspace}
+ \newcommand{\ALG}{\textsc{ALG}\xspace}
+ \newcommand{\PPL}{\textsc{PPL}\xspace}
  \newcommand{\OBRP}{BRP\xspace}
  \newcommand{\PPOBRP}{PP-BRP}
- \newcommand{\dist}{\textsf{dist}}
+ \newcommand{\dist}{\mathit{dist}}
  \newcommand{\TAlg}{{\ensuremath{\textsf{ALG}_{3}}}\xspace}
-  \newcommand{\RM}{\textsf{RM}\xspace} % rematching alg
+  \newcommand{\RM}{\textsc{RM}\xspace} % rematching alg
  
- \newcommand{\comm}{\textsc{comm}}
- \newcommand{\OFF}{\textsc{Off}\xspace}
  \newcommand{\Rep}{\textsc{Rep}}
  
  
@@ -233,8 +231,9 @@ the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 \textbf{Learning model.}
 We study a variant of Online Balanced Partitioning,
 where the communication pattern is \emph{static}:
-an adversary determines the pairs of nodes that ever communicate, a~priori,
-and requests to these pairs arrive indefinitely.
+whether a pair of  nodes ever communicate or not, 
+is determined a priori and is unknown to algorithms,
+ and requests to such pairs arrive indefinitely.
 Any algorithm must eventually collocate  pairs of communicating nodes,
 as otherwise it cannot be competitive.
 As in Henzinger et al. \cite{sigmetrics19_partitioning}, we assume that the communication graph admits a \emph{perfect partition},
@@ -490,47 +489,41 @@ The algorithm immediately collocates every communicating pair and never separate
 To help maintain the collocation of communicating pairs, we use the concept of components, introduced by Avin et al. \cite{repartition-disc}.
 
 In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
-We maintain all nodes of each component collocated in one cluster~\cite{repartition-disc}.
-If we need to move a~node, we move the whole component that contains it.
-We maintain a balanced partition of our components, a similar concept to partition of integers into sets with equal sum \cite{integer-partitions-book}.
-In contrast, our partition is time-varying: communicating components are merged into one, and we adjust the partition.
+We maintain all nodes of a component always collocated in a same cluster~\cite{repartition-disc}.
+When we  move a~node, we move the whole component that contains it.
+We maintain a balanced partition of our components,
+a reminiscent of partitioning given integers into sets of equal sum \cite{integer-partitions-book}.
+In contrast, our partition is time-varying:  two components are merged into one component once they communicate, and we adjust the partition accordingly.
 
-We say that a component is \emph{trivial}, if it contains exactly one node.
-We say that the node that belongs to trivial component \emph{isolated}.
-We say that a~configuration is \emph{component-respecting}
-if the nodes belonging to the same component are collocated.
+We say that a component is \emph{trivial}, if it contains exactly one node,
+and the node in this component is \emph{isolated}.
+\mahmoud{we also use "singletone component". One is redundant.}
+We say that a~partition is \emph{component-respecting}
+if the nodes belonging to the same component are always collocated.
 
 The algorithm in this section, and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from \cite{repartition-disc}.
 The difference is in the the choice of partition after a component merge.
 In DET, the partition was arbitrary.
-In the algorithm for the learning model, we choose the partition closest to the initial configuration.
-In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the previous configuration (a repartition of minimum cost).
+In the algorithm for the learning model, we choose the partition closest to the initial partition.
+In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a repartition of minimum cost).
 
 
 
-\maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here.}
+\maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here. \mahmoud{are "configuration" and "partition" the same thing everywhere? Then let's use "partition" only.}}
 
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
-Fix the initial configuration
-$P_I = I_1, \dots, I_{\ell}$ and \OPT's final configuration
-$P_F = F_1, \dots, F_{\ell}$\maciek{How do we define a configuration?}.
-The \emph{distance} of a configuration $P = C_1, \dots, C_{\ell}$ from the initial configuration \maciek{, denoted $\dist(P)$} is the number of nodes in $P$ that do not reside in their initial cluster.
-\maciek{We might denote distance $\Delta(P)$, and the current $\Delta$ might be R (like radius).}
-That is,
-$\dist(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$
-\maciek{Major: what does this definition mean? This is highly unclear, most likely because a configuration was not defined.}. 
+Fix the initial partition
+$P_I = I_1, \dots, I_{\ell}$ and \OPT's final partition
+$P_F = F_1, \dots, F_{\ell}$.
+The \emph{distance} of a partition $P = C_1, \dots, C_{\ell}$ from the initial partition,
+defined as 
+$\Delta(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$,
+ is the number of nodes in $P$ that do not reside in their initial cluster.
 In other words,
-at least $\dist(P, P_I)/2$ node swaps are required in order to reach the configuration $P$ from $P_I$, and thus
-$\OPT \geq \Delta:= \dist(P_F, P_I) $.
-With each repartitioning,
-\PPL moves to a configuration that minimizes the distance to the initial configuration $P_I$.
-As a result,
-\PPL never ends up \maciek{ends up is informal} in a configuration that is more than $\Delta$ (single-node) migrations away from $P_I$ \maciek{This is not an algorithm definition, that's its property. Should not be in this paragraph}.
-This invariant ensures that \PPL does not pay too much while recovering $P_F$ \maciek{Recovering $P_F$? It's not the goal. At least at this point the reader is confused: it does not know yet that PPL is proven to end up in $P_F$}.
-%      \maciek{``re-partition'' procedure name should indicate the fact that this is a specific repartition that is close to initial partition}
-We note \maciek{Define?} that the $\mathit{repartition}$ at Line \ref{line:rebalance} replaces the current configuration $P$ with a~perfect partition closest to $P_I$.
-Hence it never moves to a configuration beyond distance $\Delta$ \maciek{This is again mixing the properties of ppl and its definition. Restructure}.
+at least $\Delta(P, P_I)$ node migrations are required in order to reach the partition $P$ from $P_I$, and thus
+$\OPT \geq \Delta^*:= \Delta(P_F, P_I) $.
+We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context.
 The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 
 \label{alg:PPL}
@@ -543,19 +536,19 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 		%        initial configuration $P_I$,
 		%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
 		%        \Ensure A final configuration $P_F$ 
-		\STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$}
-		\STATE{$P_0 := P_I$}
+		\STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$.}
+		\STATE{$P := P_I$}
 		\label{line:initcomponents}
 		\FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
-		\STATE Let $C_1 \ni u$ and $C_2 \ni v$ be the container components
+		\STATE{Let $C_1 \ni u$ and $C_2 \ni v$ be the  components containing $u$ and $v$, respectively.}
 		\IF{$C_1 \neq C_2$}
-		\STATE {Unite the two components into a single component $C'$ and
-		$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$} \label{line:mergecomponents}
-		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
-		\COMMENT{i.e.~if not in the same cluster}    
-		}       
-		\STATE {$P_{t} = \mathit{repartition}(P_{t-1}, P_I, \mathcal{C})$} 
-		\COMMENT{move to $P$ closest to $P_I$}
+		\STATE {Unite $C_1$ and $C_2$ into one component $C'$ and
+		$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$.} \label{line:mergecomponents}
+%		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
+%		\COMMENT{i.e.~if not in the same cluster.}}       
+		\IF{$C_1$ and $C_2$ are not collcoated}
+		\STATE {Move to a partition closest to $P_I$, respecting all components in $\mathcal{C}$.} 
+%		\COMMENT{move to a partition closest to $P_I$}
 		\label{line:rebalance} 
 		\ENDIF
 		\ENDIF
@@ -565,25 +558,21 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 	\label{alg:ppl}
 \end{algorithm}
 
-
-\maciek{Algorithm pseudocode comments}
-\maciek{Stefan's comment: "container" components undefined}
-\maciek{Major thing to discuss: do we even need this? The algorithm is very simple, and the description in the paragraph would be much better. The only way to save it would be to have a general algorithm pseudocode (equivalent to DET), and parametrize it with the repartition procedure. Here, we would say that we choose the closest to initial, and it ALG3 we say that we choose the closest to current.}
-\maciek{This is not good that we need a comment about what $cluster \neq cluster$ means}
-\maciek{In pseudocode we need extremely short sentences. $C := singleton components ... $?; $Merge C, C'$ etc}
-\maciek{No need to maintain $P_i$'s. Just use one $P$? Or without naming: "move to partition (closeToInit(...))", and remove the partition args from cluster().}
-\maciek{Online algorithms should have different pseudocode. Instead of for loop, start with "When a request u,v arrives" (before that it is ok to have init phase just like it is now)}
+With each repartitioning,
+\PPL moves to a partition that minimizes the distance to the initial partition $P_I$.
+As a result,
+\PPL never moves to a~partition that is more than $\Delta^*$  node migrations away from $P_I$.
+This invariant latter ensures us that \PPL does not pay too much while recovering $P_F$.
+We emphasis that a repartitioning by \PPL replaces the current partition $P$ with a~perfect partition closest to $P_I$.
+Meaning, it never moves to a partition beyond distance $\Delta^*$.
 
 \begin{property} \label{prop:dist<OPT}
-	Let $P$ be any configuration chosen by \PPL at Line $\ref{line:rebalance}$.
-	Then, $\dist(P,P_I) \leq \Delta$.
-	\maciek{Express the configuration without refering to pseudocode?}
+	Let $P$ be any configuration chosen by \PPL at any time.
+	Then, $\Delta(P,P_I) \leq \Delta^*$.	
 \end{property}
-\maciek{The property is explained in the previous paragraph. Here, reader thinks that this is obvious and wonders why. Restructure: Move closer to the exlaination text. Or even make this property a lemma (most likely better).}
 
 \begin{lemma}	\label{lemma:rebalancecost}
-	The cost of repartitioning at Line \ref{line:rebalance} is at most $2\cdot\OPT$.
-	\maciek{Express the reconfiguration without pseudocode?}
+	The cost of each repartitioning by \PPL is $2\cdot\OPT$.
 \end{lemma}
 \begin{proof}
 	Consider the repartitioning that transforms $P_{t-1}$ to $P_t$ upon the request $\sigma_t$.
@@ -593,16 +582,16 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 	Then,
 	$M = M^+ \cup M^-$.
 	Since \maciek{at least?} $|M^-|$ nodes are not in their original cluster before the repartitioning (i.e., in $P_{t-1}$),
-	the distance before the repartitioning is $\dist(P_{t-1},P_I) \geq | M^-|$.
+	the distance before the repartitioning is $\Delta(P_{t-1},P_I) \geq | M^-|$.
 	Analogously,
-	the distance afterwards is $\dist(P_{t},P_I) \geq | M^+|$.
+	the distance afterwards is $\Delta(P_{t},P_I) \geq | M^+|$.
 	Thus,
-	$|M| \leq \dist(P_{t-1},P_I) + \dist(P_{t},P_I)$.
+	$|M| \leq \Delta(P_{t-1},P_I) + \Delta(P_{t},P_I)$.
 	By Property \ref{prop:dist<OPT},
-	$\dist(P_{t-1},P_I) , \dist(P_{t},P_I) \leq \Delta \leq \OPT$
+	$\Delta(P_{t-1},P_I) , \Delta(P_{t},P_I) \leq \Delta^* \leq \OPT$
 	and thereby we have	
 	$|M| \leq 2\cdot\OPT$.
-	\maciek{the comma between $\dist$ is confusing. BOTH are bounded? If so, expand the sentence and write both individual bounds.}
+	\maciek{the comma between $\Delta$ is confusing. BOTH are bounded? If so, expand the sentence and write both individual bounds.}
 \end{proof}
 
 \begin{theorem}	\label{thm:upperbound}
@@ -614,12 +603,12 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 	the algorithm enumerates all $\ell$-way partitions of components
 	that are in the same (closest) distance of $P_I$.
 	That is, 
-	once it reaches a configuration $P$ at distance $\Delta = \dist(P, P_I)$,
+	once it reaches a configuration $P$ at distance $\Delta^* = \Delta(P, P_I)$,
 	it does not move to a configuration
-	$P', \dist(P', P_I) > \Delta$,
-	before it enumerates all configurations at distance $\Delta$.
+	$P', \Delta(P', P_I) > \Delta^*$,
+	before it enumerates all configurations at distance $\Delta^*$.
 	Therefore,
-	\PPL eventually reaches $\Delta=\OPT$ and the configuration $P_F$.
+	\PPL eventually reaches $\Delta^*=\OPT$ and the configuration $P_F$.
 	%    including the request that completes revealing of all components that are collocated in $P_F$.
 	There are at most $(k-1)\cdot\ell < k\cdot\ell $ calls   to $\mathit{repartition}$
 	(i.e., the number of internal edges in $P_F$).
@@ -834,17 +823,15 @@ Once $C_{\set{x,y}} = \lambda$,
 reset the counter and collocate the pair arbitrarily in one of the two clusters where $x$ or $y$ resides.
 
 \begin{theorem} \label{thm:k=2}
-	The algorithm \RM, for $\lambda=\alpha$, is (strictly) 6-competitive.
+	For $\lambda=\alpha$, the algorithm \RM  is strictly 6-competitive.
 \end{theorem}
 
 
-We charge both \OPT and \RM whenever \RM collocates a pair (i.e., on a collocation event).
-%More precisely,we charge them only the cost of the collocation, per such event.
-%Hence,we charge the cost of  this collocation to \OPT for the first time.
-\RM collocates a pair always with a swap (i.e., two simultaneous migrations),
+We charge both \OPT and \RM whenever \RM collocates a pair.%(i.e., on a collocation event).
+\RM collocates a pair always with a swap,%(i.e., two simultaneous migrations),
 which  costs $2\alpha$,
-while OPT may save some costs by collocating multiple pairs at once, 
- before they inflict too much communication cost.
+while OPT may save some costs by collocating multiple pairs at once.
+% before they inflict too much communication cost.
  Therefore it pays the price of only one migration per pair  (\mahmoud{see Figure \ref{fig:TBD}}).
 Hence,
 whenever \OPT collocates a pair,
@@ -867,25 +854,8 @@ Otherwise,
  \OPT is possibly charged for a same cost repeatedly.
 For this reason,
 we charge \OPT a cost inflicted by a pair,
-if and only if  \OPT incurs the cost some time since the last time \RM separated the pair.
+if and only if  \OPT incurs that cost after the latest separation of the pair by \RM.
 %%
-
-	\maciek{Proposition 1: For $\lambda=\alpha$ the algorithm \RM is strictly 6-competitive.	Proposition 2: "The algorithm \RM is strictly 6-competitive for $\lambda=\alpha$.	"?}
-
-\maciek{First the intuitions, then the theorem, and right after the proof?}
-
-
-\maciek{The first sentence of the proof: first parenthesis does not explain things better, can be omitted. The second parenthesis also, I think: we use swap a lot all over the paper, and it should be understandable at the last proof.}
-
-\maciek{by collocating multiple pairs at once. "by collocating \textbf{two} pairs at once"}
-
-\maciek{"before they inflict too much cost" Unnecessary? Just collocating is enough.}
-
-\maciek{"Therefore it pays a cost of 1 migration per pair". I am confused by this sentence. Charging one is ok, but payment is always the same. Maybe it will become clear with the pic}
-
-\maciek{"a cost inflicted by a pair" the cost?}
-
-\maciek{"incurs the cost some time since" Maybe a different word than some? It is unclear if we refer to interval or a specific moment.}
 
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Assume on request $\sigma_{t}=\set{u,v}$, 
