@@ -199,7 +199,7 @@ initially arbitrarily partitioned into $\ell$~clusters
 (e.g., servers or entire racks),
 each of size~$k$.
 The nodes interact using
-a sequence of pairwise communication requests
+a~sequence of pairwise communication requests
 $\sigma = (u_1,v_1),$ $(u_2,v_2),$ $(u_3,v_3), \ldots$,
 where a pair $(u_t,v_t)$ indicates that nodes $u_t$ and $v_t$ exchange a~certain amount of data.
 Nodes in $C \subset V$ are \emph{collocated}
@@ -233,7 +233,7 @@ the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 \textbf{Learning model.}
 We study a variant of Online Balanced Partitioning,
 where the communication pattern is \emph{static}:
-an adversary determines the pairs of nodes that ever communicate, a priori,
+an adversary determines the pairs of nodes that ever communicate, a~priori,
 and requests to these pairs arrive indefinitely.
 Any algorithm must eventually collocate  pairs of communicating nodes,
 as otherwise it cannot be competitive.
@@ -376,7 +376,7 @@ In our algorithms, we group nodes with a communication history into \emph{compon
 
 
 A~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
-Their role is to ensure that the algorithm maintains a partition of ground sets into clusters.
+Their role is to ensure that the algorithm maintains a~partition of ground sets into clusters.
 We emphasize that ground sets are revealed only upon their nodes are split.
 We say that a ground set is \emph{trivial}, if it contains exactly one node.
 We say that the node that belongs to trivial a ground set is \emph{isolated}.
@@ -431,14 +431,14 @@ In comparison, \OPT performs only two migrations.
 
 	We claim that expanding ground sets in this way can continue as long as at least $\ell$ isolated nodes exists.
 	Fix the configuration just before the creation of a ground set with $x_i$ for some $i$.
-	We show that if at least $\ell$ isolated nodes exist (including $x_i$), then there exists a perfect partition of ground sets after expanding a ground set with $x_i$.
+	We show that if at least $\ell$ isolated nodes exist (including $x_i$), then there exists a~perfect partition of ground sets after expanding a ground set with $x_i$.
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
 	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some isolated nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(x_i)$ contains an isolated node, then we simply obtain a~perfect partition by swapping it with $x_i$.
 	In the following we assume that no isolated nodes exist on $I(x_i)$.
 	The largest ground set of $I(x_i)$ is at most $k-1$, because $x_i$ is on $S$.
 	Therefore $\{x_0, y_0\}$ is present on $I(x_i)$, and we must evict it to make space for $x_i$.
-	To find the cluster for $\{x_0, y_0\}$, observe that we have at most $\ell-1$ clusters with isolated nodes, and we have at least $\ell$ isolated nodes --- hence a cluster with two isolated nodes exists.
+	To find the cluster for $\{x_0, y_0\}$, observe that we have at most $\ell-1$ clusters with isolated nodes, and we have at least $\ell$ isolated nodes --- hence a~cluster with two isolated nodes exists.
 	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated isolated nodes, and then we swap an isolated node from $I(x_i)$ with $x_i$.
 	
 
@@ -455,7 +455,7 @@ In comparison, \OPT performs only two migrations.
 
 	\ALG performs at least one swap for every expansion of a ground set.
 	Each expansion reduces the number of isolated nodes by $1$.
-	We start with $k \cdot \ell - (k-1)$ isolated nodes (a single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with isolated $\ell+1$ nodes.
+	We start with $k \cdot \ell - (k-1)$ isolated nodes (a~single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with isolated $\ell+1$ nodes.
 	The competitive ratio is then $\ALG / \OPT \geq (k\cdot \ell - k - l) / 2$.
 \end{proof}
 
@@ -491,7 +491,7 @@ To help maintain the collocation of communicating pairs, we use the concept of c
 
 In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
 We maintain all nodes of each component collocated in one cluster~\cite{repartition-disc}.
-If we need to move a node, we move the whole component that contains it.
+If we need to move a~node, we move the whole component that contains it.
 We maintain a balanced partition of our components, a similar concept to partition of integers into sets with equal sum \cite{integer-partitions-book}.
 In contrast, our partition is time-varying: communicating components are merged into one, and we adjust the partition.
 
@@ -740,7 +740,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	Now we bound $\TAlg(\sigma_I)$.
 	A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as two pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
-	Other cluster types contribute less: $C_1$ contributes $0$ and $C_2$ contributes $\alpha$.
+	Other cluster types contribute less: $C_1$ contributes~$0$ and $C_2$ contributes $\alpha$.
 	Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
 	
 	%We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
@@ -805,8 +805,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 \subsection{Improved algorithm for Online Rematching} \label{sec:k2}
 In this section,
 we present \RM,
- an algorithm for the \OBRP restricted to clusters of capacity 2,
-i.e.~$k=2$.
+ an algorithm for the \OBRP restricted to clusters of capacity $k=2$.
 We interpret a pair of nodes collocated in one cluster as a matched pair.
 Hence,
 the problem is an online variant of the classic matching problem where
