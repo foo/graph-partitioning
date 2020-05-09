@@ -345,55 +345,9 @@ Table \ref{tab:overview} provides an overview of our contributions compared to p
 	\vspace{-7mm}
 \end{table*}
 
-\section{Preliminaries}
-\label{sec:prelim}
-
-Across this paper, we often refer to groups of communicating nodes.
-We use this concept slightly differently in the lower bound and the upper bounds.
-In our algorithms, we group nodes with a communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
-
-\noindent
-\textbf{Components.}
-In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
-We maintain all nodes of each component collocated in one cluster~\cite{repartition-disc}.
-If we need to move a node, we move the whole component that contains it.
-We maintain a balanced partition of our components, a similar concept to partition of integers into sets with equal sum (\maciek{TODO: cite}).
-In contrast, our partition is time-varying: communicating components are merged into one, and we adjust the partition.
-
-\noindent
-\textbf{Ground sets.}
-In the lower bound, a~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
-Their role is to ensure that the algorithm maintains a partition of ground sets into clusters.
-We emphasize that ground sets are revealed only upon their nodes are split.
-%\maciek{Other names: division, segmentation, alignment, formation}
-
-%We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
-%This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
-%such that frequently communicating nodes (from different clusters)
-%are relocated to the same cluster before they inflict too much communication cost.
-%A \emph{reconfiguration} (i.e.,\emph{ re-partitioning})
-%is performed by migrating nodes between clusters,
-%at the total cost of individual node migrations.
-%The objective is to jointly minimize communication and migration costs while serving the sequence.
-
-We say that a component or a ground set is \emph{trivial}, if it contains exactly one node.
-We say that the node that belongs to trivial component or a ground set is \emph{alone}.
-We say that a~configuration is \emph{component-respecting}
-if the nodes belonging to the same component are collocated.
-
-
-\noindent
-\textbf{Note on our algorithms.}
-\maciek{Should not be here probably, but where?}
-Two of our algorithms (for the learning model and for $k=3$ in the partitioning model) are modified versions of the algorithm DET from \cite{repartition-disc}.
-The difference is in the the choice of partition after a component merge.
-In DET, the partition was arbitrary.
-In PPL, we choose the partition closest to the initial configuration.
-In \TAlg, we choose the partition closest to the previous configuration (a repartition of minimum cost).
-
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-In this section we consider the learning variant of Online Balanced Partitioning.
+In this section we consider the learning variant of Dynamic Balanced Graph Partitioning.
 For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$.
 The lower bound can be easily translated to the partitioning model (studied in Section~\ref{sec:part}) with finite request sequence.
 At the end of this section, we discuss an asymptotically optimal upper bound.
@@ -405,7 +359,7 @@ At the end of this section, we discuss an asymptotically optimal upper bound.
 
 
 We provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm for the learning problem.
-Later we elaborate on how to efficiently transform it to a lower bound for the partitioning problem.
+Later we elaborate on how to efficiently transform it to a lower bound for the general partitioning problem.
 The lower bound requires $k\geq 3$.
 For $k=2$, the learning problem is trivial: immediate collocation of a communicating pair is $1$-competitive.
 (A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a~$6$-competitive algorithm (see Section~\ref{sec:k2}).)
@@ -419,6 +373,18 @@ For $k=2$, the learning problem is trivial: immediate collocation of a communica
 	\caption{Example figure of the construction of the LB and growing components.}
 	\label{fig:nptree-construction}
 \end{figure}
+
+
+Across this paper, we often refer to groups of communicating nodes.
+We use this concept slightly differently in the lower bound and the upper bounds.
+In our algorithms, we group nodes with a communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
+
+
+A~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
+Their role is to ensure that the algorithm maintains a partition of ground sets into clusters.
+We emphasize that ground sets are revealed only upon their nodes are split.
+We say that a ground set is \emph{trivial}, if it contains exactly one node.
+We say that the node that belongs to trivial a ground set is \emph{isolated}.
 
 
 The adversary constructs ground sets (a set of nodes that may communicate, see Section~\ref{sec:prelim}) depending on choices of a deterministic online algorithm.
@@ -438,7 +404,7 @@ In comparison, \OPT performs only two migrations.
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for \OBRP is at least $(k\cdot \ell - k - \ell)/2$ for any $k\geq 3$ and $\ell \geq 2$.
+	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least $(k\cdot \ell - k - \ell)/2$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
@@ -447,10 +413,10 @@ In comparison, \OPT performs only two migrations.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially all nodes are \emph{isolated}.
-	First, we create a ground set $B$ of size $k-1$ on an arbitrarily.
+	First, we create a ground set $B$ of $k-1$ nodes on an arbitrarily chosen cluster (the nodes  are already collocated).
 	%We never dismiss any constructed ground set.
 	Each cluster hosts exactly $k$ nodes, and in any configuration a single isolated node resides in $S$.
-	We say that this isolated node that accompany the ground set $B$ is \emph{special}.
+	We say that this isolated node that accompanies the ground set $B$ is \emph{special}.
 	We denote the first special node by $x_0$.
 
 	Then, we add the special node to a larger ground set to force its eviction.
@@ -470,7 +436,7 @@ In comparison, \OPT performs only two migrations.
 
 	We claim that expanding ground sets in this way can continue as long as at least $\ell$ isolated nodes exists.
 	Fix the configuration just before the creation of a ground set with $x_i$ for some $i$.
-	We show that if at least $\ell$ isolated nodes exists (including $x_i$), then there exists a perfect partition of ground sets after expanding a ground set with $x_i$.
+	We show that if at least $\ell$ isolated nodes exist (including $x_i$), then there exists a perfect partition of ground sets after expanding a ground set with $x_i$.
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
 	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some isolated nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(x_i)$ contains an isolated node, then we simply obtain a~perfect partition by swapping it with $x_i$.
@@ -526,10 +492,26 @@ Finally, we note the possibility for improvement. The algorithm CREP~\cite{repar
 
 We present an asymptotically optimal algorithm for the learning problem.
 The algorithm immediately collocates every communicating pair and never separates them.
-In other words, it maintains components, introduced in the preliminaries (Section~\ref{sec:prelim}).
+To help maintain the collocation of communicating pairs, we use the concept of components, introduced by Avin et al. \cite{repartition-disc}.
 
-Upon receiving any external request, two components merge --- and this requires a reconfiguration.
-Many configurations may be feasible, and we choose the one that is \emph{closest to the initial configuration}.
+In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
+We maintain all nodes of each component collocated in one cluster~\cite{repartition-disc}.
+If we need to move a node, we move the whole component that contains it.
+We maintain a balanced partition of our components, a similar concept to partition of integers into sets with equal sum \cite{integer-partitions-book}.
+In contrast, our partition is time-varying: communicating components are merged into one, and we adjust the partition.
+
+We say that a component is \emph{trivial}, if it contains exactly one node.
+We say that the node that belongs to trivial component \emph{isolated}.
+We say that a~configuration is \emph{component-respecting}
+if the nodes belonging to the same component are collocated.
+
+The algorithm in this section, and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from \cite{repartition-disc}.
+The difference is in the the choice of partition after a component merge.
+In DET, the partition was arbitrary.
+In the algorithm for the learning model, we choose the partition closest to the initial configuration.
+In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the previous configuration (a repartition of minimum cost).
+
+
 
 \maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here.}
 
@@ -590,6 +572,7 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 
 
 \maciek{Algorithm pseudocode comments}
+\maciek{Stefan's comment: "container" components undefined}
 \maciek{Major thing to discuss: do we even need this? The algorithm is very simple, and the description in the paragraph would be much better. The only way to save it would be to have a general algorithm pseudocode (equivalent to DET), and parametrize it with the repartition procedure. Here, we would say that we choose the closest to initial, and it ALG3 we say that we choose the closest to current.}
 \maciek{This is not good that we need a comment about what $cluster \neq cluster$ means}
 \maciek{In pseudocode we need extremely short sentences. $C := singleton components ... $?; $Merge C, C'$ etc}
