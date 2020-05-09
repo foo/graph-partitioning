@@ -442,7 +442,7 @@ In comparison, \OPT performs only two migrations.
 	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated isolated nodes, and then we swap an isolated node from $I(x_i)$ with $x_i$.
 	
 
-	To keep \OPT's cost low, we end extending ground sets prematurely --- while there are still $\ell+1$ isolated nodes (i.e., neglecting two last ground set expansions).
+	To keep \OPT's cost low, we terminate prematurely --- we stop extending ground sets while there are still $\ell+1$ isolated nodes (i.e., neglecting two last ground set expansions).
 	Consider \ALG's configuration after the last expansion.
 	Among $\ell+1$ isolated nodes there must exist a pair that originates from the same cluster (we have $\ell$ clusters). 
 	We denote these two nodes by $x^*$ and $y^*$.
