@@ -256,13 +256,6 @@ We measure the~quality of~presented algorithmic solutions by competitive analysi
 In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
 
 
-
-
-\noindent
-\textbf{Algorithmic challenges.}
-\maciek{Integer partition in non-augmented problem. Also: what to evict, rent or buy etc.}
-
-
 \subsection{Related work}
 
 The two works closest to ours are by Avin et al. (on the general partitioning model) \cite{repartition-disc, sidma-arxiv} and by Henzinger et al. (on the learning model) \cite{sigmetrics19_partitioning}.
@@ -292,8 +285,8 @@ variant where $\ell = 2$ corresponds to the minimum bisection problem, which
 is already NP-hard~\cite{GaJoSt76}, and 
 the currently best approximation ratio is $O(\log n)$~\cite{SarVaz95,ArKaKa99,FeKrNi00,FeiKra02,KraFei06,Raec08}.
 
-The studied model is related to online
-paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}, sometimes also referred to
+Our problem is further related to some classic online problems.
+In particular, it is related to online paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}, sometimes also referred to
 as online caching, where requests for data items (nodes) arrive over time and
 need to be served from a cache of finite capacity, and where the number of
 cache misses must be minimized. Classic problem variants usually boil down to
@@ -303,6 +296,9 @@ corresponding nodes to a single physical machine). In this light, our model is m
 reminiscent of caching models \emph{with
 bypassing}~\cite{EpImLN11,EpImLN15,Irani02}.
 A major difference between  these problems is that in the caching problems, each request involves a~single element of the universe, while in our model \emph{both} endpoints of a communication request are subject to~optimization.
+In this light, we can see our model as a "symmetric" version of online paging.
+
+Dynamic graph partitioning problems are generally fundamental in computer science, and arise in many different contexts \cite{streaming-soda,streaming1}.
 
 %More generally, the model is related to online
 %caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
@@ -342,7 +338,7 @@ The overview of known results is in Table~\ref{tab:overview}.
 		\rowcolor{gray!25}
 		Learning model & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell)$\hspace{0.3cm} (\S \ref{sec:ppl}) \\
 	\end{tabular}
-	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The first three rows show the results for the general partitioning model, and last row shows the results for the learning model for arbitrary $k$ and $\ell$.
+	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The first three rows show the results for the general partitioning model, except for the last row that shows the results for the learning model for arbitrary $k$ and $\ell$.
 	}
 	\label{tab:overview}
 	\vspace{-7mm}
