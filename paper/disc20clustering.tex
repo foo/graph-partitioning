@@ -30,7 +30,7 @@
  
  \mathchardef\mhyphen="2D
  
- \title{Tight Bounds for Online Balanced Graph Partitioning}
+ \title{Tight Bounds for Dynamic Balanced Graph Partitioning}
  
  \author{Maciej Pacut}
  \email{maciej.pacut@univie.ac.at}
@@ -144,7 +144,7 @@
 	Distributed   applications,  including  batch  processing, streaming, scale-out databases,
 	or machine learning, generate a significant amount of network traffic.
 	By collocating frequently communicating nodes (e.g., virtual machines) on the same clusters (e.g., server or rack), we can reduce the network load and  improve application performance. 
-	However, the communication pattern is a priori unknown and may change over time, hence it needs to be learned in an online manner.
+	However, the communication pattern of different application is often unknown a priori, and may change over time, hence it needs to be learned in an online manner.
 	%
 	This paper revisits the online 
 	balanced repartitioning problem 
@@ -168,6 +168,7 @@
 	communication pattern can change arbitrarily
 	over time.
 	We improve the result for $k=2$ by providing a strictly $6$-competitive upper bound for the general model.
+	In contrast to most prior work, our algorithms respect all capacity constraints, and do not require resource augmentation.
 	
 \end{abstract}
 
@@ -181,34 +182,30 @@
 \maciek{TODO style: documentclass[a4paper,anonymous,USenglish] lipics-v2019.}
 \maciek{Keywords: distributed computing?}
 
-We study a problem of managing the virtual machines in a data center.
-We focus on the scenario where virtual machines can be migrated during runtime to another physical machine.
-The possibility of migration allows reacting to unpredictable communication patterns.
-For example, if some distant virtual machines communicate often, it is vital to reduce their distance to save network bandwidth.
-The objective is to~minimize the total network bandwidth used for communication and for migration.
+The popularity of data-centric, distributed applications has led to an explosive growth of network traffic, especially in data centers \cite{roy2015inside,singh2015jupiter}.
+As the performance of these distributed applications often critically depends on the underlying network \cite{mogul2012we}, an efficient operation of these networks is important.
+At the same time, distributed systems are often highly virtualized today, and provide interesting new opportunities for resource optimization.
+In particular, it has become possible to operate data centers in a more demand-aware manner: 
+by dynamically migrating nodes (e.g., virtual machines) which communicate frequently topologically closer to each other, network traffic can be reduced significantly.  
+However, migrations should be used moderately, as migrations also entail overheads. 
 
+This paper studies the algorithmic problem underlying such demand-aware
+optimizations, aiming to strike a balance between the benefits of migrations (e.g., reduced network load) and their costs.
+In particular, we are interested in an online variant of the problem: since communication patterns can change over time, an online algorithm needs to react dynamically to new traffic patterns, and migrate nodes  accordingly.
+Ideally, this algorithm should perform close to an optimal offline algorithm, without requiring any information about future traffic demands. 
 
-Intuitively, we would like to minimize inter-machine
-interactions by mapping frequently communicating virtual machines to the same physical machine
-Since communication patterns change over time, the~placement of virtual machines should be managed in an online manner, by migrating them between physical machines.
-The~objective is to minimize the weighted sum of inter-machine communication and repartitioning costs.
-The former is defined as the number of communication requests between virtual machines placed at distinct physical machines, and the latter as the number of migrations.
+This problem is known as the dynamic balanced graph partitioning problem introduced by Avin et al. \cite{repartition-disc, sidma-arxiv} at DISC 2016. A special variant of the general problem has later been studied by Henzinger et al. \cite{sigmetrics19_partitioning} at SIGMETRICS 2019.
+We will refer to the latter as the learning model.
 
 
 
 \subsection{Model}
 
-We study two models in this paper: a general \emph{partitioning} model, and its subproblem, a \emph{learning} variant.
-The general partitioning model was introduced by Avin et al.~\cite{repartition-disc} at DISC 2016.
-The learning model was introduced by Henzinger et al.~\cite{sigmetrics19_partitioning} at SIGMETRICS 2019.
-
+We study two models in this paper: the \emph{general partitioning} model, and its subproblem, the \emph{learning} model.
 
 \noindent
-\textbf{Partitioning model.}
-The \emph{balanced repartitioning} problem (\OBRP{})
-is a fundamental learning problem
-that finds applications in the context of
-distributed systems optimization~\cite{repartition-disc}. We are given a set $V$ of $n$ nodes 
+\textbf{General partitioning model.}
+In the \emph{dynamic balanced graph partitioning} problem, we are given a set $V$ of $n$ nodes 
 (e.g., virtual machines or processes),
 initially arbitrarily partitioned into $\ell$~clusters
 (e.g., servers or entire racks),
@@ -248,8 +245,8 @@ the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 \textbf{Learning model.}
 We study a variant of Online Balanced Partitioning, where communication requests are permanent: once a pair of nodes start communicating, they continue forever.
 To avoid infinite cost, each communicating pair must be collocated.
-We study instances with finite cost: we assume that the communication graph can be perfectly partitioned in the clusters (no external requests are required).
-In the partitioning model, $\alpha$ denoted the ratio between the cost of a single communication request and the cost of migration; in the learning model, we set $\alpha = 1$.
+As in Henzinger et al. \cite{sigmetrics19_partitioning}, we assume that the communication graph can be perfectly partitioned in the clusters (no external requests are required).
+For the learning model, we will assume that the migration cost is $\alpha=1$.
 The algorithm's goal is to \emph{learn} the communication graph, and partition it without too many reconfigurations.
 
 
@@ -259,24 +256,19 @@ We measure the~quality of~presented algorithmic solutions by competitive analysi
 In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
 
 
-
-
-\noindent
-\textbf{Algorithmic challenges.}
-\maciek{Integer partition in non-augmented problem. Also: what to evict, rent or buy etc.}
-
-
 \subsection{Related work}
 
+The two works closest to ours are by Avin et al. (on the general partitioning model) \cite{repartition-disc, sidma-arxiv} and by Henzinger et al. (on the learning model) \cite{sigmetrics19_partitioning}.
+The focus of these papers however is primarily on models with resource augmentation: the online algorithm can use slightly larger clusters than the offline algorithm.  
+Avin et al. actually showed that their lower bound $\Omega(k)$ holds even for a significant resource augmentation, and they provided an algorithm with the competitive ratio $O(k \log k)$ using the $(2+\epsilon)$-augmented cluster capacity.
+Their ratio is independent of $\ell$, which is impossible without significant resource augmentation.
 
-The existing results in~\cite{repartition-disc} and~\cite{sigmetrics19_partitioning} primarily focus on a model with resource augmentation, where  the online algorithm has slightly larger clusters than the offline algorithm.
-They showed that their lower bound $\Omega(k)$ holds even for a significant resource augmentation.
-They provided an algorithm with the competitive ratio independent of $\ell$ using the $(2+\epsilon)$-augmented cluster capacity.
 
 
 In contrast, we study the non-augmented setting, where the nodes need to be perfectly balanced  among the clusters.
-In the paper that originated a study on BRP \cite{repartition-disc} (DISC 2016), authors provided a $O(k^2 \cdot \ell^2)$-competitive algorithm, and a lower bound $\Omega(k)$.
-For $k=2$, they presented a $7$-competitive algorithm~\cite{repartition-disc} with a~substantial ($\Omega(\ell^2)$) additive constant.
+This assumption is not only more realistic but also significantly more challenging, as it is related to hard problems such as integer partitioning \cite{integer-partitions-book}.
+In terms of results without augmentation, so far, it is only known that there exists a $O(k^2 \cdot \ell^2)$-competitive algorithm \cite{repartition-disc}; the best known lower bound is significantly lower, namely $\Omega(k)$.
+For $k=2$, Avin et al.\cite{repartition-disc} presented a $7$-competitive algorithm with a~substantial ($\Omega(\ell^2)$) additive constant.
 
 
 The problem has also been studied in a weaker
@@ -293,8 +285,8 @@ variant where $\ell = 2$ corresponds to the minimum bisection problem, which
 is already NP-hard~\cite{GaJoSt76}, and 
 the currently best approximation ratio is $O(\log n)$~\cite{SarVaz95,ArKaKa99,FeKrNi00,FeiKra02,KraFei06,Raec08}.
 
-The studied model is related to online
-paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}, sometimes also referred to
+Our problem is further related to some classic online problems.
+In particular, it is related to online paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}, sometimes also referred to
 as online caching, where requests for data items (nodes) arrive over time and
 need to be served from a cache of finite capacity, and where the number of
 cache misses must be minimized. Classic problem variants usually boil down to
@@ -304,6 +296,9 @@ corresponding nodes to a single physical machine). In this light, our model is m
 reminiscent of caching models \emph{with
 bypassing}~\cite{EpImLN11,EpImLN15,Irani02}.
 A major difference between  these problems is that in the caching problems, each request involves a~single element of the universe, while in our model \emph{both} endpoints of a communication request are subject to~optimization.
+In this light, we can see our model as a "symmetric" version of online paging.
+
+Dynamic graph partitioning problems are generally fundamental in computer science, and arise in many different contexts \cite{streaming-soda,streaming1}.
 
 %More generally, the model is related to online
 %caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
@@ -314,10 +309,11 @@ A major difference between  these problems is that in the caching problems, each
 %= NP~\cite{AndRae06}. 
 
 \subsection{Our Contributions}
-We provide an improved lower bound 
-of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
-even in the learning model;
-the best known lower bound so far was $\Omega(k)$,
+
+This paper presents several new results on the dynamic graph partitioning problem  without augmentation.
+Our main result is a tight bound on the general case: we present a lower bound of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
+even in the learning model.
+The best known lower bound so far was $\Omega(k)$,
 even for a more general model~\cite{repartition-disc}.
 We also present an asymptotically optimal, 
 $O(k\cdot \ell)$-competitive algorithm
@@ -326,9 +322,9 @@ For the repartitioning model, we present
 an asymptotically optimal,
 $\Theta(\ell)$ algorithm for $k=3$, improving the best known upper bound 
 so far $O(\ell^2)$~\cite{repartition-disc}.
-Then, we present a strictly $6$-competitive algorithm for $k=2$ that improves upon previous $7$-competitive algorithm with $O(\ell^2)$ additive constant.
+We further present a strictly $6$-competitive algorithm for $k=2$ that improves upon previous $7$-competitive algorithm with $O(\ell^2)$ additive constant.
 %
-The overview of known results is in Table~\ref{tab:overview}.
+Table \ref{tab:overview} provides an overview of our contributions compared to prior work.
 
 \begin{table*}
 	\centering
@@ -343,61 +339,15 @@ The overview of known results is in Table~\ref{tab:overview}.
 		\rowcolor{gray!25}
 		Learning model & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell)$\hspace{0.3cm} (\S \ref{sec:ppl}) \\
 	\end{tabular}
-	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The first three rows show the results for the general partitioning model, and last row shows the results for the learning model for arbitrary $k$ and $\ell$.
+	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The first three rows show the results for the general partitioning model, except for the last row that shows the results for the learning model for arbitrary $k$ and $\ell$.
 	}
 	\label{tab:overview}
 	\vspace{-7mm}
 \end{table*}
 
-\section{Preliminaries}
-\label{sec:prelim}
-
-Across this paper, we often refer to groups of communicating nodes.
-We use this concept slightly differently in the lower bound and the upper bounds.
-In our algorithms, we group nodes with a communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
-
-\noindent
-\textbf{Components.}
-In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
-We maintain all nodes of each component collocated in one cluster~\cite{repartition-disc}.
-If we need to move a node, we move the whole component that contains it.
-We maintain a balanced partition of our components, a similar concept to partition of integers into sets with equal sum (\maciek{TODO: cite}).
-In contrast, our partition is time-varying: communicating components are merged into one, and we adjust the partition.
-
-\noindent
-\textbf{Ground sets.}
-In the lower bound, a~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
-Their role is to ensure that the algorithm maintains a partition of ground sets into clusters.
-We emphasize that ground sets are revealed only upon their nodes are split.
-%\maciek{Other names: division, segmentation, alignment, formation}
-
-%We say that the request $(u,v)$ is \emph{external}, if the algorithm is in the configuration, where $u$ and $v$ are located at different clusters.
-%This is achieved by opting a sequence of  partitions (a.k.a.~configurations)
-%such that frequently communicating nodes (from different clusters)
-%are relocated to the same cluster before they inflict too much communication cost.
-%A \emph{reconfiguration} (i.e.,\emph{ re-partitioning})
-%is performed by migrating nodes between clusters,
-%at the total cost of individual node migrations.
-%The objective is to jointly minimize communication and migration costs while serving the sequence.
-
-We say that a component or a ground set is \emph{trivial}, if it contains exactly one node.
-We say that the node that belongs to trivial component or a ground set is \emph{alone}.
-We say that a~configuration is \emph{component-respecting}
-if the nodes belonging to the same component are collocated.
-
-
-\noindent
-\textbf{Note on our algorithms.}
-\maciek{Should not be here probably, but where?}
-Two of our algorithms (for the learning model and for $k=3$ in the partitioning model) are modified versions of the algorithm DET from \cite{repartition-disc}.
-The difference is in the the choice of partition after a component merge.
-In DET, the partition was arbitrary.
-In PPL, we choose the partition closest to the initial configuration.
-In \TAlg, we choose the partition closest to the previous configuration (a repartition of minimum cost).
-
 \section{The Learning Problem} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-In this section we consider the learning variant of Online Balanced Partitioning.
+In this section we consider the learning variant of Dynamic Balanced Graph Partitioning.
 For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$.
 The lower bound can be easily translated to the partitioning model (studied in Section~\ref{sec:part}) with finite request sequence.
 At the end of this section, we discuss an asymptotically optimal upper bound.
@@ -409,7 +359,7 @@ At the end of this section, we discuss an asymptotically optimal upper bound.
 
 
 We provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm for the learning problem.
-Later we elaborate on how to efficiently transform it to a lower bound for the partitioning problem.
+Later we elaborate on how to efficiently transform it to a lower bound for the general partitioning problem.
 The lower bound requires $k\geq 3$.
 For $k=2$, the learning problem is trivial: immediate collocation of a communicating pair is $1$-competitive.
 (A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a~$6$-competitive algorithm (see Section~\ref{sec:k2}).)
@@ -423,6 +373,18 @@ For $k=2$, the learning problem is trivial: immediate collocation of a communica
 	\caption{Example figure of the construction of the LB and growing components.}
 	\label{fig:nptree-construction}
 \end{figure}
+
+
+Across this paper, we often refer to groups of communicating nodes.
+We use this concept slightly differently in the lower bound and the upper bounds.
+In our algorithms, we group nodes with a communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
+
+
+A~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
+Their role is to ensure that the algorithm maintains a partition of ground sets into clusters.
+We emphasize that ground sets are revealed only upon their nodes are split.
+We say that a ground set is \emph{trivial}, if it contains exactly one node.
+We say that the node that belongs to trivial a ground set is \emph{isolated}.
 
 
 The adversary constructs ground sets (a set of nodes that may communicate, see Section~\ref{sec:prelim}) depending on choices of a deterministic online algorithm.
@@ -442,7 +404,7 @@ In comparison, \OPT performs only two migrations.
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for \OBRP is at least $(k\cdot \ell - k - \ell)/2$ for any $k\geq 3$ and $\ell \geq 2$.
+	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least $(k\cdot \ell - k - \ell)/2$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
@@ -451,10 +413,10 @@ In comparison, \OPT performs only two migrations.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially all nodes are \emph{isolated}.
-	First, we create a ground set $B$ of size $k-1$ on an arbitrarily.
+	First, we create a ground set $B$ of $k-1$ nodes on an arbitrarily chosen cluster (the nodes  are already collocated).
 	%We never dismiss any constructed ground set.
 	Each cluster hosts exactly $k$ nodes, and in any configuration a single isolated node resides in $S$.
-	We say that this isolated node that accompany the ground set $B$ is \emph{special}.
+	We say that this isolated node that accompanies the ground set $B$ is \emph{special}.
 	We denote the first special node by $x_0$.
 
 	Then, we add the special node to a larger ground set to force its eviction.
@@ -474,7 +436,7 @@ In comparison, \OPT performs only two migrations.
 
 	We claim that expanding ground sets in this way can continue as long as at least $\ell$ isolated nodes exists.
 	Fix the configuration just before the creation of a ground set with $x_i$ for some $i$.
-	We show that if at least $\ell$ isolated nodes exists (including $x_i$), then there exists a perfect partition of ground sets after expanding a ground set with $x_i$.
+	We show that if at least $\ell$ isolated nodes exist (including $x_i$), then there exists a perfect partition of ground sets after expanding a ground set with $x_i$.
 	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
 	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some isolated nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(x_i)$ contains an isolated node, then we simply obtain a~perfect partition by swapping it with $x_i$.
@@ -530,10 +492,26 @@ Finally, we note the possibility for improvement. The algorithm CREP~\cite{repar
 
 We present an asymptotically optimal algorithm for the learning problem.
 The algorithm immediately collocates every communicating pair and never separates them.
-In other words, it maintains components, introduced in the preliminaries (Section~\ref{sec:prelim}).
+To help maintain the collocation of communicating pairs, we use the concept of components, introduced by Avin et al. \cite{repartition-disc}.
 
-Upon receiving any external request, two components merge --- and this requires a reconfiguration.
-Many configurations may be feasible, and we choose the one that is \emph{closest to the initial configuration}.
+In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
+We maintain all nodes of each component collocated in one cluster~\cite{repartition-disc}.
+If we need to move a node, we move the whole component that contains it.
+We maintain a balanced partition of our components, a similar concept to partition of integers into sets with equal sum \cite{integer-partitions-book}.
+In contrast, our partition is time-varying: communicating components are merged into one, and we adjust the partition.
+
+We say that a component is \emph{trivial}, if it contains exactly one node.
+We say that the node that belongs to trivial component \emph{isolated}.
+We say that a~configuration is \emph{component-respecting}
+if the nodes belonging to the same component are collocated.
+
+The algorithm in this section, and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from \cite{repartition-disc}.
+The difference is in the the choice of partition after a component merge.
+In DET, the partition was arbitrary.
+In the algorithm for the learning model, we choose the partition closest to the initial configuration.
+In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the previous configuration (a repartition of minimum cost).
+
+
 
 \maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here.}
 
@@ -594,6 +572,7 @@ The scheme of the algorithm can be found in the Algorithm \ref{alg:PPL}.
 
 
 \maciek{Algorithm pseudocode comments}
+\maciek{Stefan's comment: "container" components undefined}
 \maciek{Major thing to discuss: do we even need this? The algorithm is very simple, and the description in the paragraph would be much better. The only way to save it would be to have a general algorithm pseudocode (equivalent to DET), and parametrize it with the repartition procedure. Here, we would say that we choose the closest to initial, and it ALG3 we say that we choose the closest to current.}
 \maciek{This is not good that we need a comment about what $cluster \neq cluster$ means}
 \maciek{In pseudocode we need extremely short sentences. $C := singleton components ... $?; $Merge C, C'$ etc}
