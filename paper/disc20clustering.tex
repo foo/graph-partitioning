@@ -1,5 +1,4 @@
- 
- \documentclass[manuscript,screen=true, review, anonymous]{acmart}
+ \documentclass[a4paper,anonymous,USenglish]{lipics-v2019}
  
  \usepackage[utf8]{inputenc}
  \usepackage{xspace}
@@ -9,8 +8,6 @@
  \usepackage{algorithm}
  
  \usepackage{balance}
- \usepackage[english]{babel}
- \usepackage{blindtext}
  \usepackage{amsthm,amsmath,array,colortbl,graphicx,multirow}
  \usepackage{comment}
  \usepackage{balance}
@@ -32,38 +29,21 @@
  
  \title{Tight Bounds for Dynamic Balanced Graph Partitioning}
  
- \author{Maciej Pacut}
- \email{maciej.pacut@univie.ac.at}
- \orcid{0000-0002-6379-1490}
- \affiliation{%
- \institution{Faculty of Computer Science, University of Vienna}
- \country{Austria}
- }
+ \author{Maciej Pacut}{maciej.pacut@univie.ac.at}{Faculty of Computer Science, University of Vienna,Austria}{0000-0002-6379-1490}{}
  
  
- \author{Mahmoud Parham} 
- \email{mahmoud.parham@univie.ac.at}
- \orcid{0000-0002-6211-077X}
- \affiliation{%
- \institution{Faculty of Computer Science, University of Vienna}
- \country{Austria}
- }
+ \author{Mahmoud Parham}{mahmoud.parham@univie.ac.at}{Faculty of Computer Science, University of Vienna, Austria}{0000-0002-6211-077X}{}
  
- \author{Stefan Schmid} 
- \email{stefan_schmid@univie.ac.at}
- \affiliation{%
- \institution{Faculty of Computer Science, University of Vienna}
- \country{Austria}
- }
+ \author{Stefan Schmid}{stefan\_schmid@univie.ac.at}{Faculty of Computer Science, University of Vienna, Austria}{}{}
+
+% \copyrightyear{2020} 
+% \acmYear{2020} 
+% \setcopyright{acmlicensed}
+% \acmConference{DISC '20}{October 12-16, 2020}{Freiburg, Germany}
  
- \copyrightyear{2020} 
- \acmYear{2020} 
- \setcopyright{acmlicensed}
- \acmConference{DISC '20}{October 12-16, 2020}{Freiburg, Germany}
- 
- \keywords{online algorithms, competitive analysis, graph partitioning, clustering}
- \acmISBN{}\acmPrice{}
- \acmDOI{}
+ \keywords{online algorithms, competitive analysis, distributed computing, graph partitioning, clustering, self-adjusting networks}
+% \acmISBN{}\acmPrice{}
+% \acmDOI{}
  
  \ccsdesc[500]{Networks~Network algorithms}
  \ccsdesc[300]{Computer systems organization~Cloud computing}
@@ -92,7 +72,7 @@
  
  
  
- \newtheorem{claim}{Claim}
+ %\newtheorem{claim}{Claim}
  \newtheorem{fact}{Fact}
  \newtheorem{rem}{Remark}
  \newtheorem{observation}{Observation}
@@ -174,13 +154,11 @@
 
 \maketitle
 
-\renewcommand{\shortauthors}{M.~Pacut, M.~Parham, S.~Schmid}
+%\renewcommand{\shortauthors}{M.~Pacut, M.~Parham, S.~Schmid}
 
 
 \section{Introduction}
 
-\maciek{TODO style: documentclass[a4paper,anonymous,USenglish] lipics-v2019.}
-\maciek{Keywords: distributed computing?}
 
 The popularity of data-centric, distributed applications has led to an explosive growth of network traffic, especially in data centers \cite{roy2015inside,singh2015jupiter}.
 As the performance of these distributed applications often critically depends on the underlying network \cite{mogul2012we}, an efficient operation of these networks is important.
@@ -1087,9 +1065,8 @@ While are bounds are tight, there are several interesting avenues for future res
 In particular, we have so far focused on deterministic algorithms, and it would be interesting to study the power of randomization in this context.
 On the practical side, it would also be interesting to study our algorithms empirically, under realistic workloads.
 
-\bibliographystyle{ACM-Reference-Format}
-\bibliography{references}  
-
+\bibliographystyle{plainurl}
+\bibliography{references}
 \appendix
 
 

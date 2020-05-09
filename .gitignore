@@ -1,7 +1,7 @@
 paper/*.aux
 paper/*.log
 paper/*.out
-paper/*.pdf
+paper/disc20clustering.pdf
 paper/*.synctex.gz
 paper/*.fdb_latexmk
 paper/*.fls
