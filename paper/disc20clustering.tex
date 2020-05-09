@@ -406,7 +406,7 @@ In comparison, \OPT performs only two migrations.
 	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located in the initial configuration.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
-	Initially all nodes are \emph{isolated}.
+	Initially all nodes are isolated (i.e., in ground sets of size $1$).
 	First, we create a ground set $B$ of $k-1$ nodes on an arbitrarily chosen cluster (the nodes  are already collocated).
 	%We never dismiss any constructed ground set.
 	Each cluster hosts exactly $k$ nodes, and in any configuration a single isolated node resides in $S$.
@@ -864,6 +864,7 @@ For this reason,
 we charge \OPT a cost inflicted by a pair,
 if and only if  \OPT incurs that cost after the latest separation of the pair by \RM.
 %%
+\maciek{"a same" I think it should always be "the same", does not sound right with a}
 
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Assume on request $\sigma_{t}=\set{u,v}$, 
