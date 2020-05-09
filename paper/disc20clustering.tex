@@ -663,7 +663,7 @@ Then, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorithm for 
 
 \noindent
 \textbf{Component-based algorithm.}
-Now we describe the algorithm \TAlg that we use throughout this section.
+Now we describe the algorithm \TAlg.
 The algorithm partitions nodes into components, and
 initially, each node belongs to its own singleton component.
 For each pair of nodes $\set{x,y}$, \TAlg maintains a counter $C_{\set{x,y}}$ and increments it on every external request between $x$ and $y$.
@@ -701,7 +701,8 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
 	In this case, a local repartition is possible (within $U$ and $V$), for a cost of at most $2$ swaps.
-	Note that it is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, a components of size $3$ participates in a merge, which results in a component of size at least $4$, and in this case no component respecting partitioning exists, a contradiction.
+	Note that it is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, a components of size $3$ participates in a merge.
+	After merge, we would have a component of size at least $4$, and in this case no component respecting partitioning exists, a contradiction.
 	
 	
 	It remains to consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
@@ -745,7 +746,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	%Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
 	
 	Now we bound $\TAlg(\sigma_I)$.
-	A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as $2$ of pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
+	A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as two pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
 	Other cluster types contribute less: $C_1$ contributes $0$ and $C_2$ contributes $\alpha$.
 	Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
 	
@@ -877,7 +878,7 @@ if and only if  \OPT incurs the cost some time since the last time \RM separated
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Assume on request $\sigma_{t}=\set{u,v}$, 
 	i.e., at (time) $t$,
-	Alg collocates the pair $\set{u,v}$.
+	\RM collocates the pair $\set{u,v}$.
 	This means,
 	the value of $C_{\set{u,v}}$ at $t$,
 	denoted by $C^t_{\set{u,v}}$, 
@@ -1049,7 +1050,7 @@ Finally, we have
 
 \end{proof}
 
-\section{Distributed Implementation}
+\section{Discussion and Future Work}
 The algorithm PPL from Section~\ref{sec:ppl} can be distributed
 similarly to the approach in~\cite{sigmetrics19_partitioning}.
 The algorithm for $k=2$ from Section~\ref{sec:k2} performs only local communication for each request: counters are kept on the clusters and updated locally, and each migration concerns only two clusters.
