@@ -1092,7 +1092,7 @@ On the practical side, it would also be interesting to study our algorithms empi
 Although we have described our algorithms globally so far, we note that these allow for efficient distributed implementations. 
 The algorithm PPL from Section~\ref{sec:ppl} can be distributed
 similarly to the approach in~\cite{sigmetrics19_partitioning}.
-The algorithm for $k=2$ from Section~\ref{sec:k2} performs only local communication for each request: counters are kept on the clusters and updated locally, and each migration concerns only two clusters.
+The algorithm for $k=2$ from Section~\ref{sec:k2} performs only local communication for each request: counters are kept on the clusters and updated locally, and each migration is local within two clusters that reached the collocation threshold $\lambda$.
 Furthermore, we proposed an efficient distributed implementation of the algorithm for $k=3$ in Section~\ref{sec:k3}.
 
 \bibliographystyle{plainurl}
