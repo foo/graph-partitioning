@@ -794,6 +794,20 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	This way, the competitive ratio increases at most twofold in comparison to a finished phase, and the competitive ratio is $\TAlg(\sigma)/\OPT(\sigma) \leq 60\ell$.
 \end{proof}
 
+\medskip
+\noindent
+\textbf{Distributed implementation.}
+While we have described the algorithm globally so far, we note that it allows for an efficient distributed implementations. 
+The algorithm performs two types of operations that require communication with other clusters: a~component merge, and a broadcast of the end of the phase.
+We say that a cluster containing $3$ isolated nodes is \emph{fresh}.
+A merge of two components may require finding a fresh cluster (for details see the proof of Lemma~\ref{lem:1req}).
+In the following, we show how to efficiently find a fresh cluster in a distributed manner.
+We organize the clusters into an arbitrary rooted balanced binary tree, and we broadcast the root to each cluster.
+Each cluster maintains the counter of fresh clusters in its subtree.
+To find a fresh cluster, we traverse an arbitrary path of non-zero counters from the root.
+Upon encountering a fresh cluster, we end the traversal and decrease the counters on the followed path by $1$.
+Summarizing, ending the phase requires a single broadcast, and merging components requires $O(\log \ell)$ communication.
+
 \subsection{Improved Algorithm for Online Rematching} \label{sec:k2}
 In this section,
 we present \RM,
@@ -1077,24 +1091,11 @@ While our bounds are tight, there are several interesting avenues for future res
 In particular, we have so far focused on deterministic algorithms, and it would be interesting to study the power of randomization in this context.
 On the practical side, it would also be interesting to study our algorithms empirically, under realistic workloads.
 
-\medskip
-\noindent
-\textbf{Distributed implementation.}
-While we have described our algorithms globally so far, we note that these allow for efficient distributed implementations. 
+Although we have described our algorithms globally so far, we note that these allow for efficient distributed implementations. 
 The algorithm PPL from Section~\ref{sec:ppl} can be distributed
 similarly to the approach in~\cite{sigmetrics19_partitioning}.
 The algorithm for $k=2$ from Section~\ref{sec:k2} performs only local communication for each request: counters are kept on the clusters and updated locally, and each migration concerns only two clusters.
-
-Furthermore, we propose an efficient distributed implementation of the algorithm for $k=3$ from Section~\ref{sec:k3}.
-The algorithm performs two types of operations that require communication with other clusters: a~component merge, and a broadcast of the end of the phase.
-We say that a cluster containing $3$ isolated nodes is \emph{fresh}.
-A merge of two components may require finding a fresh cluster (for details see the proof of Lemma~\ref{lem:1req})).
-In the following, we show how to efficiently find a fresh cluster in a distributed manner.
-We organize the clusters into an arbitrary rooted balanced binary tree, and we broadcast the root to each cluster.
-Each cluster maintains the counter of fresh clusters in its subtree.
-To find a fresh cluster, we traverse an arbitrary path of non-zero counters from the root.
-Upon encountering a fresh cluster, we end the traversal and decrease the counters on the followed path by $1$.
-Summarizing, ending the phase requires a single broadcast, and merging components requires $O(\log \ell)$ communication.
+Furthermore, we proposed an efficient distributed implementation of the algorithm for $k=3$ in Section~\ref{sec:k3}.
 
 \bibliographystyle{plainurl}
 \bibliography{references}
