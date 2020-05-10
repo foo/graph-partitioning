@@ -733,7 +733,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
 	While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts: we separately bound $\OPT$ by $\OPT(\sigma_I) + \OPT(M)$ and $\OPT(\sigma_E) + \OPT(M)$.
-	Combining those bounds gives us $\OPT \geq \max\{\OPT(\sigma_I) + \OPT(M), \OPT(\sigma_E) + \OPT(M)\} \geq (\OPT(\sigma_I) + \OPT(M)) / 2 + (\OPT(\sigma_E) + \OPT(M)) / 2$.
+	Combining those bounds and using the relation between the maximum and the average gives us $\OPT \geq \max\{\OPT(\sigma_I) + \OPT(M), \OPT(\sigma_E) + \OPT(M)\} \geq (\OPT(\sigma_I) + \OPT(M)) / 2 + (\OPT(\sigma_E) + \OPT(M)) / 2$.
 	
 	%Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
 	%Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
