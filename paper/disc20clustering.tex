@@ -398,7 +398,7 @@ In comparison, \OPT performs only two migrations.
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least $(k\cdot \ell - k - \ell)/2$ for any $k\geq 3$ and $\ell \geq 2$.
+	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least $(k\cdot \ell - k - 2\ell)/2$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
@@ -453,9 +453,11 @@ In comparison, \OPT performs only two migrations.
 
 
 	\ALG performs at least one swap for every expansion of a ground set.
-	Each expansion reduces the number of isolated nodes by $1$.
+	Each expansion reduces the number of isolated nodes by $1$ or $2$.
+	The decrease of two isolated nodes occurs when the largest component on the initial cluster of $x_i$ is still a trivial component; this can occur at most $\ell$ times.
 	We start with $k \cdot \ell - (k-1)$ isolated nodes (a~single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with isolated $\ell+1$ nodes.
-	The competitive ratio is then $\ALG / \OPT \geq (k\cdot \ell - k - l) / 2$.
+	Hence, the total number of swaps of \ALG is at least $k\cdot \ell - k - 2 \ell$.
+	The competitive ratio is then $\ALG / \OPT \geq (k\cdot \ell - k - 2\ell) / 2$.
 \end{proof}
 
 
