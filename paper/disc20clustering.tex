@@ -361,17 +361,10 @@ We provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any 
 Later we elaborate on how to efficiently transform it to a lower bound for the general partitioning problem.
 The lower bound requires $k\geq 3$.
 For $k=2$, the learning problem is trivial: immediate collocation of a communicating pair is $1$-competitive.
-(A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known \cite{repartition-disc}, and we provide a~$6$-competitive algorithm, see Section~\ref{sec:k2}.)
+(A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known~\cite{repartition-disc}, and we provide a~$6$-competitive algorithm, see Section~\ref{sec:k2}.)
 
 
 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.3\textwidth]{figs/substitute}
-	\caption{Example figure of the construction of the LB and growing components.}
-	\label{fig:nptree-construction}
-\end{figure}
 
 
 Across this paper, we often refer to groups of communicating nodes.
@@ -400,6 +393,16 @@ In any configuration, there exists an isolated node on $S$.
 We issue requests between the current isolated node from $S$, and some node that was initially collocated with it.
 Repeating such requests, almost all the nodes must visit the cluster $S$.
 In comparison, we show that there exists an optimal offline algorithm \OPT that performs only two migrations.
+Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{figs/substitute}
+	\caption{todo.}
+	\label{fig:lb}
+\end{figure}
+
 
 \begin{theorem}
 	\label{th:lowerbound}
@@ -468,7 +471,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 
 \noindent
 \textbf{General partitioning problem.}
-Every lower bound for the learning problem constitutes a converging lower bound for the partitioning problem as the input sequence grows to infinity.
+Every lower bound for the learning problem constitutes a converging lower bound for the partitioning problem as the input sequence grows to infinity \maciek{possibly too strong sentence; I need to rethink}.
 However, our construction allows for an exact lower bound for partitioning with a~finite input sequence.
 To this end, we issue only enough requests until the algorithm collocates the nodes of each ground set (if it never does, we terminate after it pays $k\cdot \ell$).
 The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
@@ -695,11 +698,11 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	\TAlg is $(60\ell)$-competitive for $k=3$.
 \end{theorem}
 \begin{proof}
-	Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
+	Fix a completed phase, and consider the state of \TAlg's counters at the end of it (before the reset).
 	We consider the incomplete phase later in this proof.
 	
 	As \TAlg is component respecting, it never increases any counter above $\alpha$.
-	We say that the pair $(u, v)$ is \emph{saturated} if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
+	We say that the pair $(u, v)$ is \emph{saturated} if the counter's value is $\alpha$, and \emph{unsaturated} otherwise (saturation of a pair leads to a merge action).
 	By $\sigma$ we denote the input sequence that arrived during the phase.
 	In our analysis, we focus on the requests that were external to \TAlg at the moment of their arrival; these are the only requests that incur cost for \TAlg.
 	We denote these external requests by $\sigma_{cost}$.
