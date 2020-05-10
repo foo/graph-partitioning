@@ -331,7 +331,7 @@ Table \ref{tab:overview} provides an overview of our contributions compared to p
 		\textbf{$k=3$}&  $\Omega(\ell)$ \hspace{0.3cm}(\S \ref{sec:lowerbound})& $O(\ell) $\hspace{0.3cm}(\S \ref{sec:k3})\\
 		$k > 3$ & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k^2 \cdot \ell^2)$\hspace{0.1cm} \cite{repartition-disc} \\
 		\rowcolor{gray!25}
-		Learning model & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell)$\hspace{0.3cm} (\S \ref{sec:ppl}) \\
+		Learning model & $\Omega(k\cdot \ell)$\hspace{0.3cm}(\S  \ref{sec:lowerbound})&$O(k \cdot \ell)$\hspace{0.1cm} (\S \ref{sec:ppl}) \\
 	\end{tabular}
 	\caption{Overview of known results and the results provided in this paper. By $\Rep$ we denote the cost of a single component repartition, and we elaborate on this in Section~\ref{sec:k3}. The first three rows show the results for the general partitioning model, except for the last row that shows the results for the learning model for arbitrary $k$ and $\ell$.
 	}
@@ -679,7 +679,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 
 
 \begin{theorem}
-	\TAlg is $(54\ell)$-competitive for $k=3$.
+	\TAlg is $(60\ell)$-competitive for $k=3$.
 \end{theorem}
 \begin{proof}
 	Fix a completed phase, and consider the state of \TAlg's counters at the end of it.
@@ -749,12 +749,12 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 
 	
 	Finally, we bound the competitive ratio.
-	From the bound on \OPT's cost we have $|\sigma_E| \geq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
+	From the bound on \OPT's cost we have $|\sigma_E| \leq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
 	Let $\xi := \OPT(\sigma_E) + \OPT(M)$.
 	The competitive ratio is
 
 	\[
-		\frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + \xi/2} \leq \frac{27\alpha\cdot\ell + 2\cdot \xi}{\alpha + \xi} \leq 27 \ell.
+		\frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + \xi/2} \leq \frac{30\alpha\cdot\ell + 4\cdot \xi}{\alpha + \xi} \leq 30 \ell.
 	\]
 	
 	\medskip
@@ -766,7 +766,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
 	If there were at least $\alpha$ external requests, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
 	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
-	This way, the competitive ratio increases at most twofold in comparison to a finished phase, and the competitive ratio is $\TAlg(\sigma)/\OPT(\sigma) \leq 54\ell$.
+	This way, the competitive ratio increases at most twofold in comparison to a finished phase, and the competitive ratio is $\TAlg(\sigma)/\OPT(\sigma) \leq 60\ell$.
 \end{proof}
 
 \subsection{Improved Algorithm for Online Rematching} \label{sec:k2}
