@@ -504,11 +504,12 @@ The algorithm in this section, and the algorithm for $k=3$ (cf. Section~\ref{sec
 The difference is in the the choice of partition after a component merge.
 In DET, the partition was arbitrary.
 In the algorithm for the learning model, we choose the partition closest to the initial partition.
+\maciek{component respecting?}
 In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a repartition of minimum cost).
 
 
 
-\maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here. \mahmoud{are "configuration" and "partition" the same thing everywhere? Then let's use "partition" only.}}
+\maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here. \mahmoud{are "configuration" and "partition" the same thing everywhere? Then let's use "partition" only.\maciek{I thought partition is on component level, and configuration on node level (todo check where to add component-respecting to the partition in this chapter). Maybe say in the intro in this chapter that configuration = partition? We use both heavily.}}}
 
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
@@ -527,7 +528,7 @@ We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context
 The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
 With each repartitioning,
-\PPL moves to a partition that minimizes the distance to the initial partition $P_I$.
+\PPL moves to a \maciek{component-respecting} partition that minimizes the distance to the initial partition $P_I$.
 As a result,
 \PPL never moves to a~partition that is more than $\Delta^*$  node migrations away from $P_I$.
 This invariant latter ensures us that \PPL does not pay too much while recovering $P_F$.
@@ -570,7 +571,7 @@ Meaning, it never moves to a partition beyond distance $\Delta^*$.
 \end{theorem}
 \begin{proof}
 	On each inter-cluster request,
-	the algorithm enumerates all $\ell$-way partitions of components
+	the algorithm enumerates all \maciek{component-respecting} $\ell$-way partitions of components
 	that are in the same (closest) distance to $P_I$.
 	That is, 
 	once it reaches a partition $P$ at distance $\Delta^* = \Delta(P)$,
@@ -590,7 +591,7 @@ Meaning, it never moves to a partition beyond distance $\Delta^*$.
 	Therefore, there are at most  $(k-1)\cdot\ell $ distinct requests
 	for which \PPL performs a repartitioning.
 	I.e.,
-	 \PPL performs at most $(k-1)\cdot\ell $ repartitionings.
+	 \PPL performs at most $(k-1)\cdot\ell $ repartitions.
 	By Lemma \ref{lemma:rebalancecost},
 	each repartitioning costs at most $2\cdot\OPT$.
 	The total cost is therefore at most $2\cdot\OPT\cdot (k-1) \cdot\ell$, which implies the competitive ratio.
