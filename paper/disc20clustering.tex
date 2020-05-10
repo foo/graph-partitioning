@@ -180,8 +180,8 @@ optimizations, aiming to strike a balance between the benefits of migrations (e.
 In particular, we are interested in an online variant of the problem: since communication patterns can change over time, an online algorithm needs to react dynamically to new traffic patterns, and migrate nodes  accordingly.
 Ideally, this algorithm should perform close to an optimal offline algorithm, without requiring any information about future traffic demands. 
 
-This problem is known as the dynamic balanced graph partitioning problem introduced by Avin et al. \cite{repartition-disc, sidma-arxiv} at DISC 2016. A special variant of the general problem has later been studied by Henzinger et al. \cite{sigmetrics19_partitioning} at SIGMETRICS 2019.
-We will refer to the latter as the learning model.
+This problem is known as the dynamic balanced graph partitioning problem and was introduced by Avin et al. \cite{repartition-disc, sidma-arxiv} at DISC 2016. A special variant of the general problem has later been studied by Henzinger et al. \cite{sigmetrics19_partitioning} at SIGMETRICS 2019.
+We refer to the latter as the learning model.
 
 
 
@@ -476,7 +476,7 @@ The construction is oblivious to the choice of the reconfiguration cost $\alpha$
 
 \noindent
 \textbf{Resource augmentation.}
-The majority of work on Online Balanced Partitioning so far \cite{repartition-disc,sigmetrics19_partitioning} focuses on the scenario with resource augmentation, where the clusters of \ALG are larger than the clusters of \OPT.
+The majority of work on Online Balanced Partitioning so far \cite{repartition-disc,sigmetrics19_partitioning} focuses on the scenario with resource augmentation, where the clusters of an online algorithm are larger than the clusters of the offline optimal algorithm that we compare the performance to.
 We can adjust our construction to show a lower bound of $\Omega(\ell)$ for resource augmentation.
 
 Consider a partitioning problem with resource augmentation $1+1/3-\epsilon$.
@@ -486,6 +486,7 @@ Then, apply the construction from the lower bound for $k=3$, using these ground 
 The cost of any algorithm (including \OPT) scales up by $k/3$, and the lower bound $\Omega(\ell)$ holds.
 
 Finally, we note the possibility of improvement. The algorithm CREP~\cite{repartition-disc} requires $(2+\epsilon)$-augmentation to guarantee the competitive ratio independent of $\ell$.
+In contrast, our construction shows that the linear term $\ell$ is inevitable if the augmentation is smaller than $1+1/3$.
 
 \subsection{Upper Bound}
 \label{sec:ppl}
