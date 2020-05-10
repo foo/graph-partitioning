@@ -699,22 +699,23 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	As \TAlg is component respecting, it never increases any counter above $\alpha$.
 	We say that the pair $(u, v)$ is \emph{saturated} if the counter has value $\alpha$, and \emph{unsaturated} otherwise.
 	By $\sigma$ we denote the input sequence that arrived during the phase.
-	By $\sigma_{cost}$ we denote the requests that at the moment of arrival were external requests for \TAlg (these are the only requests that incur cost for \TAlg).
-	In our analysis, we partition $\sigma_{cost}$ into subsequences $\sigma_I$ and $\sigma_E$.
-	The sequence $\sigma_I$ (inter-component requests) are the requests from $\sigma_{cost}$ issued to pairs that belong to the same component of \TAlg at the end of the phase.
+	In our analysis, we focus on the requests that were external to \TAlg at the moment of their arrival; these are the only requests that incur cost for \TAlg.
+	We denote these external requests by $\sigma_{cost}$.
+	We partition the sequence $\sigma_{cost}$ into subsequences $\sigma_I$ and $\sigma_E$.
+	The sequence $\sigma_I$ (inter-component requests) denotes the requests from $\sigma_{cost}$ issued to pairs that belong to the same component of \TAlg at the end of the phase.
 	The sequence $\sigma_E$ (extra-component requests) denotes the requests from $\sigma_{cost}$ that do not appear in $\sigma_I$.
 	
 	
 	%Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
 	%Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
-	Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
-	\TAlg performs at most $2 \ell$ component merge operations ---
+	Let $\TAlg(M)$ denote the cost of migrations performed by \TAlg in this phase.
+	During the phase, \TAlg performs at most $2 \ell$ component merge operations ---
 	exceeding this number would mean that a~component of size $4$ exists, and the phase should have ended already.
-	We bound the cost of each repartition by Lemma~\ref{lem:1req}, to obtain $\TAlg(M) \leq 8\alpha\cdot\ell$.
+	We bound the cost of each reconfiguration after a merge by Lemma~\ref{lem:1req}, obtaining $\TAlg(M) \leq 8\alpha\cdot\ell$.
 	%Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
 	
 	Now we bound $\TAlg(\sigma_I)$.
-	A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as two pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
+	A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as two pairs of nodes from the component are saturated and incurred the cost $\alpha$ each, and the third, unsaturated pair incurs the cost at most $\alpha-1$.
 	Other cluster types contribute less: $C_1$ contributes~$0$ and $C_2$ contributes $\alpha$.
 	Summing over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
 	
@@ -731,9 +732,13 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	Note that these costs are defined with respect to components of \TAlg in this phase.
 	By $\OPT(M)$ we denote the cost of migrations performed by $\OPT$ in this phase.
 	
-	We split the cost of $\OPT$ into parts coming from serving $\sigma_I$ and $\sigma_E$.
+	The cost of \OPT is lower-bounded by the cost of serving $\sigma_I$ and the cost of serving $\sigma_E$.
 	While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts: we separately bound $\OPT$ by $\OPT(\sigma_I) + \OPT(M)$ and $\OPT(\sigma_E) + \OPT(M)$.
-	Combining those bounds and using the relation between the maximum and the average gives us $\OPT \geq \max\{\OPT(\sigma_I) + \OPT(M), \OPT(\sigma_E) + \OPT(M)\} \geq (\OPT(\sigma_I) + \OPT(M)) / 2 + (\OPT(\sigma_E) + \OPT(M)) / 2$.
+	Combining those bounds and using the relation between the maximum and the average gives us
+	\begin{align*}
+		\OPT&\geq \max\{\OPT(\sigma_I) + \OPT(M), \OPT(\sigma_E) + \OPT(M)\}\\
+		&\geq (\OPT(\sigma_I) + \OPT(M)) / 2 + (\OPT(\sigma_E) + \OPT(M)) / 2.
+	\end{align*}
 	
 	%Let $O^M$ be the cost of migrations performed by $\OPT$ during the phase.
 	%Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
@@ -746,28 +751,31 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	\medskip
 	Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
-	By entering some fixed configuration before serving $\sigma_E$, \OPT may mitigate paying for requests between at most $3\ell$ pairs of nodes by collocating them in its clusters.
-	Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), thus $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
-	Faced with at least $W := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests $\sigma_E$ that it could not mitigate, $\OPT$ served some of them remotely and possibly performed some migrations to decrease its cost.
-	
-	
-	Now we estimate the cost of $\OPT(\sigma_E)$ while accounting savings from migrations.
-	By performing a swap of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
+	Fix a configuration of \OPT prior serving the sequence $\sigma_E$.
+	Even without migrations, \OPT may mitigate paying for requests between at most $3\ell$ pairs of nodes that can be collocated in its clusters.
+	Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), and the counter of an unsaturated pair is at most $\alpha - 1$.
+	Hence, $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
+	Finally, during the phase, \OPT is faced with at least $\chi := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests from $\sigma_E$ that it cannot mitigate.
+
+	By migrating nodes, \OPT may decrease its cost, and pay less than $\chi$ for requests from $\sigma_E$.
+	By swapping a pair of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
 	This may allow serving requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterward.
 	As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
 	By performing a single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$
-	Hence, for serving $\sigma_E$, $\OPT$ pays at least $\OPT(\sigma_E) + \OPT(M) \geq W \cdot \frac{2\alpha}{4 (\alpha-1)}\geq |\sigma_E| / 2 - 2 \alpha \cdot \ell$.
-
-	
-	Finally, we bound the competitive ratio.
-	From the bound on \OPT's cost we have $|\sigma_E| \leq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
-	Let $\xi := \OPT(\sigma_E) + \OPT(M)$.
-	The competitive ratio is
-
+	Hence, for serving at least $\chi$ unavoidable requests from $\sigma_E$, $\OPT$ pays at least
+	%
+	\[
+		\OPT(\sigma_E) + \OPT(M) \geq \chi \cdot \frac{2\alpha}{4 (\alpha-1)}\geq \frac{|\sigma_E|} {2} - 2 \alpha \cdot \ell.
+	\]
+	%	
+	To bound the competitive ratio, we transform the above inequality in the following way: $|\sigma_E| \leq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
+	For succintness, let $\xi := \OPT(\sigma_E) + \OPT(M)$.
+	Combining the bounds on the cost of \TAlg and \OPT during each finished phase, the competitive ratio is
+%
 	\[
 		\frac{\TAlg(\sigma)}{\OPT(\sigma)} \leq \frac{11\alpha \cdot \ell + |\sigma_E|}{\alpha/2 + \xi/2} \leq \frac{30\alpha\cdot\ell + 4\cdot \xi}{\alpha + \xi} \leq 30 \ell.
 	\]
-	
+%	
 	\medskip
 	
 	It remains to consider the last, unfinished phase.
