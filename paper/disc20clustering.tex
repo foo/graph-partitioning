@@ -363,25 +363,17 @@ The lower bound requires $k\geq 3$.
 For $k=2$, the learning problem is trivial: immediate collocation of a communicating pair is $1$-competitive.
 (A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known~\cite{repartition-disc}, and we provide a~$6$-competitive algorithm, see Section~\ref{sec:k2}.)
 
-
-
-
-
 Across this paper, we often refer to groups of communicating nodes.
 We use this concept slightly differently in the lower bound and the upper bounds.
 In our algorithms, we group nodes with a communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
 
-
 A~\emph{ground set} is a group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
 Their role is to ensure that the algorithm maintains a~partition of ground sets into clusters.
 We emphasize that ground sets are revealed only upon their nodes are split.
+The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
+Once we construct a ground set, it lasts until the end of the input sequence.
 We say that a ground set is \emph{trivial} if it contains exactly one node.
 We say that the node that belongs to trivial a ground set is \emph{isolated}.
-
-
-The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
-We emphasize that the algorithm does not know ground sets before they are revealed.
-Once we construct a ground set, it lasts until the end of the input sequence.
 
 The constructed ground sets can be perfectly partitioned into the clusters (i.e., with nodes of each ground set collocated).
 This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost~$0$), thus its cost is bounded.
