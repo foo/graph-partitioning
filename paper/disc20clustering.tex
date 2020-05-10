@@ -784,7 +784,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	Then, we cannot charge $\OPT$ due to the inability to partition the components.
 	Instead, we use the fact that \TAlg and $\OPT$ started with the same initial configuration.
 	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
-	If there were at least $\alpha$ external requests, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
+	If at least $\alpha$ external requests were issued, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
 	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
 	This way, the competitive ratio increases at most twofold in comparison to a finished phase, and the competitive ratio is $\TAlg(\sigma)/\OPT(\sigma) \leq 60\ell$.
 \end{proof}
