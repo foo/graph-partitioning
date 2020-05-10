@@ -497,7 +497,6 @@ In contrast, our partition is time-varying:  two components are merged into one 
 
 We say that a component is \emph{trivial}, if it contains exactly one node,
 and the node in this component is \emph{isolated}.
-\mahmoud{we also use "singletone component". One is redundant.}
 We say that a~partition is \emph{component-respecting}
 if the nodes belonging to the same component are always collocated.
 
@@ -623,10 +622,10 @@ Furthermore, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorit
 \textbf{Component-based algorithm.}
 Now we describe the algorithm \TAlg.
 The algorithm partitions nodes into components, and
-initially, each node belongs to its own singleton component.
+initially, each node is isolated (belongs to its own component).
 For each pair of nodes $\set{x,y}$, \TAlg maintains a counter $C_{\set{x,y}}$ and increments it on every external request between $x$ and $y$.
 Once $C_{\set{x,y}} = \alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
-If no such partitioning exists, \TAlg resets all components to singletons, resets all counters to $0$, and ends the phase.
+If no such partitioning exists, \TAlg resets all components to trivial components, resets all counters to $0$, and ends the phase.
 
 
 %\begin{figure}[H]
@@ -1071,12 +1070,14 @@ This paper revisited the dynamic graph partitioning problem and presented severa
 
 While are bounds are tight, there are several interesting avenues for future research.
 In particular, we have so far focused on deterministic algorithms, and it would be interesting to study the power of randomization in this context.
-On the practical side, it would also be interesting to study our algorithms empirically, under realistic workloads.
+On the practical side, it would also be interesting to study our algorithms empirically, under realistic workloads.h
 
 \bibliographystyle{plainurl}
 \bibliography{references}
 
 \appendix
+
+\section{Pseudocode of Perfect Partition Learner}
 
 \begin{algorithm}
 	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
@@ -1087,17 +1088,17 @@ On the practical side, it would also be interesting to study our algorithms empi
 		%        initial configuration $P_I$,
 		%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
 		%        \Ensure A final configuration $P_F$ 
-		\STATE {For each node $v$ create a singleton component $C_v$ and add it to $\mathcal{C}$.}
-		\STATE{$P := P_I$}
+		\STATE {For each node $v$ create a component $C_v = \{ v \}$ and add it to $\mathcal{C}$.}
+		%\STATE{$P := P_I$}
 		\label{line:initcomponents}
 		\FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
 		\STATE{Let $C_1 \ni u$ and $C_2 \ni v$ be the  components containing $u$ and $v$, respectively.}
 		\IF{$C_1 \neq C_2$}
-		\STATE {Unite $C_1$ and $C_2$ into one component $C'$ and
+		\STATE {Merge $C_1$ and $C_2$ into one component $C'$ and
 			$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$.} \label{line:mergecomponents}
 		%		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
 		%		\COMMENT{i.e.~if not in the same cluster.}}       
-		\IF{$C_1$ and $C_2$ are not collcoated}
+		\IF{$C_1$ and $C_2$ are not collocated}
 		\STATE {Move to a partition closest to $P_I$, respecting all components in $\mathcal{C}$.} 
 		%		\COMMENT{move to a partition closest to $P_I$}
 		\label{line:rebalance} 
