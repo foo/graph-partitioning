@@ -650,7 +650,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 \end{lemma}
 
 \begin{proof}
-	If no component respecting partition exists after the merge of components, \TAlg simply ends the phase and performs no reconfiguration.
+	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no reconfiguration.
 	It suffices to show that the merged component has size at least $4$ to conclude that \TAlg incurs no cost.
 	
 	%We distinguish between three types of clusters: $C_1, C_2, C_3$,
