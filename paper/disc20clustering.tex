@@ -438,7 +438,7 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	The largest ground set of $I(x_i)$ is at most $k-1$, because $x_i$ is on $S$.
 	Therefore $\{x_0, y_0\}$ is present on $I(x_i)$, and we must evict it to make space for $x_i$.
 	To find the cluster for $\{x_0, y_0\}$, observe that we have at most $\ell-1$ clusters with isolated nodes, and we have at least $\ell$ isolated nodes --- hence a~cluster with two isolated nodes exists.
-	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated isolated nodes, and then we swap an isolated node from $I(x_i)$ with $x_i$.
+	To find a feasible partition, we swap $\{x_0, y_0\}$ with these two collocated isolated nodes, and then we swap an isolated node from $I(x_i)$ with~$x_i$.
 	
 
 	To keep \OPT's cost low, we terminate prematurely --- we stop extending ground sets while there are still $\ell+1$ isolated nodes (i.e., neglecting two last ground set expansions).
@@ -1065,7 +1065,7 @@ Finally, we have
 
 \maciek{"then the total cost to OPT" cost for OPT}
 
-\maciek{Suggestion: instead of "this means", I saw exclusively the use of "therefore", "hence" and "thus", and maybe "this implies" in papers}
+\maciek{(strong) Suggestion: instead of "this means", "meaning", I saw exclusively the use of "therefore", "hence" and "thus", and maybe "this implies" in papers. Also in PPl}
 
 \noindent
 \textbf{Approximation for offline rematching.}
