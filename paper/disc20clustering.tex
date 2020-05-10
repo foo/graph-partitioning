@@ -700,15 +700,15 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	%Let $A^I$ be the cost of (extra-cluster) communication incurred in this phase by \TAlg between pairs that belonged to the single component at the end of the phase.
 	%Let $A^E$ be the cost of (extra-cluster) communication incurred in this phase between the nodes that belong to different components at the end of this phase.
 	Let $\TAlg(M)$ be the cost of migrations performed by \TAlg in this phase.
-	\TAlg performs at most $2 \ell$ component merge operations, as
-	exceeding this number means that a component of size $4$ exists, and the phase should have ended already.
-	Combining this with Lemma~\ref{lem:1req} gives us $\TAlg(M) \leq 8\alpha\cdot\ell$ (recall that an exchange costs $2\alpha$).
+	\TAlg performs at most $2 \ell$ component merge operations ---
+	exceeding this number would mean that a~component of size $4$ exists, and the phase should have ended already.
+	We bound the cost of a each repartition by Lemma~\ref{lem:1req}, to obtain $\TAlg(M) \leq 8\alpha\cdot\ell$.
 	%Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
 	
 	Now we bound $\TAlg(\sigma_I)$.
 	A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as two pairs of nodes from the component are saturated and contribute $\alpha$ each, and the third, unsaturated pair contributes at most $\alpha-1$.
 	Other cluster types contribute less: $C_1$ contributes~$0$ and $C_2$ contributes $\alpha$.
-	Summing this over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
+	Summing over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
 	
 	%We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
 	%\maciek{not needed most likely}
