@@ -249,6 +249,8 @@ In both models, we assume that communication patterns are not known to our algor
 We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
 In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
 
+\maciek{Above definition is the definition of strict competitive ratio. In comparison to non-strict with additive constant. Emphasize? Maybe already use the notion of \OPT}
+
 
 \subsection{Related work}
 
@@ -319,6 +321,8 @@ so far $O(\ell^2)$~\cite{repartition-disc}.
 We further present a strictly $6$-competitive algorithm for $k=2$ that improves upon previous $7$-competitive algorithm with $O(\ell^2)$ additive constant.
 %
 Table \ref{tab:overview} provides an overview of our contributions compared to prior work.
+
+\maciek{emphasize that all our algorithms have strict competitive ratio}
 
 \begin{table*}
 	\centering
