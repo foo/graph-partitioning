@@ -167,6 +167,7 @@
 
 \section{Introduction}
 
+\maciek{the model name is still unclear: in the abstract we mention the repartitioning model introduced by Avin et al.}
 
 The popularity of data-centric, distributed applications has led to an explosive growth of network traffic, especially in data centers \cite{roy2015inside,singh2015jupiter}.
 The performance of these distributed applications often critically depends on the underlying network \cite{mogul2012we}, and efficient operation of these networks is important.
@@ -307,22 +308,22 @@ Dynamic graph partitioning problems are generally fundamental in computer scienc
 \subsection{Our Contributions}
 
 This paper presents several new results on the dynamic graph partitioning problem  without augmentation.
-Our main result is a tight bound on the general case: we present a lower bound of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
-even in the learning model.
-The best known lower bound so far was $\Omega(k)$,
-even for a more general model~\cite{repartition-disc}.
-We also present an asymptotically optimal, 
+For the learning model we present a lower bound of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
+(that holds also in the general partitioning model).
+The best known lower bound so far was $\Omega(k)$~\cite{repartition-disc} that holds only in the general partitioning model.
+We further present an asymptotically optimal, 
 $O(k\cdot \ell)$-competitive algorithm
 for the learning model.
-For the repartitioning model, we present  
+
+For the general partitioning model, we design
 an asymptotically optimal,
-$\Theta(\ell)$ algorithm for $k=3$, improving the best known upper bound 
+$\Theta(\ell)$-competitive algorithm for $k=3$, improving the best known upper bound 
 so far $O(\ell^2)$~\cite{repartition-disc}.
-We further present a strictly $6$-competitive algorithm for $k=2$ that improves upon previous $7$-competitive algorithm with $O(\ell^2)$ additive constant.
-%
+We further present a strictly $6$-competitive algorithm for $k=2$ that improves upon previous $7$-competitive algorithm with $O(\alpha\ell^2)$ additive constant.
+
+All algorithms in this paper have strict competitive ratio (i.e., without an additive term).
 Table \ref{tab:overview} provides an overview of our contributions compared to prior work.
 
-\maciek{emphasize that all our algorithms have strict competitive ratio}
 
 \begin{table*}
 	\centering
