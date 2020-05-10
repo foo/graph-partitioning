@@ -486,7 +486,7 @@ Then, apply the construction from the lower bound for $k=3$, using these ground 
 The cost of any algorithm (including \OPT) scales up by $k/3$, and the lower bound $\Omega(\ell)$ holds.
 
 Finally, we note the possibility of improvement. The algorithm CREP~\cite{repartition-disc} requires $(2+\epsilon)$-augmentation to guarantee the competitive ratio independent of $\ell$.
-In contrast, our construction shows that the linear term $\ell$ is inevitable if the augmentation is smaller than $1+1/3$.
+In contrast, our construction shows that the linear term $\ell$ is inevitable if the augmentation is smaller than~$1+1/3$.
 
 \subsection{Upper Bound}
 \label{sec:ppl}
@@ -736,7 +736,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	The cost of \OPT is lower-bounded by the cost of serving $\sigma_I$ and the cost of serving $\sigma_E$.
 	While serving these requests, $\OPT$ may perform migrations, and we account for them in both parts: we separately bound $\OPT$ by $\OPT(\sigma_I) + \OPT(M)$ and $\OPT(\sigma_E) + \OPT(M)$.
-	Combining those bounds and using the relation between the maximum and the average gives us
+	Combining those bounds and using the relation between the maximum and the average, we obtain the bound
 	\begin{align*}
 		\OPT&\geq \max\{\OPT(\sigma_I) + \OPT(M), \OPT(\sigma_E) + \OPT(M)\}\\
 		&\geq (\OPT(\sigma_I) + \OPT(M)) / 2 + (\OPT(\sigma_E) + \OPT(M)) / 2.
@@ -1051,6 +1051,7 @@ Finally, we have
 
 \maciek{OPT's cost formula: make it one line by removing the expression with minimums. Move minimums to the paragraph text, by immediatelly expanding minimums (two steps in paragraph, instead of in the formula)}
 
+\maciek{"	I.e., $ C^t_{\set{u,v}} = \lambda$." is too short for a sentence. Merge with the previous sentence?}
 
 \noindent
 \textbf{Approximation for offline rematching.}
