@@ -499,6 +499,15 @@ We present an asymptotically optimal algorithm for the learning problem.
 The algorithm immediately collocates every communicating pair and never separates them.
 To help maintain the collocation of communicating pairs, we use the concept of components, introduced by Avin et al. \cite{repartition-disc}.
 
+
+The algorithm in this section and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from \cite{repartition-disc}.
+The difference is in the choice of partition after a component merge.
+In DET, the partition was arbitrary.
+In the algorithm for the learning model, we choose the \maciek{component respecting?} partition closest to the initial partition.
+In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a repartition of minimum cost).
+
+\medskip
+
 In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
 We maintain all nodes of a component always collocated in the same cluster~\cite{repartition-disc}.
 When we  move a~node, we move the whole component that contains it.
@@ -510,14 +519,6 @@ We say that a component is \emph{trivial} if it contains exactly one node,
 and the node in this component is \emph{isolated}.
 We say that a~partition is \emph{component-respecting}
 if the nodes belonging to the same component are always collocated.
-
-The algorithm in this section and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from \cite{repartition-disc}.
-The difference is in the choice of partition after a component merge.
-In DET, the partition was arbitrary.
-In the algorithm for the learning model, we choose the partition closest to the initial partition.
-\maciek{component respecting?}
-In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a repartition of minimum cost).
-
 
 
 \maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here. \mahmoud{are "configuration" and "partition" the same thing everywhere? Then let's use "partition" only.\maciek{I thought partition is on component level, and configuration on node level (todo check where to add component-respecting to the partition in this chapter). Maybe say in the intro in this chapter that configuration = partition? We use both heavily.}}}
