@@ -650,8 +650,8 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 \end{lemma}
 
 \begin{proof}
-	Observe that when the repartition is triggered by \TAlg, the resulting partitioning is component respecting.
-	Otherwise, if it does not exist, \TAlg simply ends the phase and performs no repartition.
+	If no component respecting partition exists after the merge of components, \TAlg simply ends the phase and performs no reconfiguration.
+	It suffices to show that the merged component has size at least $4$ to conclude that \TAlg incurs no cost.
 	
 	%We distinguish between three types of clusters: $C_1, C_2, C_3$,
 	%which we define as follows.
@@ -665,14 +665,18 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
 	In this case, a local repartition is possible (within $U$ and $V$), for a cost of at most $2$ swaps.
-	Note that it is impossible that either $U$ or $V$ is of type $C_3$, as otherwise, a component of size $3$ participates in a merge.
-	After the merge, we would have a component of size at least $4$, and in this case, no component respecting partitioning exists, a contradiction.
+	If either $U$ or $V$ is of type $C_3$, a component of size $3$ participates in a merge, and we have a component of size at least $4$, and \TAlg ends the phase with no reconfiguration.
 	
 	
-	It remains to consider the case where both $U$ and $V$ are of type $C_2$. Note that $(u,v)$ cannot both belong to a component of size $2$, as this would mean that \TAlg has the component of size $4$, a contradiction with the case assumption that the component respecting partitioning exists. 
-	Otherwise, if either $u$ or $v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
+	It remains to consider the case where both $U$ and $V$ are of type $C_2$.
+	If $(u,v)$ both belong to components of size $2$, then the merged component has size $4$, and \TAlg incurs no cost. 
+	Otherwise, if one of $u,v$ belongs to a component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
+
 	Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a cluster different from $U$ and $V$.
-	Note that in such case, a $C_1$-type cluster $W$ exists, as otherwise no component respecting partitioning exists. In this case, \TAlg performs one swap, i.e., it exchanges the nodes $u$ and $v$ with any two nodes~of~$W$.
+	Note that if $C_1$-type cluster does not exist, then no component respecting partitioning exists.
+	Otherwise, \TAlg performs one swap --- it exchanges the nodes $u$ and $v$ with any two nodes~of~any cluster of type $C_1$.
+
+	In each case, we showed that a partition is reachable in at most two swaps.
 \end{proof}
 
 
