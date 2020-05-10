@@ -501,7 +501,7 @@ In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to t
 \medskip
 
 In our algorithms, a~\emph{component} is a subset of frequently communicating nodes.
-We maintain all nodes of a component always collocated in the same cluster~\cite{repartition-disc}.
+We keep all nodes of each component collocated in the same cluster, similar to Avin et al.~\cite{repartition-disc}.
 When we  move a~node, we move the whole component that contains it.
 We maintain a balanced partition of our components,
 a reminiscent of partitioning given integers into sets of equal sum \cite{integer-partitions-book}.
