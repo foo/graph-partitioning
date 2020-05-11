@@ -341,7 +341,7 @@ Table \ref{tab:overview} provides an overview of our contributions compared to p
 \section{The Learning Model} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
 In this section, we consider the learning variant of dynamic balanced graph partitioning problem.
-For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$.
+For this setting, we show a surprisingly high lower bound of $\Omega(k \cdot \ell)$ for $k\geq 3$.
 The lower bound holds also in the general partitioning model (studied in Section~\ref{sec:part}).
 At the end of this section, we discuss an asymptotically optimal upper bound for the learning variant.
 
@@ -354,7 +354,7 @@ At the end of this section, we discuss an asymptotically optimal upper bound for
 We provide a lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm for the learning problem.
 Later we elaborate on how to efficiently transform it to a lower bound for the general partitioning problem.
 The lower bound requires $k\geq 3$.
-For $k=2$, the learning problem is trivial: immediate collocation of a communicating pair is $1$-competitive.
+In contrast, for $k=2$ the learning problem is trivial: immediate collocation of communicating pairs is $1$-competitive.
 (A partitioning problem for $k=2$ is non-trivial, a lower bound of $3$ is known~\cite{repartition-disc}, and we provide a~$6$-competitive algorithm, see Section~\ref{sec:k2}.)
 
 Across this paper, we often refer to groups of communicating nodes.
@@ -366,7 +366,7 @@ Their role is to ensure that the algorithm maintains a~partition of ground sets 
 We emphasize that ground sets are revealed only upon their nodes are split.
 The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
 Once we construct a ground set, it lasts until the end of the input sequence.
-We say that a ground set is \emph{singleton} if it contains exactly one node.
+We say that a ground set is a \emph{singleton} if it contains exactly one node.
 We say that the node that belongs to a singleton ground set is \emph{isolated}.
 
 The ground sets constructed in this lower bound can be perfectly partitioned into the clusters (i.e., with nodes of each ground set collocated).
