@@ -342,7 +342,7 @@ Table \ref{tab:overview} provides an overview of our contributions compared to p
 \medskip
 \noindent
 \textbf{Algorithmic techniques.} The variant for general $k$ is still unresolved, hence it is vital to summarize algorithmic techniques used in this paper.
-A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations in a phase by a~constant, and show that the optimum offline algorithm must pay for a significant portion of inter-cluster requests.
+A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations in a phase by a~constant, and show that the optimum offline algorithm must pay for a significant portion of inter-cluster requests \maciek{how to concisely say that there is also a migrate possibilty}.
 We bound the cost of the latter by estimating the capabilities of the optimum offline algorithm to \emph{prepare} for an incoming sequence of requests.
 Furthermore, in the analysis of the algorithm from Section~\ref{sec:k2}, we propose a~novel charging scheme for edges that share a vertex.
 
