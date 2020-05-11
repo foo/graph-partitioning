@@ -365,7 +365,7 @@ A~\emph{ground set} is a group of nodes that repeatedly communicate when an algo
 Their role is to ensure that the algorithm maintains a~partition of ground sets into clusters.
 We emphasize that ground sets are revealed only upon their nodes are split.
 The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
-Once we construct a ground set, it lasts until the end of the input sequence.
+Once we construct a ground set, it lasts until the end of the algorithm's execution.
 We say that a ground set is a \emph{singleton} if it contains exactly one node.
 We say that the node that belongs to a singleton ground set is \emph{isolated}.
 
@@ -459,7 +459,7 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 \noindent
 \textbf{Resource augmentation.}
 The majority of work on Online Balanced Partitioning so far \cite{repartition-disc,sigmetrics19_partitioning} focuses on the scenario with resource augmentation, where the clusters of an online algorithm are larger than the clusters of the offline optimal algorithm that we compare the performance to.
-We can adjust our construction to show a lower bound of $\Omega(\ell)$ for resource augmentation.
+We can adjust our construction to show a lower bound of $\Omega(\ell)$ for a setting with resource augmentation.
 
 Consider a partitioning problem with resource augmentation $1+1/3-\epsilon$.
 Fix $k$ divisible by $3$, and construct $3$ ground sets of size $k/3$ in each cluster.
@@ -477,11 +477,11 @@ We present an asymptotically optimal algorithm for the learning problem.
 The algorithm  collocates  a pair as soon as they communicate and it never separates them.
 In order to preserve collocated pairs,
 we employ the concept of components,
-introduced by Avin et al. \cite{repartition-disc}.
+introduced by Avin~et~al.~\cite{repartition-disc}.
 
 %\medskip
 %In our algorithms, 
-A~\emph{component} is a subset of frequently communicating nodes.
+A~\emph{component} is a subset of frequently communicating nodes \maciek{this is not a good definition. intuitions, maybe}.
 We keep all nodes of a component always collocated in the same cluster,
 i.e., when we  move a~node,
 we move the whole component that contains it.
@@ -520,7 +520,7 @@ $\Delta(P, P_I) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$,
 In other words,
 at least $\Delta(P, P_I)$ node migrations are required in order to reach the partition $P$ from $P_I$, and thus
 $\OPT \geq \Delta^*:= \Delta(P_F, P_I) $.
-We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context.
+We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context \maciek{It always is, we fixed it in the beginning. Maybe just define it as the distance from initial partition, but don't pass it as an argument}.
 The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
 With each repartitioning,
