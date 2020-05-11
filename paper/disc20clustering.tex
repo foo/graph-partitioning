@@ -791,7 +791,7 @@ We organize the clusters into an arbitrary rooted balanced binary tree, and we b
 Each cluster maintains the counter of fresh clusters in its subtree.
 To find a fresh cluster, we traverse an arbitrary path of non-zero counters from the root.
 Upon encountering a fresh cluster, we end the traversal and decrease the counters on the followed path by $1$.
-Summarizing, ending the phase requires a single broadcast, and merging components requires $O(\log \ell)$ communication.
+Summarizing, ending the phase requires a single broadcast, and merging components has $O(\log \ell)$ communication complexity.
 
 \subsection{Improved Algorithm for Online Rematching} \label{sec:k2}
 In this section,
