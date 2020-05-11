@@ -148,13 +148,12 @@
 	of clusters and $k$ is the cluster size,
 	even for a scenario in which the communication
 	pattern is static and can be perfectly partitioned;
-	we also provide a \mahmoud{asymptotically?} tight upper bound 
+	we also provide an asymptotically tight upper bound 
 	of $O(k\cdot \ell)$ for this scenario.
-	We contribute a tight upper bound
+	We contribute an asymptotically tight upper bound
 	of $\Theta(\ell)$ for $k=3$,
 	for the general model in which the
-	communication pattern can change arbitrarily
-	over time.
+	communication pattern can change arbitrarily over time.
 	We improve the result for $k=2$ by providing a strictly $6$-competitive upper bound for the general model.
 	In contrast to most prior work, our algorithms respect all capacity constraints and do not require resource augmentation.
 	
@@ -372,8 +371,8 @@ Their role is to ensure that the algorithm maintains a~partition of ground sets 
 We emphasize that ground sets are revealed only upon their nodes are split.
 The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
 Once we construct a ground set, it lasts until the end of the input sequence.
-We say that a ground set is \emph{trivial} if it contains exactly one node.
-We say that the node that belongs to trivial a ground set is \emph{isolated}.
+We say that a ground set is \emph{singleton} if it contains exactly one node.
+We say that the node that belongs to a singleton ground set is \emph{isolated}.
 
 The ground sets constructed in this lower bound can be perfectly partitioned into the clusters (i.e., with nodes of each ground set collocated).
 This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost~$0$), thus its cost is bounded.
@@ -381,7 +380,7 @@ If the algorithm splits any pair of nodes of a ground set, the adversary issues 
 These two observations imply that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
 
 First, we construct a ground set of size $k-1$ on an arbitrarily chosen cluster.
-In any configuration, there must exist an isolated node collocated with the ground set of size $k-1$.
+In any partition, there must exist an isolated node collocated with the ground set of size $k-1$.
 We issue requests between this isolated node, and some node that was initially collocated with it.
 Repeating such requests, almost all the nodes must visit the cluster $S$.
 In comparison, we show that there exists an optimal offline algorithm \OPT that performs only two migrations.
@@ -403,13 +402,13 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 
 \begin{proof}
 	Fix any online algorithm \ALG{}.
-	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located in the initial configuration.
+	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located in the initial partition.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially, all nodes are isolated (i.e., in ground sets of size $1$).
 	First, we create a ground set $B$ of $k-1$ nodes on an arbitrarily chosen cluster (the nodes  are already collocated).
 	%We never dismiss any constructed ground set.
-	Each cluster hosts exactly $k$ nodes, and in any configuration, a single isolated node resides in $S$.
+	Each cluster hosts exactly $k$ nodes, and in any partition, a single isolated node resides in $S$.
 	We say that this isolated node that accompanies the ground set $B$ is \emph{special}.
 	We denote the first special node by $x_0$.
 
@@ -429,10 +428,10 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from distinct clusters.)
 
 	We claim that expanding ground sets in this way can continue as long as at least $\ell$ isolated nodes exist.
-	Fix the configuration just before the creation of a ground set with $x_i$ for some~$i$.
+	Fix the partition just before the creation of a ground set with $x_i$ for some~$i$.
 	We show that if at least $\ell$ isolated nodes exist (including $x_i$), then there exists a~perfect partition of ground sets after expanding a ground set with $x_i$.
-	To show this claim, we consider a configuration, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
-	In this configuration, each cluster contains:  at most one ground set larger than $1$, possibly some isolated nodes, and possibly the ground set $\{x_0, y_0\}$.
+	To show this claim, we consider a partition, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
+	In this partition, each cluster contains:  at most one ground set larger than $1$, possibly some isolated nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(x_i)$ contains an isolated node, then we simply obtain a~perfect partition by swapping it with $x_i$.
 	In the following, we assume that no isolated nodes exist on $I(x_i)$.
 	The largest ground set of $I(x_i)$ is at most $k-1$, because $x_i$ is on $S$.
@@ -442,19 +441,19 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	
 
 	To keep \OPT's cost low, we terminate prematurely --- we stop extending ground sets while there are still $\ell+1$ isolated nodes (i.e., neglecting two last ground set expansions).
-	Consider \ALG's configuration after the last expansion.
+	Consider \ALG's partition after the last expansion.
 	Among $\ell+1$ isolated nodes there must exist a pair that originates from the same cluster (we have $\ell$ clusters). 
 	We denote these two nodes by $x^*$ and $y^*$.
 
 	The optimal strategy is to perform two node swaps.
 	Precisely, \OPT collocates $\set{x_0,y_0}$ by swapping them with $x^*$ and $y^*$.
-	In this configuration, no ground set is split.
-	We never issue requests between nodes $x^*, y^*$ that are split in this configuration.
+	In this partition, no ground set is split.
+	We never issue requests between nodes $x^*, y^*$ that are separated in this partition.
 
 
 	\ALG performs at least one swap for every expansion of a ground set.
 	Each expansion reduces the number of isolated nodes by $1$ or $2$.
-	The decrease of two isolated nodes occurs when the largest component on  $I(x_i)$ is still trivial; this occurs at most $\ell$ times.
+	The decrease of two isolated nodes occurs when the largest component on  $I(x_i)$ is still singleton; this occurs at most $\ell$ times.
 	We start with $k \cdot \ell - (k-1)$ isolated nodes (a~single $k-1$ ground set is revealed prior to $\{x_0, y_0\}$), and we end with isolated $\ell+1$ nodes.
 	Hence, the total number of swaps of \ALG is at least $k\cdot \ell - k - 2 \ell$.
 	The competitive ratio is then $\ALG / \OPT \geq (k\cdot \ell - k - 2\ell) / 2$.
@@ -466,7 +465,7 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 Every lower bound for the learning problem constitutes a converging lower bound for the partitioning problem as the input sequence grows to infinity \maciek{possibly too strong sentence; I need to rethink}.
 However, our construction allows for an exact lower bound for partitioning with a~finite input sequence.
 To this end, we issue only enough requests until the algorithm collocates the nodes of each ground set (if it never does, we terminate after it pays $k\cdot \ell$).
-The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
+The construction is oblivious to the choice of the repartitioning cost $\alpha$: we compare the	number of node exchanges of \ALG and \OPT.
 
 
 
@@ -499,10 +498,10 @@ A~\emph{component} is a subset of frequently communicating nodes.
 We keep all nodes of a component always collocated in the same cluster,
 i.e., when we  move a~node,
 we move the whole component that contains it.
-A~partition that maintains this invariant is a \emph{component-respecting} partition.
-%We say that a~partition is \emph{component-respecting}
+A~partition that maintains this invariant is a \emph{component respecting} partition.
+%We say that a~partition is \emph{component respecting}
 %if the nodes belonging to the same component are always collocated.
-We say that a component is \emph{trivial} if it contains exactly one node,
+We say that a component is \emph{singleton} if it contains exactly one node,
 and the node in this component is \emph{isolated}.
 
 In addition,
@@ -517,11 +516,9 @@ The algorithm in this section and the algorithm for $k=3$ (cf. Section~\ref{sec:
 The difference is in the choice of partition after a component merge.
 In DET, the partition was arbitrary.
 In the algorithm for the learning model,
-we choose a component-respecting partition closest to the initial partition.
+we choose a component respecting partition closest to the initial partition.
 In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a repartition of minimum cost).
 A generic sketch of these two algorithms can be found in the appendix (Algorithm \ref{alg:ppl}).
-
-\maciek{The remainder of the paper used "configuration C" to denote the partition P. Easiest to adjust here. \mahmoud{are "configuration" and "partition" the same thing everywhere? Then let's use "partition" only.\maciek{I thought partition is on component level, and configuration on node level (todo check where to add component-respecting to the partition in this chapter). Maybe say in the intro in this chapter that configuration = partition? We use both heavily.}}}
 
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
@@ -540,7 +537,7 @@ We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context
 The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
 With each repartitioning,
-\PPL moves to a component-respecting partition that minimizes the distance to the initial partition $P_I$.
+\PPL moves to a component respecting partition that minimizes the distance to the initial partition $P_I$.
 As a result,
 \PPL never moves to a~partition that is more than $\Delta^*$  node migrations away from $P_I$.
 This invariant latter ensures us that \PPL does not pay too much while recovering $P_F$.
@@ -583,7 +580,7 @@ Meaning, it never moves to a partition beyond the distance $\Delta^*$.
 \end{theorem}
 \begin{proof}
 	On each inter-cluster request,
-	the algorithm enumerates all component-respecting $\ell$-way partitions of components
+	the algorithm enumerates all component respecting $\ell$-way partitions of components
 	that are in the same (closest) distance to $P_I$.
 	That is, 
 	once it reaches a partition $P$ at distance $\Delta^* = \Delta(P)$,
@@ -637,7 +634,7 @@ The algorithm partitions nodes into components, and
 initially, each node is isolated (belongs to its own component).
 For each pair of nodes $\set{x,y}$, \TAlg maintains a counter $C_{\set{x,y}}$ and increments it on every external request between $x$ and $y$.
 Once $C_{\set{x,y}} = \alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
-If no such partitioning exists, \TAlg resets all components to trivial components, resets all counters to $0$, and ends the phase.
+If no such partitioning exists, \TAlg resets all components to singleton components, resets all counters to $0$, and ends the phase.
 
 
 %\begin{figure}[H]
@@ -651,16 +648,16 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 
 \begin{lemma}
 	\label{lem:1req}
-	In a single reconfiguration of nodes (after a merge of components), \TAlg exchanges at most two pairs of nodes.
+	In a single repartitioning of nodes (after a merge of components), \TAlg exchanges at most two pairs of nodes.
 \end{lemma}
 
 \begin{proof}
-	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no reconfiguration.
+	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no repartitioning.
 	It suffices to show that the merged component has size at least $4$ to conclude that \TAlg incurs no cost.
 	
 	%We distinguish between three types of clusters: $C_1, C_2, C_3$,
 	%which we define as follows.
-	%A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial configuration of any cluster).
+	%A cluster of type $C_1$ the cluster contains $3$ singleton components (this is also the initial partition of any cluster).
 	%A cluster of type $C_2$  contains one component of size $2$ and one component of size $1$.
 	%Finally, a cluster of type $C_3$  contains one component of size $3$.
 	
@@ -668,9 +665,9 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	The request triggered the repartition, hence it was external and $U\neq V$.
 	We consider cases based on the types of clusters $U$ and $V$.
 	
-	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the reconfiguration is local within $U$ and $V$.
+	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the repartitioning is local within $U$ and $V$.
 	In this case, a local repartition is possible (within $U$ and $V$), for a cost of at most $2$ swaps.
-	If either $U$ or $V$ is of type $C_3$, a component of size $3$ participates in a merge, and we have a component of size at least $4$, and \TAlg ends the phase with no reconfiguration.
+	If either $U$ or $V$ is of type $C_3$, a component of size $3$ participates in a merge, and we have a component of size at least $4$, and \TAlg ends the phase with no repartitioning.
 	
 	
 	It remains to consider the case where both $U$ and $V$ are of type $C_2$.
@@ -716,7 +713,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	Let $\TAlg(M)$ denote the cost of migrations performed by \TAlg in this phase.
 	During the phase, \TAlg performs at most $2 \ell$ component merge operations ---
 	exceeding this number would mean that a~component of size $4$ exists, and the phase should have ended already.
-	We bound the cost of each reconfiguration after a merge by Lemma~\ref{lem:1req}, obtaining $\TAlg(M) \leq 8\alpha\cdot\ell$.
+	We bound the cost of each repartitioning after a merge by Lemma~\ref{lem:1req}, obtaining $\TAlg(M) \leq 8\alpha\cdot\ell$.
 	%Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
 	
 	Now we bound $\TAlg(\sigma_I)$.
@@ -752,12 +749,12 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	
 	%First, we estimate the cost related to $\sigma_I$.
 	We have $\OPT(M) + \OPT(\sigma_I) \geq \alpha$, as the phase ended when the components of \TAlg{} could not be partitioned without splitting them.
-	Hence, for every possible configuration of $\OPT$, there exists a non-collocated pair of nodes with at least $\alpha$ requests between them, and
+	Hence, for every possible partition of $\OPT$, there exists a non-collocated pair of nodes with at least $\alpha$ requests between them, and
 	$\OPT$ either served them remotely or performed a~migration.
 	
 	\medskip
 	Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
-	Fix a configuration of \OPT prior serving the sequence $\sigma_E$.
+	Fix a partition for \OPT prior serving the sequence $\sigma_E$.
 	Even without migrations, \OPT may mitigate paying for requests between at most $3\ell$ pairs of nodes that can be collocated in its clusters.
 	Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), and the counter of an unsaturated pair is at most $\alpha - 1$.
 	Hence, $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
@@ -787,7 +784,7 @@ Before bounding the competitive ratio of \TAlg, we introduce the lemma that uppe
 	It remains to consider the last, unfinished phase.
 	First, consider the case, where the unfinished phase is also the first one.
 	Then, we cannot charge $\OPT$ due to the inability to partition the components.
-	Instead, we use the fact that \TAlg and $\OPT$ started with the same initial configuration.
+	Instead, we use the fact that \TAlg and $\OPT$ started with the same initial partition.
 	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
 	If at least $\alpha$ external requests were issued, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
 	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
@@ -1028,12 +1025,10 @@ $.
 		\Big(
 		\sum_{ t \in T} \alpha  
 		+ \sum_{\{u,v\}} C^{m}_{\{u,v\}}
-		\Big).
+		\Big),
 	\end{align*}
-
-Finally, we have
-
-\begin{align*}
+and
+$
 	\mathit{ALG} (\sigma)	/
 	\mathit{OPT} (\sigma)
 	\leq
@@ -1044,22 +1039,19 @@ Finally, we have
 	\Big(
 	\sum_{ t \in T} \alpha  
 	+ \sum_{\{u,v\}} C^{m}_{\{u,v\}}  
-	\Big)	\leq 6.
-\end{align*}
-%	The claim follows from here.
-
+	\Big) 	\leq 6.
+$
 \end{proof}
-
-\maciek{m not introduced as the end of time in the proof, and also used in the intuitions. Consider some other symbol like $\tau$ or $t_F$}
-
-\maciek{Suggestion: "Note that \OPT cannot have both..." (till the end of paragraph) You told me this in one sentence during the call. Maybe use the same formulation? I feel like one sentence can be enough to explain this \mahmoud{I removed one redundant sentence. Since this is the core of the proof let's keep it wordy.}}
-
-\maciek{OPT's cost formula: make it one line by removing the expression with minimums. Move minimums to the paragraph text, by immediately expanding minimums (two steps in paragraph, instead of in the formula) \mahmoud{it is useful for reader's intuition to have the min till the end. So that they can remember why choice of $\lambda$ is not trivial.}}
-
 
 \noindent
 \textbf{Approximation for offline rematching.}
-\maciek{Maybe mention the offline approx here instead of the next section? similar to e.g. the remarks after the LB}
+\mahmoud{TBD}
+%We briefly sketch an approximation for the offline problem,
+%that makes use of \RM as a subroutine.
+%In our approximation algorithm,
+%we simulate \RM on the given sequence.
+%Whenever,
+%\RM collocoates a pair
 
 
 \section{Discussion and Future Work}
@@ -1093,10 +1085,10 @@ Furthermore, we proposed an efficient distributed implementation of the algorith
 	\begin{algorithmic}
 		%        \Require 
 		%        $k, \ell$,
-		%        initial configuration $P_I$,
+		%        initial partition $P_I$,
 		%        sequence of  requests $\sigma_1, \dots, \sigma_N$ 
-		%        \Ensure A final configuration $P_F$ 
-		\STATE {For each node $v$ create a component $C_v = \{ v \}$ and add it to $\mathcal{C}$.}
+		%        \Ensure A final partition $P_F$ 
+		\STATE {For each node $v$ create a singleton component $C_v = \{ v \}$ and add it to $\mathcal{C}$.}
 		%\STATE{$P := P_I$}
 		\label{line:initcomponents}
 		\FOR {each  request $\sigma_t=\{u,v\}, 1 \leq t \leq N$}
