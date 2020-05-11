@@ -616,8 +616,7 @@ Furthermore, in Section~\ref{sec:k2}, we show a strictly $6$-competitive algorit
 
 \noindent
 \textbf{Component-based algorithm.}
-We introduce the algorithm \TAlg that we analyze in this section.
-The algorithm partitions nodes into components, and
+The algorithm \TAlg partitions nodes into components, and
 initially, each node is isolated (belongs to its own component).
 For each pair of nodes $\set{x,y}$, \TAlg maintains a counter $C_{\set{x,y}}$ and increments it on every external request between $x$ and $y$.
 Once $C_{\set{x,y}} = \alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
@@ -813,19 +812,18 @@ and slightly simpler than the one in \cite{repartition-disc},
 while our analysis is significantly more simple and concise,
 thanks to the charging scheme we devise here.
 
+\medskip
 
-We describe the algorithm \RM for the online rematching problem as follows.
-The input to \RM is a sequence of  requests
-$\sigma:=\{\sigma_1,\dots, \sigma_m\}, \sigma_t:=\{x,y\} \in V^2, x \neq y$.
-We maintain a counter $C_{\set{x,y}}$ for each pair of nodes $\set{x,y}$ and increment it on every remote request between $x$ and $y$.
+\noindent
+\textbf{Algorithm ReMatch.} 
+The algorithm ReMatch (\RM) maintains a counter $C_{\set{x,y}}$ for each pair of nodes $\set{x,y}$ and increments it on every remote request between $x$ and $y$.
 Once $C_{\set{x,y}} = \lambda$,
-reset the counter and collocate the pair arbitrarily in one of the two clusters where $x$ or $y$ resides.
+it resets the counter $C_{\set{x,y}}:=0$ and collocates the pair by swapping $x$ with the node collocated with $y$.
 
-\begin{theorem} \label{thm:k=2}
-	For $\lambda=\alpha$, the algorithm \RM  is strictly 6-competitive.
-\end{theorem}
+\medskip
 
-
+\noindent
+\textbf{The charging scheme.}
 We charge both \OPT and \RM whenever \RM collocates a pair.%(i.e., on a collocation event).
 \RM collocates a pair always with a swap,%(i.e., two simultaneous migrations),
 which  costs $2\alpha$,
@@ -837,7 +835,6 @@ whenever \OPT collocates a pair,
 we charge it only the cost of moving a single node to the cluster of the other,
 i.e., $\alpha$ (in contrast to $2\alpha$ on \RM).
 
-\textbf{The charging scheme.}
 Consider two  pairs that share the same node, 
 i.e.~\emph{intersecting pairs},
 and the set of requests that causes the collocation of both pairs,
@@ -856,7 +853,13 @@ we charge \OPT a cost inflicted by a pair,
 if and only if  \OPT incurs that cost after the latest separation of the pair by \RM.
 %%
 
-\begin{proof}[Proof of Theorem \ref{thm:k=2}]
+\begin{theorem} \label{thm:k=2}
+	For $\lambda=\alpha$, the algorithm \RM  is strictly 6-competitive.
+\end{theorem}
+
+\begin{proof}%[Proof of Theorem \ref{thm:k=2}]
+	Fix an input sequence of requests
+$\sigma:=\{\sigma_1,\dots, \sigma_m\}$.
 	Assume on request $\sigma_{t}=\set{u,v}$, 
 	i.e., at (time) $t$,
 	\RM collocates the pair $\set{u,v}$.
