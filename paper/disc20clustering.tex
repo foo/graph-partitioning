@@ -871,8 +871,8 @@ if and only if  \OPT incurs that cost after the latest separation of the pair by
 	This means,
 	the value of $C_{\set{u,v}}$ at $t$,
 	denoted by $C^t_{\set{u,v}}$, 
-	reaches $\lambda$ immediately before \RM resets the counter.
-	I.e.,
+	reaches $\lambda$ immediately before \RM resets the counter,
+	i.e.,
 	$ C^t_{\set{u,v}} = \lambda$.
 	We denote the set of all requests to a pair $\set{x,y}$ that arrive
 	during $[t_1,t_2]$ by $\sigma_{\set{x,y}}[t_1,t_2]$,
@@ -906,8 +906,7 @@ if and only if  \OPT incurs that cost after the latest separation of the pair by
 	is the set of times when \RM performs a collocation.
 	By definitions of $t$ and $t'$,
 	the overall cost of requests in $\sigma_{\set{u,v}}$ incurred by \RM,
-	i.e., the total cost of remote serving
-	and the moving cost, is
+	i.e., the total cost of remote serving 	and the moving cost is
 	$\lambda + 2\alpha$.	
 	Next,
 	we bound costs incurred by \RM
@@ -925,7 +924,8 @@ $.
 	
 	Next,
 	we bound  costs incurred by \OPT for requests that trigger collocation of $\{u,v\}$ at $t \in T$.
-	If $t$ is the first time that \RM collocates $\{u,v\}$ then  \OPT pays
+	If $t$ is the first time that \RM collocates $\{u,v\}$,
+	 then  \OPT pays
 	$\lambda$ for serving requests in $\sigma_{\set{u,v}}[0,t]$ (remotely),
 	or $\alpha$ for collocating the pair and
 	serving (some of) the requests with  cost zero.
@@ -941,10 +941,13 @@ $.
 	Then,
 	$\OPTM(R_t) = \mathit{OPT} (\sigma_{\{u,w\}}) 
 	+ \OPTM(\sigma_{\{u,v\}}) $.
+	If \OPT has both pairs separated during their respective intervals,
+	then obviously it pays $2\lambda$ during those intervals.
 	Note that \OPT cannot have both pairs collocated at the same time.
-	However, it can have one of the pairs already collocated prior to its respective interval.
-	Let us assume  \OPT has one pair,
-	e.g.~$\{u,v\}$ collocated already prior its respective interval, i.e.~$(t',t]$,
+%	However, it can have one of the pairs already collocated prior to its respective interval.
+	Let us assume \OPT has one of the pairs,
+	e.g.~$\{u,v\}$,
+	 collocated already prior its respective interval, $(t',t]$,
 	 and keeps it so during the interval.
 	 Then it pays zero while serving $\sigma_{\{u,v\}}$.
 	Hence,
@@ -968,7 +971,7 @@ $.
 	Then there exists an intersecting pair $\set{u,w}$
 	that is collocated by \RM at $t' < m$,
 	separating $\{u,v\}$.
-	We define times $t'' < t' < m$ similarly as in the former case.
+	We define times $t'' < t' < m$ similarly to the former case.
 	Let $R^*_{\{u,v\}} := \sigma_{\{u,w\}} (t'',t'] \cup \sigma_{\{u,v\}} (t',m]$.
 	Then,
 	\OPT must pay for collocating at least one pair or (and) serving requests 
@@ -990,7 +993,7 @@ $.
 	$\mathit{OPT} (R_{t'}) + \mathit{OPT} (R^*_{\{u,v\}})$.
 	Hence,
 	for all collocations performed by \RM,
-	and for final costs at $t=m$,
+	and for final requests at $t=m$,
 	\OPT pays at least 
 	$\frac{1}{2}(
 	\sum_{ t \in T } \mathit{OPT} (R_t) +
@@ -1050,14 +1053,13 @@ Finally, we have
 
 \maciek{"it can have one edge already collocated" at most one edge?}
 
-\maciek{"similarly as in the former" "\textbf{similarly to the former}"}
 
 
 \maciek{Suggestion: "Note that \OPT cannot have both..." (till the end of paragraph) You told me this in one sentence during the call. Maybe use the same formulation? I feel like one sentence can be enough to explain this}
 
 \maciek{Suggestion: maybe call "its intervals" "\textbf{the saturating intervals}"?}
 
-\maciek{OPT's cost formula: make it one line by removing the expression with minimums. Move minimums to the paragraph text, by immediatelly expanding minimums (two steps in paragraph, instead of in the formula)}
+\maciek{OPT's cost formula: make it one line by removing the expression with minimums. Move minimums to the paragraph text, by immediately expanding minimums (two steps in paragraph, instead of in the formula)}
 
 \maciek{"	I.e., $ C^t_{\set{u,v}} = \lambda$." is too short for a sentence. Merge with the previous sentence?}
 
