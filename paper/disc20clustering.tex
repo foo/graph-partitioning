@@ -186,6 +186,10 @@ We refer to the latter as the learning model.
 \subsection{Model}
 
 We study two models in this paper: the \emph{general partitioning} model, and its subproblem, the \emph{learning} model.
+In both models, we assume that communication patterns are not known to our algorithms at the beginning.
+We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
+In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
+%We emphasize that all our algorithms have a \emph{strict} competitive ratio (without an additive term).
 
 \noindent
 \textbf{General partitioning model.}
@@ -242,11 +246,6 @@ The algorithm's objective is to \emph{learn} the (static) communication graph
 and without executing too many migrations.
 For the learning model, we  assume that the migration cost is $\alpha=1$.
 
-\medskip 
-In both models, we assume that communication patterns are not known to our algorithms at the beginning.
-We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
-In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
-We emphasize that all our algorithms have a \emph{strict} competitive ratio (without an additive term).
 
 \subsection{Related work}
 
