@@ -371,20 +371,25 @@ Across this paper, we often refer to groups of communicating nodes.
 We use this concept slightly differently in the lower bound and the upper bounds.
 In our algorithms, we group nodes with a~communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
 
-A~\emph{ground set} is a~group of nodes that repeatedly communicate when an algorithm splits them (places at different clusters).
-Their role is to ensure that the algorithm maintains a~partition of ground sets into clusters.
-We emphasize that ground sets are revealed only upon their nodes are split.
-The adversary constructs ground sets depending on the choices of a~deterministic online algorithm.
-Once we construct a~ground set, it lasts until the end of the algorithm's execution.
-We say that a~ground set is a~\emph{singleton} if it contains exactly one node.
-We say that the node that belongs to a~singleton ground set is \emph{isolated}.
+A~\emph{ground set} is a~subset of nodes such that if an algorithm does not have them all collocated,
+then the split parts communicate indefinitely until the algorithm collocates them.
+%A~\emph{ground set} is a~group of nodes that  communicate indefinitely when an algorithm splits them (places at different clusters).
+This ensure us that any competitive algorithm would maintain a~partition of ground sets into clusters.
+As a result,
+ a ground set is revealed to an algorithm only after the algorithm splits it.
+ More precisely,
+the adversary constructs ground sets depending on the choices of a~given deterministic online algorithm.
+%Once we construct a~ground set, it lasts until the algorithm terminates.
+We say that a~ground set is \emph{singleton} if it contains only one node,
+and we refer to such node as an \emph{isolated} node.
 
 
 We start by constructing a~ground set of size $k-1$ on an arbitrarily chosen cluster.
 In any partition, there must exist an isolated node collocated with the ground set of size $k-1$, and we call it \emph{special}.
 We issue requests between the current special node, and some node that was initially collocated with it.
-Repeating such requests, almost all the nodes must visit the cluster $S$.
+By repeating such requests, almost every node is collocated with the first ground set at some point .
 In comparison, we show that there exists an optimal offline algorithm \OPT that performs only two migrations.
+\mahmoud{4 migrations?}
 Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 
 
@@ -402,36 +407,72 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 \end{theorem}
 
 \begin{proof}
-	Fix any online algorithm \ALG{}.
-	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located in the initial partition.
-	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
+	Fix any online algorithm \ALG.
+	For a ground set $C$ of nodes that are initially collocated in one cluster,
+	let $I(C)$ denote the cluster.
+%	If $C$ contains nodes that originate from different clusters
+%	then $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
 	Initially, all nodes are isolated (i.e., in singleton ground sets).
-	First, we create a~ground set $B$ of $k-1$ nodes on an arbitrarily chosen cluster (the nodes  are already collocated).
+	First, we choose a cluster arbitrarily and
+	 create a~ground set $B$ of $k-1$ nodes in this cluster.
 	%We never dismiss any constructed ground set.
-	Each cluster hosts exactly $k$ nodes, and in any partition, a~single isolated node resides in $S$.
+	Each cluster hosts exactly $k$ nodes, and in any partition, a~single isolated node must be collocated with $B$.
 	We say that this isolated node that accompanies the ground set $B$ is \emph{special}.
 	We denote the first special node by $x_0$.
 
-	Then, we add the special node to a~larger ground set to force its eviction.
+	Then, we join the special node to a~larger ground set to force its eviction.
 	Precisely,
 	we create a~ground set $\{x_0, y_0\}$, 
-	where $x_0$ is the current special node and $y_0$ is an arbitrary node that does not reside in $S$.
-	\ALG has them split, and the adversary issues external requests until \ALG collocates them.
-	There is no space to accommodate $\{x_0, y_0\}$ in the cluster of $x_0$ (as $B$'s size is $k-1$), hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
-	To preserve a~feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
-	\ALG must replace $x_0$ with another single node that we call $x_1$.
+	where $x_0$ is the current special node and $y_0$ is an arbitrary isolated node.
+	Since \ALG does not have $\{x_0,y_0\}$ collocated, 
+	the adversary issues external requests between them until \ALG collocates them.
+	\ALG cannot collocate $\{x_0, y_0\}$ with $B$ (as $B$'s size is $k-1$), hence it collocates them in a different cluster.
+	In order to preserve a~feasible partition of nodes after collocating $\{x_0, y_0\}$,
+	\ALG must replace $x_0$ with another isolated node,
+	denoted by $x_1$.
 
-	We continue adding the current special node to a~larger ground set.
-	Precisely, for an isolated node $x_i$ from~$S$, we merge the ground sets of $x_i$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x_i)$.
-	This way, $x_i$ is evicted similarly to $x_0$, and we continue creating such ground sets.
-	We describe the termination condition shortly.
-	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from distinct clusters.)
+	We continue joining the current special node to a~larger ground set.
+	Precisely, for the isolated node $x_i$ currently collocated with $B$,
+	 we issue a request between $x_i$ and a node $y_i$
+	 in the largest ground set $C$
+	 s.t.~$I(C) = I(x_i), C \neq \{x_0,y_0\}$.
+
+\mahmoud{
+	If a feasible partition exists 
+	that collocates the new ground set $\{x_i,\} \cup C $,  
+	then $x_i$ is replaced by some isolated node
+	 $x_{i+1} \not\in \{y_0, x_0, \dots, x_i\}$.
+%	 similarly to $x_0$, and we continue creating such ground sets.
+%	We describe the termination condition shortly.
+	Otherwise,
+	the current partition is not feasible,
+	 we terminate the process and we let $x^* := x_i, y^*:=y_i$. 
+	 At this point,
+	 there are at most $\ell$ isolated nodes left.
+	 Assume for contradiction that this is not the case,
+	 i.e., there are at least $\ell+1$ isolated nodes left.
+	 Then there must be two isolated nodes $u$ and $v$ with the same cluster of origin,
+	 i.e., $I(\{u\}) = I(\{v\})$.
+	 Consider the partition $P$,
+	  obtained from the initial partition after swapping $x_0$ and $y_0$
+	 with $u$ and $v$ (respectively).
+	 In this partition,
+	 the ground set $\{x_0,y_0\}$ is collocated in the cluster $I(\{u,v\})$.
+	 Note that after the first request $\{x_0,y_0\}$,
+	   we issue requests only between nodes that have the same cluster of origin and
+	   all these nodes are collocated in $P$.
+	 Therefore $P$  has all ground sets constructed so far collocated, i.e.,
+	 it is a feasible partition, which contradicts our assumption.
+}
+
+
+
 
 	We claim that expanding ground sets in this way can continue as long as at least $\ell$ isolated nodes exist.
 	Fix the partition just before the creation of a~ground set with $x_i$ for some~$i$.
-	We show that if at least $\ell$ isolated nodes exist (including $x_i$), then there exists a~perfect partition of ground sets after expanding a~ground set with $x_i$.
-	To show this claim, we consider a~partition, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$).
+	We show that if at least $\ell$ isolated nodes exist (including $x_i$), then there exists a~perfect partition of ground sets after joining $x_i$ to a~ground.
+	To show this claim, we consider a~partition, where the largest ground set of each cluster originates from it (excluding the ground set $\{x_0, y_0\}$). \mahmoud{this sentence doesn't make sense.}
 	In this partition, each cluster contains:  at most one ground set larger than $1$, possibly some isolated nodes, and possibly the ground set $\{x_0, y_0\}$.
 	If $I(x_i)$ contains an isolated node, then we simply obtain a~perfect partition by swapping it with $x_i$.
 	In the following, we assume that no isolated nodes exist on $I(x_i)$.
