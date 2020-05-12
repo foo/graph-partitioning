@@ -976,7 +976,7 @@ $.
 	it must pay $\alpha$ for collocating the other pair, in this case $\{u,w\}$,
 	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$. 
 	Therefore in any case,
-	$\OPT(R_t) \geq  \min{\{ \lambda,\alpha \}}$.
+	$\OPT(R_t) \geq  \min{\{ \lambda,\alpha \}} = \alpha$.
 	
 	It remains to bound the cost  incurred by \OPT due to requests to $\{u,v\}$ that do not lead to its collocation until the end of the sequence at $t=m$.
 	We bound the cost analogously to the case where \RM collocates $\{u,v\}$.
@@ -1023,7 +1023,6 @@ $.
 	) $.
 	Then,
 	the total cost to \OPT is
-	
 	\begin{align*} 	%\label{eq:costOPT}
 		\OPT (\sigma)
 		&=
@@ -1031,13 +1030,13 @@ $.
 		\Big(
 		\sum_{ t \in T} \OPT (R_t) 
 		+ \sum_{\{u,v\}}\OPT (R^*_{\{u,v\}})
-		\Big)	\\
-		&\geq
-		\Big(
-		\sum_{ t \in T} \min{ \{ \lambda, \alpha \}}  +
-		\sum_{\{u,v\}} \min{ \{C^{m}_{\{u,v\}} , \alpha \} } 
-		\Big)		
-		=
+		\Big)	
+		\geq
+%		\Big(
+%		\sum_{ t \in T} \min{ \{ \lambda, \alpha \}}  +
+%		\sum_{\{u,v\}} \min{ \{C^{m}_{\{u,v\}} , \alpha \} } 
+%		\Big)		
+%		=
 		\frac{1}{2}		
 		\Big(
 		\sum_{ t \in T} \alpha  
@@ -1059,10 +1058,6 @@ $
 	\Big) 	\leq 6.
 $
 \end{proof}
-
-\maciek{OPT's font differ from other proofs. We don't want italic OPT in mathenv}
-
-\maciek{I really think that minimums should be expanded earlier than in the competitive ratio. The ratio should be bounded easily, and if you wish, you can emphasize the choice in the paragraph, or dedicate entire line to the cost expression. }
 
 \noindent
 \textbf{Approximation for offline rematching.}
