@@ -380,10 +380,6 @@ Once we construct a ground set, it lasts until the end of the algorithm's execut
 We say that a ground set is a \emph{singleton} if it contains exactly one node.
 We say that the node that belongs to a singleton ground set is \emph{isolated}.
 
-The ground sets constructed in this lower bound can be perfectly partitioned into the clusters (i.e., with nodes of each ground set collocated).
-This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost~$0$), thus its cost is bounded.
-If the algorithm splits any pair of nodes of a ground set, the adversary issues requests to any pair of split nodes.
-These two observations imply that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
 
 First, we construct a ground set of size $k-1$ on an arbitrarily chosen cluster.
 In any partition, there must exist an isolated node collocated with the ground set of size $k-1$.
@@ -466,6 +462,16 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 \end{proof}
 
 
+\noindent
+\textbf{Lower bound for the general problem.}
+For a lower bound $\Omega(k\cdot \ell)$ for the general partitioning problem, the adversary continues to issue requests to split nodes of a ground set until the algorithm collocates them.
+The ground sets constructed in our lower bound can be perfectly partitioned into the clusters.
+This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost~$0$), thus its cost is bounded.
+If the algorithm splits any pair of nodes of a ground set, the adversary issues requests to any pair of split nodes.
+These two observations imply that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
+The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
+
+\medskip
 
 \noindent
 \textbf{Resource augmentation.}
