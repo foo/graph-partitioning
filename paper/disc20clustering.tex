@@ -381,7 +381,7 @@ We say that a ground set is a \emph{singleton} if it contains exactly one node.
 We say that the node that belongs to a singleton ground set is \emph{isolated}.
 
 
-First, we construct a ground set of size $k-1$ on an arbitrarily chosen cluster.
+We start by constructing a ground set of size $k-1$ on an arbitrarily chosen cluster.
 In any partition, there must exist an isolated node collocated with the ground set of size $k-1$, and we call it \emph{special}.
 We issue requests between the current special node, and some node that was initially collocated with it.
 Repeating such requests, almost all the nodes must visit the cluster $S$.
@@ -407,7 +407,7 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	Let $I(C)$ denote the cluster where nodes of the ground set $C$ are located in the initial partition.
 	If $C$ contains nodes that originate from different clusters, $I(C)$ is undefined.
 	Throughout the construction, we maintain ground sets for each node.
-	Initially, all nodes are isolated (i.e., in ground sets of size $1$).
+	Initially, all nodes are isolated (i.e., in singleton ground sets).
 	First, we create a ground set $B$ of $k-1$ nodes on an arbitrarily chosen cluster (the nodes  are already collocated).
 	%We never dismiss any constructed ground set.
 	Each cluster hosts exactly $k$ nodes, and in any partition, a single isolated node resides in $S$.
@@ -420,7 +420,7 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	where $x_0$ is the current special node and $y_0$ is an arbitrary node that does not reside in $S$.
 	\ALG has them split, and the adversary issues external requests until \ALG collocates them.
 	There is no space to accommodate $\{x_0, y_0\}$ in the cluster of $x_0$ (as $B$'s size is $k-1$), hence \ALG must collocate $\{x_0, y_0\}$ in another cluster.
-	To preserve a feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
+	To preserve a~feasible partition of nodes into clusters after collocating $\{x_0, y_0\}$,
 	\ALG must replace $x_0$ with another single node that we call $x_1$.
 
 	We continue adding the current special node to a larger ground set.
@@ -465,11 +465,11 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 \noindent
 \textbf{Lower bound for the general problem.}
 For a lower bound $\Omega(k\cdot \ell)$ for the general partitioning problem, the adversary continues to issue requests to split nodes of a ground set until the algorithm collocates them.
-The ground sets constructed in our lower bound can be perfectly partitioned into the clusters.
-This way, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost~$0$), thus its cost is bounded.
-If the algorithm splits any pair of nodes of a ground set, the adversary issues requests to any pair of split nodes.
-These two observations imply that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
-The construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
+Note that the ground sets constructed in our lower bound can be perfectly partitioned into the clusters.
+Hence, the optimal algorithm moves to a perfect partition at the beginning (where requests incur the cost~$0$), and its cost is bounded.
+This means that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
+We reveal the next ground set only after the collocation, hence we can repeat the analysis of the algorithm for the learing problem.
+Finally, we note that the construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
 
 \medskip
 
