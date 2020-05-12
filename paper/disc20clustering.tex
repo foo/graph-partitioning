@@ -66,12 +66,11 @@
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&&
  
  \newcommand{\OPT}{\textsc{OPT}\xspace}
-  \newcommand{\OPTM}{\mathit{OPT}}
  \newcommand{\ALG}{\textsc{ALG}\xspace}
  \newcommand{\PPL}{\textsc{PPL}\xspace}
  \newcommand{\OBRP}{BRP\xspace}
  \newcommand{\PPOBRP}{PP-BRP}
- \newcommand{\dist}{\mathit{dist}}
+ \newcommand{\dist}{\textsc{dist}}
  \newcommand{\TAlg}{{\ensuremath{\textsf{ALG}_{3}}}\xspace}
   \newcommand{\RM}{\textsc{RM}\xspace} % rematching alg
  
@@ -900,7 +899,7 @@ $\sigma:=\{\sigma_1,\dots, \sigma_m\}$.
 	We denote the set of all requests to a~pair $\set{x,y}$ that arrive
 	during $[t_1,t_2]$ by $\sigma_{\set{x,y}}[t_1,t_2]$,
 	and its overall cost to \OPT by
-	$\mathit{OPT} (\sigma_{\{u,v\}}[t_1,t_2])$.
+	$\OPT (\sigma_{\{u,v\}}[t_1,t_2])$.
 	We may use $\sigma_{\set{x,y}}$ whenever
 	 the interval $[t_1,t_2]$ is clear from the context.
 	%
@@ -939,7 +938,7 @@ $\sigma:=\{\sigma_1,\dots, \sigma_m\}$.
 	which means \RM pays $C^{m}_{ \{u,v\} }$
 	for  requests in $\sigma_{\set{u,v}}(t',m]$.
     Then the overall cost to \RM is
-$	\mathit{RM} (\sigma)
+$	\RM (\sigma)
 =
 \sum_{ t \in T}(\lambda + 2\alpha) +
 \sum_{\{u,v\}} C^{m}_{\{u,v\}}	
@@ -953,7 +952,7 @@ $.
 	or $\alpha$ for collocating the pair and
 	serving (some of) the requests with  cost zero.
 	Therefore in this case,
-	$\OPTM (\sigma_{\{u,v\}}(0,t]) \geq  \min{\{ \lambda,\alpha \}}$.
+	$\OPT(\sigma_{\{u,v\}}(0,t]) \geq  \min{\{ \lambda,\alpha \}}$.
 	%
 	Otherwise,
 	it is not the first collocation and
@@ -962,8 +961,8 @@ $.
 	$R_t := \sigma_{\{u,w\}}(t'',t'] \cup \sigma_{\{u,v\}}(t',t] $.
 	We define $R_{t'}$ for the collocation at $t'$  analogously.
 	Then,
-	$\OPTM(R_t) = \mathit{OPT} (\sigma_{\{u,w\}}) 
-	+ \OPTM(\sigma_{\{u,v\}}) $.
+	$\OPT(R_t) =\OPT (\sigma_{\{u,w\}}) 
+	+ \OPT(\sigma_{\{u,v\}}) $.
 	If \OPT has both pairs separated during their respective intervals,
 	then obviously it pays $2\lambda$ during those intervals.
 	Note that \OPT cannot have both pairs collocated at the same time.
@@ -977,7 +976,7 @@ $.
 	it must pay $\alpha$ for collocating the other pair, in this case $\{u,w\}$,
 	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$. 
 	Therefore in any case,
-	$\OPTM(R_t) \geq  \min{\{ \lambda,\alpha \}}$.
+	$\OPT(R_t) \geq  \min{\{ \lambda,\alpha \}}$.
 	
 	It remains to bound the cost  incurred by \OPT due to requests to $\{u,v\}$ that do not lead to its collocation until the end of the sequence at $t=m$.
 	We bound the cost analogously to the case where \RM collocates $\{u,v\}$.
@@ -985,7 +984,7 @@ $.
 	and \RM never collocates it,
 	then $ C^{m}_{ \{u,v\} } =| \sigma_{\{u,v\}}[1,m] |$.
 	\OPT pays
-	$\mathit{OPT} (\sigma_{\{u,v\}}[1,m]) 
+	$\OPT(\sigma_{\{u,v\}}[1,m]) 
 	\geq \min{ \{ \alpha, C^{m}_{ \{u,v\} } \} }$,
 	for collocating this pair or (and) paying for (resp.~some of) requests in $\sigma_{\{u,v\}}[1,m]$.
 	Else,
@@ -1000,7 +999,7 @@ $.
 	\OPT must pay for collocating at least one pair or (and) serving requests 
 	to the other pair remotely.
 	Thus,
-	$\mathit{OPT} (R^*_{\{u,v\}}) 
+	$\OPT (R^*_{\{u,v\}}) 
 	\geq  \min{ \{ C^{m}_{ \{u,v\}}, \alpha \}}$.
 	
 	Next, we sum up all costs incurred by \OPT.
@@ -1009,29 +1008,29 @@ $.
 	$R_{t'} \cap R^*_{\{u,v\}} = \sigma_{\{u,w\}}$
 	(\mahmoud{See figure \ref{fig:doubleCount}}). 
 	This means,
-	$\OPTM ( \sigma_{\{u,w\}})$
+	$\OPT ( \sigma_{\{u,w\}})$
 	is counted at most twice in each of  the expressions
-	$\mathit{OPT} (R_{t'}) + \mathit{OPT} (R_t)$
+	$\OPT (R_{t'}) + \OPT (R_t)$
 	and  
-	$\mathit{OPT} (R_{t'}) + \mathit{OPT} (R^*_{\{u,v\}})$.
+	$\OPT (R_{t'}) + \OPT(R^*_{\{u,v\}})$.
 	Hence,
 	for all collocations performed by \RM,
 	and for final requests at $t=m$,
 	\OPT pays at least 
 	$\frac{1}{2}(
-	\sum_{ t \in T } \mathit{OPT} (R_t) +
-	\sum_{\{u,v\}} \mathit{OPT} (R^*_{\{u,v\}})
+	\sum_{ t \in T } \OPT (R_t) +
+	\sum_{\{u,v\}}\OPT (R^*_{\{u,v\}})
 	) $.
 	Then,
 	the total cost to \OPT is
 	
 	\begin{align*} 	%\label{eq:costOPT}
-		\mathit{OPT} (\sigma)
+		\OPT (\sigma)
 		&=
 		\frac{1}{2}
 		\Big(
-		\sum_{ t \in T} \mathit{OPT} (R_t) 
-		+ \sum_{\{u,v\}}\mathit{OPT} (R^*_{\{u,v\}})
+		\sum_{ t \in T} \OPT (R_t) 
+		+ \sum_{\{u,v\}}\OPT (R^*_{\{u,v\}})
 		\Big)	\\
 		&\geq
 		\Big(
@@ -1047,8 +1046,8 @@ $.
 	\end{align*}
 and
 $
-	\mathit{ALG} (\sigma)	/
-	\mathit{OPT} (\sigma)
+	\RM(\sigma)	/
+	\OPT (\sigma)
 	\leq
 	2\Big(
 	\sum_{ t \in T} 3\alpha +
@@ -1118,8 +1117,6 @@ Furthermore, we proposed an efficient distributed implementation of the algorith
 		\IF{$C_1 \neq C_2$}
 		\STATE {Merge $C_1$ and $C_2$ into one component $C'$ and
 			$\mathcal{C} = (\mathcal{C}\setminus\set{C_1, C_2}) \cup ~\set{C'}$.} \label{line:mergecomponents}
-		%		\IF{$\mathit{cluster}(C_1, P_{t-1}) \neq \mathit{cluster}(C_2, P_{t-1})$
-		%		\COMMENT{i.e.~if not in the same cluster.}}       
 		\IF{$C_1$ and $C_2$ are not collocated}
 		\STATE {Move to a~partition closest to $P_I$ and respecting all components in $\mathcal{C}$.} 
 		%		\COMMENT{move to a~partition closest to $P_I$}
