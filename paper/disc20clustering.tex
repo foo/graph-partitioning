@@ -342,7 +342,7 @@ Table \ref{tab:overview} provides an overview of our contributions compared to p
 \medskip
 \noindent
 \textbf{Algorithmic techniques.} The variant for general $k$ is still unresolved, hence it is vital to summarize algorithmic techniques used in this paper.
-A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations in~phase by a~constant, and show that the optimum offline algorithm must pay for a~significant portion of inter-cluster requests \maciek{how to concisely say that there is also a~migrate possibilty}.
+A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations in~phase by a~constant, and show that the optimum offline algorithm must pay significant cost for inter-cluster requests.
 We bound the cost of the latter by estimating the capabilities of the optimum offline algorithm to \emph{prepare} for an incoming sequence of requests.
 Furthermore, in the analysis of the algorithm from Section~\ref{sec:k2}, we propose a~novel charging scheme for edges that share a~vertex.
 
@@ -514,7 +514,7 @@ a reminiscent of partitioning given integers into sets of equal sum~\cite{intege
 In contrast, our partition is time-varying:  two components are merged into one component once they communicate, and we adjust the partition accordingly.
 
 
-
+\medskip
 
 The algorithm in this section and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from~\cite{repartition-disc}.
 The difference is in the choice of partition after a~component merge.
@@ -628,12 +628,18 @@ Furthermore, in Section~\ref{sec:k2}, we show a~strictly $6$-competitive algorit
 \subsection{Optimal Algorithm for Clusters of Size 3}
 \label{sec:k3}
 
-\maciek{Intro is missing.}
-\maciek{
-	A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations in a~phase by a~constant, and show that the optimum offline algorithm must pay for a~significant portion of inter-cluster requests.
-	We bounded the cost of the latter by estimating the capabilities of the optimum offline algorithm to \emph{prepare} for an incoming sequence of requests.}
 
 
+The proposed algorithm is a modified version of the algorithm DET proposed by Avin et al.~\cite{repartition-disc}, that for $k=3$ is $O(\ell^2)$-competitive.
+In our algorithm, we choose the closest partition after a component merge instead of an arbitrary one.
+This allows to bound the cost of repartition by a constant (Lemma~\ref{lem:1req}).
+
+This modification alone is insufficient to obtain $O(\ell)$-competitive algorithm, and the analysis must be further improved.
+In particular, pairs of nodes that did not reach the collocation threshold $\alpha$ (called external requests) incur the cost $O(\ell^2)$ for the algorithm in each phase.
+The novel part of the analysis lower-bounds the cost of \OPT on external requests, while considering its savings from migrations and possibly different configuration at the beginning of the phase.
+This way, we show that \OPT paid a significant portion of the algorithm's cost on external requests.
+
+\medskip
 
 \noindent
 \textbf{Component-based algorithm.}
@@ -650,7 +656,7 @@ If no such partitioning exists, \TAlg resets all components to singleton compone
 %	\caption{Cluster types used in the analysis of \TAlg.}
 %\end{figure}
 
-In our analysis, we distinguish among three types of clusters: $C_1, C_2, C_3$. In a~cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
+In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C_3$. In a~cluster of type $C_i$, the size of the largest component contained in this cluster is $i$.
 Before bounding the competitive ratio of \TAlg, we introduce the lemma that upper bounds the cost of a~single repartition of \TAlg.
 
 \begin{lemma}
