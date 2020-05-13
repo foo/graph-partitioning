@@ -437,7 +437,7 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 %	denoted by $x_1$.
 
 	We proceed by joining the current pivot node to a~larger ground set in a similar way,
-	as long as a feasible partition exists afterwards.
+	as long as a feasible partition exists afterward.
 	Consider the isolated node $x_i$ currently collocated with $B$.
 	 We issue a request between $x_i$ and some node $y_i \in C_i$,
 	 where $C_i$ is the largest ground set
@@ -468,20 +468,19 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	 Therefore all ground sets constructed so far are collocated in  $P$,
 	 i.e., $P$ is a feasible partition,
 	 which contradicts our assumption.
-	 Hence, there are at most $\ell$ isolated nodes
-	 at the point of termination.
+	 Hence, there are at most $\ell$ isolated nodes after the termination.
 	
 	
 	The number of isolated nodes decrease after each step.
-	Consider the last step, $i^*$, when exactly $\ell+1$ isolated nodes exist before  $x_{i^*}$ joins to another ground set.
-	I.e., there are less than $\ell+1$ isolated nodes after the step $i^*$.
-	Then, at the end of step $i^*-1$,
+	Consider the last step, $j$, when exactly $\ell+1$ isolated nodes exist before  $x_{j}$ joins to another ground set.
+	That is, there are less than $\ell+1$ isolated nodes after the step $j$.
+	Then, at the end of step $j-1$,
 	there exist two isolated nodes $x^*$ and $y^*$
 	with the same cluster of origin, i.e., $I(\{x^*\})=I(\{y^*\})$.
 %
-    In what follows,
+   Next,
     we bound costs incurred by \OPT and \ALG over the  sequence of requests
-    $\sigma := \{ \{x_0,y_0\}, \dots, \{x_{i^*-1},y_{i^*-1}\}  \}$.
+    $\sigma := \langle \{x_0,y_0\}, \dots, \{x_{j-1},y_{j-1}\}  \rangle$.
 
 	The optimal strategy is to perform two node swaps.
 	Precisely, \OPT collocates $\set{x_0,y_0}$ 
@@ -491,34 +490,40 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	therefore \OPT pays only for the two swaps.
 
 	\ALG performs at least one swap each time a~ground set grows,
-	i.e., each time it joins the isolated node $x_i$ (collocated with $B$), to  the ground set $C_i$ as specified before.
+	i.e., each time it joins the isolated node $x_i$ (collocated with $B$) to  the ground set $C_i$ as specified before.
 %	In other words,
 %	some ground set grows by one node at each of these steps.
 	Consider any ground set $C^*$ after serving $\sigma$.
 	This ground set has grown exactly $|C^*|-1$ times until the end of $\sigma$. 
-	Let $\mathcal{C}^*$ be the set of all ground sets after serving the last request in $\sigma$.
-	Thus, $\mathcal{C}^*$ includes ground sets $B$,
+	Let $\mathcal{S}$ be the set of all ground sets after serving the last request in $\sigma$.
+	Thus, $\mathcal{S}$ includes ground sets $B$,
 	$\{x_0,y_0\}$,
 	and $\ell+1$ singleton ground sets.
-%	(including $x^*$ and possibly $y^*$).	
-	Each time we join the pivot node to the largest ground set of same origin.
-	Hence, every  other ground set in $\mathcal{C}^*$ has grown maximally.
-	There are at most $\ell-1$ such ground sets in addition to the ones 
-	we considered so far,
-	one per cluster except the cluster containing $B$. 
-	Therefore,  $|\mathcal{C}^*| \leq 1 + 1 + (\ell+1)  + (\ell-1) = 2\ell+2$.
-	Note that among all non-singleton ground sets in $\mathcal{C}^*$,
+	Among the remaining ground sets in $\mathcal{S}$,
+	no two ground sets have the same origin.
+	Otherwise,
+   the smaller ground set is either a singleton,
+   which contradicts the bound $\ell+1$ on the number of singletons,
+	or we have joined nodes to it at some step,
+	contradicting our choice of the largest ground set of the same origin.
+	Hence, every  other ground set in
+	$\mathcal{S}$ has grown \emph{maximally} over $\sigma$.
+	There are at most $\ell-1$ maximally grown ground sets,
+	one per cluster,
+	 excluding the cluster containing $B$. 
+	Therefore,  $|\mathcal{S}| \leq 1 + 1 + (\ell+1)  + (\ell-1) = 2\ell+2$.
+	Note that among all non-singleton ground sets in $\mathcal{S}$,
 	 only $B$ does not grow during the process.
 	 Thus,
     the total number of times that 
-	a ground set in $\mathcal{C}^*$  has grown is
+	a ground set in $\mathcal{S}$  has grown is
 	\begin{align*}
-	\sum_{C^* \in \mathcal{C}^* } (|C^*|-1) - (k-1) &= 
-	\sum_{C^* \in \mathcal{C}^* } |C^*| - 
-		\sum_{C^* \in \mathcal{C}^* } 1 - (k-1) \\
+	\sum_{C^* \in \mathcal{S} } (|C^*|-1) - (k-1) &= 
+	\sum_{C^* \in \mathcal{S} } |C^*| - 
+		\sum_{C^* \in \mathcal{S} } 1 - (k-1) \\
 	&\geq  k  \ell - (2\ell+2) - (k-1) =  (k-2)(\ell-1) - 3,
 	\end{align*}
-	which is the least number of swaps performed by \ALG.
+	which bounds the number of swaps performed by \ALG.
 	The competitive ratio is then
 	$\ALG / \OPT \geq ((k-2)(\ell-1) - 3) / 2$.
 	%%
