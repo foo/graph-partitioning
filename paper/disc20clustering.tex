@@ -572,17 +572,23 @@ In order to preserve collocated pairs,
 we employ the concept of components,
 introduced by Avin~et~al.~\cite{repartition-disc}.
 
-%\medskip
-%In our algorithms, 
-A~\emph{component} is a~subset of frequently communicating nodes \maciek{this is not a~good definition. intuitions, maybe}.
+We maintain subsets of frequently communicating nodes as \emph{components}.
+Components 
+Initially,
+each node constitutes a single-node component which we refer to as a \emph{singleton} components, 
+and the contained node is an \emph{isolated} node.
+We define larger components in terms of smaller components.
+Concretely,
+given a (sub)sequence of requests,
+two components $C_1$ and $C_2$
+ \emph{merge} into one component as soon as
+ for some pair of nodes $v_1 \in C_1$ and $v_2 \in C_2$,
+the frequency of requests $\{v_1,v_2\}$ reaches a certain threshold through the sequence.
 We keep all nodes of a~component always collocated in the same cluster,
 i.e., when we  move a~node,
 we move the whole component that contains it.
 A~partition that maintains this invariant is a~\emph{component respecting} partition.
-%We say that a~partition is \emph{component respecting}
-%if the nodes belonging to the same component are always collocated.
-We say that a~component is \emph{singleton} if it contains exactly one node,
-and the node in this component is \emph{isolated}.
+%Intuitively, a component preserves the history of requests between its nodes.
 
 In addition,
 we maintain a~balanced partition of our components as long as such partition exists,
