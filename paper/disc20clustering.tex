@@ -411,19 +411,22 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	let $I(C)$ denote the cluster.
 %	If $C$ contains nodes that originate from different clusters
 %	then $I(C)$ is undefined.
-	Throughout the construction, we maintain ground sets for each node.
-	Initially, all nodes are isolated (i.e., in singleton ground sets).
+%	Throughout the construction, we maintain ground sets for each node.
+	Initially, all nodes are isolated, i.e., each node is in a singleton ground set.
 	First, we choose a cluster arbitrarily and
 	 create a~ground set $B$ of $k-1$ nodes in this cluster.
 	%We never dismiss any constructed ground set.
-	Each cluster hosts exactly $k$ nodes, and in any partition, a~single isolated node must be collocated with $B$.
-	We say that this isolated node that accompanies the ground set $B$ is \emph{special}.
-	We denote the first special node by $x_0$.
+	Each cluster hosts exactly $k$ nodes, and in any feasible partition,
+	 a~single isolated node must be collocated with $B$.
+	At any time,
+	we refer to the isolated node currently collocated with $B$ as the \emph{special} node.
+	Let $x_0$ denote the first special node.
 
 	Then, we join the special node to a~larger ground set to force its eviction.
 	Precisely,
-	we create a~ground set $\{x_0, y_0\}$, 
-	where $x_0$ is the current special node and $y_0$ is an arbitrary isolated node.
+	we create a~ground set $\{x_0, y_0\}$, 	where
+%	 $x_0$ is the current special node and
+	 $y_0$ is an arbitrary isolated node.
 	Since \ALG does not have $\{x_0,y_0\}$ collocated, 
 	we issue an external request between them so that \ALG collocates them.
 	\ALG cannot collocate $\{x_0, y_0\}$ with $B$ (as $B$'s size is $k-1$), hence it collocates them in a different cluster.
@@ -431,7 +434,7 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	\ALG must replace $x_0$ with another isolated node.
 %	denoted by $x_1$.
 
-	We proceed by joining the current special node to a~larger ground set,
+	We proceed by joining the current special node to a~larger ground set in a similar way,
 	as long as a feasible partition exists afterwards.
 	Consider the isolated node $x_i$ currently collocated with $B$.
 	 We issue a request between $x_i$ and some node $y_i \in C_i$,
@@ -442,8 +445,8 @@ Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 	Any such feasible partition replaces $x_i$ with some isolated node $x_{i+1}$,
 	as the new ground set $\{x_i\} \cup C_i $  may not be ever split.
 	Otherwise,
-	if no such feasible partition exists,
-	 then we terminate the process and
+	no such feasible partition exists,
+	we terminate the process and
 	 we let $x^* := x_i, y^*:=y_i$. 
 	 
 	 Once the process terminates,
