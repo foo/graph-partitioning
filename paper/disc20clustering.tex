@@ -967,21 +967,16 @@ if and only if  \OPT incurs that cost after the latest separation of the pair by
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Fix an input sequence of requests
 $\sigma:=\{\sigma_1,\dots, \sigma_m\}$.
-	Assume on request $\sigma_{t}=\set{u,v}$, 
-	i.e., at (time) $t$,
-	\RM collocates the pair $\set{u,v}$.
-	This means,
-	the value of $C_{\set{u,v}}$ at $t$,
-	denoted by $C^t_{\set{u,v}}$, 
-	reaches $\lambda$ immediately before \RM resets the counter,
-	i.e.,
-	$ C^t_{\set{u,v}} = \lambda$.
-	We denote the set of all requests to a~pair $\set{x,y}$ that arrive
-	during $[t_1,t_2]$ by $\sigma_{\set{x,y}}[t_1,t_2]$,
-	and its overall cost to \OPT by
-	$\OPT (\sigma_{\{u,v\}}[t_1,t_2])$.
+	Assume that \RM collocates a pair $\set{u,v}$ at time $t$.
+	The value of $C_{\set{u,v}}$ at $t$,
+	denoted $C^t_{\set{u,v}}$, 
+	reaches $\lambda$ immediately before \RM resets the counter.
+	For any interval $[t_1,t_2]$, by $\sigma_{\set{x,y}}[t_1,t_2]$ we denote the set of all requests to a~pair $\set{x,y}$ that arrive
+	during $[t_1,t_2]$.
+	%and its overall cost to \OPT by
+	%$\OPT (\sigma_{\{u,v\}}[t_1,t_2])$.
 	We may use $\sigma_{\set{x,y}}$ whenever
-	 the interval $[t_1,t_2]$ is clear from the context.
+	 the interval $[t_1,t_2]$ is clear from the context \maciek{As a reader I would be horrified seeing this sentence. Better to fix it in the paragraph}.
 	%
 	%Else, this is not the first time and
 	%Alg collocates $\{u,v\}$ also some time prior to $t$.
