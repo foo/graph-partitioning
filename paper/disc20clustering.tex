@@ -901,10 +901,10 @@ the problem is an online variant of the maximal matching problem where
 %That is, 
 a matched pair can separate in order to ``rematch'' with two other nodes.
 Rematching is necessary for  maximizing intra-cluster communications,
-which is dual to minimizing inter-cluster communications.
+which is dual \maciek{dual has specific meaning. Is it correct here? I think you meant "equivalent" here} to minimizing inter-cluster communications.
 This is known as the  \emph{online rematching} 
 problem and a~non-strict 7-competitive algorithm is already given by~\cite{repartition-disc},
-in which the ratio comes with an additive factor in $O(\alpha\ell^2)$.
+in which the ratio comes with an additive factor $O(\alpha\ell^2)$.
 We do not only improve upon their competitive ratio,
 but also show that our ratio holds \emph{strictly}
 (i.e., with no additive factor).
