@@ -420,25 +420,17 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 %	 $x_0$ is the current pivot node and
 	 $y_0$ is an arbitrary isolated node.
 	Since \ALG does not have $\{x_0,y_0\}$ collocated, 
-	we issue an external request between them so that \ALG collocates them.
-	\ALG cannot collocate $\{x_0, y_0\}$ with $B$ (as $B$'s size is $k-1$), hence it collocates them in a different cluster.
+	the adversary issues external requests to this pair until \ALG collocates it.
+	\ALG cannot collocate $\{x_0, y_0\}$ with $B$ (as $B$'s size is $k-1$), hence it collocates them in a~different cluster.
 	In order to preserve a~feasible partition of nodes after collocating $\{x_0, y_0\}$,
-	\ALG must replace $x_0$ with another isolated node.
+	\ALG must replace $x_0$ with another isolated node that becomes the new pivot.
 %	denoted by $x_1$.
 
-	We proceed by joining the current pivot node to a~larger ground set in a similar way,
-	as long as a feasible partition exists afterward.
-	Consider the isolated node $x_i$ currently collocated with $B$.
-	 We issue a request between $x_i$ and some node $y_i \in C_i$,
-	 where $C_i$ is the largest ground set
-	 s.t.~$I(C_i) = I(x_i), C_i \neq \{x_0,y_0\}$,
-	 only if  a feasible partition exists
-	 that collocates all nodes in $\{x_i\} \cup C_i $.
-	Any such feasible partition replaces $x_i$ with some isolated node $x_{i+1}$,
-	as the new ground set $\{x_i\} \cup C_i $  may not be ever split.
-	Otherwise,
-	no such feasible partition exists and
-	we terminate the process.
+	We proceed by joining the current pivot node to a~larger ground set in a similar way, as long as a feasible partition of ground sets exists after the join.
+	In a single step, we merge the ground sets of the current pivot $x_i$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x_i)$.
+	This forces \ALG to collocate $\{x_i\} \cup C_i $ and to replace $x_i$ with some isolated node $x_{i+1}$.
+	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from distinct clusters.)
+
 	 
 	 Once the process terminates,
 	 there are at most $\ell$ isolated nodes left. 
@@ -461,7 +453,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	 Hence, there are at most $\ell$ isolated nodes after the termination.
 	
 	
-	The number of isolated nodes decrease after each step.
+	The number of isolated nodes decreases after each step.
 	Consider the last step, $j$, when exactly $\ell+1$ isolated nodes exist before  $x_{j}$ joins to another ground set.
 	That is, there are less than $\ell+1$ isolated nodes after the step $j$.
 	Then, at the end of step $j-1$,
