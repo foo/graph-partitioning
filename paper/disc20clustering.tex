@@ -731,11 +731,11 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 
 \begin{lemma}
 	\label{lem:1req}
-	In a~single repartitioning of nodes (after a~merge of components), \TAlg exchanges at most two pairs of nodes.
+	In a~single repartition of nodes (after a~merge of components), \TAlg exchanges at most two pairs of nodes.
 \end{lemma}
 
 \begin{proof}
-	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no repartitioning.
+	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no migrations.
 	It suffices to show that the merged component has size at least $4$ to conclude that \TAlg incurs no cost.
 	
 	%We distinguish between three types of clusters: $C_1, C_2, C_3$,
@@ -748,8 +748,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	The request triggered the repartition, hence it was external and $U\neq V$.
 	We consider cases based on the types of clusters $U$ and $V$.
 	
-	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the repartitioning is local within $U$ and $V$.
-	In this case, a~local repartition is possible (within $U$ and $V$), for a~cost of at most $2$ swaps.
+	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the repartitioning is local within $U$ and $V$, for the~cost of at most $2$ swaps.
 	If either $U$ or $V$ is of type $C_3$, a~component of size $3$ participates in a~merge, and we have a~component of size at least $4$, and \TAlg ends the phase with no repartitioning.
 	
 	
