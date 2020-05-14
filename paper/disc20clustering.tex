@@ -918,7 +918,7 @@ thanks to the charging scheme we devise here \maciek{Way too strong. At best, an
 	\caption{
 		\OPT  collocates 5 pairs, paying one migration per pair.
 	Dashed lines represent requests.
-	An arrow, e.g.~from $b_1$ to $a_1$ means  that $b_1$ replaces $a_1$. }
+	An arrow, e.g.~from $b_1$ to $a_1$ means  that $b_1$ replaces $a_1$.\maciek{Maybe: "An arrow from $a$ to $b$ means that $b$ replaces $a$.". Or "$b$ migrates in place of $a$."} }
 	\label{fig:cyclic}
 \end{figure}
 
@@ -942,11 +942,9 @@ We charge both \OPT and \RM whenever \RM collocates a~pair.%(i.e., on a~collocat
 which  costs $2\alpha$,
 while \OPT may save some costs by collocating multiple pairs at once.
 % before they inflict too much communication cost.
- Therefore it pays the price of only one migration per pair  (see Figure \ref{fig:cyclic}).
-Hence,
-whenever \OPT collocates a~pair,
-we charge it only the cost of moving a~single node to the cluster of the other,
-i.e., $\alpha$ (in contrast to $2\alpha$ on \RM).
+ Thus it pays the price of only one migration per pair  (see Figure \ref{fig:cyclic}).
+Whenever \OPT collocates a~pair,
+we charge it only the cost $\alpha$ of moving a~single node to the other cluster (in contrast to the cost $2\alpha$ incurred by \RM).
 
 Consider two  pairs that share the same node, 
 i.e.~\emph{intersecting pairs},
