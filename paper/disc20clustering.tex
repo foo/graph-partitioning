@@ -392,14 +392,6 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.3\textwidth]{figs/substitute}
-	\caption{todo.}
-	\label{fig:lb}
-\end{figure}
-
-
 \begin{theorem}
 	\label{th:lowerbound}
 	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least
@@ -782,14 +774,11 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 
 
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.3\textwidth]{figs/substitute}
-	\caption{an unsaturated edge that is inside a~component. If there is a~space next to it, maybe cluster types should fit next to it? Not sure.}
-\end{figure}
-
-
-
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.3\textwidth]{figs/substitute}
+%	\caption{an unsaturated edge that is inside a~component. If there is a~space next to it, maybe cluster types should fit next to it? Not sure.}
+%\end{figure}
 
 \begin{proof}[Proof of Theorem \ref{thm:k=3}]
 	Fix a~completed phase, and consider the state of \TAlg's counters at the end of it (before the reset).
@@ -924,8 +913,18 @@ Our algorithm is slightly simpler than the one in~\cite{repartition-disc},
 while our analysis is significantly  simpler and more concise,
 thanks to the charging scheme we devise here.
 
-\medskip
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{figs/cyclic}
+	\caption{
+		\OPT  collocates 5 pairs, paying one migration per pair.
+	Dashed lines represent requests.
+	An arrow, e.g.~from $b_1$ to $a_1$ means  that $b_1$ replaces $a_1$. }
+	\label{fig:cyclic}
+\end{figure}
 
+
+%\medskip
 \noindent
 \textbf{Algorithm ReMatch.} 
 The algorithm ReMatch (\RM) maintains a~counter $C_{\set{x,y}}$ for each pair of nodes $\set{x,y}$ and increments it on every remote request between $x$ and $y$.
@@ -944,7 +943,7 @@ We charge both \OPT and \RM whenever \RM collocates a~pair.%(i.e., on a~collocat
 which  costs $2\alpha$,
 while \OPT may save some costs by collocating multiple pairs at once.
 % before they inflict too much communication cost.
- Therefore it pays the price of only one migration per pair  (\mahmoud{see Figure \ref{fig:TBD}}).
+ Therefore it pays the price of only one migration per pair  (see Figure \ref{fig:cyclic}).
 Hence,
 whenever \OPT collocates a~pair,
 we charge it only the cost of moving a~single node to the cluster of the other,
@@ -1089,8 +1088,8 @@ $.
 	Next, we sum up all costs incurred by \OPT.
 	By definitions of $R_t$ and $R^*_{\{u,v\}}$, we have either
 	$R_{t'} \cap R_t = \sigma_{\{u,w\}}$ or
-	$R_{t'} \cap R^*_{\{u,v\}} = \sigma_{\{u,w\}}$
-	(\mahmoud{See figure \ref{fig:doubleCount}}). 
+	$R_{t'} \cap R^*_{\{u,v\}} = \sigma_{\{u,w\}}$.
+%	(\mahmoud{See figure \ref{fig:doubleCount}}). 
 	This means,
 	$\OPT ( \sigma_{\{u,w\}})$
 	is counted at most twice in each of  the expressions
