@@ -371,8 +371,10 @@ Across this paper, we often refer to groups of communicating nodes.
 We use this concept slightly differently in the lower bound and the upper bounds.
 In our algorithms, we group nodes with a~communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
 
+
+
 A~\emph{ground set} is a group of nodes that repeatedly communicate if they are not collocated.
-If an algorithm splits any pair of nodes from a ground set, then the adversary continues to produce requests to this pair until the algorithm collocates it.
+If an algorithm splits any pair of nodes from a ground set, then the adversary continues to produce requests to this pair until the algorithm collocates it \maciek{learning model: does not need to continue issuing requests.}
 Any competitive algorithm must maintain a~perfect partition of ground sets into clusters.
 We emphasize that ground sets are revealed only upon their nodes are split.
 The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
