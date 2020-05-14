@@ -394,8 +394,8 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for the learning variant of Dynamic Balanced Graph Partitioning is at least
-	 $(k-2)(\ell-1)/2 - 3/2$ for any $k\geq 3$ and $\ell \geq 2$.
+	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least
+	 $(k-2)(\ell-1)/2 - 2$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
 \begin{proof}
@@ -428,74 +428,86 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	\ALG must replace $x_0$ with another isolated node that becomes the new pivot.
 %	denoted by $x_1$.
 
-	We proceed by joining the current pivot node to a~larger ground set in a similar way, as long as a feasible partition of ground sets exists after the join.
-	In a single step, we merge the ground sets of the current pivot $x_i$ and the largest ground set $C$ s.t. $C \neq \{x_0,y_0\}$ and $I(C) = I(x_i)$.
-	This forces \ALG to collocate $\{x_i\} \cup C_i $ and to replace $x_i$ with some isolated node $x_{i+1}$.
-	(Note that these ground sets contain nodes that originate from the same cluster, whereas the nodes $x_0$ and $y_0$ originate from distinct clusters.)
-
-	 
-	 Once the process terminates,
-	 there are at most $\ell$ isolated nodes left. 
-	 Assume for contradiction that this is not the case,
-	 i.e., there are at least $\ell+1$ isolated nodes left.
-	 Then there must be two isolated nodes $u$ and $v$,
+	We proceed by joining the current pivot node to a~larger ground set in  similar steps.
+	Consider the step $i$,
+	when the isolated node $x_i$ is collocated with $B$.
+	 We issue a request between $x_i$ and some node $y_i \in C_i$,
+	 where $C_i$ is the largest ground set
+	 s.t.~$I(C_i) = I(x_i), C_i \neq \{x_0,y_0\}$.
+%	 only if  a feasible partition exists
+%	 that collocates all nodes in $\{x_i\} \cup C_i $.
+	Any feasible partition replaces $x_i$ with some isolated node $x_{i+1}$,
+	as the new ground set $\{x_i\} \cup C_i $  may not be ever split.
+%	Otherwise,
+%	no such feasible partition exists and
+%	we terminate the process.
+	We terminate the process once the number of remaining isolated nodes 
+	is less than $\ell+3$.
+	At each step $i$,
+	the number of isolated nodes decrease by one or two.
+	Then, once the process terminates,
+	there are at least $\ell+1$ isolated nodes left.
+	
+	  Next, we argue that a partition exists when the process terminates.
+	 This implies that a feasible partition exists after any earlier step as well.
+%	 Assume for contradiction that the partition is not feasible.	 
+	 Since there are at least $\ell+1$ isolated nodes left,
+	 there must be two isolated nodes $x^*$ and $y^*$,
 	  with the same cluster of origin,
-	 i.e., $I(\{u\}) = I(\{v\})$.
-	 Consider the partition $P$
+	 i.e., $I(\{x^*\}) = I(\{y^*\})$.
+	 Consider the partition $P^*$
 	  obtained from the initial partition after swapping $x_0$ and $y_0$
 	 with $u$ and $v$ (respectively).
 	 In this partition,
-	 the ground set $\{x_0,y_0\}$ is collocated in the cluster $I(\{u,v\})$.
+	 the ground set $\{x_0,y_0\}$ is collocated in the cluster $I(\{x^*,y^*\})$.
 	 Note that after the first request $\{x_0,y_0\}$,
 	   we issue requests only between nodes that have the same cluster of origin and
-	   all these nodes are collocated in $P$.
-	 Therefore all ground sets constructed so far are collocated in  $P$,
-	 i.e., $P$ is a feasible partition,
-	 which contradicts our assumption.
-	 Hence, there are at most $\ell$ isolated nodes after the termination.
+	   all these nodes are collocated in $P^*$.
+	 Therefore all ground sets constructed so far are collocated in  $P^*$,
+	 i.e., $P^*$ is a feasible partition.
+%	 Hence, there are at most $\ell$ isolated nodes after the termination.
 	
-	
-	The number of isolated nodes decreases after each step.
-	Consider the last step, $j$, when exactly $\ell+1$ isolated nodes exist before  $x_{j}$ joins to another ground set.
-	That is, there are less than $\ell+1$ isolated nodes after the step $j$.
-	Then, at the end of step $j-1$,
-	there exist two isolated nodes $x^*$ and $y^*$
-	with the same cluster of origin, i.e., $I(\{x^*\})=I(\{y^*\})$.
+%	The number of isolated nodes decrease after each step.
+%	Consider the last step, $j$, when  $\ell+1$ isolated nodes exist before  $x_{j}$ joins to another ground set.
+%	That is, there are less than $\ell+1$ isolated nodes after the step $j$.
+%	Then, at the end of step $j-1$,
+%	there exist two isolated nodes $x^*$ and $y^*$
+%	with the same cluster of origin, i.e., $I(\{x^*\})=I(\{y^*\})$.
 %
-   Next,
-    we bound costs incurred by \OPT and \ALG over the  sequence of requests
-    $\sigma := \langle \{x_0,y_0\}, \dots, \{x_{j-1},y_{j-1}\}  \rangle$.
+%   Next,
+%    we bound costs incurred by \OPT and \ALG over the  sequence of requests
+%    $\sigma := \langle \{x_0,y_0\}, \dots, \{x_{j-1},y_{j-1}\}  \rangle$.
 
-	The optimal strategy is to perform two node swaps.
+	Consider  nodes $x^*$ and $y^*$ and the partition $P^*$ obtained previously.
+	\OPT moves to $P^*$ by performing only two node swaps.
 	Precisely, \OPT collocates $\set{x_0,y_0}$ 
 	by swapping them with $x^*$ and $y^*$.
-	In this partition, no ground set is split and
-%	there is no request to $x^*$ or $y^*$ in $\sigma$.
-	therefore \OPT pays only for the two swaps.
+	No ground set is split in $P^*$ and
+	 \OPT pays only for the two swaps.
 
 	\ALG performs at least one swap each time a~ground set grows,
-	i.e., each time it joins the isolated node $x_i$ (collocated with $B$) to  the ground set $C_i$ as specified before.
+	i.e., at each step $i$.
 %	In other words,
 %	some ground set grows by one node at each of these steps.
-	Consider any ground set $C^*$ after serving $\sigma$.
-	This ground set has grown exactly $|C^*|-1$ times until the end of $\sigma$. 
-	Let $\mathcal{S}$ be the set of all ground sets after serving the last request in $\sigma$.
+	Consider any ground set $C^* \neq B$ after the termination.
+	This ground set has grown exactly $|C^*|-1$ times until the the termination. 
+	Let $\mathcal{S}$ be the set of all ground sets after the process terminates.
 	Thus, $\mathcal{S}$ includes ground sets $B$,
 	$\{x_0,y_0\}$,
-	and $\ell+1$ singleton ground sets.
+	and (up to) $\ell+2$ singleton ground sets.
 	Among the remaining ground sets in $\mathcal{S}$,
 	no two ground sets have the same origin.
 	Otherwise,
    the smaller ground set is either a singleton,
-   which contradicts the bound $\ell+1$ on the number of singletons,
+   which contradicts the bound $\ell+2$ on the number of singletons,
 	or we have joined nodes to it at some step,
-	contradicting our choice of the largest ground set of the same origin.
+	contradicting our choice of the largest $C_i$ at step $i$.
 	Hence, every  other ground set in
-	$\mathcal{S}$ has grown \emph{maximally} over $\sigma$.
+	$\mathcal{S}$ has grown \emph{maximally}.
 	There are at most $\ell-1$ maximally grown ground sets,
 	one per cluster,
 	 excluding the cluster containing $B$. 
-	Therefore,  $|\mathcal{S}| \leq 1 + 1 + (\ell+1)  + (\ell-1) = 2\ell+2$.
+	Therefore,  $|\mathcal{S}| \leq 1 + 1 + (\ell+2)  + (\ell-1) = 2\ell+3$.
 	Note that among all non-singleton ground sets in $\mathcal{S}$,
 	 only $B$ does not grow during the process.
 	 Thus,
@@ -505,11 +517,11 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	\sum_{C^* \in \mathcal{S} } (|C^*|-1) - (k-1) &= 
 	\sum_{C^* \in \mathcal{S} } |C^*| - 
 		\sum_{C^* \in \mathcal{S} } 1 - (k-1) \\
-	&\geq  k  \ell - (2\ell+2) - (k-1) =  (k-2)(\ell-1) - 3,
+	&\geq  k  \ell - (2\ell+3) - (k-1) =  (k-2)(\ell-1) - 4,
 	\end{align*}
 	which bounds the number of swaps performed by \ALG.
 	The competitive ratio is then
-	$\ALG / \OPT \geq ((k-2)(\ell-1) - 3) / 2$.
+	$\ALG / \OPT \geq ((k-2)(\ell-1) - 4) / 2$.
 	%%
 	\begin{comment}
 	\ALG performs at least one swap  every time   a~ground set is constructed.
