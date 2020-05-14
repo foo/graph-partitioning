@@ -1049,7 +1049,7 @@ $.
 	 Then it pays zero while serving $\sigma_{\{u,v\}}$.
 	Hence,
 	it must pay $\alpha$ for collocating the other pair, in this case $\{u,w\}$,
-	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$ \maciek{Rewrite without these resp.s}. 
+	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$ \maciek{Rewrite without these resp.s. Also, see the comment on "or (and)" below}. 
 	Therefore in any case,
 	$\OPT(R_t) \geq  \min{\{ \lambda,\alpha \}} = \alpha$.
 	
@@ -1071,7 +1071,7 @@ $.
 	We define times $t'' < t' < m$ similarly to the former case \maciek{doing thing "similarly" is a trap zone in proofs, and we should avoid even suggesting it. I think that here you mean defining exactly the same.}.
 	Let $R^*_{\{u,v\}} := \sigma_{\{u,w\}} (t'',t'] \cup \sigma_{\{u,v\}} (t',m]$.
 	Then,
-	\OPT must pay for collocating at least one pair or (and) serving requests 
+	\OPT must pay for collocating at least one pair or (and) \maciek{"or (and)" usually should be "and possibly". Does this make sense here?} serving requests 
 	to the other pair remotely.
 	Thus,
 	$\OPT (R^*_{\{u,v\}}) 
