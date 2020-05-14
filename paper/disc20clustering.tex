@@ -793,15 +793,15 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	We bound the cost of each repartition after a~merge by Lemma~\ref{lem:1req}, obtaining $\TAlg(M) \leq 8\alpha\cdot\ell$.
 	%Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
 	
-	Now we bound $\TAlg(\sigma_I)$ by summing the intra-component counters of each cluster at the end of the phase.
+	We bound $\TAlg(\sigma_I)$ by summing the intra-component counters of each cluster at the end of the phase.
 	The sum of intra-component counters in a cluster of type $C_3$ is at most $3 \alpha - 1$: two pairs of nodes from the component are saturated and its counter is $\alpha$ each, and the counter of the third, unsaturated pair is at most $\alpha-1$.
-	The sum of counters inside $C_1$ is $0$, and inside $C_2$ it is $\alpha$.
+	The sum of counters inside $C_1$ is~$0$, and inside $C_2$ it is $\alpha$.
 	Summing over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
 	
 	%We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
 	%\maciek{not needed most likely}
 	
-	Moreover, \TAlg paid for all requests from $\sigma_E$, and thus $\TAlg(\sigma_E) = |\sigma_E|$.
+	Furthermore, \TAlg paid for all requests from $\sigma_E$, and thus $\TAlg(\sigma_E) = |\sigma_E|$.
 	In total, the cost of \TAlg is at most $\TAlg(\sigma_I) + \TAlg(\sigma_E) + \TAlg(M) \leq 11\alpha\cdot \ell + |\sigma_E|$ during this phase.
 	
 	\medskip
@@ -824,13 +824,13 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	%Let $O^I$ be the cost of serving requests between nodes that were put in one component by \TAlg during this phase.
 	%Let $O^E$ be the cost serving requests between nodes that \TAlg did not put in the same component during that phase.
 	
-	%First, we estimate the cost related to $\sigma_I$.
-	We have $\OPT(M) + \OPT(\sigma_I) \geq \alpha$, as the phase ended when the components of \TAlg{} could not be partitioned without splitting them.
-	Hence, for every possible partition of $\OPT$, there exists a~non-collocated pair of nodes with at least $\alpha$ requests between them, and
-	$\OPT$ either served them remotely or performed a~migration.
-	
-	\medskip
-	Before we bound the competitive ratio, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
+	First, we show $\OPT(M) + \OPT(\sigma_I) \geq \alpha$.
+	Assume that \OPT's partition is fixed throughout the phase (as otherwise \OPT pays $\alpha$ for a migration).
+	The phase ended when the components of \TAlg{} could not be partitioned without splitting them.
+	Hence, for every possible partition of $\OPT$, there exists a~non-collocated saturated pair, and
+	$\OPT$ paid for $\alpha$ requests that saturated the pair.
+
+	Next, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
 	Fix a~partition for \OPT prior serving the sequence $\sigma_E$.
 	Even without migrations, \OPT may mitigate paying for requests between at most $3\ell$ pairs of nodes that can be collocated in its clusters.
 	Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), and the counter of an unsaturated pair is at most $\alpha - 1$.
