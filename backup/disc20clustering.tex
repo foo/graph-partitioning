@@ -927,109 +927,13 @@ thanks to the charging scheme we devise here.
 
 \begin{figure}[H]
 	\centering
-\begin{minipage}{.5\textwidth}
-	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1.25,xscale=1.25]
-	\useasboundingbox  (-3mm,-5mm) rectangle (0mm,10mm);
-	%cluster 1
-	\def\x{30}
-	\def\w{15}
-	%Shape: Rectangle
-	\draw   (0,0) -- (15,0) -- (15,40) -- (0,40) -- cycle ;
-	%Straight Lines
-	\draw   (0,20) -- (15,20) ;
-	% Text Node
-	\draw (8,10) node (b1)  {$b_{1}$} ;
-	% Text Node
-	\draw (8,30) node (a4)   {$a_{4}$};
-	
-	%cluster 2
-	\draw   (\x,0) -- (\w+\x,0) -- (\w+\x,40) -- (\x,40) -- cycle ;
-	\draw   (\x,20) -- (\w+\x,20) ;
-	% Text Node
-	\draw (\x+8,10) node (b2)   {$b_{2}$};
-	% Text Node
-	\draw (\x+8,30) node (a1)   {$a_{1}$};
-	
-	\draw[dotted, shorten <= -6pt, shorten >= -6pt] (a4)  -- (a1);
-	\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (a4) -- (b2);
-	
-	%cluster 3
-	\draw   (2*\x,0) -- (\w+2*\x,0) -- (\w+2*\x,40) -- (2*\x,40) -- cycle ;
-	\draw    (2*\x,20) -- (\w+2*\x,20) ;
-	% Text Node
-	\draw (2*\x+8,10) node (b3)   {$b_{3}$};
-	% Text Node
-	\draw (2*\x+8,30) node (a2)   {$a_{2}$};
-	\draw[dotted, shorten <= -4pt, shorten >= -3pt] (b2)  -- (b3);
-	\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (b2) -- (a2);
-	
-	%cluster 4
-	\draw   (3*\x,0) -- (\w+3*\x,0) -- (\w+3*\x,40) -- (3*\x,40) -- cycle ;
-	\draw    (3*\x,20) -- (\w+3*\x,20) ;
-	% Text Node
-	\draw (3*\x+8,10) node (b4)   {$b_{4}$};
-	% Text Node
-	\draw (3*\x+8,30) node (a3)   {$a_{3}$};
-	\draw[dotted, shorten <= -4pt, shorten >= -3pt] (a2)  -- (a3);
-	\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (a2) -- (b4);
-	
-	\draw[dotted,  shorten <= -3pt, shorten >= -5pt]  (b4) to[out=-100,in=-80] (b1);
-	% arrow
-	\draw[->, blue,shorten <= -3pt, shorten >= -4pt]  (b4) 
-	to [out=-108,in=-130, distance=17mm]  (a4);
-	\end{tikzpicture}
-\end{minipage}\hfill
-%
-\begin{minipage}{.5\textwidth}
-	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1.25,xscale=1.25]
-	\useasboundingbox  (0mm,-5mm) rectangle (0mm,10mm);
-%cluster 1
-\def\x{30}
-\def\w{15}
-%Shape: Rectangle
-\draw   (0,0) -- (15,0) -- (15,40) -- (0,40) -- cycle ;
-%Straight Lines
-\draw   (0,20) -- (15,20) ;
-% Text Node
-\draw (8,10) node (b1)  {$b_{1}$} ;
-% Text Node
-\draw (8,30) node (b4)   {$b_{4}$};
-
-%cluster 2
-\draw   (\x,0) -- (\w+\x,0) -- (\w+\x,40) -- (\x,40) -- cycle ;
-\draw   (\x,20) -- (\w+\x,20) ;
-% Text Node
-\draw (\x+8,10) node (a4)   {$a_{4}$};
-% Text Node
-\draw (\x+8,30) node (a1)   {$a_{1}$};
-
-%cluster 3
-\draw   (2*\x,0) -- (\w+2*\x,0) -- (\w+2*\x,40) -- (2*\x,40) -- cycle ;
-\draw    (2*\x,20) -- (\w+2*\x,20) ;
-% Text Node
-\draw (2*\x+8,10) node (b3)   {$b_{3}$};
-% Text Node
-\draw (2*\x+8,30) node (b2)   {$b_{2}$};
-
-%cluster 4
-\draw   (3*\x,0) -- (\w+3*\x,0) -- (\w+3*\x,40) -- (3*\x,40) -- cycle ;
-\draw    (3*\x,20) -- (\w+3*\x,20) ;
-% Text Node
-\draw (3*\x+8,10) node (a2)   {$a_{2}$};
-% Text Node
-\draw (3*\x+8,30) node (a3)   {$a_{3}$};
-\end{tikzpicture}
-\end{minipage}
+	\includegraphics[width=0.4\textwidth]{figs/cyclic}
 	\caption{
-			Dashed lines represent requests.
-		An arrow from node $x$ to node $y$ indicates that $x$  replaces $y$.
-		\OPT collocates 4 pairs from the left partition, with  4 migrations,
-		 resulting in the right partition.
-	}
+		\OPT  collocates 5 pairs, paying one migration per pair.
+	Dashed lines represent requests.
+	An arrow, e.g.~from $b_1$ to $a_1$ means  that $b_1$ replaces $a_1$.\maciek{Maybe: "An arrow from $a$ to $b$ means that $b$ replaces $a$.". Or "$b$ migrates in place of $a$."} }
 	\label{fig:cyclic}
 \end{figure}
-
-
 
 
 %\medskip
