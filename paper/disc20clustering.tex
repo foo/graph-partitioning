@@ -528,7 +528,7 @@ For a~lower bound $\Omega(k\cdot \ell)$ for the general partitioning problem, th
 Note that the ground sets constructed in our lower bound can be perfectly partitioned into the clusters.
 Hence, the optimal algorithm moves to a~perfect partition at the beginning (where requests incur the cost~$0$), and its cost is bounded.
 This means that the algorithm must eventually collocate all nodes of a~ground set to be competitive.
-We reveal the next ground set only after the collocation, hence we can repeat the analysis of the algorithm for the learing problem.
+We reveal the next ground set only after the collocation, hence we can repeat the analysis of the algorithm for the learning problem.
 Finally, we note that the construction is oblivious to the choice of the reconfiguration cost $\alpha$: we compare the 	number of node exchanges of \ALG and \OPT.
 
 \medskip
@@ -591,6 +591,7 @@ A generic sketch of these two algorithms can be found in the appendix (Algorithm
 
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
+\maciek{There should be a description of the algoritm. What steps it takes. Instead, we have PPL's properties here, and the algorithm description is not present at all.}
 Fix the initial partition
 $P_I :=\{ I_1, \dots, I_{\ell}\}$ and \OPT's final partition
 $P_F := \{F_1, \dots, F_{\ell}\}$.
@@ -605,7 +606,7 @@ $\OPT \geq \Delta^*:= \Delta(P_F) $ \maciek{Confusing. We have space. First defi
 %We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context
 The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
-With each repartitioning,
+With each repartitioning \maciek{Unclear what repartitioning means. Maybe with each merge action?},
 \PPL moves to a~component respecting partition that minimizes the distance to the initial partition $P_I$.
 As a~result,
 \PPL never moves to a~partition that is more than $\Delta^*$  node migrations away from $P_I$.
@@ -735,7 +736,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 \end{lemma}
 
 \begin{proof}
-	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no migrations.
+	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no repartition.
 	It suffices to show that the merged component has size at least $4$ to conclude that \TAlg incurs no cost.
 	
 	%We distinguish between three types of clusters: $C_1, C_2, C_3$,
@@ -748,19 +749,18 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	The request triggered the repartition, hence it was external and $U\neq V$.
 	We consider cases based on the types of clusters $U$ and $V$.
 	
-	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the repartitioning is local within $U$ and $V$, for the~cost of at most $2$ swaps.
-	If either $U$ or $V$ is of type $C_3$, a~component of size $3$ participates in a~merge, and we have a~component of size at least $4$, and \TAlg ends the phase with no repartitioning.
+	If either $U$ or $V$ is of type $C_1$, then this cluster can fit the merged component, and the repartition is local within $U$ and $V$, for the~cost of at most $2$ swaps.
+	If either $U$ or $V$ is of type $C_3$, a~component of size $3$ participates in a~merge, and we have a~component of size at least $4$, and \TAlg ends the phase with no repartition.
 	
 	
 	It remains to consider the case where both $U$ and $V$ are of type $C_2$.
 	If $(u,v)$ both belong to components of size $2$, then the merged component has size $4$, and \TAlg incurs no cost. 
 	Otherwise, if one of $u,v$ belongs to a~component of size $2$, then it suffices to exchange components of size $1$ between $U$ and $V$.
-
 	Finally, if $u$ and $v$ belong to components of size $1$, then we must place them in a~cluster different from $U$ and $V$.
 	Note that if $C_1$-type cluster does not exist, then no component respecting partitioning exists.
 	Otherwise, \TAlg performs one swap --- it exchanges the nodes $u$ and $v$ with any two nodes~of~any cluster of type $C_1$.
 
-	In each case, we showed that a~partition is reachable in at most two swaps.
+	In each case, we showed that a~component respecting partition is reachable in at most two swaps.
 \end{proof}
 
 
@@ -775,7 +775,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	Fix a~completed phase, and consider the state of \TAlg's counters at the end of it (before the reset).
 	We consider the incomplete phase later in this proof.
 	
-	As \TAlg is component respecting, it never increases any counter above $\alpha$.
+	\TAlg is component respecting, hence it never increases any counter above $\alpha$.
 	We say that the pair $(u, v)$ is \emph{saturated} if the counter's value is $\alpha$, and \emph{unsaturated} otherwise (saturation of a~pair leads to a~merge action).
 	By $\sigma$ we denote the input sequence that arrived during the phase.
 	In our analysis, we focus on the requests that were external to \TAlg at the moment of their arrival; these are the only requests that incur cost for \TAlg.
@@ -790,7 +790,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	Let $\TAlg(M)$ denote the cost of migrations performed by \TAlg in this phase.
 	During the phase, \TAlg performs at most $2 \ell$ component merge operations ---
 	exceeding this number would mean that a~component of size $4$ exists, and the phase should have ended already.
-	We bound the cost of each repartitioning after a~merge by Lemma~\ref{lem:1req}, obtaining $\TAlg(M) \leq 8\alpha\cdot\ell$.
+	We bound the cost of each repartition after a~merge by Lemma~\ref{lem:1req}, obtaining $\TAlg(M) \leq 8\alpha\cdot\ell$.
 	%Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
 	
 	Now we bound $\TAlg(\sigma_I)$.
