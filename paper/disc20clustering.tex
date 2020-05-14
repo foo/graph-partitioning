@@ -830,25 +830,21 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	Hence, for every possible partition of $\OPT$, there exists a~non-collocated saturated pair, and
 	$\OPT$ paid for $\alpha$ requests that saturated the pair.
 
-	Next, we relate the costs of $\TAlg$ and $\OPT$ with respect to requests $\sigma_E$.
-	Fix a~partition for \OPT prior serving the sequence $\sigma_E$.
-	Even without migrations, \OPT may mitigate paying for requests between at most $3\ell$ pairs of nodes that can be collocated in its clusters.
-	Recall that $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for requests that increased the counter (i.e., external requests), and the counter of an unsaturated pair is at most $\alpha - 1$.
-	Hence, $\OPT$ may mitigate at most $3\ell\cdot(\alpha - 1)$ requests from $\sigma_E$.
-	Finally, during the phase, \OPT is faced with at least $\chi := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests from $\sigma_E$ that it cannot mitigate.
-
-	By migrating nodes, \OPT may decrease its cost, and pay less than $\chi$ for requests from $\sigma_E$.
+	Next, we bound $\OPT(\sigma_E) + \OPT(M)$.
+	The sequence $\sigma_E$ accounts only for unsaturated edges, thus there are at most $\alpha-1$ requests to each pair in $\sigma_E$.
+	\OPT may have at most $3\ell$ pairs of nodes collocated in its clusters, and thus avoid paying for $3\ell\cdot(\alpha-1)$ requests from $\sigma_E$.
+	Hence, at least $\chi := |\sigma_E| - 3\ell\cdot(\alpha-1)$ requests from $\sigma_E$ are external requests with respect to \OPT's configuration at the beginning of the phase.
+	Faced with these requests, \OPT may serve them remotely or perform migrations to decrease its cost.
 	By swapping a~pair of nodes $(u,v)$, $\OPT$ collocates $u$ with two nodes $u', u''$, and $v$ with two nodes $v'$, $v''$.
 	This may allow serving requests between $(u,u')$, $(u,u'')$, $(v,v')$ and $(v,v'')$ for free afterward.
-	As $\sigma_E$ consists of requests to unsaturated pairs, and it accounts only for external requests, there are at most $\alpha-1$ requests between each of these pairs.
-	By performing a~single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$
-	Hence, for serving at least $\chi$ unavoidable requests from $\sigma_E$, $\OPT$ pays at least
+	Hence, by performing a~single swap that costs $2\alpha$, $\OPT$ may avoid paying the remote serving costs for at most $4 (\alpha - 1)$ requests from $\sigma_E$.
+	The total cost of \OPT is then at least
 	%
 	\[
 		\OPT(\sigma_E) + \OPT(M) \geq \chi \cdot \frac{2\alpha}{4 (\alpha-1)}\geq \frac{|\sigma_E|} {2} - 2 \alpha \cdot \ell.
 	\]
-	%	
-	To bound the competitive ratio, we transform the above inequality in the following way: $|\sigma_E| \leq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
+	
+	Finally, to bound the competitive ratio, we transform the above inequality in the following way: $|\sigma_E| \leq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
 	For succintness, let $\xi := \OPT(\sigma_E) + \OPT(M)$.
 	Combining the bounds on the cost of \TAlg and \OPT during each finished phase, the competitive ratio is
 %
