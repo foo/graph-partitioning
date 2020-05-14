@@ -433,7 +433,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	when the isolated node $x_i$ is collocated with $B$.
 	 We issue a request between $x_i$ and some node in $C_i$,
 	 where $C_i$ is the largest ground set
-	 s.t.~$I(C_i) = I(x_i), C_i \neq \{x_0,y_0\}$.
+	 s.t.~$I(C_i) = I(x_i), C_i \neq \{x_0,y_0\}$ \maciek{Ground sets merges instead of requests}.
 %	 only if  a feasible partition exists
 %	 that collocates all nodes in $\{x_i\} \cup C_i $.
 	Any feasible partition replaces $x_i$ with some isolated node $x_{i+1}$,
@@ -444,7 +444,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	We terminate the process once the number of remaining isolated nodes 
 	is less than $\ell+3$.
 	At each step $i$,
-	the number of isolated nodes decrease by one or two.
+	the number of isolated nodes decrease by one or two \maciek{Is this clear why? I am not, sure, take a look and decide. Possibly we need to say about two singletons merge}.
 	Therefore, once the process terminates,
 	there are at least $\ell+1$ isolated nodes left.
 	
@@ -857,7 +857,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	\]
 	
 	Finally, to bound the competitive ratio, we transform the above inequality in the following way: $|\sigma_E| \leq 2(\OPT(\sigma_E)+\OPT(M)) + 4\alpha \cdot \ell$.
-	For succintness, let $\xi := \OPT(\sigma_E) + \OPT(M)$.
+	For succinctness, let $\xi := \OPT(\sigma_E) + \OPT(M)$.
 	Combining the bounds on the cost of \TAlg and \OPT during each finished phase, the competitive ratio is
 %
 	\[
@@ -871,8 +871,9 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	Then, we cannot charge $\OPT$ due to the inability to partition the components.
 	Instead, we use the fact that \TAlg and $\OPT$ started with the same initial partition.
 	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
-	If at least $\alpha$ external requests were issued, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a~migration; for the cost of \TAlg we follow the analysis of the unsaturated pairs.
-	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and follow the analysis regarding the unsaturated requests.
+	If at least $\alpha$ external requests were issued, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a~migration.
+	Charging this cost to \OPT serves the purpose of charging $\alpha$ at the end of a finished phase, and thus we can repeat the analysis of a finished phase.
+	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and we repeat the analysis of a finished phase.
 	This way, the competitive ratio increases at most twofold in comparison to a~finished phase, and the competitive ratio is $\TAlg(\sigma)/\OPT(\sigma) \leq 60\ell$.
 \end{proof}
 
