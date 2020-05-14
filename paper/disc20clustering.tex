@@ -422,16 +422,16 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 %	 $x_0$ is the current pivot node and
 	 $y_0$ is an arbitrary isolated node.
 	Since \ALG does not have $\{x_0,y_0\}$ collocated, 
-	the adversary issues external requests to this pair until \ALG collocates it.
+	the adversary issues an external request to this pair so that \ALG collocates it.
 	\ALG cannot collocate $\{x_0, y_0\}$ with $B$ (as $B$'s size is $k-1$), hence it collocates them in a~different cluster.
 	In order to preserve a~feasible partition of nodes after collocating $\{x_0, y_0\}$,
 	\ALG must replace $x_0$ with another isolated node that becomes the new pivot.
 %	denoted by $x_1$.
 
-	We proceed by joining the current pivot node to a~larger ground set in  similar steps.
+	We proceed in similar steps by joining the current pivot node to a ground set of the same origin residing in a different cluster.
 	Consider the step $i$,
 	when the isolated node $x_i$ is collocated with $B$.
-	 We issue a request between $x_i$ and some node $y_i \in C_i$,
+	 We issue a request between $x_i$ and some node in $C_i$,
 	 where $C_i$ is the largest ground set
 	 s.t.~$I(C_i) = I(x_i), C_i \neq \{x_0,y_0\}$.
 %	 only if  a feasible partition exists
@@ -445,7 +445,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	is less than $\ell+3$.
 	At each step $i$,
 	the number of isolated nodes decrease by one or two.
-	Then, once the process terminates,
+	Therefore, once the process terminates,
 	there are at least $\ell+1$ isolated nodes left.
 	
 	  Next, we argue that a partition exists when the process terminates.
@@ -457,7 +457,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	 i.e., $I(\{x^*\}) = I(\{y^*\})$.
 	 Consider the partition $P^*$
 	  obtained from the initial partition after swapping $x_0$ and $y_0$
-	 with $u$ and $v$ (respectively).
+	 with $x^*$ and $y^*$ (respectively).
 	 In this partition,
 	 the ground set $\{x_0,y_0\}$ is collocated in the cluster $I(\{x^*,y^*\})$.
 	 Note that after the first request $\{x_0,y_0\}$,
