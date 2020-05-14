@@ -513,11 +513,11 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	 Thus,
     the total number of times that 
 	a ground set in $\mathcal{S}$  has grown is
+	$	\sum_{C^* \in \mathcal{S} } (|C^*|-1) - (k-1) $
 	\begin{align*}
-	\sum_{C^* \in \mathcal{S} } (|C^*|-1) - (k-1) &= 
-	\sum_{C^* \in \mathcal{S} } |C^*| - 
-		\sum_{C^* \in \mathcal{S} } 1 - (k-1) \\
-	&\geq  k  \ell - (2\ell+3) - (k-1) =  (k-2)(\ell-1) - 4,
+	=\sum_{C^* \in \mathcal{S} } |C^*| - 
+		\sum_{C^* \in \mathcal{S} } 1 - (k-1) 
+	\geq  k  \ell - (2\ell+3) - (k-1) =  (k-2)(\ell-1) - 4,
 	\end{align*}
 	which bounds the number of swaps performed by \ALG.
 	The competitive ratio is then
