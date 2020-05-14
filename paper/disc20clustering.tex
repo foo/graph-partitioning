@@ -793,9 +793,9 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	We bound the cost of each repartition after a~merge by Lemma~\ref{lem:1req}, obtaining $\TAlg(M) \leq 8\alpha\cdot\ell$.
 	%Together with Lemma~\ref{lem:1req}, this allows us to bound the cost of migrations, $\TAlg(M) \leq 6\cdot\alpha\cdot\ell$.
 	
-	Now we bound $\TAlg(\sigma_I)$.
-	A~cluster of type $C_3$ contributes at most $3 \alpha - 1$ to $\TAlg(\sigma_I)$, as two pairs of nodes from the component are saturated and incurred the cost $\alpha$ each, and the third, unsaturated pair incurs the cost at most $\alpha-1$.
-	Other cluster types contribute less: $C_1$ contributes~$0$ and $C_2$ contributes $\alpha$.
+	Now we bound $\TAlg(\sigma_I)$ by summing the intra-component counters of each cluster at the end of the phase.
+	The sum of intra-component counters in a cluster of type $C_3$ is at most $3 \alpha - 1$: two pairs of nodes from the component are saturated and its counter is $\alpha$ each, and the counter of the third, unsaturated pair is at most $\alpha-1$.
+	The sum of counters inside $C_1$ is $0$, and inside $C_2$ it is $\alpha$.
 	Summing over all $\ell$ clusters gives us $\TAlg(\sigma_I) \leq (3 \alpha-1)\cdot \ell \leq 3\alpha\cdot\ell$.
 	
 	%We bound $A^E$ by $k^2 \cdot (\alpha - 1)$, as no more than $k^2$ pairs are unsaturated, and each of them contributes at most $\alpha -1$.
