@@ -132,7 +132,7 @@
 	Distributed   applications,  including  batch  processing, streaming, scale-out databases,
 	or machine learning, generate a~significant amount of network traffic.
 	By collocating frequently communicating nodes (e.g., virtual machines) on the same clusters (e.g., server or rack), we can reduce the network load and  improve application performance. 
-	However, the communication pattern of different applications is often unknown a~priori and may change over time, hence it needs to be learned in an online manner.
+	However, the communication pattern of different applications is often unknown a~priori and may change over time, hence it needs to be learned in an~online manner.
 	%
 	This paper revisits the online 
 	balanced partitioning problem 
@@ -170,7 +170,7 @@ The performance of these distributed applications often critically depends on th
 At the same time, distributed systems are often highly virtualized today, and provide interesting new opportunities for resource optimization.
 In particular, it has become possible to operate data centers in a~more demand-aware manner: 
 by dynamically migrating nodes (e.g., virtual machines) which communicate frequently topologically closer to each other, network traffic can be reduced significantly.  
-However, migrations should be used moderately, as migrations also entail overheads. 
+However, migrations entail overhead, and should be used moderately. 
 
 This paper studies the algorithmic problem underlying such demand-aware
 optimizations, aiming to strike a~balance between the benefits of migrations (e.g., reduced network load) and their costs.
@@ -187,7 +187,7 @@ We refer to the latter as the learning model.
 We study two models in this paper: the \emph{general partitioning} model, and its subproblem, the \emph{learning} model.
 In both models, we assume that communication patterns are not known to our algorithms at the beginning.
 We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
-In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a~given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the whole input sequence in advance.
+In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a~given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the entire input sequence in advance.
 %We emphasize that all our algorithms have a~\emph{strict} competitive ratio (without an additive term).
 
 \noindent
@@ -234,7 +234,7 @@ We study a~\emph{learning} variant of dynamic balanced graph partitioning,
 where the communication pattern is \emph{static}:
 whether a~pair of  nodes ever communicate or not, 
 is determined a~priori and is unknown to algorithms,
- and requests to such pairs arrive indefinitely.
+ and such pairs communicate forever.
 Any algorithm must eventually collocate  pairs of communicating nodes,
 as otherwise it cannot be competitive.
 As in Henzinger et al.~\cite{sigmetrics19_partitioning}, we assume that the communication graph admits a~\emph{perfect partition},
@@ -257,7 +257,7 @@ Their ratio is independent of $\ell$, which is impossible without significant re
 
 In contrast, we study the non-augmented setting, where the nodes need to be perfectly balanced  among the clusters.
 This assumption is not only more realistic but also significantly more challenging, as it is related to hard problems such as integer partitioning~\cite{integer-partitions-book}.
-In terms of results without augmentation, so far, it is only known that there exists a~$O(k^2 \cdot \ell^2)$-competitive algorithm~\cite{repartition-disc}; the best known lower bound is significantly lower, namely $\Omega(k)$.
+In terms of results without augmentation, so far, it is only known that there exists an~$O(k^2 \cdot \ell^2)$-competitive algorithm~\cite{repartition-disc}; the best known lower bound is significantly lower, namely $\Omega(k)$.
 For $k=2$, Avin et al.~\cite{repartition-disc} presented a~$7$-competitive algorithm with a~substantial ($\Omega(\ell^2)$) additive constant.
 
 
@@ -301,10 +301,10 @@ Dynamic graph partitioning problems are generally fundamental in computer scienc
 \subsection{Our Contributions}
 
 This paper presents several new results on the dynamic graph partitioning problem  without augmentation.
-For the learning model we present a~lower bound of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
+For the learning model, we present a~lower bound of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
 (that holds also in the general partitioning model).
 The best known lower bound so far was $\Omega(k)$~\cite{repartition-disc} that holds only in the general partitioning model.
-We further present an asymptotically optimal, 
+We complement this result with an asymptotically optimal, 
 $O(k\cdot \ell)$-competitive algorithm
 for the learning model.
 
@@ -312,9 +312,9 @@ For the general partitioning model, we design
 an asymptotically optimal,
 $\Theta(\ell)$-competitive algorithm for $k=3$, improving the best known upper bound 
 so far $O(\ell^2)$~\cite{repartition-disc}.
-We further present a~strictly $6$-competitive algorithm for $k=2$ that improves upon previous $7$-competitive algorithm with $O(\alpha\ell^2)$ additive constant.
+We further present a~strictly $6$-competitive algorithm for $k=2$ that improves upon the previous $7$-competitive algorithm with $O(\alpha\ell^2)$ additive constant.
 
-All algorithms in this paper have strict competitive ratio (i.e., without an additive term).
+All algorithms in this paper have a strict competitive ratio (i.e., without an additive term).
 Table \ref{tab:overview} provides an overview of our contributions compared to prior work.
 
 
@@ -341,7 +341,7 @@ Table \ref{tab:overview} provides an overview of our contributions compared to p
 \medskip
 \noindent
 \textbf{Algorithmic techniques.} The variant for general $k$ is still unresolved, hence it is vital to summarize algorithmic techniques used in this paper.
-A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations in~phase by a~constant, and show that the optimum offline algorithm must pay significant cost for inter-cluster requests.
+A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations in~phase by a~constant, and show that the optimum offline algorithm must pay a~significant cost for inter-cluster requests.
 We bound the cost of the latter by estimating the capabilities of the optimum offline algorithm to \emph{prepare} for an incoming sequence of requests.
 Furthermore, in the analysis of the algorithm from Section~\ref{sec:k2}, we propose a~novel charging scheme for edges that share a~vertex.
 
@@ -371,17 +371,14 @@ Across this paper, we often refer to groups of communicating nodes.
 We use this concept slightly differently in the lower bound and the upper bounds.
 In our algorithms, we group nodes with a~communication history into \emph{components}, and in the lower bound, we group nodes that may communicate into \emph{ground sets}.
 
-A~\emph{ground set} is a~subset of nodes such that if an algorithm does not have them all collocated,
-then the split parts communicate indefinitely until the algorithm collocates them.
-%A~\emph{ground set} is a~group of nodes that  communicate indefinitely when an algorithm splits them (places at different clusters).
-This ensure us that any competitive algorithm would maintain a~partition of ground sets into clusters.
-As a result,
- a ground set is revealed to an algorithm only after the algorithm splits it.
- More precisely,
-the adversary constructs ground sets depending on the choices of a~given deterministic online algorithm.
-%Once we construct a~ground set, it lasts until the algorithm terminates.
-We say that a~ground set is \emph{singleton} if it contains only one node,
-and we refer to such node as an \emph{isolated} node.
+A~\emph{ground set} is a group of nodes that repeatedly communicate if they are not collocated.
+If an algorithm splits any pair of nodes from a ground set, then the adversary continues to produce requests to this pair until the algorithm collocates it.
+Any competitive algorithm must maintain a~perfect partition of ground sets into clusters.
+We emphasize that ground sets are revealed only upon their nodes are split.
+The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
+Once we construct a ground set, it lasts until the end of the input sequence.
+We say that a ground set is \emph{singleton} if it contains exactly one node.
+We say that the node that belongs to a singleton ground set is \emph{isolated}.
 
 
 We start by constructing a~ground set of size $k-1$ on an arbitrarily chosen cluster.
@@ -390,12 +387,12 @@ In any partition, there must exist an isolated node collocated with the ground s
 We issue requests between this node and some node that was initially collocated with it.
 By repeating such requests, almost every node is once collocated with the first ground set.
 In comparison, we show that there exists an optimal offline algorithm \OPT that performs only two node exchanges ("swaps").
-Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
+%Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
 
 
 \begin{theorem}
 	\label{th:lowerbound}
-	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least
+	The competitive ratio of any deterministic online algorithm for the learning variant of Dynamic Balanced Graph Partitioning is at least
 	 $(k-2)(\ell-1)/2 - 3/2$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
