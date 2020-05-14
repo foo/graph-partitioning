@@ -434,7 +434,9 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	when the isolated node $x_i$ is collocated with $B$.
 	 We issue a request between $x_i$ and some node in $C_i$,
 	 where $C_i$ is the largest ground set
-	 s.t.~$I(C_i) = I(x_i), C_i \neq \{x_0,y_0\}$ \maciek{Ground sets merges instead of requests}.
+	 s.t.~$I(C_i) = I(x_i), C_i \neq \{x_0,y_0\}$.
+	 Then \ALG must collocate the new ground set
+	  $\{x_i\} \cup C_i $ in one cluster.
 %	 only if  a feasible partition exists
 %	 that collocates all nodes in $\{x_i\} \cup C_i $.
 	Any feasible partition replaces $x_i$ with some isolated node $x_{i+1}$,
@@ -445,9 +447,10 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	We terminate the process once the number of remaining isolated nodes 
 	is less than $\ell+3$.
 	At each step $i$,
-	the number of isolated nodes decrease by one or two \maciek{Is this clear why? I am not, sure, take a look and decide. Possibly we need to say about two singletons merge}.
+	the number of isolated nodes decrease either by one,
+	 or by two if $C_i$ is a singleton.
 	Therefore, once the process terminates,
-	there are at least $\ell+1$ isolated nodes left.
+	in any case at least $\ell+1$ isolated nodes are left.
 	
 	  Next, we argue that a feasible partition exists when the process terminates.
 	 This implies that a feasible partition exists after any earlier step as well.
@@ -570,7 +573,7 @@ introduced by Avin~et~al.~\cite{repartition-disc}.
 We maintain subsets of frequently communicating nodes as \emph{components}.
 Initially,
 each node constitutes a single-node component which we refer to as a \emph{singleton} component, 
-and the contained node is an \emph{isolated} node \maciek{unclear: isolated = contained?}.
+and the node in such component is an \emph{isolated} node.
 We define larger components in terms of smaller components.
 Concretely,
 given a (sub)sequence of requests,
@@ -581,7 +584,8 @@ the frequency of requests $\{v_1,v_2\}$ reaches a certain threshold through the 
 We keep all nodes of a~component always collocated in the same cluster,
 i.e., when we  move a~node,
 we move the whole component that contains it.
-A~partition that maintains this invariant is a~\emph{component respecting} partition \maciek{wrong use of "this". Better to define component respecting, and only then say that ALG only uses such partitions (but it is also implied in the learning model...)}.
+A~partition that has every component collocated 
+is a~\emph{component respecting} partition.
 %Intuitively, a component preserves the history of requests between its nodes.
 
 In addition,
@@ -598,11 +602,10 @@ In DET, the partition was arbitrary.
 In the algorithm for the learning model,
 we choose a~component respecting partition closest to the initial partition.
 In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a repartition of minimum cost).
-A generic sketch of these two algorithms can be found in the appendix (Algorithm \ref{alg:ppl}) \maciek{We don't have the generic. Also in the next paragraph you refer to the code}.
+%A generic sketch of these two algorithms can be found in the appendix (Algorithm \ref{alg:ppl}).
 
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
-\maciek{There should be a short description of the algorithm: what steps it takes, how it treats the input. Instead, we have PPL's properties here, and the algorithm description is not present at all.}
 Fix the initial partition
 $P_I :=\{ I_1, \dots, I_{\ell}\}$ and \OPT's final partition
 $P_F := \{F_1, \dots, F_{\ell}\}$.
@@ -613,16 +616,19 @@ $\Delta(P) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$,
  is the number of nodes in $P$ that do not reside in their initial cluster.
 In other words,
 at least $\Delta(P)$ node migrations are required in order to reach the partition $P$ from $P_I$, and thus
-$\OPT \geq \Delta^*:= \Delta(P_F) $ \maciek{Confusing. We have space. First define :=, then say that OPT bounds}.
-%We  use $ \Delta(P_F) $ wherever the initial partition is clear from the context
+$\OPT \geq \Delta(P_F) $.
+
+Now we describe the algorithm \PPL.
+On each inter-cluster request $\{u,v\}$, 
+\PPL creates a new components by merging
+ the two components that contain nodes $u$ and $v$.
+In order to collocate nodes of the new component,
+\PPL moves to a~component respecting partition that minimizes the distance to the initial partition $P_I$.
 The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
-With each repartitioning \maciek{Unclear what repartitioning means. Maybe with each merge action?},
-\PPL moves to a~component respecting partition that minimizes the distance to the initial partition $P_I$.
-As a~result,
-\PPL never moves to a~partition that is more than $\Delta^*$  node migrations away from $P_I$.
+\PPL never moves to a~partition that is more than $ \Delta^*:= \Delta(P_F) $   migrations away from $P_I$.
 This invariant latter ensures us that \PPL does not pay too much while recovering $P_F$.
-We emphasize that a~repartitioning by \PPL replaces the current partition $P$ with a~perfect partition closest to $P_I$.
+We emphasize that a~\emph{repartitioning} by \PPL replaces the current partition $P$ with a~perfect partition closest to $P_I$.
 This way \PPL never moves to a~partition beyond the distance $\Delta^*$.
 
 \begin{property} \label{prop:dist<OPT}
@@ -660,7 +666,6 @@ This way \PPL never moves to a~partition beyond the distance $\Delta^*$.
 	 and it is $(2\cdot (k-1)\cdot\ell)$-competitive.
 \end{theorem}
 \begin{proof}
-	\maciek{Maybe: "On each inter-cluster request, the algorithm enumerates all component respecting $\ell$-way partitions in the order of increasing distance to $P_I$" Then we don't need to say "i.e." and two sentences that explain the same thing}
 	On each inter-cluster request,
 	the algorithm enumerates all component respecting $\ell$-way partitions of components
 	that are in the same (closest) distance to $P_I$.
@@ -901,7 +906,7 @@ the problem is an online variant of the maximal matching problem where
 %That is, 
 a matched pair can separate in order to ``rematch'' with two other nodes.
 Rematching is necessary for  maximizing intra-cluster communications,
-which is dual \maciek{dual has specific meaning. Is it correct here? I think you meant "equivalent" here} to minimizing inter-cluster communications.
+which is equivalent to minimizing inter-cluster communications.
 This is known as the  \emph{online rematching} 
 problem and a~non-strict 7-competitive algorithm is already given by~\cite{repartition-disc},
 in which the ratio comes with an additive factor $O(\alpha\ell^2)$.
@@ -909,8 +914,8 @@ We do not only improve upon their competitive ratio,
 but also show that our ratio holds \emph{strictly}
 (i.e., with no additive factor).
 Our algorithm is slightly simpler than the one in~\cite{repartition-disc}, 
-while our analysis is significantly  simpler and more concise,
-thanks to the charging scheme we devise here \maciek{Way too strong. At best, analysis is slightly simpler. Just compare volumes and the notation needed.}.
+while our analysis is significantly simpler and more concise,
+thanks to the charging scheme we devise here.
 
 \begin{figure}[H]
 	\centering
@@ -955,7 +960,7 @@ Observe that \OPT must pay a~non-zero cost
 for these requests over the entire $\sigma$,
 since it cannot have both pairs initially collocated.
 However,
-we can charge the whole cost \maciek{Whole cost unclear, I think} to \OPT only the first time \RM collocates a~pair,
+we can charge this cost to \OPT only the first time \RM collocates a~pair,
 and not at any consequent time when \RM collocates it a~second time.
 Otherwise,
  \OPT is possibly charged for the same cost repeatedly.
@@ -976,7 +981,7 @@ $\sigma:=\{\sigma_1,\dots, \sigma_m\}$.
 	%and its overall cost to \OPT by
 	%$\OPT (\sigma_{\{u,v\}}[t_1,t_2])$.
 	We may use $\sigma_{\set{x,y}}$ whenever
-	 the interval $[t_1,t_2]$ is clear from the context \maciek{As a reader I would be horrified seeing this sentence, expecting shenanigans. Better to fix it in the paragraph}.
+	 the interval $[t_1,t_2]$ is clear from the context.
 	%
 	%Else, this is not the first time and
 	%Alg collocates $\{u,v\}$ also some time prior to $t$.
@@ -1049,7 +1054,7 @@ $.
 	 Then it pays zero while serving $\sigma_{\{u,v\}}$.
 	Hence,
 	it must pay $\alpha$ for collocating the other pair, in this case $\{u,w\}$,
-	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$ \maciek{Rewrite without these resp.s. Also, see the comment on "or (and)" below}. 
+	or (resp., and) it pays (resp., up to) $\lambda$ for serving (resp., some of) requests in $\sigma_{\{u,w\}}$. 
 	Therefore in any case,
 	$\OPT(R_t) \geq  \min{\{ \lambda,\alpha \}} = \alpha$.
 	
@@ -1068,10 +1073,10 @@ $.
 	Then there exists an intersecting pair $\set{u,w}$
 	that is collocated by \RM at $t' < m$,
 	separating $\{u,v\}$.
-	We define times $t'' < t' < m$ similarly to the former case \maciek{doing thing "similarly" is a trap zone in proofs, and we should avoid even suggesting it. I think that here you mean defining exactly the same.}.
+	We define times $t'' < t' < m$ analogously to the former case.
 	Let $R^*_{\{u,v\}} := \sigma_{\{u,w\}} (t'',t'] \cup \sigma_{\{u,v\}} (t',m]$.
 	Then,
-	\OPT must pay for collocating at least one pair or (and) \maciek{"or (and)" usually should be "and possibly". Does this make sense here?} serving requests 
+	\OPT must pay for collocating at least one pair or (and) serving requests 
 	to the other pair remotely.
 	Thus,
 	$\OPT (R^*_{\{u,v\}}) 
@@ -1087,7 +1092,7 @@ $.
 	is counted at most twice in each of  the expressions
 	$\OPT (R_{t'}) + \OPT (R_t)$
 	and  
-	$\OPT (R_{t'}) + \OPT(R^*_{\{u,v\}})$ \maciek{Propose how to formalize (but up to you). I think this is classic bound of maximum by an average argument. We actually use it in this paper already in \TAlg, line 407 at the time of writing.}.
+	$\OPT (R_{t'}) + \OPT(R^*_{\{u,v\}})$.
 	Hence,
 	for all collocations performed by \RM,
 	and for final requests at $t=m$,
