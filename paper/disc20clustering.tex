@@ -401,8 +401,9 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 \begin{proof}
 	Fix any online algorithm \ALG.
 	For a ground set $C$ of nodes that are initially collocated in one cluster,
-	let $I(C)$ denote the cluster,
-	i.e., the cluster that is the \emph{origin} of $C$ \maciek{This sentence requires a rewrite}.
+	let $I(C)$ denote the cluster.
+	We refer to $I(C)$ as the cluster of \emph{origin},
+	when $C$ is clear from the context.
 %	If $C$ contains nodes that originate from different clusters
 %	then $I(C)$ is undefined.
 %	Throughout the construction, we maintain ground sets for each node.
@@ -502,10 +503,8 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
    which contradicts the bound $\ell+2$ on the number of singletons,
 	or we have joined nodes to it at some step,
 	contradicting our choice of the largest $C_i$ at step $i$.
-	Hence, every  other ground set in
-	$\mathcal{S}$ has grown \emph{maximally}.
-	There are at most $\ell-1$ maximally grown ground sets,
-	one per cluster,
+	Hence,  there are at most $\ell-1$ such ground sets,
+	one per possible cluster of origin,
 	 excluding the cluster containing $B$. 
 	Therefore,  $|\mathcal{S}| \leq 1 + 1 + (\ell+2)  + (\ell-1) = 2\ell+3$.
 	Note that among all non-singleton ground sets in $\mathcal{S}$,
