@@ -604,7 +604,6 @@ a reminiscent of partitioning given integers into sets of equal sum~\cite{intege
 In contrast, our partition is time-varying:  two components are merged into one component once they communicate, and we adjust the partition accordingly.
 
 
-\medskip
 
 The algorithm in this section and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from~\cite{repartition-disc}.
 The difference is in the choice of partition after a~component merge.
@@ -614,7 +613,6 @@ we choose a~component respecting partition closest to the initial partition.
 In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a~repartition of minimum cost).
 %A generic sketch of these two algorithms can be found in the appendix (Algorithm \ref{alg:ppl}).
 
-\medskip 
 
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
@@ -626,7 +624,6 @@ In order to collocate nodes of the new component,
 \PPL moves to a~component respecting partition that minimizes the distance to the initial partition $P_I$.
 The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
-\medskip
 
 Fix the initial partition
 $P_I :=\{ I_1, \dots, I_{\ell}\}$ and \OPT's final partition
