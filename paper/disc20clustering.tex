@@ -1078,6 +1078,58 @@ we charge \OPT a~cost inflicted by a~pair,
 if and only if  \OPT incurs that cost after the latest separation of the pair by \RM.
 %%
 
+\begin{figure}[t]	\label{fig:timeline}
+	\centering
+	\begin{tikzpicture}
+	\draw [->] (-10mm,0) -- (5,0);
+	\draw [dotted] (-13mm,0) -- (-10mm,0);
+	
+	\draw [decorate,decoration={brace,amplitude=3pt}] (5mm,0.15) -- (45mm,0.15)
+	node [black,midway,above=1pt,xshift=1pt] {$R_{t}$};
+	
+	\draw [decorate,decoration={brace,amplitude=3pt}, yshift=-18pt] (25mm,0.15) -- (-7mm,0.15)
+	node [black,midway,below=1pt,xshift=1pt] {$R_{t'}$};
+	
+	\draw [] (45mm,2pt) -- (45mm,-2pt)
+	node [black,midway,below=0pt,xshift=1pt] {$t$};
+	
+	% tick
+	\draw [] (25mm,2pt) -- (25mm,-2pt)
+	node [black,midway,below=0pt,xshift=1pt] {$t'$};
+	% tick
+	\draw [] (5mm,2pt) -- (5mm,-2pt)
+	node [black,midway,below=0pt,xshift=1pt] {$t''$};
+	% tick
+	\draw [] (-7mm,2pt) -- (-7mm,-2pt)
+	node [black,midway,below=0pt,xshift=1pt] {};
+	
+	\draw [line width=0.33mm, red] (5mm,0) -- (25mm,0) 
+	node [black,midway,below=-2pt,xshift=1pt] {$\sigma_{\{u,w\}}$};
+	
+	\draw [] (25mm,0) -- (45mm,0) 
+	node [black,midway,below=-2pt,xshift=1pt] {$\sigma_{\{u,v\}}$};
+	
+	\draw [] (5mm,2pt) -- (5mm,-2pt)
+	node [black,midway,below=0pt,xshift=1pt] {$t''$};
+	%% vertical arrow 
+	%\draw [->] (3mm,14pt) -- (4.4mm,4pt)
+	%node [black,midway,above=0pt,xshift=-4pt] {separation of  $\{u,w\}$};
+	%% vertical arrow 
+	%\draw [->] (30mm,-24pt) -- (26.5mm,-7pt)
+	%node [black,midway,below=0pt,xshift=5pt, yshift=-5pt] {separation of  $\{u,v\}$};
+	\end{tikzpicture}
+	\caption{
+		Illustration of the timeline used in the proof of Theorem \ref{thm:k=2}.
+		Requests in $R_t$  are only to  $\{u,w\}$ and $\{u,v\}$,
+		which  arrive  during the interval $(t'',t]$.
+		Similarly,
+		request in $R_{t'}$  are to $\{u,w\}$ and some other pair, irrelevant to the analysis.
+		Hence, requests to $\{u,w\}$ are included in at most two such sets,
+		which are $R_{t'}$ and $R_t$.
+		This is because their intervals overlap on $(t'',t']$, shown with red thick line.
+	}
+\end{figure}
+
 \begin{proof}[Proof of Theorem \ref{thm:k=2}]
 	Fix an input sequence of requests
 $\sigma:=\{\sigma_1,\dots, \sigma_m\}$.
@@ -1309,58 +1361,7 @@ Furthermore, we proposed an efficient distributed implementation of the algorith
 \end{algorithm}
 
 %\section{Additional Figures}
-\begin{comment}
-\begin{figure}[H]	\label{fig:timeline}
-	\centering
-\begin{tikzpicture}
-\draw [->] (-10mm,0) -- (5,0);
-\draw [dotted] (-13mm,0) -- (-10mm,0);
-
-\draw [decorate,decoration={brace,amplitude=3pt}] (5mm,0.15) -- (45mm,0.15)
-node [black,midway,above=1pt,xshift=1pt] {$R_{t}$};
-
-\draw [decorate,decoration={brace,amplitude=3pt}, yshift=-18pt] (25mm,0.15) -- (-7mm,0.15)
-node [black,midway,below=1pt,xshift=1pt] {$R_{t'}$};
-
-\draw [] (45mm,2pt) -- (45mm,-2pt)
-node [black,midway,below=0pt,xshift=1pt] {$t$};
-
-% tick
-\draw [] (25mm,2pt) -- (25mm,-2pt)
-node [black,midway,below=0pt,xshift=1pt] {$t'$};
-% tick
-\draw [] (5mm,2pt) -- (5mm,-2pt)
-node [black,midway,below=0pt,xshift=1pt] {$t''$};
-% tick
-\draw [] (-7mm,2pt) -- (-7mm,-2pt)
-node [black,midway,below=0pt,xshift=1pt] {};
-
-\draw [line width=0.33mm, red] (5mm,0) -- (25mm,0) 
-node [black,midway,below=-2pt,xshift=1pt] {$\sigma_{\{u,w\}}$};
-
-\draw [] (25mm,0) -- (45mm,0) 
-node [black,midway,below=-2pt,xshift=1pt] {$\sigma_{\{u,v\}}$};
-
-\draw [] (5mm,2pt) -- (5mm,-2pt)
-node [black,midway,below=0pt,xshift=1pt] {$t''$};
-%% vertical arrow 
-%\draw [->] (3mm,14pt) -- (4.4mm,4pt)
-%node [black,midway,above=0pt,xshift=-4pt] {separation of  $\{u,w\}$};
-%% vertical arrow 
-%\draw [->] (30mm,-24pt) -- (26.5mm,-7pt)
-%node [black,midway,below=0pt,xshift=5pt, yshift=-5pt] {separation of  $\{u,v\}$};
-\end{tikzpicture}
-\caption{
-Illustration of the timeline used in the proof of Theorem \ref{thm:k=2}.
-Requests in $R_t$  are only to  $\{u,w\}$ and $\{u,v\}$,
-which  arrive  during the interval $(t'',t]$.
-Similarly,
-request in $R_{t'}$  are to $\{u,w\}$ and some other pair, irrelevant to the analysis.
-Hence, requests to $\{u,w\}$ are included in at most two such sets,
-which are $R_{t'}$ and $R_t$.
-This is because their intervals overlap on $(t'',t']$, shown with red thick line.
-}
-\end{figure}
-\end{comment}
+%\begin{comment}
+%\end{comment}
 
 \end{document}
