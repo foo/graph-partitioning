@@ -729,7 +729,7 @@ This allows to bound the cost of repartition by a constant (Lemma~\ref{lem:1req}
 
 This modification alone is insufficient to obtain $O(\ell)$-competitive algorithm, and the analysis must be further improved.
 In particular, pairs of nodes that did not reach the collocation threshold $\alpha$ (called external requests) incur the cost $O(\ell^2)$ for the algorithm in each phase.
-The novel part of the analysis lower-bounds the cost of \OPT on external requests, while considering its savings from migrations and possibly different configuration at the beginning of the phase.
+The novel part of the analysis lower-bounds the cost of \OPT on external requests while considering its savings from migrations and possibly different configuration at the beginning of the phase.
 This way, we show that \OPT paid a significant portion of the algorithm's cost on external requests.
 
 \medskip
@@ -764,7 +764,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 \end{lemma}
 
 \begin{proof}
-	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase and performs no repartition.
+	If no component respecting partition exists after the merge of components, then \TAlg resets all components, ends the phase, and performs no repartition.
 	It suffices to show that the merged component has size at least $4$ to conclude that \TAlg incurs no cost.
 	
 	%We distinguish between three types of clusters: $C_1, C_2, C_3$,
@@ -806,7 +806,7 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	\TAlg is component respecting, hence it never increases any counter above $\alpha$.
 	We say that the pair $(u, v)$ is \emph{saturated} if the counter's value is $\alpha$, and \emph{unsaturated} otherwise (saturation of a~pair leads to a~merge action).
 	By $\sigma$ we denote the input sequence that arrived during the phase.
-	In our analysis, we focus on the requests that were external to \TAlg at the moment of their arrival; these are the only requests that incur cost for \TAlg.
+	In our analysis, we focus on the requests that were external to \TAlg at the moment of their arrival; these are the only requests that incur a~cost for \TAlg.
 	We denote these external requests by $\sigma_{cost}$.
 	We partition the sequence $\sigma_{cost}$ into subsequences $\sigma_I$ and $\sigma_E$.
 	The sequence $\sigma_I$ (inter-component requests) denotes the requests from $\sigma_{cost}$ issued to pairs that belong to the same component of \TAlg at the end of the phase.
@@ -887,16 +887,16 @@ In our analysis, we distinguish among three types of clusters: $C_1, C_2$ and $C
 	Then, we cannot charge $\OPT$ due to the inability to partition the components.
 	Instead, we use the fact that \TAlg and $\OPT$ started with the same initial partition.
 	If the input finished before the first $\alpha$ external requests, then \TAlg is $1$-competitive.
-	If at least $\alpha$ external requests were issued, then $\OPT$ either paid $\alpha$ for serving them remotely, or paid $\alpha$ for a~migration.
+	If at least $\alpha$ external requests were issued, then $\OPT$ either paid $\alpha$ for serving them remotely or paid $\alpha$ for a~migration.
 	Charging this cost to \OPT serves the purpose of charging $\alpha$ at the end of a finished phase, and thus we can repeat the analysis of a finished phase.
-	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into last two phases, and we repeat the analysis of a finished phase.
+	Second, consider the case, where there are at least two phases, then we split the cost $\alpha$ charged in the penultimate phase into the last two phases, and we repeat the analysis of a finished phase.
 	This way, the competitive ratio increases at most twofold in comparison to a~finished phase, and the competitive ratio is $\TAlg(\sigma)/\OPT(\sigma) \leq 60\ell$.
 \end{proof}
 
 \medskip
 \noindent
 \textbf{Distributed implementation.}
-While we have described the algorithm globally so far, we note that it allows for an efficient distributed implementations. 
+While we have described the algorithm globally so far, we note that it allows for efficient distributed implementations. 
 The algorithm performs two types of operations that require communication with other clusters: a~component merge, and a~broadcast of the end of the phase.
 We say that a~cluster containing $3$ isolated nodes is \emph{fresh}.
 A merge of two components may require finding a~fresh cluster (for details see the proof of Lemma~\ref{lem:1req}).
@@ -1052,8 +1052,8 @@ it resets the counter $C_{\set{x,y}}:=0$ and collocates the pair by swapping $x$
 \noindent
 \textbf{The charging scheme.}
 We charge both \OPT and \RM whenever \RM collocates a~pair.%(i.e., on a~collocation event).
-\RM collocates a~pair always with a~swap,%(i.e., two simultaneous migrations),
-which  costs $2\alpha$,
+\RM collocates a~pair always with a~swap %(i.e., two simultaneous migrations),
+(that costs $2\alpha$),
 while \OPT may save some costs by collocating multiple pairs at once.
 % before they inflict too much communication cost.
  Thus it pays the price of only one migration per pair  (see Figure \ref{fig:cyclic}).
@@ -1126,7 +1126,7 @@ $\sigma:=\{\sigma_1,\dots, \sigma_m\}$.
 	and $0 < C^{m}_{ \{u,v\} } < \lambda $,
 	which means \RM pays $C^{m}_{ \{u,v\} }$
 	for  requests in $\sigma_{\set{u,v}}(t',m]$.
-    Then the overall cost to \RM is
+    Then the overall cost of \RM is
 $	\RM (\sigma)
 =
 \sum_{ t \in T}(\lambda + 2\alpha) +
