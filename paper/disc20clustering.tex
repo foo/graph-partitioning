@@ -955,7 +955,7 @@ thanks to the charging scheme we devise here.
 	% Text Node
 	\draw (\x+8,30) node (a1)   {$a_{1}$};
 	
-	\draw[dotted, shorten <= -6pt, shorten >= -6pt] (a4)  -- (a1);
+	\draw[thick,dotted, shorten <= -6pt, shorten >= -6pt] (a4)  -- (a1);
 	\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (a4) -- (b2);
 	
 	%cluster 3
@@ -965,7 +965,7 @@ thanks to the charging scheme we devise here.
 	\draw (2*\x+8,10) node (b3)   {$b_{3}$};
 	% Text Node
 	\draw (2*\x+8,30) node (a2)   {$a_{2}$};
-	\draw[dotted, shorten <= -4pt, shorten >= -3pt] (b2)  -- (b3);
+	\draw[thick,dotted, shorten <= -4pt, shorten >= -3pt] (b2)  -- (b3);
 	\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (b2) -- (a2);
 	
 	%cluster 4
@@ -975,10 +975,10 @@ thanks to the charging scheme we devise here.
 	\draw (3*\x+8,10) node (b4)   {$b_{4}$};
 	% Text Node
 	\draw (3*\x+8,30) node (a3)   {$a_{3}$};
-	\draw[dotted, shorten <= -4pt, shorten >= -3pt] (a2)  -- (a3);
+	\draw[thick,dotted, shorten <= -4pt, shorten >= -3pt] (a2)  -- (a3);
 	\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (a2) -- (b4);
 	
-	\draw[dotted,  shorten <= -3pt, shorten >= -5pt]  (b4) to[out=-100,in=-80] (b1);
+	\draw[thick, dotted,  shorten <= -3pt, shorten >= -5pt]  (b4) to[out=-100,in=-80] (b1);
 	% arrow
 	\draw[->, blue,shorten <= -3pt, shorten >= -4pt]  (b4) 
 	to [out=-108,in=-130, distance=17mm]  (a4);
@@ -1309,7 +1309,7 @@ Furthermore, we proposed an efficient distributed implementation of the algorith
 \end{algorithm}
 
 %\section{Additional Figures}
-%\begin{comment}
+\begin{comment}
 \begin{figure}[H]	\label{fig:timeline}
 	\centering
 \begin{tikzpicture}
@@ -1361,6 +1361,6 @@ which are $R_{t'}$ and $R_t$.
 This is because their intervals overlap on $(t'',t']$, shown with red thick line.
 }
 \end{figure}
-%\end{comment}
+\end{comment}
 
 \end{document}
