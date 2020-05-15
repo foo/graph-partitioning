@@ -24,6 +24,7 @@
  \usepackage{colortbl}
  \usepackage{cleveref}
  \usepackage{enumitem}
+ \usepackage{standalone}
  
  \mathchardef\mhyphen="2D
  
@@ -975,99 +976,14 @@ if and only if  \OPT incurs that cost after the latest separation of the pair by
 
 \begin{figure}[H]
 	\centering
-	\begin{minipage}[b]{.55\textwidth}
-		\hspace{15mm}
-		\begin{tikzpicture}[x=0.8pt,y=0.75pt,yscale=-1.25,xscale=1.25]
-		\useasboundingbox  (-3mm,-5mm) rectangle (0mm,10mm);
-		%cluster 1
-		\def\x{30}
-		\def\w{15}
-		%Shape: Rectangle
-		\draw   (0,0) -- (15,0) -- (15,40) -- (0,40) -- cycle ;
-		%Straight Lines
-		\draw   (0,20) -- (15,20) ;
-		% Text Node
-		\draw (8,10) node (b1)  {$b_{1}$} ;
-		% Text Node
-		\draw (8,30) node (a4)   {$a_{4}$};
-		
-		%cluster 2
-		\draw   (\x,0) -- (\w+\x,0) -- (\w+\x,40) -- (\x,40) -- cycle ;
-		\draw   (\x,20) -- (\w+\x,20) ;
-		% Text Node
-		\draw (\x+8,10) node (b2)   {$b_{2}$};
-		% Text Node
-		\draw (\x+8,30) node (a1)   {$a_{1}$};
-		
-		\draw[thick,dotted, shorten <= -6pt, shorten >= -6pt] (a4)  -- (a1);
-		\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (a4) -- (b2);
-		
-		%cluster 3
-		\draw   (2*\x,0) -- (\w+2*\x,0) -- (\w+2*\x,40) -- (2*\x,40) -- cycle ;
-		\draw    (2*\x,20) -- (\w+2*\x,20) ;
-		% Text Node
-		\draw (2*\x+8,10) node (b3)   {$b_{3}$};
-		% Text Node
-		\draw (2*\x+8,30) node (a2)   {$a_{2}$};
-		\draw[thick,dotted, shorten <= -4pt, shorten >= -3pt] (b2)  -- (b3);
-		\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (b2) -- (a2);
-		
-		%cluster 4
-		\draw   (3*\x,0) -- (\w+3*\x,0) -- (\w+3*\x,40) -- (3*\x,40) -- cycle ;
-		\draw    (3*\x,20) -- (\w+3*\x,20) ;
-		% Text Node
-		\draw (3*\x+8,10) node (b4)   {$b_{4}$};
-		% Text Node
-		\draw (3*\x+8,30) node (a3)   {$a_{3}$};
-		\draw[thick,dotted, shorten <= -4pt, shorten >= -3pt] (a2)  -- (a3);
-		\draw [->,blue, shorten <= -5pt, shorten >= -2pt] (a2) -- (b4);
-		
-		\draw[thick, dotted,  shorten <= -3pt, shorten >= -5pt]  (b4) to[out=-100,in=-80] (b1);
-		% arrow
-		\draw[->, blue,shorten <= -3pt, shorten >= -4pt]  (b4) 
-		to [out=-108,in=-130, distance=17mm]  (a4);
-		\end{tikzpicture}
-	\end{minipage}\hfill
+	\begin{minipage}[b]{.5\textwidth}	
+				\centering	
+		\includestandalone{figs/k=2_a}
+	\end{minipage}%
 	%
-	\begin{minipage}[b]{.45\textwidth}
-		\begin{tikzpicture}[x=0.8pt,y=0.75pt,yscale=-1.25,xscale=1.25]
-		\useasboundingbox  (0mm,-5mm) rectangle (0mm,10mm);
-		%cluster 1
-		\def\x{30}
-		\def\w{15}
-		%Shape: Rectangle
-		\draw   (0,0) -- (15,0) -- (15,40) -- (0,40) -- cycle ;
-		%Straight Lines
-		\draw   (0,20) -- (15,20) ;
-		% Text Node
-		\draw (8,10) node (b1)  {$b_{1}$} ;
-		% Text Node
-		\draw (8,30) node (b4)   {$b_{4}$};
-		
-		%cluster 2
-		\draw   (\x,0) -- (\w+\x,0) -- (\w+\x,40) -- (\x,40) -- cycle ;
-		\draw   (\x,20) -- (\w+\x,20) ;
-		% Text Node
-		\draw (\x+8,10) node (a4)   {$a_{4}$};
-		% Text Node
-		\draw (\x+8,30) node (a1)   {$a_{1}$};
-		
-		%cluster 3
-		\draw   (2*\x,0) -- (\w+2*\x,0) -- (\w+2*\x,40) -- (2*\x,40) -- cycle ;
-		\draw    (2*\x,20) -- (\w+2*\x,20) ;
-		% Text Node
-		\draw (2*\x+8,10) node (b3)   {$b_{3}$};
-		% Text Node
-		\draw (2*\x+8,30) node (b2)   {$b_{2}$};
-		
-		%cluster 4
-		\draw   (3*\x,0) -- (\w+3*\x,0) -- (\w+3*\x,40) -- (3*\x,40) -- cycle ;
-		\draw    (3*\x,20) -- (\w+3*\x,20) ;
-		% Text Node
-		\draw (3*\x+8,10) node (a2)   {$a_{2}$};
-		% Text Node
-		\draw (3*\x+8,30) node (a3)   {$a_{3}$};
-		\end{tikzpicture}
+	\begin{minipage}[b]{.5\textwidth}
+		\centering
+				\includestandalone{figs/k=2_b}
 	\end{minipage}
 	\caption{
 		Dashed lines represent requests.
@@ -1136,44 +1052,7 @@ $.
 	
 \begin{figure}[t]
 	\centering
-	\begin{tikzpicture}
-	\draw [->] (-10mm,0) -- (5,0);
-	\draw [dotted] (-13mm,0) -- (-10mm,0);
-	
-	\draw [decorate,decoration={brace,amplitude=3pt}] (5mm,0.15) -- (45mm,0.15)
-	node [black,midway,above=1pt,xshift=1pt] {$R_{t}$};
-	
-	\draw [decorate,decoration={brace,amplitude=3pt}, yshift=-18pt] (25mm,0.15) -- (-7mm,0.15)
-	node [black,midway,below=1pt,xshift=1pt] {$R_{t'}$};
-	
-	\draw [] (45mm,2pt) -- (45mm,-2pt)
-	node [black,midway,below=0pt,xshift=1pt] {$t$};
-	
-	% tick
-	\draw [] (25mm,2pt) -- (25mm,-2pt)
-	node [black,midway,below=0pt,xshift=1pt] {$t'$};
-	% tick
-	\draw [] (5mm,2pt) -- (5mm,-2pt)
-	node [black,midway,below=0pt,xshift=1pt] {$t''$};
-	% tick
-	\draw [] (-7mm,2pt) -- (-7mm,-2pt)
-	node [black,midway,below=0pt,xshift=1pt] {};
-	
-	\draw [line width=0.33mm, red] (5mm,0) -- (25mm,0) 
-	node [black,midway,below=-2pt,xshift=1pt] {$\sigma_{\{u,w\}}$};
-	
-	\draw [] (25mm,0) -- (45mm,0) 
-	node [black,midway,below=-2pt,xshift=1pt] {$\sigma_{\{u,v\}}$};
-	
-	\draw [] (5mm,2pt) -- (5mm,-2pt)
-	node [black,midway,below=0pt,xshift=1pt] {$t''$};
-	%% vertical arrow 
-	%\draw [->] (3mm,14pt) -- (4.4mm,4pt)
-	%node [black,midway,above=0pt,xshift=-4pt] {separation of  $\{u,w\}$};
-	%% vertical arrow 
-	%\draw [->] (30mm,-24pt) -- (26.5mm,-7pt)
-	%node [black,midway,below=0pt,xshift=5pt, yshift=-5pt] {separation of  $\{u,v\}$};
-	\end{tikzpicture}
+	\includestandalone{figs/timeline}
 	\caption{
 		Illustration of the timeline used in the proof of Theorem \ref{thm:k=2}.
 		Requests in $R_t$  are only to  $\{u,w\}$ and $\{u,v\}$,
@@ -1366,9 +1245,5 @@ Furthermore, we proposed an efficient distributed implementation of the algorith
 	\caption{Perfect Partition Learner (\PPL)}
 	\label{alg:ppl}
 \end{algorithm}
-
-%\section{Additional Figures}
-%\begin{comment}
-%\end{comment}
 
 \end{document}
