@@ -170,7 +170,7 @@ The performance of these distributed applications often critically depends on th
 At the same time, distributed systems are often highly virtualized today, and provide interesting new opportunities for resource optimization.
 In particular, it has become possible to operate data centers in a~more demand-aware manner: 
 by dynamically migrating nodes (e.g., virtual machines) which communicate frequently topologically closer to each other, network traffic can be reduced significantly.  
-However, migrations entail overhead, and should be used moderately. 
+However, migrations entail overhead and should be used moderately. 
 
 This paper studies the algorithmic problem underlying such demand-aware
 optimizations, aiming to strike a~balance between the benefits of migrations (e.g., reduced network load) and their costs.
@@ -379,16 +379,16 @@ we group nodes that may ever communicate, into \emph{ground sets}.
 Given a perfect partition,
 every subset of nodes that belong to the same cluster in this partition
 is a~\emph{ground set}. 
-Any competitive algorithm under the learning model,
+Any competitive algorithm under the learning model
  maintains a~perfect partition of ground sets into clusters.
- On each inter-cluster request a ground set is revealed.
+ On each inter-cluster request, a ground set is revealed.
  An algorithm recovers the (hidden) perfect partition gradually over inter-cluster requests,
   by merging pairs of ground sets involved in these requests.
  
 The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
 Once we construct a ground set, it lasts until the end of the input sequence.
-We say that a ground set is \emph{singleton} if it contains exactly one node,
-that is an \emph{isolated} node.
+We say that a ground set is a~\emph{singleton} if it contains exactly one node,
+which is an \emph{isolated} node.
 
 
 We start by constructing a~ground set of size $k-1$ on an arbitrarily chosen cluster.
@@ -455,7 +455,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 	We terminate the process once the number of remaining isolated nodes 
 	is less than $\ell+3$.
 	At each step $i$,
-	the number of isolated nodes decrease either by one,
+	the number of isolated nodes decreases either by one
 	 or by two if $C_i$ is a singleton.
 	Therefore, once the process terminates,
 	in any case at least $\ell+1$ isolated nodes are left.
@@ -502,7 +502,7 @@ In comparison, we show that there exists an optimal offline algorithm \OPT that 
 %	In other words,
 %	some ground set grows by one node at each of these steps.
 	Consider any ground set $C^* \neq B$ after the termination.
-	This ground set has grown exactly $|C^*|-1$ times until the the termination. 
+	This ground set has grown exactly $|C^*|-1$ times until the termination. 
 	Let $\mathcal{S}$ be the set of all ground sets after the process terminates.
 	Thus, $\mathcal{S}$ includes ground sets $B$,
 	$\{x_0,y_0\}$,
@@ -612,8 +612,20 @@ we choose a~component respecting partition closest to the initial partition.
 In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a~repartition of minimum cost).
 %A generic sketch of these two algorithms can be found in the appendix (Algorithm \ref{alg:ppl}).
 
+\medskip 
+
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
+Now we describe the algorithm \PPL.
+On each inter-cluster request $\{u,v\}$, 
+\PPL creates new components by merging
+ the two components that contain nodes $u$ and $v$.
+In order to collocate nodes of the new component,
+\PPL moves to a~component respecting partition that minimizes the distance to the initial partition $P_I$.
+The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
+
+\medskip
+
 Fix the initial partition
 $P_I :=\{ I_1, \dots, I_{\ell}\}$ and \OPT's final partition
 $P_F := \{F_1, \dots, F_{\ell}\}$.
@@ -625,14 +637,6 @@ $\Delta(P) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$,
 In other words,
 at least $\Delta(P)$ node migrations are required in order to reach the partition $P$ from $P_I$, and thus
 $\OPT \geq \Delta(P_F) $.
-
-Now we describe the algorithm \PPL.
-On each inter-cluster request $\{u,v\}$, 
-\PPL creates new components by merging
- the two components that contain nodes $u$ and $v$.
-In order to collocate nodes of the new component,
-\PPL moves to a~component respecting partition that minimizes the distance to the initial partition $P_I$.
-The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
 
 \PPL never moves to a~partition that is more than $ \Delta^*:= \Delta(P_F) $   migrations away from~$P_I$.
 This invariant latter ensures us that \PPL does not pay too much while recovering $P_F$.
