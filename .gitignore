@@ -1,9 +1,0 @@
-paper/*.aux
-paper/*.log
-paper/*.out
-paper/disc20clustering.pdf
-paper/*.synctex.gz
-paper/*.fdb_latexmk
-paper/*.fls
-paper/*.blg
-paper/*.bbl
