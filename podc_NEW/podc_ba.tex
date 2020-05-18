@@ -192,22 +192,13 @@ In particular, we are interested in an online variant of the problem: since comm
 Ideally, this algorithm should perform close to an optimal offline algorithm, without requiring any information about future traffic demands. 
 
 
-This problem is known as the dynamic balanced graph partitioning problem and was introduced by Avin et al.~\cite{repartition-disc, sidma-arxiv} at DISC 2016. a~special variant of the general problem has later been studied by Henzinger et al.~\cite{sigmetrics19_partitioning} at SIGMETRICS 2019.
-We refer to the latter as the learning model.
 
-
-
-\subsection{Model}
-
-We study two models in this paper: the \emph{general partitioning} model, and its subproblem, the \emph{learning} model.
-In both models, we assume that communication patterns are not known to our algorithms at the beginning.
-We measure the~quality of~presented algorithmic solutions by competitive analysis~\cite{borodin-book}, which is well-suited for problems that are online by their nature.
-In the competitive analysis, the goal is to~optimize \emph{the competitive ratio} of a~given online algorithm: the ratio of its cost to the cost of~an~optimal offline algorithm that knows the entire input sequence in advance.
-%We emphasize that all our algorithms have a~\emph{strict} competitive ratio (without an additive term).
-
-\noindent
-\textbf{General partitioning model.}
-In the \emph{dynamic balanced graph partitioning} problem, we are given a~set $V$ of $n$ nodes 
+\noindent \textbf{Model.}
+The \emph{dynamic balanced graph partitioning} problem (\OBRP{})
+is a fundamental learning problem
+that finds applications in the context of
+distributed systems optimization~\cite{repartition-disc}.
+We are given a~set $V$ of $n$ nodes 
 (e.g., virtual machines or processes),
 initially arbitrarily partitioned into $\ell$~clusters
 (e.g., servers or entire racks),
@@ -242,79 +233,37 @@ is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 
 
+We consider two flavors of the problem
+in this paper. In the first one, which
+was also studied by Henzinger et al.~\cite{sigmetrics19_partitioning}
+(SIGMETRICS 2019) and which
+we here mainly consider for the sake of a stronger
+lower bound, we assume that $\sigma$
+simply reveals the edges of a static graph
+that can be perfectly partitioned
+(i.e., in principle, no external requests
+are required). 
+In the second one, we consider a general
+model where $\sigma$ can be arbitrary;
+this was the original problem introduced
+by Avin et al.~\cite{repartition-disc} at DISC 2016.
+For simplicity, we will refer to the former
+model as the \emph{learning} model (as
+one has to learn the static communication graph) 
+and to the latter as the \emph{online} model.
 
-\noindent
-\textbf{Learning model.}
-We study a~\emph{learning} variant of dynamic balanced graph partitioning,
-where the communication pattern is \emph{static}:
-whether a~pair of  nodes ever communicate or not, 
-is determined a~priori and is unknown to algorithms,
- and such pairs communicate forever.
-Any algorithm must eventually collocate  pairs of communicating nodes,
-as otherwise it cannot be competitive.
-As in Henzinger et al.~\cite{sigmetrics19_partitioning}, we assume that the communication graph admits a~\emph{perfect partition},
-i.e., a~partition in which no inter-cluster request ever occurs.
-%any algorithm must learn this perfect partition.
-The algorithm's objective is to \emph{learn} the (static) communication graph
- while serving all requests,
-and without executing too many migrations.
-For the learning model, we  assume that the migration cost is $\alpha=1$.
-
-
-\subsection{Related Work}
-
+\noindent \textbf{Related work.}
+%
 The two works closest to ours are by Avin et al. (on the general partitioning model)~\cite{repartition-disc, sidma-arxiv} and by Henzinger et al. (on the learning model)~\cite{sigmetrics19_partitioning}.
-However, the focus of these papers is primarily on models with resource augmentation: the online algorithm can use slightly larger clusters than the offline algorithm.  
-Avin et al. actually showed that their lower bound $\Omega(k)$ holds even for a~significant resource augmentation, and they provided an algorithm with the competitive ratio $O(k \log k)$ using the $(2+\epsilon)$-augmented cluster capacity.
-Their ratio is independent of $\ell$, which is impossible without significant resource augmentation.
-
-
-
-In contrast, we study the non-augmented setting, where the nodes need to be perfectly balanced  among the clusters.
-This assumption is not only more realistic but also significantly more challenging, as it is related to hard problems such as integer partitioning~\cite{integer-partitions-book}.
-In terms of results without augmentation, so far, it is only known that there exists an~$O(k^2 \cdot \ell^2)$-competitive algorithm~\cite{repartition-disc}; the best known lower bound is significantly lower, namely $\Omega(k)$.
-For $k=2$, Avin et al.~\cite{repartition-disc} presented a~$7$-competitive algorithm with a~substantial ($\Omega(\ell^2)$) additive constant.
-
-
-The problem has also been studied in a~weaker
-model where the adversary can only sample
-requests from a~fixed distribution~\cite{stochastic-ring}.
-
 The static offline version of~the~partitioning~problem, i.e., a~problem variant where
 migration is not allowed, where all requests are known in advance, and where
 the goal is to find an assignment of $n$ nodes to $\ell$~physical machines, each of~capacity $n/\ell$, is known as the
-\emph{$\ell$-balanced graph partitioning problem}. The problem is 
-NP-complete, and cannot even be approximated within any finite factor unless P
-= NP~\cite{AndRae06}.  The static
-variant where $\ell = 2$ corresponds to the minimum bisection problem, which
-is already NP-hard~\cite{GaJoSt76}, and 
-the currently best approximation ratio is $O(\log n)$~\cite{SarVaz95,ArKaKa99,FeKrNi00,FeiKra02,KraFei06,Raec08}.
-
-Our problem is further related to some classic online problems.
-In particular, it is related to online paging~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00}, sometimes also referred to
-as online caching, where requests for data items (nodes) arrive over time and
-need to be served from a~cache of finite capacity, and where the number of
-cache misses must be minimized. Classic problem variants usually boil down to
-finding a~smart eviction strategy, such as Least Recently Used (LRU)~\cite{SleTar85}. In our
-setting, requests can be served remotely (i.e.,~without fetching the
-corresponding nodes to a~single physical machine). In this light, our model is more
-reminiscent of caching models \emph{with
-bypassing}~\cite{EpImLN11,EpImLN15,Irani02}.
-A major difference between  these problems is that in the caching problems, each request involves a~single element of the universe, while in our model \emph{both} endpoints of a~communication request are subject to~optimization.
-In this light, we can see our model as a~"symmetric" version of online paging.
-
+\emph{$\ell$-balanced graph partitioning problem}~\cite{AndRae06}.
 Dynamic graph partitioning problems are generally fundamental in computer science, and arise in many different contexts~\cite{streaming-soda,streaming1}.
 
-%More generally, the model is related to online
-%caching~\cite{SleTar85,FKLMSY91,McGSle91,AcChNo00},
-%see~\cite{repartition-disc} for a~discussion.
-%The static offline version of~the~problem, called the
-%\emph{$\ell$-balanced graph partitioning problem} is 
-%NP-complete, and cannot even be approximated within %any finite factor unless P
-%= NP~\cite{AndRae06}. 
 
-\subsection{Our Contributions}
-
+\noindent \textbf{Contributions.}
+%
 This paper presents several new results on the dynamic graph partitioning problem  without augmentation.
 For the learning model, we present a~lower bound of $\Omega(k\cdot\ell)$ on the competitive ratio of any online deterministic online algorithm 
 (that holds also in the general partitioning model).
@@ -322,23 +271,11 @@ The best known lower bound so far was $\Omega(k)$~\cite{repartition-disc} that h
 We complement this result with an asymptotically optimal, 
 $O(k\cdot \ell)$-competitive algorithm
 for the learning model.
-
 For the general partitioning model, we design
 an asymptotically optimal,
 $\Theta(\ell)$-competitive algorithm for $k=3$, improving the best known upper bound 
 so far $O(\ell^2)$~\cite{repartition-disc}.
 We further present a~strictly $6$-competitive algorithm for $k=2$ that improves upon the previous $7$-competitive algorithm with $O(\alpha\ell^2)$ additive constant.
-
-All algorithms in this paper have a strict competitive ratio (i.e., without an additive term).
-
-\medskip
-\noindent
-\textbf{Algorithmic techniques.} The variant for general $k$ is still unresolved, hence it is vital to summarize algorithmic techniques used in this paper.
-A straightforward analysis of the algorithm from Section~\ref{sec:k3} results in the bound $O(\ell^2)$, and the analysis must be improved in two places. One must bound the cost of each of $O(\ell)$ reconfigurations per~phase by a~constant, and show that the optimum offline algorithm must pay a~significant cost for inter-cluster requests.
-We bound the cost of the latter by estimating the capabilities of the optimum offline algorithm to \emph{prepare} for an incoming sequence of requests.
-Furthermore, in the analysis of the algorithm from Section~\ref{sec:k2}, we propose a~novel charging scheme for edges that share a~vertex.
-We also emphasize the implications of the tight result for the learning model.
-If one hopes to improve the lower bound for the general model, the ground sets must be dynamically added and \emph{removed}: if ground sets are only added, the instance is solvable by the algorithm from Section~\ref{sec:ppl} within the cost $O(k\cdot \ell)$.
 
 \section{The Learning Model} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
