@@ -167,7 +167,6 @@
 	of $\Theta(\ell)$
 	for the general model in which the
 	communication pattern can change arbitrarily over time.
-	We improve the result for $k=2$ by providing a~strictly $6$-competitive upper bound for the general model.
 	In contrast to most prior work, our algorithms respect all capacity constraints and do not require resource augmentation.
 	
 \end{abstract}
@@ -256,7 +255,6 @@ For the general partitioning model, we design
 an asymptotically optimal,
 $\Theta(\ell)$-competitive algorithm for $k=3$, improving the best known upper bound 
 so far $O(\ell^2)$~\cite{repartition-disc}.
-We further present a~strictly $6$-competitive algorithm for $k=2$ that improves upon the previous $7$-competitive algorithm with $O(\alpha\ell^2)$ additive constant.
 
 \section{The Learning Model} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
@@ -279,37 +277,28 @@ and without executing too many migrations.
 \label{sec:lowerbound}
 
 
-We provide a~lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm for the learning problem.
-The lower bound requires $k\geq 3$.
-In contrast, for $k=2$ the learning problem is trivial: immediate collocation of communicating pairs is $1$-competitive.
-%, a~lower bound of $3$ is known~\cite{repartition-disc}, and we provide a~$6$-competitive algorithm, see Section~\ref{sec:k2}.)
-
-
-
-  \begin{theorem}
+\begin{theorem}
 	\label{th:lowerbound}
 	The competitive ratio of any deterministic online algorithm for the learning model of Dynamic Balanced Graph Partitioning is at least
-	 $(k-2)(\ell-1)/2 - 2$ for any $k\geq 3$ and $\ell \geq 2$.
+	 $\Omega(k\cdot \ell)$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
-A~\emph{ground set} is a group of nodes that communicate if they are not collocated.
-The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
-We start by constructing a~ground set $B$ of size $k-1$ on an arbitrarily chosen cluster.
-In any partition, there must exist an isolated node collocated with the ground set of size $k-1$.
+We choose a set $B$ of $k-1$ collocated nodes and issue requests between them so they must stay collocated.
+In any partition, there must exist an isolated node collocated with $B$.
 %, and we refer to it as the \emph{pivot} node.
 We issue requests between this node and some node that was initially collocated with it.
-By repeating such requests, almost every node is once collocated with the ground set $B$.
+We repeat such requests to the current node collocated with $B$, and this node get replaced by another node that was never requested.
+We issue $(k-2)(\ell - 1)-4$ requests this way.
 The cost of the algorithm is linear in terms of the number of nodes, and there exists an optimal offline algorithm \OPT that performs only two node exchanges.
+
 
 
 
 \subsection{Upper Bound}
 \label{sec:ppl}
 
-There exists an asymptotically optimal algorithm for the learning problem.
-The algorithm  collocates  a~pair as soon as they communicate and it never separates them.
-To preserve collocated pairs,
-we employ the concept of components,
+We present the algorithm \PPL that is  asymptotically optimal for the learning problem.
+It utilizes the concept of components,
 introduced by Avin~et~al.~\cite{repartition-disc}.
 
 
@@ -321,58 +310,42 @@ On each inter-cluster request $\{u,v\}$,
 To collocate nodes of the new component,
 \PPL moves to partition where no component is split, that minimizes the distance to the initial partition $P_I$.
 
-
-\begin{lemma}	\label{lemma:rebalancecost}
-	The cost of serving each request is at most $2\cdot\OPT$.
-\end{lemma}
+\medskip
 
 Let $\Delta$ be the cost of \OPT.
 \PPL never moves to a~partition that is more than $ \Delta$   migrations away from~the initial configuration.
 
-\begin{theorem}	\label{thm:upperbound}
-	\PPL is $(2\cdot (k-1)\cdot\ell)$-competitive.
-\end{theorem}
+\begin{lemma}	\label{lemma:rebalancecost}
+	The cost of a single repartition is at most $2\cdot\OPT$.
+	The corollary is that \PPL is $(2\cdot (k-1)\cdot\ell)$-competitive.
+\end{lemma}
 
-\section{General Partitioning Model}
+\section{General Partitioning Model: Optimal Algorithm for Clusters of Size 3}
+
 \label{sec:part}
+\label{sec:k3}
 
 Now  we discuss the general online
 model where the request sequence
 can be arbitrary.
-In Section~\ref{sec:k3}, we show an $O(k \cdot \ell)$-competitive algorithm for $k=3$ using the classic \emph{rent-or-buy} approach~\cite{karlin-ski-rental}.
-
-
-
-\subsection{Optimal Algorithm for Clusters of Size 3}
-\label{sec:k3}
-
 The algorithm analyzed in this section is a modified version of the algorithm DET proposed by Avin et al.~\cite{repartition-disc}, which for $k=3$ is $O(\ell^2)$-competitive.
 In our algorithm, we choose the closest partition after a component merge instead of an arbitrary one.
-This allows to bound the cost of repartition by a constant (Lemma~\ref{lem:1req}).
+This allows to bound the cost of repartition by a constant:
+\begin{lemma}
+	\label{lem:1req}
+	In a~single repartition of nodes, the algorithm exchanges at most two pairs of nodes.
+\end{lemma}
+
 
 This modification alone is insufficient to obtain $O(\ell)$-competitive algorithm, and the analysis must be further improved.
 In particular, pairs of nodes that did not reach the collocation threshold $\alpha$ (called external requests) incur the cost $O(\ell^2)$ for the algorithm in each phase.
 The novel part of the analysis lower-bounds the cost of \OPT on external requests while considering its savings from migrations and possibly different configuration at the beginning of the phase.
 This way, we show that \OPT paid a significant portion of the algorithm's cost on external requests.
 
-\medskip
-
-\noindent
-\textbf{Component-based algorithm.}
-The algorithm \TAlg partitions nodes into components, and
-initially, each node is isolated (belongs to its own component).
-For each pair of nodes $\set{x,y}$, \TAlg maintains a~counter $C_{\set{x,y}}$ and increments it on every external request between $x$ and $y$.
-Once $C_{\set{x,y}} = \alpha$, \TAlg merges the components of $u$ and $v$, and moves to the closest component respecting partitioning.
-If no such partitioning exists, \TAlg resets all components to singleton components, resets all counters to $0$, and ends the phase.
-
-\begin{lemma}
-	\label{lem:1req}
-	In a~single repartition of nodes (after a~merge of components), \TAlg exchanges at most two pairs of nodes.
-\end{lemma}
 
 
 \begin{theorem}
-	\TAlg is $60\ell$-competitive for $k=3$.
+	The proposed algorithm for $k=3$ is $O(\ell)$-competitive.
 	\label{thm:k=3}
 \end{theorem}
 
