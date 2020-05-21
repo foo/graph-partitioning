@@ -300,24 +300,21 @@ The cost of the algorithm is linear in terms of the number of nodes, and there e
 We present the algorithm \PPL that is  asymptotically optimal for the learning problem.
 It utilizes the concept of components,
 introduced by Avin~et~al.~\cite{repartition-disc}.
-
-
-\noindent
-\textbf{Perfect Partition Learner algorithm.}
 On each inter-cluster request $\{u,v\}$, 
 \PPL  merges
  the two components that contain nodes $u$ and $v$.
 To collocate nodes of the new component,
-\PPL moves to partition where no component is split, that minimizes the distance to the initial partition $P_I$.
+\PPL moves to partition where no component is split, that minimizes the distance to the initial partition.
 
 \medskip
 
+\noindent
 Let $\Delta$ be the cost of \OPT.
 \PPL never moves to a~partition that is more than $ \Delta$   migrations away from~the initial configuration.
 
 \begin{lemma}	\label{lemma:rebalancecost}
-	The cost of a single repartition is at most $2\cdot\OPT$.
-	The corollary is that \PPL is $(2\cdot (k-1)\cdot\ell)$-competitive.
+	The cost of a single repartition is at most $2\cdot\Delta$.
+	The corollary is that \PPL is $O(k\cdot\ell)$-competitive.
 \end{lemma}
 
 \section{General Partitioning Model: Optimal Algorithm for Clusters of Size 3}
@@ -337,15 +334,12 @@ This allows to bound the cost of repartition by a constant:
 \end{lemma}
 
 
-This modification alone is insufficient to obtain $O(\ell)$-competitive algorithm, and the analysis must be further improved.
-In particular, pairs of nodes that did not reach the collocation threshold $\alpha$ (called external requests) incur the cost $O(\ell^2)$ for the algorithm in each phase.
-The novel part of the analysis lower-bounds the cost of \OPT on external requests while considering its savings from migrations and possibly different configuration at the beginning of the phase.
-This way, we show that \OPT paid a significant portion of the algorithm's cost on external requests.
-
+This modification alone is insufficient to obtain $O(\ell)$-competitive algorithm: pairs of nodes that did not reach the collocation threshold $\alpha$ incur the cost $O(\ell^2)$.
+We carefully analyse this cost and relate it to the cost of \OPT.
 
 
 \begin{theorem}
-	The proposed algorithm for $k=3$ is $O(\ell)$-competitive.
+	The  algorithm for $k=3$ is $O(\ell)$-competitive.
 	\label{thm:k=3}
 \end{theorem}
 
