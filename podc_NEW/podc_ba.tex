@@ -233,25 +233,6 @@ is the total cost of communications and
 the cost of migrations performed by $\ALG$ while serving the sequence $\sigma$.
 
 
-We consider two flavors of the problem
-in this paper. In the first one, which
-was also studied by Henzinger et al.~\cite{sigmetrics19_partitioning}
-(SIGMETRICS 2019) and which
-we here mainly consider for the sake of a stronger
-lower bound, we assume that $\sigma$
-simply reveals the edges of a static graph
-that can be perfectly partitioned
-(i.e., in principle, no external requests
-are required). 
-In the second one, we consider a general
-model where $\sigma$ can be arbitrary;
-this was the original problem introduced
-by Avin et al.~\cite{repartition-disc} at DISC 2016.
-For simplicity, we will refer to the former
-model as the \emph{learning} model (as
-one has to learn the static communication graph) 
-and to the latter as the \emph{online} model.
-
 \noindent \textbf{Related work.}
 %
 The two works closest to ours are by Avin et al. (on the general partitioning model)~\cite{repartition-disc, sidma-arxiv} and by Henzinger et al. (on the learning model)~\cite{sigmetrics19_partitioning}.
@@ -279,11 +260,19 @@ We further present a~strictly $6$-competitive algorithm for $k=2$ that improves 
 
 \section{The Learning Model} %$\Omega(k\cdot \ell)$ for Competitive Ratio of Any Deterministic Algorithm}
 
-In this section, we consider the learning variant of dynamic balanced graph partitioning problem.
-For this setting, we show a~surprisingly high lower bound of $\Omega(k \cdot \ell)$ for $k\geq 3$.
-The lower bound holds also in the general partitioning model (studied in Section~\ref{sec:part}).
-At the end of this section, we discuss an asymptotically optimal upper bound for the learning variant.
-
+In this section, we study a~\emph{learning} variant of dynamic balanced graph partitioning,
+where the communication pattern is \emph{static}:
+whether a~pair of  nodes ever communicate or not, 
+is determined a~priori and is unknown to algorithms,
+ and such pairs communicate forever.
+Any algorithm must eventually collocate  pairs of communicating nodes,
+as otherwise it cannot be competitive.
+As in Henzinger et al.~\cite{sigmetrics19_partitioning}, we assume that the communication graph admits a~\emph{perfect partition},
+i.e., a~partition in which no inter-cluster request ever occurs.
+%any algorithm must learn this perfect partition.
+The algorithm's objective is to \emph{learn} the (static) communication graph
+ while serving all requests,
+and without executing too many migrations.
 
 \subsection{Lower Bound}
 
@@ -291,18 +280,9 @@ At the end of this section, we discuss an asymptotically optimal upper bound for
 
 
 We provide a~lower bound $\Omega(k\cdot \ell)$ for the competitive ratio of any deterministic online algorithm for the learning problem.
-Later, we elaborate on how to efficiently transform it to a~lower bound for the general partitioning problem.
 The lower bound requires $k\geq 3$.
 In contrast, for $k=2$ the learning problem is trivial: immediate collocation of communicating pairs is $1$-competitive.
-In contrast,
-the general partitioning problem for $k=2$ is non-trivial (see Section~\ref{sec:k2}).
 %, a~lower bound of $3$ is known~\cite{repartition-disc}, and we provide a~$6$-competitive algorithm, see Section~\ref{sec:k2}.)
-
-Throughout this paper, we often refer to groups of communicating nodes.
-We use this concept slightly differently in the lower bound than the upper bounds.
-In our algorithms, we group nodes with a~communication history into \emph{components}.
-In this section,
-we group nodes that may ever communicate, into \emph{ground sets}.
 
 
 
@@ -312,102 +292,45 @@ we group nodes that may ever communicate, into \emph{ground sets}.
 	 $(k-2)(\ell-1)/2 - 2$ for any $k\geq 3$ and $\ell \geq 2$.
 \end{theorem}
 
-
+A~\emph{ground set} is a group of nodes that communicate if they are not collocated.
 The adversary constructs ground sets depending on the choices of a deterministic online algorithm.
-Once we construct a ground set, it lasts until the end of the input sequence.
-We start by constructing a~ground set of size $k-1$ on an arbitrarily chosen cluster.
+We start by constructing a~ground set $B$ of size $k-1$ on an arbitrarily chosen cluster.
 In any partition, there must exist an isolated node collocated with the ground set of size $k-1$.
 %, and we refer to it as the \emph{pivot} node.
 We issue requests between this node and some node that was initially collocated with it.
-By repeating such requests, almost every node is once collocated with the first ground set.
-In comparison, we show that there exists an optimal offline algorithm \OPT that performs only two node exchanges ("swaps").
-%Figure~\ref{fig:lb} illustrates the constructs used in the lower bound.
+By repeating such requests, almost every node is once collocated with the ground set $B$.
+The cost of the algorithm is linear in terms of the number of nodes, and there exists an optimal offline algorithm \OPT that performs only two node exchanges.
 
 
 
 \subsection{Upper Bound}
 \label{sec:ppl}
 
-We present an asymptotically optimal algorithm for the learning problem.
+There exists an asymptotically optimal algorithm for the learning problem.
 The algorithm  collocates  a~pair as soon as they communicate and it never separates them.
-In order to preserve collocated pairs,
+To preserve collocated pairs,
 we employ the concept of components,
 introduced by Avin~et~al.~\cite{repartition-disc}.
-
-We maintain subsets of frequently communicating nodes as \emph{components}.
-Initially,
-each node constitutes a single-node component which we refer to as a \emph{singleton} component, 
-and the node in such component is an \emph{isolated} node.
-We define larger components in terms of smaller components.
-Concretely,
-given a (sub)sequence of requests,
-two components $C_1$ and $C_2$
- \emph{merge} into one component as soon as
- for some pair of nodes $v_1 \in C_1$ and $v_2 \in C_2$,
-the frequency of requests $\{v_1,v_2\}$ reaches a certain threshold through the sequence.
-We keep all nodes of a~component always collocated in the same cluster,
-i.e., when we  move a~node,
-we move the whole component that contains it.
-A~partition that has every component collocated 
-is a~\emph{component respecting} partition.
-%Intuitively, a component preserves the history of requests between its nodes.
-
-In addition,
-we maintain a~balanced partition of our components as long as such partition exists,
-a reminiscent of partitioning given integers into sets of equal sum~\cite{integer-partitions-book}.
-In contrast, our partition is time-varying:  two components are merged into one component once they communicate, and we adjust the partition accordingly.
-
-
-
-The algorithm in this section and the algorithm for $k=3$ (cf. Section~\ref{sec:k3}) are modified versions of the algorithm DET from~\cite{repartition-disc}.
-The difference is in the choice of partition after a~component merge.
-In DET, the partition was arbitrary.
-In the algorithm for the learning model,
-we choose a~component respecting partition closest to the initial partition.
-In the algorithm from Section~\ref{sec:k3}, we choose the partition closest to the current partition (a~repartition of minimum cost).
-%A generic sketch of these two algorithms can be found in the appendix (Algorithm \ref{alg:ppl}).
 
 
 \noindent
 \textbf{Perfect Partition Learner algorithm.}
-Now we describe the algorithm \PPL.
 On each inter-cluster request $\{u,v\}$, 
-\PPL creates new components by merging
+\PPL  merges
  the two components that contain nodes $u$ and $v$.
-In order to collocate nodes of the new component,
-\PPL moves to a~component respecting partition that minimizes the distance to the initial partition $P_I$.
-The scheme of the algorithm can be found in the  appendix (Algorithm \ref{alg:ppl}).
+To collocate nodes of the new component,
+\PPL moves to partition where no component is split, that minimizes the distance to the initial partition $P_I$.
 
-
-Fix the initial partition
-$P_I :=\{ I_1, \dots, I_{\ell}\}$ and \OPT's final partition
-$P_F := \{F_1, \dots, F_{\ell}\}$.
-The \emph{distance} of a~partition
- $P = \{C_1, \dots, C_{\ell}\}$ from the initial partition,
-defined as 
-$\Delta(P) := \sum_{j=1}^{\ell} | C_j \setminus I_j |$,
- is the number of nodes in $P$ that do not reside in their initial cluster.
-In other words,
-at least $\Delta(P)$ node migrations are required in order to reach the partition $P$ from $P_I$, and thus
-$\OPT \geq \Delta(P_F) $.
-
-\PPL never moves to a~partition that is more than $ \Delta^*:= \Delta(P_F) $   migrations away from~$P_I$.
-This invariant latter ensures us that \PPL does not pay too much while recovering $P_F$.
-We emphasize that a~\emph{repartitioning} by \PPL replaces the current partition $P$ with a~perfect partition closest to $P_I$.
-This way \PPL never moves to a~partition beyond the distance $\Delta^*$.
-
-\begin{property} \label{prop:dist<OPT}
-	Let $P$ be any partition chosen by \PPL at any time.
-	Then, $\Delta(P) \leq \Delta^*$.	
-\end{property}
 
 \begin{lemma}	\label{lemma:rebalancecost}
-	The cost of each repartitioning by \PPL is $2\cdot\OPT$.
+	The cost of serving each request is at most $2\cdot\OPT$.
 \end{lemma}
 
+Let $\Delta$ be the cost of \OPT.
+\PPL never moves to a~partition that is more than $ \Delta$   migrations away from~the initial configuration.
+
 \begin{theorem}	\label{thm:upperbound}
-	\PPL reaches the final partition $P_F$
-	 and it is $(2\cdot (k-1)\cdot\ell)$-competitive.
+	\PPL is $(2\cdot (k-1)\cdot\ell)$-competitive.
 \end{theorem}
 
 \section{General Partitioning Model}
